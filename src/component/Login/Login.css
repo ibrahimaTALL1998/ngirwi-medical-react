@@ -1,0 +1,90 @@
+#root {
+  background-color: aliceblue
+}
+.app {
+    font-family: sans-serif;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    flex-direction: column;
+    gap: 20px;
+    height: 100vh;
+    font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+    /* background-color:aqua; */
+  }
+
+.logo {
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.title {
+  align-items: left;
+  justify-content: left;
+  color:cadetblue;
+}
+  
+  input[type="text"],
+  input[type="password"] {
+    height: 25px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+  }
+  
+  input[type="submit"] {
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    background: blue;
+    border: 1px solid blue;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px 20px;
+  }
+  
+  input[type="submit"]:hover {
+    background: lightcyan;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .btn-custom {
+    color:cadetblue;
+  }
+
+  a {
+    color:cadetblue
+  }
+  
+  .login-form {
+    /* background-color: #f8f9fd; */
+    background-color: white;
+    padding: 6rem;
+    text-align: center;
+    /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+  }
+  
+  .list-container {
+    display: flex;
+  }
+  
+  .error {
+    color: red;
+    font-size: 12px;
+  }
+  
+  .title {
+    font-size: 25px;
+    margin-bottom: 20px;
+  }
+  
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 10px;
+  }
