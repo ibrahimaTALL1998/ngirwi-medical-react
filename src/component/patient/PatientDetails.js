@@ -50,11 +50,8 @@ export default function PatientDetails() {
 
     const details = () => {
         return (
-            // <div class="card" style={{ marginTop: "10px", borderRadius: "12px" }}>
             <Card className="text-center" style={{ marginTop: "10px", borderRadius: "12px", padding:"3rem" }}>
-                {/* <Card.Header> <b>Patient: {name + ' ' + surname}</b> </Card.Header> */}
                 <Card.Body>
-                    {/* //<Card.Title>Gestion des patients</Card.Title> */}
                     <Card.Text>
                         Nom: {name} <br></br>
                         Prénom: {surname} <br></br>
@@ -65,16 +62,7 @@ export default function PatientDetails() {
                         Profession: {job} <br></br>
                         Situation Matrimoniale: {maritalStatus} <br></br>
                         Adresse: {address}<br></br>
-                        {/* <Card.Link href="#">Creer un compte interne.</Card.Link> */}
                     </Card.Text>
-
-                    {/* <Link className="btn btn-primary" to={`/dossier-patient/${idPatient}`}>Dossier Médical</Link>
-                        <Link className="btn btn-primary" to={`/consultation-patient-add/${idPatient}`} style={{ marginLeft: "10px" }}>Nouvelle Consultation</Link>
-                        <Link className="btn btn-primary" to={`/consultations-patient/${idPatient}`} style={{ marginLeft: "10px" }}>Consultations</Link> */}
-
-                    {/* <Button variant="primary" href="add-patient">Enregistrer patient</Button><br></br><br></br>
-                        <Button variant="primary" href="patients">Liste patients</Button><br></br><br></br>
-                        <Button variant="primary">Action 3</Button> */}
                 </Card.Body>
             </Card>
             // </div>

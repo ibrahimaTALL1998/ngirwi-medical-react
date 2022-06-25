@@ -174,19 +174,19 @@ export default function DossierMedical() {
                         </Col>
                     </Row>
                     <Row>
-                        <Form.Label><h5>Antécédants</h5></Form.Label>
+                        <Form.Label><h5>Antécédents</h5></Form.Label>
                     </Row>
                     <Row>
-                        <Col><Form.Label>Antécédants personnels</Form.Label>
-                            <Form.Control className="name-input" type="text" as="textarea" onChange={(e) => setAntecedantsPersonnels(e.target.value)} placeholder="Antécédants personnels" name="antecedantsPersonnels" value={antecedantsPersonnels} required /><br></br>
+                        <Col><Form.Label>Antécédents personnels</Form.Label>
+                            <Form.Control className="name-input" type="text" as="textarea" onChange={(e) => setAntecedantsPersonnels(e.target.value)} placeholder="Antécédents personnels" name="antecedantsPersonnels" value={antecedantsPersonnels} required /><br></br>
                         </Col>
-                        <Col><Form.Label>Antécédants chirurgicaux</Form.Label>
-                            <Form.Control className="name-input" type="text" as="textarea" onChange={(e) => setAntecedantsChirurgicaux(e.target.value)} placeholder="Antécédants chirurgicaux" name="antecedantsChirurgicaux" value={antecedantsChirurgicaux} required /><br></br>
+                        <Col><Form.Label>Antécédents chirurgicaux</Form.Label>
+                            <Form.Control className="name-input" type="text" as="textarea" onChange={(e) => setAntecedantsChirurgicaux(e.target.value)} placeholder="Antécédents chirurgicaux" name="antecedantsChirurgicaux" value={antecedantsChirurgicaux} required /><br></br>
                         </Col>
-                        <Col> <Form.Label>Antécédants Familiaux</Form.Label>
-                            <Form.Control className="name-input" type="text" as="textarea" onChange={(e) => setAntecedantsFamiliaux(e.target.value)} placeholder="Antécédants familiaux" name="antecedantsFamiliaux" value={antecedantsFamiliaux} required /><br></br>
+                        <Col> <Form.Label>Antécédents Familiaux</Form.Label>
+                            <Form.Control className="name-input" type="text" as="textarea" onChange={(e) => setAntecedantsFamiliaux(e.target.value)} placeholder="Antécédents familiaux" name="antecedantsFamiliaux" value={antecedantsFamiliaux} required /><br></br>
                         </Col>
-                        <Col> <Form.Label>Antécédants Gynéco-Obstétricaux <b>**</b></Form.Label>
+                        <Col> <Form.Label>Antécédents Gynéco-Obstétricaux <b>**</b></Form.Label>
                             <Form.Control className="name-input" type="text" as="textarea" onChange={(e) => setGynecoObstretrique(e.target.value)} placeholder="Gynéco-Obstretrique" name="gynecoObstretrique" value={gynecoObstretrique} required /><br></br>
                         </Col>
                     </Row>

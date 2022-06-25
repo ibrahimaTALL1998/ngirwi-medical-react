@@ -75,7 +75,7 @@ export default function PatientList() {
     } else if (criteria === "cni") {
         data = {
             nodes: patients.filter((item) =>
-                item.email.toLowerCase().includes(search)
+                item.cni.includes(search)
             )
         }
     } else if (criteria === "matrim") {

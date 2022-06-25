@@ -3,26 +3,28 @@ import { Card, Button, Container } from 'react-bootstrap';
 import { useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import NavBar from "../appNavBar/AppNavBar";
+import Ngirwi_Logo from './Ngirwi_Transparent.png';
 
 export default function Home() {
     // const isLoading = useState(true);
     // const isAuthenticated = useState(false);
     // const user = useState(undefined);
-    const {added} = useParams();
+    const { added } = useParams();
 
     console.log(added);
 
     const tiles = (
 
         <>
-            <Container>
+            <Container fluid>
+                
                 <Row>
-                    <Col>
+                    <Col style={{ padding: "10rem" }}>
                         <Card
                             //bg="info"
                             // key="primary"
                             text="white"
-                            style={{ width: '18rem', display: "flex", backgroundColor: "cadetblue", rightPadding: "100px", padding:"1rem", borderRadius:"12px" }}
+                            style={{ width: '25rem', display: "flex", backgroundColor: "cadetblue", rightPadding: "100px", padding: "1rem", borderRadius: "12px" }}
                             className="text-left"
                         >
                             {/* <Card.Header>Header</Card.Header> */}
@@ -34,15 +36,15 @@ export default function Home() {
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col>
+                    <Col style={{ marginTop: "160px" }}>
                         <Card
                             bg="white"
                             // key="primary"
                             text="black"
-                            style={{ width: '18rem', display: "flex", marginTop: "170px", borderRadius:"10%"}}
+                            style={{ width: '25rem', display: "flex", marginTop: "170px", borderRadius: "10%" }}
                             className="text-center"
                         >
-                            <Card.Header style={{ color: "white", backgroundColor:"cadetblue", borderRadius: "12px", padding:"1rem"}}>Géstion des patients</Card.Header>
+                            <Card.Header style={{ color: "white", backgroundColor: "cadetblue", borderRadius: "12px", padding: "1rem" }}>Géstion des patients</Card.Header>
                             <Card.Body>
                                 {/* <Card.Title style={{color:"cadetblue"}}>Gestion des patients</Card.Title> */}
                                 <Card.Text style={{ backgroundColor: "white" }}>
@@ -54,6 +56,11 @@ export default function Home() {
                         </Card>
                     </Col>
                     <Col>
+                        <Card style={{ width: '25rem', display: "flex", backgroundColor: "aliceblue", border: "none" }}>
+                            <Card.Img variant="bottom" src={Ngirwi_Logo} style={{ maxWidth: "90%", backgroundColor: "aliceblue" }} />
+                        </Card>
+                    </Col>
+                    {/* <Col>
                         <Card
                             bg="white"
                             // key="primary"
@@ -69,7 +76,7 @@ export default function Home() {
                                 </Card.Text>
                             </Card.Body>
                         </Card>
-                    </Col>
+                    </Col> */}
                 </Row>
 
 
@@ -133,8 +140,8 @@ export default function Home() {
                     </div>
                 </div>
             </div> */}
-            </>
-            );
+        </>
+    );
 
     return (
         <Container fluid className="all">

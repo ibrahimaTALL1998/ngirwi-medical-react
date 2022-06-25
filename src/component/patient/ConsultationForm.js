@@ -16,7 +16,7 @@ export default function ConsultationForm() {
     const [surname, setSurname] = useState('')
     const [birthday, setBirthday] = useState('')
     const [gender, setGender] = useState('')
-    const [email, setEmail] = useState('')
+    const [cni, setCni] = useState('')
     const [phone, setPhone] = useState('')
     const [job, setJob] = useState('')
     const [maritalStatus, SetMaritalStatus] = useState('')
@@ -28,10 +28,12 @@ export default function ConsultationForm() {
     const [idDossier, setIdDossier] = useState('')
     const [motifConsultation, setMotifConsultation] = useState('')
     const [histoireMaladie, setHistoireMaladie] = useState('')
+    const [terrain, setTerrain] = useState('')
     const [antecedantsPersonnels, setAntecedantsPersonnels] = useState('')
     const [antecedantsChirurgicaux, setAntecedantsChirurgicaux] = useState('')
     const [antecedantsFamiliaux, setAntecedantsFamiliaux] = useState('')
     const [gynecoObstretrique, setGynecoObstretrique] = useState('')
+    const [syndromique, setSyndromique] = useState('')
     const [dad, setDad] = useState('')
     const [mom, setMom] = useState('')
     const [siblings, setSiblings] = useState('')
@@ -51,10 +53,10 @@ export default function ConsultationForm() {
     const [treatment, setTreatment] = useState('')
 
     const examsList = [
-        { label: "Hémoglobine Glycosylée", value: "" },
-        { label: "Fructosamine", value: "Fructosamine" },
-        { label: "Hyperglycémie provoquée par voie orale", value: "Hyperglycémie provoquée par voie orale" },
-        { label: "Créatine", value: "Créatine" }
+        { label: "Hémoglobine Glycosylée", value: 'Hémoglobine Glycosylée' },
+        { label: "Fructosamine", value: 'Fructosamine' },
+        { label: "Hyperglycémie provoquée par voie orale", value: 'Hyperglycémie provoquée par voie orale' },
+        { label: "Créatine", value: 'Créatine' }
     ]
 
     const timer = new Date();
@@ -63,7 +65,13 @@ export default function ConsultationForm() {
     const saveOrUpdateConsultation = (e) => {
         e.preventDefault(); //no reload
 
-        const consultation = { patient: idPatient, time: currentTime, date: dateValue, temperature, weight, tension, glycemie, comment, hypothesis, exams, treatment }
+        let examString = ''
+
+        exams.map((exam => {
+            examString += exam.value + ', '
+        }))
+
+        const consultation = { patient: idPatient, time: currentTime, date: dateValue, temperature, weight, tension, glycemie, comment, hypothesis, exams:examString, treatment }
 
         console.log(JSON.stringify(consultation));
 
@@ -94,7 +102,7 @@ export default function ConsultationForm() {
             setSurname(response.data.surname)
             setBirthday(response.data.birthday)
             setGender(response.data.gender)
-            setEmail(response.data.email)
+            setCni(response.data.cni)
             setPhone(response.data.phone)
             setJob(response.data.job)
             SetMaritalStatus(response.data.maritalStatus)
@@ -108,10 +116,12 @@ export default function ConsultationForm() {
             //setIdDossier(idPatient)
             setMotifConsultation(response.data.motifConsultation)
             setHistoireMaladie(response.data.histoireMaladie)
+            setTerrain(response.data.terrain)
             setAntecedantsPersonnels(response.data.antecedantsPersonnels)
             setAntecedantsChirurgicaux(response.data.antecedantsChirurgicaux)
             setAntecedantsFamiliaux(response.data.antecedantsFamiliaux)
             setGynecoObstretrique(response.data.gynecoObstretrique)
+            setSyndromique(response.data.syndromique)
             setDad(response.data.dad)
             setMom(response.data.mom)
             setSiblings(response.data.siblings)
@@ -166,27 +176,69 @@ export default function ConsultationForm() {
         return (
             <Form className="mb-3" onSubmit={(e) => saveOrUpdateConsultation(e)}>
                 <Form.Group>
-                    <Form.Label>Heure</Form.Label>
-                    <Form.Control className="name-input" type="text" onChange={(e) => setTime(e.target.value)} name="time" value={currentTime} disabled /><br></br>
-                    <Form.Label>Date</Form.Label>
-                    <Form.Control className="name-input" type="text" onChange={(e) => setDate(e.target.value)} name="date" value={dateValue} disabled /><br></br>
-                    <Form.Control className="name-input" type="text" onChange={(e) => setTemperature(e.target.value)} placeholder="Température" name="temperature" value={temperature} required /><br></br>
-                    <Form.Control className="name-input" type="text" onChange={(e) => setWeight(e.target.value)} placeholder="Poids" name="weight" value={weight} required /><br></br>
-                    <Form.Control className="name-input" type="text" onChange={(e) => setTension(e.target.value)} placeholder="Tension" name="tension" value={tension} required /><br></br>
-                    <Form.Control className="name-input" type="text" onChange={(e) => setGlycemie(e.target.value)} placeholder="Glycémie" name="glycemie" value={glycemie} required /><br></br>
-                    <Form.Control className="name-input" type="text" as="textarea" onChange={(e) => setHypothesis(e.target.value)} placeholder="Hypothèses diagnostique" name="hypothesis" value={hypothesis} required /><br></br>
-                    <Form.Label>Examens Complémentaires</Form.Label>
-                    <Select options={examsList} components={animatedComponents} isMulti /><br></br>
-                    <Form.Control className="name-input" type="text" as="textarea" onChange={(e) => setTreatment(e.target.value)} placeholder="Traitement" name="treatment" value={treatment} required /><br></br>
-                    <Button className="submit-button" type="submit" value="Envoyer" style={{ marginLeft: "595px" }}>Enregistrer</Button>
-                    <Link to={`/details-patient/${idPatient}`} className="btn btn-danger" style={{ marginLeft: "10px" }} size="lg" block> Retour </Link>
+                    <Row>
+                        <Col>
+                            <Form.Label>Heure</Form.Label>
+                            <Form.Control className="name-input" type="text" onChange={(e) => setTime(e.target.value)} name="time" value={currentTime} disabled /><br></br>
 
-                    {/* <Form.Label>Motif de la consultation</Form.Label>
-                    <Form.Control className="name-input" type="text" as="textarea" onChange={(e) => setMotifConsultation(e.target.value)} placeholder="Motif de la consultation" name="motifConsultation" value={motifConsultation} required /><br></br>
-                    <Form.Label>Motif de la consultation</Form.Label>
-                    <Form.Control className="name-input" type="text" as="textarea" onChange={(e) => setMotifConsultation(e.target.value)} placeholder="Motif de la consultation" name="motifConsultation" value={motifConsultation} required /><br></br>
-                    <Form.Label>Motif de la consultation</Form.Label>
-                    <Form.Control className="name-input" type="text" as="textarea" onChange={(e) => setMotifConsultation(e.target.value)} placeholder="Motif de la consultation" name="motifConsultation" value={motifConsultation} required /><br></br> */}
+                        </Col>
+                        <Col>
+                            <Form.Label>Date</Form.Label>
+                            <Form.Control className="name-input" type="text" onChange={(e) => setDate(e.target.value)} name="date" value={dateValue} disabled /><br></br>
+
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Form.Label><h5>Constantes</h5></Form.Label>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Form.Label>Température</Form.Label>
+                            <Form.Control className="name-input" type="text" onChange={(e) => setTemperature(e.target.value)} placeholder="Température" name="temperature" value={temperature} required /><br></br>
+
+                        </Col>
+                        <Col>
+                            <Form.Label>Poids</Form.Label>
+                            <Form.Control className="name-input" type="text" onChange={(e) => setWeight(e.target.value)} placeholder="Poids" name="weight" value={weight} required /><br></br>
+
+                        </Col>
+                        <Col>
+                            <Form.Label>Tension</Form.Label>
+                            <Form.Control className="name-input" type="text" onChange={(e) => setTension(e.target.value)} placeholder="Tension" name="tension" value={tension} required /><br></br>
+
+                        </Col>
+                        <Col>
+                            <Form.Label>Glycémie</Form.Label>
+                            <Form.Control className="name-input" type="text" onChange={(e) => setGlycemie(e.target.value)} placeholder="Glycémie" name="glycemie" value={glycemie} required /><br></br>
+
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Form.Label>Hypothèses diagnostiques</Form.Label>
+                            <Form.Control className="name-input" type="text" as="textarea" onChange={(e) => setHypothesis(e.target.value)} placeholder="Hypothèses diagnostique" name="hypothesis" value={hypothesis} required /><br></br>
+
+                        </Col>
+                        <Col>
+                            <Form.Label>Examens Paracliniques</Form.Label>
+                            <Select options={examsList} components={animatedComponents} isMulti style={{ paddingBottom: "30px" }}  onChange={(e) => setExams(e)}/><br></br>
+                        </Col>
+                        <Col>
+                            <Form.Label>Traitement</Form.Label>
+                            <Form.Control className="name-input" type="text" as="textarea" onChange={(e) => setTreatment(e.target.value)} placeholder="Traitement" name="treatment" value={treatment} required /><br></br>
+
+                        </Col>
+                    </Row>
+                    <Row xs={5}>
+                    <Button className="submit-button" type="submit" value="Envoyer" style={{ marginLeft: "400px", paddingLeft: "200px", paddingRight: "300px", borderRadius: "12px" }}>Enregistrer</Button>
+
+                    </Row>
+                    <Row xs={5}>
+
+                    <Link to={`/details-patient/${idPatient}`} className="btn btn-danger" style={{ marginLeft: "400px", paddingLeft: "230px", paddingRight: "270px", borderRadius: "12px", marginTop: "10px" }} size="lg" block> Retour </Link>
+
+                    </Row>
+
 
                 </Form.Group>
             </Form>
@@ -195,28 +247,49 @@ export default function ConsultationForm() {
 
     const dossier = () => {
         return (
-            <div class="card">
-                <Card className="text-center" hover>
-                    <Card.Header> <b>Dossier Médical</b> </Card.Header>
-                    <Card.Body>
-                        <Card.Text>
-                            Motif: {motifConsultation} <br></br>
-                            Histoire de la maladie: {histoireMaladie} <br></br>
-                            Antécédants personnels: {antecedantsPersonnels} <br></br>
-                            Antécédants chirurgicaux: {antecedantsChirurgicaux} <br></br>
-                            Antécédants Familiaux: {antecedantsFamiliaux} <br></br>
-                            Gynéco-Obstrétique: {gynecoObstretrique} <br></br>
-                            {/* Profession: {job} <br></br>
-                            Situation Matrimoniale: {maritalStatus} <br></br>
-                            Adresse: {address}<br></br>
-                            Matricule: {matricule} */}
-                        </Card.Text>
+            <Row>
+                <Col>
+                    <div class="card">
+                        <Card className="text-center" hover style={{ display: "flex", rightPadding: "100px", padding: "1rem", borderRadius: "12px" }}>
+                            <Card.Header style={{ color: "white", backgroundColor: "cadetblue", borderRadius: "12px", padding: "1rem" }}> <b>Civilité</b> </Card.Header>
+                            <Card.Body>
+                                <Card.Text>
+                                    Nom: {name} <br></br>
+                                    Prénom: {surname} <br></br>
+                                    Date de naissance: {birthday} <br></br>
+                                    Genre: {gender} <br></br>
+                                    CNI: {cni} <br></br>
+                                    Téléphone: {phone} <br></br>
+                                    Profession: {job} <br></br>
+                                    Situation Matrimoniale: {maritalStatus} <br></br>
+                                    Adresse: {address}<br></br>
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </div>
+                </Col>
+                <Col>
 
-                        {/* <Link className="btn btn-primary" to={`/dossier-patient/${id}`}>Dossier Médical</Link>
-                        <Link className="btn btn-primary" to={`/consultation-patient/${id}`} style={{ marginLeft: "10px" }}>Consultation</Link> */}
-                    </Card.Body>
-                </Card>
-            </div>
+                    <div class="card">
+                        <Card className="text-center" hover style={{ display: "flex", padding: "1rem", borderRadius: "12px", paddingBottom: "40px" }}>
+                            <Card.Header style={{ color: "white", backgroundColor: "cadetblue", borderRadius: "12px", padding: "1rem" }}> <b>Dossier Médical</b> </Card.Header>
+                            <Card.Body>
+                                <Card.Text>
+                                    Motif: {motifConsultation} <br></br>
+                                    Histoire de la maladie: {histoireMaladie} <br></br>
+                                    Terrain: {terrain} <br></br>
+                                    Antécédents personnels: {antecedantsPersonnels} <br></br>
+                                    Antécédents chirurgicaux: {antecedantsChirurgicaux} <br></br>
+                                    Antécédents Familiaux: {antecedantsFamiliaux} <br></br>
+                                    Antécédents Gynéco-Obstétrique: {gynecoObstretrique} <br></br>
+                                    Examens Syndromique: {syndromique}
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </div>
+                </Col>
+            </Row>
+
         )
     }
 
