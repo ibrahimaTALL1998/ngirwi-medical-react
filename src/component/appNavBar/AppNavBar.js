@@ -50,7 +50,7 @@ function AppNavBar() {
                             <MDBNavbarItem>
                                 <MDBDropdown>
                                     <MDBDropdownToggle tag='a' className='nav-link'>
-                                        Modules
+                                        Patients
                                     </MDBDropdownToggle>
                                     <MDBDropdownMenu>
                                         <MDBDropdownItem>
@@ -70,7 +70,7 @@ function AppNavBar() {
                     </MDBCollapse>
                 </MDBContainer>
             </MDBNavbar>
-        </header><br></br><br></br><br></br></>
+        </header><br></br><br></br><br></br><br></br></>
     );
 }
 
