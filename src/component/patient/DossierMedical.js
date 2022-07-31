@@ -195,8 +195,8 @@ export default function DossierMedical() {
                             <Form.Label>Résumé Syndromique</Form.Label>
                             <Form.Control className="name-input" type="text" as="textarea" onChange={(e) => setSyndromique(e.target.value)} placeholder="Résumé Syndromique" name="syndromique" value={syndromique} required ></Form.Control>
                         </Col>
-                    </Row>
-                    <Row>
+                    </Row><br/>
+                    {/* <Row>
                         <Col><Form.Label>Père</Form.Label>
                             <Form.Control className="name-input" type="text" onChange={(e) => setDad(e.target.value)} placeholder="Père" name="dad" value={dad} style={{padding:"2rem"}} required /><br></br>
                         </Col>
@@ -215,7 +215,7 @@ export default function DossierMedical() {
                             <Form.Label>Descendants</Form.Label>
                             <Form.Control className="name-input" type="text" as="textarea" onChange={(e) => setDescendants(e.target.value)} placeholder="Descandants" name="descendants" value={descendants} required /><br></br>
                         </Col>
-                    </Row>
+                    </Row> */}
                     <Row xs={5}>
                         <Button className="submit-button" type="submit" value="Envoyer" onClick={(e) => saveDossier(e)} style={{ marginLeft: "400px", paddingLeft: "200px", paddingRight: "300px", borderRadius: "12px" }}>Enregistrer</Button>
                     </Row>

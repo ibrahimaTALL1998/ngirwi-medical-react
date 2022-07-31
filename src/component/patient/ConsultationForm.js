@@ -53,6 +53,15 @@ export default function ConsultationForm() {
     const [treatment, setTreatment] = useState('')
 
     const examsList = [
+        { label: "Radio", value: 'Radio' },
+        { label: "TDM", value: 'TDM' },
+        { label: "IRM", value: 'IRM' },
+        { label: "Echographie", value: 'Echographie' },
+        { label: "ECG", value: 'ECG' },
+        { label: "NFS", value: 'NFS' },
+        { label: "CRP", value: 'CRP' },
+        { label: "Urémie", value: 'Urémie' },
+        { label: "Créatininémie", value: 'Créatininémie' },
         { label: "Hémoglobine Glycosylée", value: 'Hémoglobine Glycosylée' },
         { label: "Fructosamine", value: 'Fructosamine' },
         { label: "Hyperglycémie provoquée par voie orale", value: 'Hyperglycémie provoquée par voie orale' },
@@ -212,6 +221,9 @@ export default function ConsultationForm() {
                             <Form.Control className="name-input" type="text" onChange={(e) => setGlycemie(e.target.value)} placeholder="Glycémie" name="glycemie" value={glycemie} required /><br></br>
 
                         </Col>
+                    </Row>
+                    <Row>
+                        <Form.Label><h5>Complément Dossier</h5></Form.Label>
                     </Row>
                     <Row>
                         <Col>

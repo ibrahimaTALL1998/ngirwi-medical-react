@@ -27,7 +27,7 @@ function AppNavBar() {
             <MDBNavbar expand='lg' light bgColor='light' fixed="top">
                 <MDBContainer fluid>
                     <MDBNavbarBrand href='/home'>
-                        <img src={Ngirwi_Logo} style={{ display: "flex", maxWidth: '10%', maxHeight: '20%' }} />
+                        <img src={Ngirwi_Logo} style={{ display: "flex", maxWidth: '10%', maxHeight: '50%' }} />
                     </MDBNavbarBrand>
 
                     <MDBNavbarToggler
