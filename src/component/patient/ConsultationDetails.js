@@ -202,6 +202,7 @@ export default function ConsultationDetails() {
                     <Form.Label>Medecin ayant fait cette consultation</Form.Label>
                     <Form.Control className="name-input" type="text" name="doc" value={"test test"} required disabled /><br></br>
                     {/* <Button className="submit-button" type="submit" value="Envoyer" style={{ marginLeft: "595px" }}>Enregistrer</Button> */}
+                    <Link to={`/consultation-patient-details-ordonance/${idPatient}/${idForm}`} className="btn btn-info" style={{ marginLeft: "10px" }} size="lg" block> Ordonance </Link>
                     <Link to={`/consultations-patient/${idPatient}`} className="btn btn-danger" style={{ marginLeft: "10px" }} size="lg" block> Retour </Link>
 
                 </Form.Group>

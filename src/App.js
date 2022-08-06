@@ -15,6 +15,7 @@ import DossierMedical from './component/patient/DossierMedical';
 import ConsultationForm from './component/patient/ConsultationForm';
 import ConsultationList from './component/patient/ListConsultation';
 import ConsultationDetails from './component/patient/ConsultationDetails';
+import Ordonance from './component/patient/Ordonance';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             <Route path="/consultation-patient-add/:idPatient" element={<ConsultationForm />} />
             <Route path="/consultation-patient-update/:idPatient/:idForm" element={<ConsultationForm />} />
             <Route path="/consultation-patient-details/:idPatient/:idForm" element={<ConsultationDetails />} />
+            <Route path="/consultation-patient-details-ordonance/:idPatient/:idForm" element={<Ordonance />} />
             {/* redirect when route doesn't exist */}
             <Route path="*" element={<Navigate to="home" replace />} />
           </Routes>
