@@ -20,16 +20,16 @@ export const PrescriptionDetail = () => {
 
   const prescriptionEntity = useAppSelector(state => state.prescription.entity);
   return (
-    <Row>
+    <Row style={{marginLeft:"16vw"}} >
       <Col md="8">
-        <h2 data-cy="prescriptionDetailsHeading">Prescription</h2>
+        <h2 data-cy="prescriptionDetailsHeading">Consultation</h2>
         <dl className="jh-entity-details">
           <dt>
             <span id="id">ID</span>
           </dt>
           <dd>{prescriptionEntity.id}</dd>
           <dt>
-            <span id="creationDate">Creation Date</span>
+            <span id="creationDate">Date de création</span>
           </dt>
           <dd>
             {prescriptionEntity.creationDate ? (
@@ -37,7 +37,7 @@ export const PrescriptionDetail = () => {
             ) : null}
           </dd>
           <dt>
-            <span id="author">Author</span>
+            <span id="author">Auteur</span>
           </dt>
           <dd>{prescriptionEntity.author}</dd>
           <dt>Consultation</dt>

@@ -29,7 +29,7 @@ export const Login = () => {
   if (isAuthenticated) {
     return <Navigate to={from} replace />;
   }
-  return <LoginModal showModal={showModal} handleLogin={handleLogin} handleClose={handleClose} loginError={loginError} />;
+  return <LoginModal handleLogin={handleLogin}  loginError={loginError} />;
 };
 
 export default Login;

@@ -195,7 +195,7 @@ export const PrescriptionUpdate = () => {
       <Row className="justify-content-center">
         <Col md="8">
           <h2 id="ngirwiFrontEndApp.prescription.home.createOrEditLabel" data-cy="PrescriptionCreateUpdateHeading">
-            Créer ou éditer un Prescription
+            Créer ou éditer une ordonnance
           </h2>
         </Col>
       </Row>

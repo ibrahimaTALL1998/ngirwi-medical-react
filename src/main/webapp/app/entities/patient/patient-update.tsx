@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Button, Row, Col, FormText } from 'reactstrap';
+import { Button, Row, Col, FormText, Card } from 'reactstrap';
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -16,6 +16,8 @@ import { GENDER } from 'app/shared/model/enumerations/gender.model';
 import { BLOODTYPE } from 'app/shared/model/enumerations/bloodtype.model';
 import { MARITALSTATUS } from 'app/shared/model/enumerations/maritalstatus.model';
 import { getEntity, updateEntity, createEntity, reset } from './patient.reducer';
+import { FiLogOut } from 'react-icons/fi';
+import { is } from 'immer/dist/internal';
 
 export const PatientUpdate = () => {
   const dispatch = useAppDispatch();
@@ -92,8 +94,287 @@ export const PatientUpdate = () => {
 
 
   return (
-    <div>
-      <Row className="justify-content-center">
+    <div 
+      style={{
+        paddingLeft:"16vw",
+        paddingTop:"1%",
+        fontFamily:"Mulish",
+        fontWeight:"900",
+        display:"flex",
+        flexDirection:"column"
+      }}
+    >
+          <div style={{display:"flex", flexDirection:"row",gap:"70vw"}}>
+            <span>Gestions Patients</span>  
+            <div>
+              <Link to="/logout" style={{color:"silver", fontWeight:"900"}}>
+                <div>{React.createElement(FiLogOut)} </div>
+              </Link>
+            </div>
+          </div> 
+          <div
+            style={{
+              display:"flex",
+              flexDirection:"column",
+              gap:"5vh",
+              marginTop:"9.5vh"
+            }}
+          >
+            <Card
+              style={{
+                height:"8.28vh",
+                width:"33.38vw",
+                borderRadius:"20px",
+                backgroundColor:"#11485C",
+                marginLeft:"25%",
+                textAlign:"center",
+                color:"white",
+                boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
+                }}
+            >
+             {
+             isNew ? (<span style={{marginTop:"2.5%"}}>Enregistrer Patients</span>):
+             (<span style={{marginTop:"2.5%"}}>
+              Editer Patient {patientEntity.lastName + ' ' + patientEntity.firstName}<br/>cni : {patientEntity.cni} 
+             </span>)}  
+            </Card>
+            <Card 
+              style={{
+                height:"70vh",
+                marginRight:"5%",
+                boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
+                borderRadius:"15px"
+
+              }}
+            >
+                <span style={{marginTop:"1%", color:"#141414",fontSize:"15px", marginLeft:"3%"}}>Remplir informations patient</span>
+                <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}
+                  style={{
+                    width:"94%",
+                    marginLeft:"3%",
+                    height:"70%",
+                    display:"grid",
+                    columnGap:"25px",
+                    marginTop:"1%",
+                    gridTemplateColumns : "repeat(3, 5fr)",
+                    fontSize:"12px",
+                    fontWeight:"900"
+                  }}
+                >
+                {!isNew ? <ValidatedField name="id" required readOnly id="patient-id" label="ID" validate={{ required: true }}                   placeholder="saisissez votre nom"
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:"#F7FAFF",
+                    borderColor:"#CBDCF7"
+                  }} /> : null}
+                <ValidatedField
+                  label="Nom"
+                  id="patient-lastName"
+                  name="lastName"
+                  data-cy="lastName"
+                  type="text"
+                  validate={{
+                    required: { value: true, message: 'Ce champ est obligatoire.' },
+                  }}
+                  placeholder="saisissez votre nom"
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:"#F7FAFF",
+                    borderColor:"#CBDCF7"
+                  }}
+                />
+                <ValidatedField
+                  label="Prénom"
+                  id="patient-firstName"
+                  name="firstName"
+                  data-cy="firstName"
+                  type="text"
+                  validate={{
+                    required: { value: true, message: 'Ce champ est obligatoire.' },
+                  }}
+                  placeholder="saisissez votre prénom"
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:"#F7FAFF",
+                    borderColor:"#CBDCF7"
+                  }}
+                />
+                <ValidatedField
+                  label="Date de naissance"
+                  id="patient-birthday"
+                  name="birthday"
+                  data-cy="birthday"
+                  type="date"
+                  validate={{
+                    required: { value: true, message: 'Ce champ est obligatoire.' },
+                  }}
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:"#F7FAFF",
+                    borderColor:"#CBDCF7"
+                  }}
+                />
+                <ValidatedField label="Lieu de naissance" id="patient-birthplace" name="birthplace" data-cy="birthplace" type="text" 
+                  placeholder="saisissez votre lieu de naissance"
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:"#F7FAFF",
+                    borderColor:"#CBDCF7"
+                  }}
+                />
+                <ValidatedField label="Genre" id="patient-gender" name="gender" data-cy="gender" type="select" 
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:"#F7FAFF",
+                    borderColor:"#CBDCF7"
+                  }}
+                >
+                  {gENDERValues.map(gENDER => (
+                    <option value={gENDER} key={gENDER}>
+                      {translateGender(gENDER)}
+                    </option>
+                  ))}
+                </ValidatedField>
+                <ValidatedField
+                  label="Adresse"
+                  id="patient-adress"
+                  name="adress"
+                  data-cy="adress"
+                  type="text"
+                  validate={{
+                    required: { value: true, message: 'Ce champ est obligatoire.' },
+                  }}
+                  placeholder="saisissez votre adresse"
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:"#F7FAFF",
+                    borderColor:"#CBDCF7"
+                  }}
+                />
+                <ValidatedField
+                  label="Téléphone"
+                  id="patient-phone"
+                  name="phone"
+                  data-cy="phone"
+                  type="text"
+                  validate={{
+                    required: { value: true, message: 'Ce champ est obligatoire.' },
+                  }}
+                  placeholder="saisissez votre numéro de téléphone"
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:"#F7FAFF",
+                    borderColor:"#CBDCF7"
+                  }}
+                />
+                <ValidatedField
+                  label="Cni"
+                  id="patient-cni"
+                  name="cni"
+                  data-cy="cni"
+                  type="text"
+                  validate={{
+                    required: { value: true, message: 'Ce champ est obligatoire.' },
+                  }}
+                  placeholder="saisissez votre CNI"
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:"#F7FAFF",
+                    borderColor:"#CBDCF7"
+                  }}
+                />
+                <ValidatedField label="Profession" id="patient-job" name="job" data-cy="job" type="text"
+                  placeholder="saisissez votre profession"
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:"#F7FAFF",
+                    borderColor:"#CBDCF7"
+                  }}
+                />
+                <ValidatedField 
+                  label="Groupe Sanguin" 
+                  id="patient-bloodType" 
+                  name="bloodType" 
+                  data-cy="bloodType" 
+                  type="select"
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:"#F7FAFF",
+                    borderColor:"#CBDCF7"
+                  }}
+                >
+                  {bLOODTYPEValues.map(bLOODTYPE => (
+                    <option value={bLOODTYPE} key={bLOODTYPE}>
+                      {translateBloodType(bLOODTYPE)}
+                    </option>
+                  ))}
+                </ValidatedField>
+                <ValidatedField
+                  label="Status Matrimonial"
+                  id="patient-maritialStatus"
+                  name="maritialStatus"
+                  data-cy="maritialStatus"
+                  type="select"
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:"#F7FAFF",
+                    borderColor:"#CBDCF7"
+                  }}
+                >
+                  {mARITALSTATUSValues.map(mARITALSTATUS => (
+                    <option value={mARITALSTATUS} key={mARITALSTATUS}>
+                      {translateMaritalStatus(mARITALSTATUS)}
+                    </option>
+                  ))}
+                </ValidatedField>
+                <ValidatedField
+                  hidden
+                  label="Date Created"
+                  id="patient-dateCreated"
+                  name="dateCreated"
+                  data-cy="dateCreated"
+                  type="datetime-local"
+                  placeholder="YYYY-MM-DD HH:mm"
+                />
+                <ValidatedField
+                  hidden
+                  label="Date Updated"
+                  id="patient-dateUpdated"
+                  name="dateUpdated"
+                  data-cy="dateUpdated"
+                  type="datetime-local"
+                  placeholder="YYYY-MM-DD HH:mm"
+                />
+                <ValidatedField hidden label="Author" id="patient-author" name="author" data-cy="author" type="text" />
+
+                <Button id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}
+                  style={{
+                    gridColumn:"1/4",
+                    borderRadius:"25px",
+                    color:"white",
+                    backgroundColor:"#56B5C5",
+                    borderColor:"#56B5C5"
+                  }}
+                >
+                   Enregistrer
+                </Button>
+                &nbsp;
+
+                <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/patient" replace color="info"
+                  style={{
+                    gridColumn:"1/4",
+                    borderRadius:"25px",
+                    color:"white",
+                    backgroundColor:"#EC4747",
+                    borderColor:"#EC4747",
+                  }}
+                >
+                  <span className="d-none d-md-inline">Annuler</span>
+                </Button>
+              </ValidatedForm>
+            </Card>
+          </div>
+      {/* <Row className="justify-content-center">
         <Col md="8">
           {isNew ? (
             <h2 id="ngirwiFrontEndApp.patient.home.createOrEditLabel" data-cy="PatientCreateUpdateHeading">
@@ -235,7 +516,7 @@ export const PatientUpdate = () => {
             </ValidatedForm>
           )}
         </Col>
-      </Row>
+      </Row> */}
     </div>
   );
 };

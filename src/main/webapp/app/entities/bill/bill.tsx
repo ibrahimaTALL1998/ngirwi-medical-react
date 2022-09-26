@@ -82,16 +82,16 @@ export const Bill = () => {
   };
 
   return (
-    <div>
+    <div style={{marginLeft:"16vw"}}>
       <h2 id="bill-heading" data-cy="BillHeading">
-        Bills
+        Factures
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon="sync" spin={loading} /> Actualiser la liste
           </Button>
           <Link to="/bill/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
             <FontAwesomeIcon icon="plus" />
-            &nbsp; Créer un nouveau Bill
+            &nbsp; Créer une nouvelle facture
           </Link>
         </div>
       </h2>
