@@ -84,7 +84,7 @@ export const DossierMedicalUpdate = () => {
       };
 
   return (
-    <div>
+    <div style={{marginLeft:"16vw"}}>
       <Row className="justify-content-center">
         <Col md="8">
           <h2 id="ngirwiFrontEndApp.dossierMedical.home.createOrEditLabel" data-cy="DossierMedicalCreateUpdateHeading">

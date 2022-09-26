@@ -82,16 +82,16 @@ export const Prescription = () => {
   };
 
   return (
-    <div>
+    <div style={{marginLeft:"16vw"}}>
       <h2 id="prescription-heading" data-cy="PrescriptionHeading">
-        Prescriptions
+        Ordonnances
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon="sync" spin={loading} /> Actualiser la liste
           </Button>
           <Link to="/prescription/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
             <FontAwesomeIcon icon="plus" />
-            &nbsp; Créer un nouveau Prescription
+            &nbsp; Créer une nouvelle ordonnance
           </Link>
         </div>
       </h2>
@@ -107,7 +107,7 @@ export const Prescription = () => {
                   Creation Date <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('author')}>
-                  Author <FontAwesomeIcon icon="sort" />
+                  Auteur <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
                   Consultation <FontAwesomeIcon icon="sort" />

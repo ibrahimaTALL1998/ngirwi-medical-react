@@ -213,7 +213,7 @@ export const BillUpdate = () => {
       <Row className="justify-content-center">
         <Col md="8">
           <h2 id="ngirwiFrontEndApp.bill.home.createOrEditLabel" data-cy="BillCreateUpdateHeading">
-            Créer ou éditer un Bill
+            Créer ou éditer une facture
           </h2>
         </Col>
       </Row>

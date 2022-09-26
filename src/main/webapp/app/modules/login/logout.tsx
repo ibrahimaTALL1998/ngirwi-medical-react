@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { logout } from 'app/shared/reducers/authentication';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import redirect from "react-router"
 
 export const Logout = () => {
   const logoutUrl = useAppSelector(state => state.authentication.logoutUrl);
@@ -13,9 +14,10 @@ export const Logout = () => {
   useLayoutEffect(() => {
     dispatch(logout());
     if (logoutUrl) {
-      // window.location.href = 'logoutUrl';
+      // window.location.href = '/';
       toast("Déconnexion")
       navigate('/')
+      
     }
   });
 

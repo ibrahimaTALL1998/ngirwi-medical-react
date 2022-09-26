@@ -1,0 +1,9 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = true
+	symlinks = false
+	ignorecase = true
+[remote "test"]
+	url = https://private_token:glpat-qdBRbQVky1hooX5LTxjs@gitlab.com/shintarocirdec/test.git
+	fetch = +refs/heads/*:refs/remotes/test/*

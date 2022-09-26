@@ -82,9 +82,9 @@ export const DossierMedical = () => {
   };
 
   return (
-    <div>
+    <div style={{marginLeft:"16vw"}}>
       <h2 id="dossier-medical-heading" data-cy="DossierMedicalHeading">
-        Dossier Médicaux
+        Dossiers Médicaux
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon="sync" spin={loading} /> Actualiser la liste

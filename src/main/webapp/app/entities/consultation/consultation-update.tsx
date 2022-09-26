@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Button, Row, Col, FormText, Label } from 'reactstrap';
+import { Button, Row, Col, FormText, Label, Card } from 'reactstrap';
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {FiLogOut} from 'react-icons/fi';
 
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
@@ -96,22 +96,84 @@ export const ConsultationUpdate = () => {
   const animatedComponents = makeAnimated();
 
   return (
-    <div>
-      <Row className="justify-content-center">
-        <Col md="8">
-          <h2 id="ngirwiFrontEndApp.consultation.home.createOrEditLabel" data-cy="ConsultationCreateUpdateHeading">
-            Créer ou éditer un Consultation
-          </h2>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col md="8">
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
-            <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
-              {!isNew ? <ValidatedField name="id" disabled required readOnly id="consultation-id" label="ID" validate={{ required: true }} /> : null}
-              <ValidatedField
+    <div 
+    style={{
+      paddingLeft:"16vw",
+      paddingTop:"1%",
+      fontFamily:"Mulish",
+      fontWeight:"900",
+      display:"flex",
+      flexDirection:"column"
+    }}
+  >
+        <div style={{display:"flex", flexDirection:"row",gap:"70vw"}}>
+          <span>Gestions Patients</span>  
+          <div>
+            <Link to="/logout" style={{color:"silver", fontWeight:"900"}}>
+              <div>{React.createElement(FiLogOut)} </div>
+            </Link>
+          </div>
+        </div> 
+        <div
+          style={{
+            display:"flex",
+            flexDirection:"column",
+            gap:"5vh",
+            marginTop:"9.5vh"
+          }}
+        >
+          <Card
+            style={{
+              height:"8.28vh",
+              width:"33.38vw",
+              borderRadius:"20px",
+              backgroundColor:"#11485C",
+              marginLeft:"25%",
+              textAlign:"center",
+              color:"white",
+              boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
+              }}
+          >
+           {
+           isNew ? (<span style={{marginTop:"2.5%"}}>Enregistrer Consultation</span>):
+           (<span style={{marginTop:"2.5%"}}>
+            Modifier Consultation  
+           </span>)}  
+          </Card>
+          <Card 
+            style={{
+              height:"70vh",
+              marginRight:"5%",
+              boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
+              borderRadius:"15px"
+
+            }}
+          >
+              <span style={{marginTop:"1%", color:"#141414",fontSize:"15px", marginLeft:"3%"}}>Remplir informations patient</span>
+              
+              
+              <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}
+                style={{
+                  width:"94%",
+                  marginLeft:"3%",
+                  height:"70%",
+                  display:"grid",
+                  columnGap:"25px",
+                  marginTop:"1%",
+                  gridTemplateColumns : "repeat(3, 5fr)",
+                  fontSize:"12px",
+                  fontWeight:"900"
+                }}
+              >
+              {!isNew ? 
+               <ValidatedField name="id" disabled required readOnly id="consultation-id" label="ID" validate={{ required: true }}
+                style={{
+                  borderRadius:"25px",
+                  backgroundColor:"#F7FAFF",
+                  borderColor:"#CBDCF7"
+                }}
+               /> : null}
+               <ValidatedField
                 disabled
                 label="Date et heure"
                 id="consultation-dateTime"
@@ -119,6 +181,11 @@ export const ConsultationUpdate = () => {
                 data-cy="dateTime"
                 type="datetime-local"
                 placeholder="YYYY-MM-DD HH:mm"
+                style={{
+                  borderRadius:"25px",
+                  backgroundColor:"#F7FAFF",
+                  borderColor:"#CBDCF7"
+                }}
               />
               <ValidatedField
                 label="Temperature"
@@ -129,6 +196,11 @@ export const ConsultationUpdate = () => {
                 validate={{
                   required: { value: true, message: 'Ce champ est obligatoire.' },
                   validate: v => isNumber(v) || 'Ce champ doit être un nombre.',
+                }}
+                style={{
+                  borderRadius:"25px",
+                  backgroundColor:"#F7FAFF",
+                  borderColor:"#CBDCF7"
                 }}
               />
               <ValidatedField
@@ -141,6 +213,11 @@ export const ConsultationUpdate = () => {
                   required: { value: true, message: 'Ce champ est obligatoire.' },
                   validate: v => isNumber(v) || 'Ce champ doit être un nombre.',
                 }}
+                style={{
+                  borderRadius:"25px",
+                  backgroundColor:"#F7FAFF",
+                  borderColor:"#CBDCF7"
+                }}
               />
               <ValidatedField
                 label="Tension"
@@ -151,9 +228,27 @@ export const ConsultationUpdate = () => {
                 validate={{
                   required: { value: true, message: 'Ce champ est obligatoire.' },
                 }}
+                style={{
+                  borderRadius:"25px",
+                  backgroundColor:"#F7FAFF",
+                  borderColor:"#CBDCF7"
+                }}
               />
-              <ValidatedField label="Glycemie" id="consultation-glycemie" name="glycemie" data-cy="glycemie" type="text" />
-              <ValidatedField label="Commentaire" id="consultation-comment" name="comment" data-cy="comment" type="text" />
+              <ValidatedField label="Glycemie" id="consultation-glycemie" name="glycemie" data-cy="glycemie" type="text"
+                style={{
+                  borderRadius:"25px",
+                  backgroundColor:"#F7FAFF",
+                  borderColor:"#CBDCF7"
+                }}
+              />
+              <ValidatedField label="Commentaire" id="consultation-comment" name="comment" data-cy="comment" type="text"
+                style={{
+                  borderRadius:"25px",
+                  backgroundColor:"#F7FAFF",
+                  borderColor:"#CBDCF7"
+                }}
+              />
+
               <ValidatedField
                 label="Hypothèse diagnostique"
                 id="consultation-hypothesis"
@@ -163,11 +258,45 @@ export const ConsultationUpdate = () => {
                 validate={{
                   required: { value: true, message: 'Ce champ est obligatoire.' },
                 }}
+                style={{
+                  borderRadius:"25px",
+                  backgroundColor:"#F7FAFF",
+                  borderColor:"#CBDCF7"
+                }}
               />
+              <div
+                style={{
+                  borderRadius:"25px",
+                  backgroundColor:"#F7FAFF",
+                  borderColor:"#CBDCF7"
+                }}>
               <Label>Examens paracliniques</Label>
-              <Select options={examsList} components={animatedComponents} isMulti onChange={(e) => setExams(e)} />
-              {/* <ValidatedField
-                label="Exams"
+               <Select options={examsList}                 
+              
+                components={animatedComponents} isMulti onChange={(e) => setExams(e)} />
+              </div>
+             
+                {/* <ValidatedField label="Examens paracliniques" name="examspara" type="select" 
+                  isMulti
+                  onChange={(e) => setExams(e)}
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:"#F7FAFF",
+                    borderColor:"#CBDCF7"
+                  }}
+                >
+                <option value="" key="0" />
+                { examsList.map((otherEntity, i) => (
+                    <option value={otherEntity.value} key={`entity-${i}`}>
+                      {otherEntity.label}
+                    </option>
+                    ))
+                }
+                </ValidatedField> */}
+
+              
+              <ValidatedField
+                label="Examens"
                 id="consultation-exams"
                 name="exams"
                 data-cy="exams"
@@ -175,8 +304,13 @@ export const ConsultationUpdate = () => {
                 validate={{
                   required: { value: true, message: 'Ce champ est obligatoire.' },
                 }}
-              /> */}
-              <ValidatedField
+                style={{
+                  borderRadius:"25px",
+                  backgroundColor:"#F7FAFF",
+                  borderColor:"#CBDCF7"
+                }}
+              />
+              <ValidatedField 
                 label="Traitement"
                 id="consultation-treatment"
                 name="treatment"
@@ -185,33 +319,113 @@ export const ConsultationUpdate = () => {
                 validate={{
                   required: { value: true, message: 'Ce champ est obligatoire.' },
                 }}
+                style={{
+                  borderRadius:"25px",
+                  backgroundColor:"#F7FAFF",
+                  borderColor:"#CBDCF7"
+                }}
               />
-              <ValidatedField hidden label="Author" id="consultation-author" name="author" data-cy="author" type="text" />
-              <ValidatedField disabled id="consultation-patient" name="patient" data-cy="patient" label="Patient" type="select">
-                <option value="" key="0" />
+              <ValidatedField hidden label="Author" id="consultation-author" name="author" data-cy="author" type="text"/>
+              
+            <ValidatedField  
+              disabled={isNew?false:true}
+              id="consultation-patient" 
+              name="patient" 
+              data-cy="patient" 
+              label="Patient" 
+              type="select"
+              style={{
+                borderRadius:"25px",
+                backgroundColor:"#F7FAFF",
+                borderColor:"#CBDCF7"
+              }}              
+              >
+              <option value="" key="0" />
                 {patients
                   ? patients.map(otherEntity => (
                     <option value={otherEntity.id} key={otherEntity.id}>
                       {otherEntity.lastName + ' ' + otherEntity.firstName + ' (' +otherEntity.birthday +')'}
                     </option>
-                  ))
-                  : null}
+                    ))
+                : null}
               </ValidatedField>
-              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/consultation" replace color="info">
-                <FontAwesomeIcon icon="arrow-left" />
-                &nbsp;
-                <span className="d-none d-md-inline">Retour</span>
+               
+              <ValidatedField
+                hidden
+                label="Date Created"
+                id="patient-dateCreated"
+                name="dateCreated"
+                data-cy="dateCreated"
+                type="datetime-local"
+                placeholder="YYYY-MM-DD HH:mm"
+              />
+              <ValidatedField
+                hidden
+                label="Date Updated"
+                id="patient-dateUpdated"
+                name="dateUpdated"
+                data-cy="dateUpdated"
+                type="datetime-local"
+                placeholder="YYYY-MM-DD HH:mm"
+              />
+              <ValidatedField hidden label="Author" id="patient-author" name="author" data-cy="author" type="text" />
+
+              <Button id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}
+                style={{
+                  gridColumn:"1/4",
+                  borderRadius:"25px",
+                  color:"white",
+                  backgroundColor:"#56B5C5",
+                  borderColor:"#56B5C5"
+                }}
+              >
+                 Enregistrer
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
-                <FontAwesomeIcon icon="save" />
-                &nbsp; Sauvegarder
+
+              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/consultation" replace color="info"
+                style={{
+                  gridColumn:"1/4",
+                  borderRadius:"25px",
+                  color:"white",
+                  backgroundColor:"#EC4747",
+                  borderColor:"#EC4747",
+                }}
+              >
+                <span className="d-none d-md-inline">Annuler</span>
               </Button>
             </ValidatedForm>
-          )}
-        </Col>
-      </Row>
-    </div>
+          </Card>
+        </div>
+  
+  </div>
+    
+
+ 
+
+    //           {/* <ValidatedField
+
+    //           /> */}
+    //           <ValidatedField
+
+    //           />
+    //           < />
+
+    //           <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/consultation" replace color="info">
+    //             <FontAwesomeIcon icon="arrow-left" />
+    //             &nbsp;
+    //             <span className="d-none d-md-inline">Retour</span>
+    //           </Button>
+    //           &nbsp;
+    //           <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
+    //             <FontAwesomeIcon icon="save" />
+    //             &nbsp; Sauvegarder
+    //           </Button>
+    //         </ValidatedForm>
+    //       )}
+    //     </Col>
+    //   </Row>
+    // </div>
   );
 };
 

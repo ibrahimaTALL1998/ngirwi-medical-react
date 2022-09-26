@@ -40,7 +40,7 @@ export const PasswordPage = () => {
   }, [successMessage, errorMessage]);
 
   return (
-    <div>
+    <div style={{marginLeft:"16vw"}}>
       <Row className="justify-content-center">
         <Col md="8">
           <h2 id="password-title">
