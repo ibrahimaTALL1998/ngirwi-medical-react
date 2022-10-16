@@ -160,32 +160,74 @@ export const PrescriptionUpdate = () => {
   });
 
   const doc = (
-    <Document>
-      <Page size="A4" style={styles.page} wrap>
-        <View style={styles.section}>
-          <Image style={styles.imageHeader} src='content/images/Ngirwi_Transparent.png' />
-          <Image style={styles.image} src='content/images/serpent.png' />
-          <Text style={styles.title}> Ordonance Médicale</Text>
-          <Text style={styles.text}>
-            Service:
-          </Text>
-          <Text style={styles.text}>
-            Date: {displayDefaultDateTime()}
-          </Text>
-          {/* <Text style={styles.text}>
-            Patient: {name} {surname}
-          </Text> */}
-          <Text style={styles.text}>
-            Médecin: {account.login}
-          </Text>
-          {formValues.map(element => (
-            <Text style={styles.text}>
-              Médicament : {element.medecine} | Durée : {element.duration} | Fréquence : {element.frequency} {'\n\n'}
-            </Text>
-          ))}
-        </View>
-      </Page>
-    </Document>
+    // <Document>
+    //   <Page size="A4" style={styles.page} wrap>
+    //     <View style={styles.section}>
+    //       <Image style={styles.imageHeader} src='content/images/Ngirwi_Transparent.png' />
+    //       <Image style={styles.image} src='content/images/serpent.png' />
+    //       <Text style={styles.title}> Ordonance Médicale</Text>
+    //       <Text style={styles.text}>
+    //         Service:
+    //       </Text>
+    //       <Text style={styles.text}>
+    //         Date: {displayDefaultDateTime()}
+    //       </Text>
+    //       {/* <Text style={styles.text}>
+    //         Patient: {name} {surname}
+    //       </Text> */}
+    //       <Text style={styles.text}>
+    //         Médecin: {account.login}
+    //       </Text>
+    //       {formValues.map(element => (
+    //         <Text style={styles.text}>
+    //           Médicament : {element.medecine} | Durée : {element.duration} | Fréquence : {element.frequency} {'\n\n'}
+    //         </Text>
+    //       ))}
+    //     </View>
+    //   </Page>
+    // </Document>
+      <Document>
+        <Page style={{display:"flex",flexDirection:"column"}}>
+          <View style={{display:"flex", flexDirection:"row",justifyContent:'space-around',alignItems:"center", borderBottom:"1px solid green", paddingBottom:"10px",marginTop:"20px"}}>
+            <View style={{display:"flex",flexDirection:"column",justifyContent:'space-around',alignItems:"center"}}>
+              <Text style={{fontSize:"20px", color:"green",marginBottom:"9px"}}>Nom médecin</Text>
+              <Text style={{fontSize:"15px",marginBottom:"9px"}}>Médecin général</Text>
+              <Text style={{fontSize:"15px"}}>Téléphone</Text>
+            </View>
+            <View>
+              <Image style={{width:"50px",height:"50px"}} src='content/images/serpent.png'/>
+            </View>
+            <View style={{display:"flex",flexDirection:"column",justifyContent:'space-around',alignItems:"center"}}>
+              <Text style={{fontSize:"20px", color:"green",marginBottom:"9px"}}>Nom clinique</Text>
+              <Text style={{fontSize:"15px",marginBottom:"9px"}}>Adresse</Text>
+              <Text style={{fontSize:"15px"}}>Email Clinique</Text>
+            </View>
+          </View>
+          <View style={{display:"flex",flexDirection:"column",justifyContent:'space-around',alignItems:"center", marginTop:"15px"}}>
+            <Text style={{fontSize:"35px", fontWeight:"extrabold",marginBottom:"9px"}}>Ordonnance Médicale</Text>
+            <Text style={{fontSize:"18px",marginBottom:"9px"}}> Fait à: ...................... Le: ...../......./......</Text>
+            <Text style={{fontSize:"18px",marginBottom:"7px"}}>Nom et Prénom(s): ..............................................</Text>
+          </View>
+          <View style={{display:"flex",flexDirection:"column",alignItems:"center", marginTop:"15px",border:"3px solid silver",marginLeft:"10vw",marginRight:"5vw",width:"80vw"}}>
+              <View style={{display:"flex", flexDirection:"row",justifyContent:'center',alignItems:"center"}}>
+                <Text style={{width:"40vw",borderRight:"3px solid silver",textTransform:"uppercase",fontSize:"15px",color:"green",paddingTop:"3px",paddingBottom:"3px",textAlign:"center"}}>Médicament(s)</Text>
+                <Text style={{width:"20vw",textTransform:"uppercase",fontSize:"15px",color:"green",paddingTop:"3px",paddingBottom:"3px",textAlign:"center"}}>Durée</Text>
+                <Text style={{width:"20vw",borderLeft:"3px solid silver",textTransform:"uppercase",fontSize:"15px",color:"green",paddingTop:"3px",paddingBottom:"3px",textAlign:"center"}}>Fréquence</Text>
+              </View>
+              {formValues.map(element => element.medecine != '' ?(
+                <View key={element.duration} style={{display:"flex", flexDirection:"row",justifyContent:'center',alignItems:"center"}}>
+                  <Text style={{width:"40vw",borderRight:"3px solid silver",borderTop:"3px solid silver",fontSize:"15px",paddingTop:"5px",paddingBottom:"3px",textAlign:"center"}}>{element.medecine}</Text>
+                  <Text style={{width:"20vw",borderTop:"3px solid silver",fontSize:"15px",paddingTop:"5px",paddingBottom:"3px",textAlign:"center"}}>{element.duration} Jours</Text>
+                  <Text style={{width:"20vw",borderTop:"3px solid silver",borderLeft:"3px solid silver",fontSize:"15px",paddingTop:"5px",paddingBottom:"3px",textAlign:"center"}}>{element.frequency} /J</Text>
+                </View>
+              ):(
+                <View key={element.duration} style={{display:"flex", flexDirection:"row",justifyContent:'center',alignItems:"center"}}>
+                <Text style={{width:"80vw",borderRight:"3px solid silver",borderTop:"3px solid silver",fontSize:"15px",paddingTop:"5px",paddingBottom:"3px",textAlign:"center"}}>Aucun médicament préscrit</Text>
+              </View>
+              ))}
+          </View>
+        </Page>
+      </Document>
   );
 
 
@@ -234,20 +276,23 @@ export const PrescriptionUpdate = () => {
                     name="medecine"
                     value={element.medecine || ""}
                     onChange={(e) => handleChange(index, e)}
+                    required
                   />
                   <ValidatedField
-                    type="text"
-                    label='Durée'
+                    type="number"
+                    label='Durée(en Jouurs)'
                     name="duration"
                     value={element.duration || ""}
                     onChange={(e) => handleChange(index, e)}
+                    required
                   />
                   <ValidatedField
-                    label='Fréquence'
-                    type="text"
+                    label='Fréquence(par Jour)'
+                    type="number"
                     name="frequency"
                     value={element.frequency || ""}
                     onChange={(e) => handleChange(index, e)}
+                    required
                   />
                   {index ? (
                     <Button
