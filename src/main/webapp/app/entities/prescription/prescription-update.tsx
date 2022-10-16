@@ -160,32 +160,7 @@ export const PrescriptionUpdate = () => {
   });
 
   const doc = (
-    // <Document>
-    //   <Page size="A4" style={styles.page} wrap>
-    //     <View style={styles.section}>
-    //       <Image style={styles.imageHeader} src='content/images/Ngirwi_Transparent.png' />
-    //       <Image style={styles.image} src='content/images/serpent.png' />
-    //       <Text style={styles.title}> Ordonance Médicale</Text>
-    //       <Text style={styles.text}>
-    //         Service:
-    //       </Text>
-    //       <Text style={styles.text}>
-    //         Date: {displayDefaultDateTime()}
-    //       </Text>
-    //       {/* <Text style={styles.text}>
-    //         Patient: {name} {surname}
-    //       </Text> */}
-    //       <Text style={styles.text}>
-    //         Médecin: {account.login}
-    //       </Text>
-    //       {formValues.map(element => (
-    //         <Text style={styles.text}>
-    //           Médicament : {element.medecine} | Durée : {element.duration} | Fréquence : {element.frequency} {'\n\n'}
-    //         </Text>
-    //       ))}
-    //     </View>
-    //   </Page>
-    // </Document>
+
       <Document>
         <Page style={{display:"flex",flexDirection:"column"}}>
           <View style={{display:"flex", flexDirection:"row",justifyContent:'space-around',alignItems:"center", borderBottom:"1px solid green", paddingBottom:"10px",marginTop:"20px"}}>
