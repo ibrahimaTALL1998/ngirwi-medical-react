@@ -45,7 +45,9 @@ export const PrescriptionUpdate = () => {
   const handleClose = () => {
     navigate('/prescription' + location.search);
   };
-
+  function rtn(){
+    window.history.back();
+  }
   useEffect(() => {
     if (isNew) {
       dispatch(reset());
@@ -225,7 +227,7 @@ export const PrescriptionUpdate = () => {
               {!isNew ? <ValidatedField name="id" required readOnly id="prescription-id" label="ID" validate={{ required: true }} /> : null}
               <ValidatedField
                 disabled
-                label="Creation Date"
+                label="Date de création"
                 id="prescription-creationDate"
                 name="creationDate"
                 data-cy="creationDate"
@@ -255,14 +257,14 @@ export const PrescriptionUpdate = () => {
                   />
                   <ValidatedField
                     type="number"
-                    label='Durée(en Jouurs)'
+                    label='Durée(en jours)'
                     name="duration"
                     value={element.duration || ""}
                     onChange={(e) => handleChange(index, e)}
                     required
                   />
                   <ValidatedField
-                    label='Fréquence(par Jour)'
+                    label='Fréquence(par jour)'
                     type="number"
                     name="frequency"
                     value={element.frequency || ""}
@@ -287,7 +289,7 @@ export const PrescriptionUpdate = () => {
                 <span className="d-none d-md-inline">Ajouter</span>
               </Button>
               &nbsp;
-              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/prescription" replace color="info">
+              <Button  id="cancel-save" data-cy="entityCreateCancelButton" onClick={() => window.history.back()} replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 
                 <span className="d-none d-md-inline">Retour</span>

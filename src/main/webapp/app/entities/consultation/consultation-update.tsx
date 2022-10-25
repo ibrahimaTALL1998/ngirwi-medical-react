@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Row, Col, FormText, Label, Card } from 'reactstrap';
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
-import {FiLogOut} from 'react-icons/fi';
+import {FiLock, FiLogOut} from 'react-icons/fi';
 
-import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServerToDate, convertDateTimeFromServerToHours, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
@@ -18,6 +18,8 @@ import { getEntity, updateEntity, createEntity, reset } from './consultation.red
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { examsList } from 'app/shared/util/exams-list';
+import Header from 'app/shared/layout/header/header'
+import dayjs from 'dayjs';
 
 export const ConsultationUpdate = () => {
   const dispatch = useAppDispatch();
@@ -81,14 +83,16 @@ export const ConsultationUpdate = () => {
     isNew
       ? {
 
-        dateTime: displayDefaultDateTime(),
+        hours: dayjs().startOf('minute').format("HH:mm:ss"),
+        date : dayjs().startOf('minute').format("DD/MM/YYYY"),
         author: account.login,
         exams: JSON.stringify(exams),
         patient: idPatient, 
       }
       : {
         ...consultationEntity,
-        dateTime: convertDateTimeFromServer(consultationEntity.dateTime),
+        hours: convertDateTimeFromServerToHours(consultationEntity.dateTime),
+        date: convertDateTimeFromServerToDate(consultationEntity.dateTime),
         patient: consultationEntity?.patient?.id,
         author: account.login,
       };
@@ -106,87 +110,204 @@ export const ConsultationUpdate = () => {
       flexDirection:"column"
     }}
   >
-        <div style={{display:"flex", flexDirection:"row",gap:"70vw"}}>
-          <span>Gestions Patients</span>  
-          <div>
-            <Link to="/logout" style={{color:"silver", fontWeight:"900"}}>
-              <div>{React.createElement(FiLogOut)} </div>
-            </Link>
-          </div>
-        </div> 
+      <Header pageName="Consultations" />
+ 
         <div
           style={{
             display:"flex",
             flexDirection:"column",
-            gap:"5vh",
-            marginTop:"9.5vh"
+            marginTop:"7.5vh",
           }}
         >
+          <div
+          style={{
+            display:"flex",
+            flexDirection:"row",
+            alignItems:"center",
+            marginRight:"10%",
+            gap:"6vw"
+
+          }}
+          >
           <Card
             style={{
-              height:"8.28vh",
-              width:"33.38vw",
-              borderRadius:"20px",
+              height:"6.28vh",
+              width:"50vw",
+              borderRadius:"15px",
               backgroundColor:"#11485C",
-              marginLeft:"25%",
+              marginLeft:"1%",
               textAlign:"center",
               color:"white",
               boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
+              fontSize:"15px",
+              fontFamily:"Ubuntu",
+              fontWeight:"700"
               }}
           >
            {
-           isNew ? (<span style={{marginTop:"2.5%"}}>Enregistrer Consultation</span>):
+           isNew ? (<span style={{marginTop:"2.5%"}}>Enregistrement nouvelle consultation 
+           {/* {patients
+            ? patients.map(otherEntity => (
+              (idPatient == otherEntity.id)?(
+                <span key={otherEntity.id}>
+                {otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName}
+              </span>
+              ):(<span></span>))
+              
+              )
+          : null} */}
+          </span>):
            (<span style={{marginTop:"2.5%"}}>
-            Modifier Consultation  
+            Mise à jour consultation patient {patients
+                  ? patients.map(otherEntity => (
+                    (consultationEntity?.patient?.id === otherEntity.id)?(
+                      <span key={otherEntity.id}>
+                      {otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName}
+                    </span>
+                    ):(null))
+                    
+                    )
+                : null}  
            </span>)}  
           </Card>
-          <Card 
+          
+            <Card
             style={{
-              height:"70vh",
-              marginRight:"5%",
+              height:"30vh",
+              width:"40vw",
               boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
-              borderRadius:"15px"
+              borderRadius:"15px",
+              borderColor:"#0075FF",
+              backgroundColor:"#F6FAFF"
 
             }}
           >
-              <span style={{marginTop:"1%", color:"#141414",fontSize:"15px", marginLeft:"3%"}}>Remplir informations patient</span>
+            <Card
+            style={{
+              backgroundColor:"#0075FF",
+              borderColor:"#0075FF",
+              color:"#F6FAFF",
+              fontSize:"15px",
+              borderRadius:"13px",
+              height:"30%",
+              display:"flex",
+              flexDirection:"row",
+              gap:"10%",
+              alignItems:"center",
+              justifyContent:"center",
+              paddingTop:"2%",
+              paddingLeft:"2%"
+            }}>
+              <span style={{}}>
+            Dossier médical {patients
+                  ? patients.map(otherEntity => (
+                    (consultationEntity?.patient?.id === otherEntity.id || idPatient === otherEntity.id.toString())?(
+                      <span key={otherEntity.id}>
+                      {otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName}
+                    </span>
+                    ):(null))
+                    
+                    )
+                : null}  
+           </span>
+           <Link  to="#"
+           style={{fontSize:"13px",color:"#F6FAFF",textDecoration:"none"}}>Tout voir </Link>
+           
+            </Card>
+            <div style={{
+            display:"flex",
+            flexDirection :"column",
+            justifyContent:"flex-start",
+            fontSize:"13px",
+            color:"#A9B7CD",
+            fontWeight:"700",
+            marginTop:"15px",
+            marginLeft:"5%",
+            gap:"1vh"
+           }}>
+            <div>Motif:</div>
+            <div>Histoire de la maladie:</div>
+            <div>Antécédants chirigicaux:</div>
+            <div>Antécédants familiaux:</div>
+            <div>Gynéco-Obstrétique:</div>
+           </div>
+          </Card>
+          
+        
+          </div>
+
+
+          <Card 
+            style={{
+              height:"110vh",
+              width:"80vw",
+              boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
+              borderRadius:"15px",
+              marginBottom:"30px",
+              fontFamily: 'Jost',
+              fontStyle: 'normal',
+              fontWeight: '500',
+              fontSize:"15px"
+
+            }}
+          >
+             {isNew?(<span style={{marginTop:"1%", color:"#141414",fontSize:"19px", marginLeft:"3%"}}>Remplir informations patient</span>):(
+              <span style={{marginTop:"1%", color:"#141414",fontSize:"19px", fontFamily:"jost", marginLeft:"3%"}}>Modifications consultation patient</span>
+             )} 
               
               
               <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}
                 style={{
                   width:"94%",
+                  height:"80%",
                   marginLeft:"3%",
-                  height:"70%",
                   display:"grid",
-                  columnGap:"25px",
+                  columnGap:"30px",
                   marginTop:"1%",
-                  gridTemplateColumns : "repeat(3, 5fr)",
+                  gridTemplateColumns : "repeat(2,1fr)",
                   fontSize:"12px",
-                  fontWeight:"900"
+                  fontWeight:"900",
                 }}
               >
-              {!isNew ? 
-               <ValidatedField name="id" disabled required readOnly id="consultation-id" label="ID" validate={{ required: true }}
-                style={{
-                  borderRadius:"25px",
-                  backgroundColor:"#F7FAFF",
-                  borderColor:"#CBDCF7"
-                }}
-               /> : null}
+              
                <ValidatedField
                 disabled
-                label="Date et heure"
-                id="consultation-dateTime"
-                name="dateTime"
-                data-cy="dateTime"
-                type="datetime-local"
+                label="Date"
+                id="consultation-date"
+                name="date"
+                data-cy="date"
+                type="datetime"
                 placeholder="YYYY-MM-DD HH:mm"
                 style={{
                   borderRadius:"25px",
-                  backgroundColor:"#F7FAFF",
-                  borderColor:"#CBDCF7"
+                  borderColor:"#CBDCF7",
+                  backgroundColor:"#A9B7CD",
+                  color:"#F6FAFF"
                 }}
               />
+              
+              
+                
+              <ValidatedField
+                disabled
+                label="Heure"
+                id="consultation-hours"
+                name="hours"
+                data-cy="hours"
+                type="datetime"
+                placeholder="YYYY-MM-DD HH:mm"
+                style={{
+                  borderRadius:"25px",
+                  backgroundColor:"#A9B7CD",
+                  color:"#F6FAFF",
+                  borderColor:"#CBDCF7"
+                }}
+              >
+              <span style={{
+                  color:"#F6FAFF",
+                  textAlign:"end"
+                }}>{React.createElement(FiLock,{size:"20"})}</span>
+                </ValidatedField>
               <ValidatedField
                 label="Temperature"
                 id="consultation-temperature"
@@ -241,13 +362,7 @@ export const ConsultationUpdate = () => {
                   borderColor:"#CBDCF7"
                 }}
               />
-              <ValidatedField label="Commentaire" id="consultation-comment" name="comment" data-cy="comment" type="text"
-                style={{
-                  borderRadius:"25px",
-                  backgroundColor:"#F7FAFF",
-                  borderColor:"#CBDCF7"
-                }}
-              />
+              
 
               <ValidatedField
                 label="Hypothèse diagnostique"
@@ -270,10 +385,12 @@ export const ConsultationUpdate = () => {
                   backgroundColor:"#F7FAFF",
                   borderColor:"#CBDCF7"
                 }}>
-              <Label>Examens paracliniques</Label>
+              {/* <Label>Examens complémentaires</Label>
                <Select options={examsList}                 
               
-                components={animatedComponents} isMulti onChange={(e) => setExams(e)} />
+                components={animatedComponents} isMulti onChange={(e) => setExams(e)} /> */}
+                <Label>Examens complémentaires</Label>
+              <Select options={examsList} components={animatedComponents} isMulti onChange={(e) => setExams(e)} />
               </div>
              
                 {/* <ValidatedField label="Examens paracliniques" name="examspara" type="select" 
@@ -295,60 +412,52 @@ export const ConsultationUpdate = () => {
                 </ValidatedField> */}
 
               
-              <ValidatedField
-                label="Examens"
-                id="consultation-exams"
-                name="exams"
-                data-cy="exams"
-                type="text"
-                validate={{
-                  required: { value: true, message: 'Ce champ est obligatoire.' },
-                }}
-                style={{
-                  borderRadius:"25px",
-                  backgroundColor:"#F7FAFF",
-                  borderColor:"#CBDCF7"
-                }}
-              />
+              
               <ValidatedField 
                 label="Traitement"
                 id="consultation-treatment"
                 name="treatment"
                 data-cy="treatment"
-                type="text"
+                type="textarea"
                 validate={{
                   required: { value: true, message: 'Ce champ est obligatoire.' },
                 }}
                 style={{
-                  borderRadius:"25px",
+                  width:"150%",
+                  marginBottom:"20px",
+                  borderRadius:"10px",
                   backgroundColor:"#F7FAFF",
                   borderColor:"#CBDCF7"
                 }}
               />
+
+              <Button id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}
+                style={{
+                  gridColumn:"1/3",
+                  borderRadius:"25px",
+                  color:"white",
+                  backgroundColor:"#56B5C5",
+                  borderColor:"#56B5C5"
+                }}
+              >
+                 Enregistrer
+              </Button>
+              &nbsp;
+
+              <Button onClick={()=>window.history.back()} id="cancel-save" data-cy="entityCreateCancelButton"  replace color="info"
+                style={{
+                  gridColumn:"1/3",
+                  borderRadius:"25px",
+                  color:"white",
+                  backgroundColor:"#EC4747",
+                  borderColor:"#EC4747",
+                  textAlign:"center"
+                }}
+              >
+                <span className="d-none d-md-inline">Annuler</span>
+              </Button>
               <ValidatedField hidden label="Author" id="consultation-author" name="author" data-cy="author" type="text"/>
               
-            <ValidatedField  
-              disabled={isNew?false:true}
-              id="consultation-patient" 
-              name="patient" 
-              data-cy="patient" 
-              label="Patient" 
-              type="select"
-              style={{
-                borderRadius:"25px",
-                backgroundColor:"#F7FAFF",
-                borderColor:"#CBDCF7"
-              }}              
-              >
-              <option value="" key="0" />
-                {patients
-                  ? patients.map(otherEntity => (
-                    <option value={otherEntity.id} key={otherEntity.id}>
-                      {otherEntity.lastName + ' ' + otherEntity.firstName + ' (' +otherEntity.birthday +')'}
-                    </option>
-                    ))
-                : null}
-              </ValidatedField>
                
               <ValidatedField
                 hidden
@@ -370,30 +479,6 @@ export const ConsultationUpdate = () => {
               />
               <ValidatedField hidden label="Author" id="patient-author" name="author" data-cy="author" type="text" />
 
-              <Button id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}
-                style={{
-                  gridColumn:"1/4",
-                  borderRadius:"25px",
-                  color:"white",
-                  backgroundColor:"#56B5C5",
-                  borderColor:"#56B5C5"
-                }}
-              >
-                 Enregistrer
-              </Button>
-              &nbsp;
-
-              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/consultation" replace color="info"
-                style={{
-                  gridColumn:"1/4",
-                  borderRadius:"25px",
-                  color:"white",
-                  backgroundColor:"#EC4747",
-                  borderColor:"#EC4747",
-                }}
-              >
-                <span className="d-none d-md-inline">Annuler</span>
-              </Button>
             </ValidatedForm>
           </Card>
         </div>

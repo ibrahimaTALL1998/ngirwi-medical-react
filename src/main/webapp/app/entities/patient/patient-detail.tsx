@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntity } from './patient.reducer';
 import { FiLogOut } from 'react-icons/fi';
+import Header from 'app/shared/layout/header/header';
 
 export const PatientDetail = () => {
   const dispatch = useAppDispatch();
@@ -31,14 +32,8 @@ export const PatientDetail = () => {
         flexDirection:"column"
       }}
     >
-      <div style={{display:"flex", flexDirection:"row",gap:"70vw"}}>
-        <span>Gestion Patient</span>  
-        <div>
-          <Link to="/logout" style={{color:"silver", fontWeight:"900"}}>
-            <div>{React.createElement(FiLogOut)} </div>
-          </Link>
-        </div>
-      </div> 
+      
+      <Header pageName="Gestion Patients" />
       <div
         style={{
           display:"flex",
@@ -298,7 +293,7 @@ export const PatientDetail = () => {
         </Card>
 
 
-        <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/patient" replace color="info"
+        <Button  id="cancel-save" data-cy="entityCreateCancelButton" onClick={()=>window.history.back()} replace color="info"
           style={{
             marginLeft:"7%",
             width:"66vw",

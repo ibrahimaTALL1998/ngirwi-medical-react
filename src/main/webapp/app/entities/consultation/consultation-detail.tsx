@@ -243,21 +243,7 @@ export const ConsultationDetail = () => {
             marginTop:"3vh"
           }}
         >
-          {/* <Button
-            href={`/dossier-medical/${patientEntity.id}/`}
-            style={{
-              borderColor:"#0075FF",
-              backgroundColor:"#0075FF",
-              color:"#FFFFFF",
-              width:"25vh",
-              height:"8vh",
-              borderRadius:"4px",
-              fontFamily:"Ubuntu",
-              paddingTop:"10%"
-            }}
-          >
-            Dossier médical
-          </Button> */}
+      
           <Button
             href={`/prescription/new/${consultationEntity.id}`}
             style={{
@@ -290,7 +276,7 @@ export const ConsultationDetail = () => {
       </Card>
 
 
-      <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/consultation" replace color="info"
+      <Button  id="cancel-save" data-cy="entityCreateCancelButton" onClick={() => window.history.back()}  replace color="info"
         style={{
           marginLeft:"7%",
           width:"66vw",

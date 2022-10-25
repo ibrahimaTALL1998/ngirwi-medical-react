@@ -19,6 +19,7 @@ import {Scrollbars} from 'react-custom-scrollbars'
 import { IPatient } from 'app/shared/model/patient.model';
 import { getEntities } from './patient.reducer';
 import { AiOutlineSearch } from 'react-icons/ai';
+import Header from 'app/shared/layout/header/header';
 
 export const Patient = () => {
   const dispatch = useAppDispatch();
@@ -157,7 +158,7 @@ export const Patient = () => {
             </div>
           </div> */}
 
-          <div style={{display:"flex", flexDirection:"row",gap:"50vw", fontFamily:"Jost", fontSize:"20px",position:"fixed" , zIndex:"1"}}>
+          {/* <div style={{display:"flex", flexDirection:"row",gap:"50vw", fontFamily:"Jost", fontSize:"20px",position:"fixed" , zIndex:"1"}}>
             <span>Gestion Patients</span>  
             <div style={{display:"flex", flexDirection:"row", alignItems:"flex-start", gap:"2vw"}}> 
           <div style={{display:"flex", flexDirection:"column"}}>
@@ -193,7 +194,8 @@ export const Patient = () => {
                 <div>{React.createElement(FiLogOut)} </div>
               </Link>
             </div>
-          </div>
+          </div> */}
+          <Header pageName="Patients"/>
 
           <div
             style={{

@@ -15,6 +15,7 @@ import { FiLogOut } from 'react-icons/fi';
 import { RiUserAddLine } from 'react-icons/ri';
 import { BiTrash } from 'react-icons/bi';
 import { AiOutlineSearch } from 'react-icons/ai';
+import Header from 'app/shared/layout/header/header';
 
 export const Consultation = () => {
   const dispatch = useAppDispatch();
@@ -104,41 +105,8 @@ export const Consultation = () => {
           flexDirection:"column"
         }}    
     >
-          <div style={{display:"flex", flexDirection:"row",gap:"50vw", fontFamily:"Jost", fontSize:"20px",position:"fixed" , zIndex:"1"}}>
-            <span>Gestion Consultations</span>  
-            <div style={{display:"flex", flexDirection:"row", alignItems:"flex-start", gap:"2vw"}}> 
-          <div style={{display:"flex", flexDirection:"column"}}>
-          
-          <span style={{position:"fixed", top:"2%",marginLeft:"1%"}}>{React.createElement(AiOutlineSearch, {size : '13'} )}</span> 
-           <ValidatedField name='search'  placeholder="   Rechercher..." onChange={event =>setQuery(event.target.value)} style={{backgroundColor:"#F9F9FB", fontFamily:"Mulish", fontWeight:"900",borderRadius:"15px",height:"5vh",borderColor:"#F9F9FB",fontSize:"10px",paddingLeft:"30px"}} />
-              {  
-              patientList.filter(post => {
-              if (query === "") {
-              
-                post = "Recherche de patients..."
-                return post;
-              } else if (post.lastName.toLowerCase().includes(query.toLowerCase())) {
-               
-                return post;
-              }else if (post.firstName.toLowerCase().includes(query.toLowerCase())) {
-               
-                return post;
-              }else{
-                post = null;
-                return post;
-              }
-            }).map((patient, i)=> 
-                <Link hidden={query===""?true:false} key={patient.id} to={`/patient/${patient.id}`} style={{backgroundColor:"white",margin:"0px",position:"sticky",top:"0",borderColor:"#F9F9FB",color:"#11485C", borderRadius:"3px",textDecoration:"none",height:"5vh",fontSize:"13px"}}>{patient.firstName+' '+patient.lastName}</Link>                   
-            )
-              }
-            
-          </div>
-   
-              <Link to="/logout" style={{color:"silver", fontWeight:"900"}}>
-                <div>{React.createElement(FiLogOut)} </div>
-              </Link>
-            </div>
-          </div>
+      <Header pageName="Consultations" />
+
 
           <div
             style={{
@@ -253,7 +221,7 @@ export const Consultation = () => {
                 <tr>
                   <th
                     style={{
-                      fontSize:"9px",
+                      fontSize:"14px",
                       position:"sticky",
                       top:"0",
                       backgroundColor:"white",
@@ -261,7 +229,7 @@ export const Consultation = () => {
                   ></th>
                   <th 
                   style={{
-                    fontSize:"9px",
+                    fontSize:"14px",
                     position:"sticky",
                     top:"0",
                     backgroundColor:"white",
@@ -271,109 +239,48 @@ export const Consultation = () => {
                   </th>
                   <th
                   style={{
-                    fontSize:"9px",
+                    fontSize:"14px",
                     position:"sticky",
                     top:"0",
                     backgroundColor:"white",
                   }}
                   className="hand" onClick={sort('firstName')}>
-                    Date et Heure 
+                    Nom
                   </th>
                   <th 
                   style={{
-                    fontSize:"9px",
+                    fontSize:"14px",
                     position:"sticky",
                     top:"0",
                     backgroundColor:"white",
                   }}
                   className="hand" onClick={sort('lastName')}>
-                    Temperature  
+                    Prénom  
                   </th>
                   <th 
                   style={{
-                    fontSize:"9px",
+                    fontSize:"14px",
                     position:"sticky",
                     top:"0",
                     backgroundColor:"white",
                   }}
                   className="hand" onClick={sort('birthday')}>
-                    Poids
+                   Date
                   </th>
                   <th 
                   style={{
-                    fontSize:"9px",
+                    fontSize:"14px",
                     position:"sticky",
                     top:"0",
                     backgroundColor:"white",
                   }}
                   className="hand" onClick={sort('birthplace')}>
-                    Tension 
+                    Heure 
                   </th>
-                  <th 
-                  style={{
-                    fontSize:"9px",
-                    position:"sticky",
-                    top:"0",
-                    backgroundColor:"white",
-                  }}
-                  className="hand" onClick={sort('gender')}>
-                    Glycémie 
-                  </th>
-                  <th 
-                  style={{
-                    fontSize:"9px",
-                    position:"sticky",
-                    top:"0",
-                    backgroundColor:"white",
-                  }}
-                  className="hand" onClick={sort('adress')}>
-                    Commentaire
-                  </th>
-                  <th 
-                  style={{
-                    fontSize:"9px",
-                    position:"sticky",
-                    top:"0",
-                    backgroundColor:"white",
-                  }}
-                  className="hand" onClick={sort('phone')}>
-                    Hypotèse diagnostique 
-                  </th>
-                  <th 
-                  style={{
-                    fontSize:"9px",
-                    position:"sticky",
-                    top:"0",
-                    backgroundColor:"white",
-                  }}
-                  className="hand" onClick={sort('cni')}>
-                     Examens
-                  </th>
-                  <th 
-                  style={{
-                    fontSize:"9px",
-                    position:"sticky",
-                    top:"0",
-                    backgroundColor:"white",
-                  }}
-                  className="hand" onClick={sort('job')}>
-                    Traitement 
-                  </th>
-                  <th 
-                  style={{
-                    fontSize:"9px",
-                    position:"sticky",
-                    top:"0",
-                    backgroundColor:"white",
-                  }}
-                  className="hand" onClick={sort('bloodType')}>
-                    Patients
-                  </th>
-
                       
                   <th
                   style={{
-                    fontSize:"9px",
+                    fontSize:"14px",
                     position:"sticky",
                     top:"0",
                     backgroundColor:"white",
@@ -386,7 +293,7 @@ export const Consultation = () => {
                   backgroundColor:"#F6FAFF",
                   border:"1px solid #F6FAFF",
                   borderRadius:"15px 15px 0px 15px",
-                  fontSize:"9px",
+                  fontSize:"14px",
                   borderBottom:"50px solid white",
                 }}
               >
@@ -402,40 +309,31 @@ export const Consultation = () => {
                       </Button>
                     </td>
                    
-
-                    <td>
-                     <Button tag={Link} to={`/consultation/${consultation.id}`} color="link" size="sm">
-                       {consultation.id}
-                     </Button>
+                  {patientList.map( (patient,b) => (( consultation.patient.lastName === patient.lastName && consultation.patient.id === patient.id) ? (
+                   <>
+                   <td>
+                    <Button tag={Link} to={`/patient/${patient.id}`} color="link" size="sm">
+                      {patient.id}
+                    </Button>
+                  </td>
+                  <td>{patient.lastName}</td>
+                  <td>{patient.firstName}</td>
+                  <td>
+                     {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="DD/MM/YYYY" /> : null}
                    </td>
                    <td>
-                     {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format={APP_DATE_FORMAT} /> : null}
+                     {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="HH:mm:ss"/> : null}
                    </td>
-                   <td>{consultation.temperature}</td>
-                   <td>{consultation.weight}</td>
-                   <td>{consultation.tension}</td>
-                   <td>{consultation.glycemie}</td>
-                   <td>{consultation.comment}</td>
-                   <td>{consultation.hypothesis}</td>
-                   <td>{consultation.exams}</td>
-                   <td>{consultation.treatment}</td>
-                   <td>
-                     {consultation.patient ? <Link to={`/patient/${consultation.patient.id}`}>{consultation.patient.lastName}</Link> : ''}
-                   </td>
-
-                   <td className="text-end">
+                   <td >
                       <div 
                         style={{
                           display:"flex",
-                          flexDirection:"column",
-                          gap:"1px",
+                          flexDirection:"row",
+                          gap:"3px",
                           fontSize:"9px"
                         }}
                       >
-                        <Button tag={Link} to={`/consultation/${consultation.id}`} color="info" size="sm" data-cy="entityDetailsButton">
-                            <span className="d-none d-md-inline">Voir détails</span>
-                        </Button>
-                        <Button
+                         <Button
                           tag={Link}
                           to={`/consultation/${consultation.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                           color="primary"
@@ -444,9 +342,19 @@ export const Consultation = () => {
                         >
                             <span className="d-none d-md-inline">Mettre à jour</span>
                         </Button>
+                        <Button tag={Link} to={`/consultation/list/${patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
+                            <span className="d-none d-md-inline">Voir sa liste</span>
+                        </Button>
+                       
 
                       </div>
                     </td>
+                   </>
+                   
+                  ):(null)))}
+                  
+
+                   
                  </tr>
                ))}
      

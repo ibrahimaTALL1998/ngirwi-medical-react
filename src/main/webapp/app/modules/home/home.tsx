@@ -21,6 +21,7 @@ import Calendar from 'react-calendar';
 import { TextFormat, ValidatedField } from 'react-jhipster';
 import { translateGender } from 'app/shared/util/translation-utils';
 import { APP_DATE_FORMAT } from 'app/config/constants';
+import Header from 'app/shared/layout/header/header'
 
 export const Home = () => {
   const account = useAppSelector(state => state.authentication.account);
@@ -48,43 +49,8 @@ export const Home = () => {
           display:"flex",
           flexDirection:"column"
         }}>
-          <div style={{display:"flex", flexDirection:"row",gap:"50vw", fontFamily:"Jost", fontSize:"20px" , zIndex:"1"}}>
-            <span>Accueil</span>  
-            <div style={{display:"flex", flexDirection:"row", alignItems:"flex-start", gap:"2vw"}}> 
-          <div style={{display:"flex", flexDirection:"column"}}>
-          
-          <span style={{position:"fixed", top:"2%",marginLeft:"1%"}}>{React.createElement(AiOutlineSearch, {size : '13'} )}</span> 
-           <ValidatedField name='search'  placeholder="   Rechercher..." onChange={event =>setQuery(event.target.value)} style={{backgroundColor:"#F9F9FB", fontFamily:"Mulish", fontWeight:"900",borderRadius:"15px",height:"5vh",borderColor:"#F9F9FB",fontSize:"10px",paddingLeft:"30px"}} />
-              {  
-              patientList.filter(post => {
-              if (query === "") {
-              
-                post = "Recherche de patients..."
-                return post;
-              } else if (post.lastName.toLowerCase().includes(query.toLowerCase())) {
-               
-                return post;
-              }else if (post.firstName.toLowerCase().includes(query.toLowerCase())) {
-               
-                return post;
-              }
-            }).map((patient, i)=>
-        
-              <Link hidden={query===""?true:false} key={patient.id} to={`/patient/${patient.id}`} style={{backgroundColor:"white",margin:"0px",position:"sticky",top:"0",borderColor:"#F9F9FB",color:"#11485C", borderRadius:"3px",textDecoration:"none",height:"5vh",fontSize:"13px"}}>{patient.firstName+' '+patient.lastName}</Link>
-            
-       
 
-                   )
-
-              }
-            
-          </div>
-   
-              <Link to="/logout" style={{color:"silver", fontWeight:"900"}}>
-                <div>{React.createElement(FiLogOut)} </div>
-              </Link>
-            </div>
-          </div>
+          <Header pageName="Accueil" />
           <div style={{display:"flex", flexDirection:"row", gap:"2vw",position:"fixed",top:"9vh",right:"2.5vw"}}>
           <div style={{display:"flex", flexDirection:"column", gap:"3vh", marginTop:"3vh"}}>
           <Card style={{width:"33.38vw",height:"20vh",borderColor:"#53BFD1",backgroundColor:"#53BFD1", borderRadius:"20px" ,color:"#FFFFFF", display:"flex", flexDirection:"column", paddingTop:"3%", paddingLeft:"4%",  boxShadow:"0px 0px 5px silver" }}> 

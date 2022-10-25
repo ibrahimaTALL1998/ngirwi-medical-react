@@ -7,10 +7,12 @@ import Consultation from './consultation';
 import ConsultationDetail from './consultation-detail';
 import ConsultationUpdate from './consultation-update';
 import ConsultationDeleteDialog from './consultation-delete-dialog';
+import ConsultationPatient from './consultation-list';
 
 const ConsultationRoutes = () => (
   <ErrorBoundaryRoutes>
     <Route index element={<Consultation />} />
+    <Route path='list/:idPatient' element={<ConsultationPatient/>}/>
     <Route path="new" element={<ConsultationUpdate />} />
     <Route path="new/:idPatient" element={<ConsultationUpdate />} />
     <Route path=":id">
