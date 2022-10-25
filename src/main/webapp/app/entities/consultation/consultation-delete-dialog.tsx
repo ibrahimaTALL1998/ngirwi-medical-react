@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { getEntity, deleteEntity } from './consultation.reducer';
+import { TextFormat } from 'react-jhipster';
 
 export const ConsultationDeleteDialog = () => {
   const dispatch = useAppDispatch();
@@ -25,7 +26,8 @@ export const ConsultationDeleteDialog = () => {
   const updateSuccess = useAppSelector(state => state.consultation.updateSuccess);
 
   const handleClose = () => {
-    navigate('/consultation' + location.search);
+    // navigate('/consultation' + location.search);
+    window.history.back()
   };
 
   useEffect(() => {
@@ -45,7 +47,7 @@ export const ConsultationDeleteDialog = () => {
         Confirmation de suppression
       </ModalHeader>
       <ModalBody id="ngirwiFrontEndApp.consultation.delete.question">
-        Êtes-vous certain de vouloir supprimer le Consultation {consultationEntity.id} ?
+        Êtes-vous certain de vouloir supprimer la Consultation {consultationEntity.id} du <TextFormat type="date" value={consultationEntity.dateTime} format="DD/MM/YYYY" />?
       </ModalBody>
       <ModalFooter>
         <Button color="secondary" onClick={handleClose}>

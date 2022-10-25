@@ -244,7 +244,7 @@ export const Consultation = () => {
                     top:"0",
                     backgroundColor:"white",
                   }}
-                  className="hand" onClick={sort('firstName')}>
+                  className="hand" onClick={sort('patient.lastName')}>
                     Nom
                   </th>
                   <th 
@@ -254,7 +254,7 @@ export const Consultation = () => {
                     top:"0",
                     backgroundColor:"white",
                   }}
-                  className="hand" onClick={sort('lastName')}>
+                  className="hand" onClick={sort('patient.firstName')}>
                     Prénom  
                   </th>
                   <th 
@@ -264,7 +264,7 @@ export const Consultation = () => {
                     top:"0",
                     backgroundColor:"white",
                   }}
-                  className="hand" onClick={sort('birthday')}>
+                  className="hand" onClick={sort('dateTime')}>
                    Date
                   </th>
                   <th 
@@ -274,7 +274,7 @@ export const Consultation = () => {
                     top:"0",
                     backgroundColor:"white",
                   }}
-                  className="hand" onClick={sort('birthplace')}>
+                  className="hand" onClick={sort('dateTime')}>
                     Heure 
                   </th>
                       

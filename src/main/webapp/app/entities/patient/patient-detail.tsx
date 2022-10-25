@@ -276,7 +276,8 @@ export const PatientDetail = () => {
               Nouvelle consultation
             </Button>
             <Button
-              href=""
+              tag={Link}
+              to={`/consultation/list/${patientEntity.id}`}
               style={{
                 borderColor:"#0075FF",
                 backgroundColor:"#0075FF",

@@ -1,19 +1,84 @@
 import { useAppDispatch, useAppSelector } from "app/config/store";
 import Header from "app/shared/layout/header/header";
-import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Card, Table } from "reactstrap";
+import { overridePaginationStateWithQueryParams } from "app/shared/util/entity-utils";
+import { ASC, DESC, ITEMS_PER_PAGE, SORT } from "app/shared/util/pagination.constants";
+import React, { useEffect, useState } from "react";
+import { BiTrash } from "react-icons/bi";
+import { getSortState, TextFormat } from "react-jhipster";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Button, Card, Table } from "reactstrap";
+import {IoIosArrowBack} from 'react-icons/io';
+import { getEntities } from "./consultation.reducer";
 
 
 export const ConsultationPatient = () =>{
     const dispatch = useAppDispatch();
 
     const navigate = useNavigate();
+    const loading = useAppSelector(state => state.consultation.loading);
     const { idPatient } = useParams<'idPatient'>();
     const patients = useAppSelector(state => state.patient.entities);
     const consultationList = useAppSelector(state => state.consultation.entities);
 
-
+    const [paginationState, setPaginationState] = useState(
+      overridePaginationStateWithQueryParams(getSortState(location, ITEMS_PER_PAGE, 'id'), location.search)
+    );
+    
+    const getAllEntities = () => {
+      dispatch(
+        getEntities({
+          page: paginationState.activePage - 1,
+          size: paginationState.itemsPerPage,
+          sort: `${paginationState.sort},${paginationState.order}`,
+        })
+      );
+    };
+  
+    const sortEntities = () => {
+      getAllEntities();
+      const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
+      if (location.search !== endURL) {
+        navigate(`${location.pathname}${endURL}`);
+      }
+    };
+  
+    useEffect(() => {
+      sortEntities();
+    }, [paginationState.activePage, paginationState.order, paginationState.sort]);
+  
+    useEffect(() => {
+      const params = new URLSearchParams(location.search);
+      const page = params.get('page');
+      const sort = params.get(SORT);
+      if (page && sort) {
+        const sortSplit = sort.split(',');
+        setPaginationState({
+          ...paginationState,
+          activePage: +page,
+          sort: sortSplit[0],
+          order: sortSplit[1],
+        });
+      }
+    }, [location.search]);
+  
+    const sort = p => () => {
+      setPaginationState({
+        ...paginationState,
+        order: paginationState.order === ASC ? DESC : ASC,
+        sort: p,
+      });
+    };
+  
+    const handlePagination = currentPage =>
+      setPaginationState({
+        ...paginationState,
+        activePage: currentPage,
+      });
+  
+    const handleSyncList = () => {
+      sortEntities();
+    };
+  
   return(  <div
     style={{
       paddingLeft:"16vw",
@@ -42,16 +107,22 @@ export const ConsultationPatient = () =>{
           <Card
             style={{
               height:"6.28vh",
-              width:"33.38vw",
+              minWidth:"33.38vw",
               borderRadius:"20px",
               backgroundColor:"#11485C",
               textAlign:"center",
               color:"white",
               marginBottom:"5vh",
               boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
+              display:"flex",
+              flexDirection:"row",
+              justifyContent:"center",
+              alignItems:"center",
+              marginLeft:"25vw"
               }}
           >
-          <span style={{marginTop:"1.5%"}}>Liste des consultations de {patients.map(patient => patient.id.toString() === idPatient?(<span>{patient.lastName.toUpperCase()+' '+patient.firstName}</span>):(null) )} </span>
+            <Button replace onClick={() => window.history.back()} style={{color:"#53BFD1",backgroundColor:"#11485C",borderColor:"#11485C"}}>{React.createElement(IoIosArrowBack , {size:"20"})}</Button>
+          <span >Liste des consultations de {patients.map(patient => patient.id.toString() === idPatient?(<span>{patient.lastName.toUpperCase()+' '+patient.firstName}</span>):(null) )} </span>
           </Card>
 
       
@@ -62,10 +133,10 @@ export const ConsultationPatient = () =>{
 
 
 
-        {/* <Card
+        <Card
           style={{
             width:"83vw",
-            height:"70vh",
+            minHeight:"3vh",
             backgroundColor:"white",
             position:"fixed",
             top:"32vh",
@@ -82,68 +153,56 @@ export const ConsultationPatient = () =>{
             <tr>
               <th
                 style={{
-                  fontSize:"14px",
                   position:"sticky",
                   top:"0",
+                  width:"4%",
                   backgroundColor:"white",
                 }}                
               ></th>
               <th 
               style={{
+                textAlign:"center",
                 fontSize:"14px",
                 position:"sticky",
                 top:"0",
+                width:"24%",
                 backgroundColor:"white",
               }}
                 className="hand" onClick={sort('id')}>
                 ID 
               </th>
-              <th
-              style={{
-                fontSize:"14px",
-                position:"sticky",
-                top:"0",
-                backgroundColor:"white",
-              }}
-              className="hand" onClick={sort('firstName')}>
-                Nom
-              </th>
               <th 
               style={{
+                textAlign:"center",
                 fontSize:"14px",
                 position:"sticky",
                 top:"0",
+                width:"24%",
                 backgroundColor:"white",
               }}
-              className="hand" onClick={sort('lastName')}>
-                Prénom  
-              </th>
-              <th 
-              style={{
-                fontSize:"14px",
-                position:"sticky",
-                top:"0",
-                backgroundColor:"white",
-              }}
-              className="hand" onClick={sort('birthday')}>
+              className="hand" onClick={sort('dateTime')}>
                Date
               </th>
               <th 
               style={{
+                textAlign:"center",
                 fontSize:"14px",
                 position:"sticky",
                 top:"0",
+                width:"24%",
                 backgroundColor:"white",
               }}
-              className="hand" onClick={sort('birthplace')}>
+              className="hand" onClick={sort('dateTime')}>
                 Heure 
               </th>
                   
               <th
               style={{
+                textAlign:"center",
                 fontSize:"14px",
                 position:"sticky",
                 top:"0",
+                width:"24%",
                 backgroundColor:"white",
               }}
               >Actions</th>
@@ -154,11 +213,12 @@ export const ConsultationPatient = () =>{
               backgroundColor:"#F6FAFF",
               border:"1px solid #F6FAFF",
               borderRadius:"15px 15px 0px 15px",
-              fontSize:"14px",
+              fontSize:"18px",
+              textAlign:"center",
               borderBottom:"50px solid white",
             }}
           >
-         {consultationList.map((consultation, i) => (
+         {consultationList.map((consultation, i) => (consultation.patient.id.toString() === idPatient)?(
             <tr key={`entity-${i}`} data-cy="entityTable">               
                 <td>
                   <Button
@@ -170,15 +230,13 @@ export const ConsultationPatient = () =>{
                   </Button>
                 </td>
                
-              {patientList.map( (patient,b) => (( consultation.patient.lastName === patient.lastName && consultation.patient.id === patient.id) ? (
+              {patients.map( (patient,b) => (( consultation.patient.lastName === patient.lastName && consultation.patient.id === patient.id) ? (
                <>
                <td>
                 <Button tag={Link} to={`/patient/${patient.id}`} color="link" size="sm">
                   {patient.id}
                 </Button>
               </td>
-              <td>{patient.lastName}</td>
-              <td>{patient.firstName}</td>
               <td>
                  {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="DD/MM/YYYY" /> : null}
                </td>
@@ -204,7 +262,7 @@ export const ConsultationPatient = () =>{
                         <span className="d-none d-md-inline">Mettre à jour</span>
                     </Button>
                     <Button tag={Link} to="#" color="dark" size="sm" data-cy="entityDetailsButton">
-                        <span className="d-none d-md-inline">Voir sa liste</span>
+                        <span className="d-none d-md-inline">Voir détails</span>
                     </Button>
                    
 
@@ -217,7 +275,7 @@ export const ConsultationPatient = () =>{
 
                
              </tr>
-           ))}
+           ):(null))}
  
 
 
@@ -225,7 +283,7 @@ export const ConsultationPatient = () =>{
             </Table>) : (
        !loading && <div className="alert alert-warning">Aucun Consultation trouvé</div>
      )}
-     </Card> */}
+     </Card>
    </div>
    
 
