@@ -44,7 +44,7 @@ const SideBar = (props : ISideBarProps) => {
                 style={{
                     backgroundColor:"#FFFFFF",
                     height:"100vh",
-                    width:"14.06vw", 
+                    minWidth:"14.06vw", 
                     position:"fixed",
                     color:"#54BFD0", 
                 }}
@@ -67,7 +67,7 @@ const SideBar = (props : ISideBarProps) => {
                         textDecoration:"none"
                     }}
                 >
-                    <BrandIcon style={{width:"45%"}}/>
+                    <BrandIcon style={{width:"5vw"}}/>
                     <span
                         style={{
                             fontFamily:"Mulish",
@@ -260,7 +260,7 @@ const SideBar = (props : ISideBarProps) => {
                 >
                     <BrandIcon 
                         style={{
-                            width:"70%",
+                            width:"8vw",
                             height:"60%",
                         }}/>
                     <span

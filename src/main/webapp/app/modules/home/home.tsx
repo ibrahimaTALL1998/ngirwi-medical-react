@@ -42,7 +42,7 @@ export const Home = () => {
 
       <div 
         style={{
-          paddingLeft:"16vw",
+          marginLeft:"16vw",
           paddingTop:"1%",
           fontFamily:"Mulish",
           fontWeight:"900",
@@ -338,69 +338,79 @@ export const Home = () => {
               <span >Patients récents</span>
                 <Link to="#" style={{textDecoration:"none",color:"#11485C"}}>Tout voir</Link>
             </div>
+            {dossierMedicalList && dossierMedicalList.length > 0 ?(
               <Table responsive>
-                <thead>
-                  <tr style={{paddingLeft:"5%",color:"#747678"}} >
-                    <th
+              <thead>
+                <tr style={{paddingLeft:"5%",color:"#747678"}} >
+                  <th
+                  style={{
+                    fontSize:"13px",
+                    position:"sticky",
+                    top:"0",
+                    backgroundColor:"white",
+                  }}>Noms</th>
+                  <th
                     style={{
-                      fontSize:"13px",
-                      position:"sticky",
-                      top:"0",
-                      backgroundColor:"white",
-                    }}>Noms</th>
-                    <th
-                      style={{
-                      fontSize:"13px",
-                      position:"sticky",
-                      top:"0",
-                      backgroundColor:"white",
-                    }}>Sexe</th>
-                    <th
-                    style={{
-                      fontSize:"13px",
-                      position:"sticky",
-                      top:"0",
-                      backgroundColor:"white",
-                    }}>Motif</th>
-                    <th
-                    style={{
-                      fontSize:"13px",
-                      position:"sticky",
-                      top:"0",
-                      backgroundColor:"white",
-                    }}>Date et Heure</th>
-                    
-                    <th
-                    style={{
-                      fontSize:"13px",
-                      position:"sticky",
-                      top:"0",
-                      backgroundColor:"white",
-                    }}>Matricule</th>
-                  </tr>
-                </thead>
-                <tbody 
-                   style={{
-                    backgroundColor:"#FFFFFF",
-                    fontSize:"12px",
-                    borderBottom:"1px solid #222",
-                  }}
-                >
-                  {/* <tr>
-                    <td>Hello</td>
-                    <td>Hell no</td>
-                  </tr> */}
-                {patientList.map((patient, i)  =>{
-                  <tr key={`entity-${i}`} data-cy="entityTable">
-                    <td>Sanlut</td>
-                    <td>{patient.firstName+' '+patient.lastName}</td>
-                    <td>{translateGender(patient.gender) }</td>
-                    <td>{patient.dateCreated ? <TextFormat value={patient.dateCreated} type="date" format={APP_DATE_FORMAT} /> : null}</td>
-                  </tr>
-               })}
-              </tbody>
-              </Table>
-            
+                    fontSize:"13px",
+                    position:"sticky",
+                    top:"0",
+                    backgroundColor:"white",
+                  }}>Sexe</th>
+                  <th
+                  style={{
+                    fontSize:"13px",
+                    position:"sticky",
+                    top:"0",
+                    backgroundColor:"white",
+                  }}>Motif</th>
+                  <th
+                  style={{
+                    fontSize:"13px",
+                    position:"sticky",
+                    top:"0",
+                    backgroundColor:"white",
+                  }}>Date et Heure</th>
+                  
+                  <th
+                  style={{
+                    fontSize:"13px",
+                    position:"sticky",
+                    top:"0",
+                    backgroundColor:"white",
+                  }}>Matricule</th>
+                </tr>
+              </thead>
+              <tbody 
+                 style={{
+                  backgroundColor:"#FFFFFF",
+                  fontSize:"12px",
+                  borderBottom:"1px solid #222",
+                }}
+              >
+                {/* <tr>
+                  <td>Hello</td>
+                  <td>Hell no</td>
+                </tr> */}
+              {/* {patientList.map((patient, i)  =>{
+                <tr key={`entity-${i}`} data-cy="entityTable">
+                  <td>Sanlut</td>
+                  <td>{patient.firstName+' '+patient.lastName}</td>
+                  <td>{translateGender(patient.gender) }</td>
+                  <td>{patient.dateCreated ? <TextFormat value={patient.dateCreated} type="date" format={APP_DATE_FORMAT} /> : null}</td>
+                </tr>
+             })} */}
+             {
+              dossierMedicalList.map((dossierMedical,i) => {
+                <tr key={`entity-${i}`} data-cy="entityTable">
+                  <td>{dossierMedical.patient.lastName}</td>
+                </tr>
+              })
+             }
+            </tbody>
+            </Table>
+          
+            ):(<span>Aucun dossier médical</span>)}
+              
 
           </Card>
           </div>

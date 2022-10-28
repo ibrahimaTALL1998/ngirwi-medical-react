@@ -198,7 +198,7 @@ export const ConsultationDetail = () => {
                 }}
               >Examens: </span>
               <span>
-              {...consultationEntity.exams } 
+              {consultationEntity.exams} 
               </span>
             </div>
             <div>
