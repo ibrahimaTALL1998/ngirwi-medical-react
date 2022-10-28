@@ -198,7 +198,7 @@ export const ConsultationDetail = () => {
                 }}
               >Examens: </span>
               <span>
-              {consultationEntity.exams} 
+              {...consultationEntity.exams } 
               </span>
             </div>
             <div>
@@ -228,7 +228,7 @@ export const ConsultationDetail = () => {
                 }}
               >Patient: </span>
               <span>
-               {consultationEntity.patient ? <Link to={`/patient/${consultationEntity.patient.id}`}>{consultationEntity.patient.lastName}</Link> : '' } 
+               {consultationEntity.patient ? <Link to={`/patient/${consultationEntity.patient.id}`}>{consultationEntity.patient.lastName+' '+consultationEntity.patient.firstName}</Link> : '' } 
               </span>
             </div>
    
@@ -259,6 +259,7 @@ export const ConsultationDetail = () => {
             Ordonnance
           </Button>
           <Button
+            tag={Link}
             to={`/consultation/${consultationEntity.id}/edit`}
             style={{
               borderColor:"#0075FF",

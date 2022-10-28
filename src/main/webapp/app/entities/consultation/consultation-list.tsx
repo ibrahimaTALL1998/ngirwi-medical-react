@@ -121,8 +121,8 @@ export const ConsultationPatient = () =>{
               marginLeft:"25vw"
               }}
           >
-            <Button replace onClick={() => window.history.back()} style={{color:"#53BFD1",backgroundColor:"#11485C",borderColor:"#11485C"}}>{React.createElement(IoIosArrowBack , {size:"20"})}</Button>
-          <span >Liste des consultations de {patients.map(patient => patient.id.toString() === idPatient?(<span>{patient.lastName.toUpperCase()+' '+patient.firstName}</span>):(null) )} </span>
+            <Button replace tag={Link} to={`/consultation/`} style={{color:"#53BFD1",backgroundColor:"#11485C",borderColor:"#11485C"}}>{React.createElement(IoIosArrowBack , {size:"20"})}</Button>
+          <span >Liste consultations patient {patients.map(patient => patient.id.toString() === idPatient?(<span>{patient.lastName.toUpperCase()+' '+patient.firstName}</span>):(null) )} </span>
           </Card>
 
       
@@ -145,7 +145,7 @@ export const ConsultationPatient = () =>{
             boxShadow:"0px 2px 12px 4px rgba(138, 161, 203, 0.23)"
           }}
         >
-          <span style={{marginTop:"1%", color:"#141414",fontSize:"15px", marginLeft:"3%", marginBottom:"1%"}}>Consultations enregistrées</span>
+          <span style={{marginTop:"1%", color:"#141414",fontSize:"15px", marginLeft:"3%", marginBottom:"1%"}}>Liste consultations patient</span>
                {consultationList && consultationList.length > 0 ? (
 
             <Table responsive>
@@ -261,7 +261,7 @@ export const ConsultationPatient = () =>{
                     >
                         <span className="d-none d-md-inline">Mettre à jour</span>
                     </Button>
-                    <Button tag={Link} to="#" color="dark" size="sm" data-cy="entityDetailsButton">
+                    <Button tag={Link} to={`/consultation/${consultation.id}/edit/${"voir"}`} color="dark" size="sm" data-cy="entityDetailsButton">
                         <span className="d-none d-md-inline">Voir détails</span>
                     </Button>
                    

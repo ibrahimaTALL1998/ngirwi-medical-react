@@ -33,13 +33,26 @@ const Header = (props) => {
   /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
 
   return (
-    <div style={{display:"flex", flexDirection:"row",gap:"50vw", fontFamily:"Jost", fontSize:"20px" , zIndex:"1", position:"absolute", top:"0"}}>
+    <div style={{display:"flex", flexDirection:"row",gap:"50vw", fontFamily:"Jost", fontSize:"20px" , zIndex:"1", position:"absolute", top:"2"}}>
     <span>{props.pageName}</span>  
     <div style={{display:"flex", flexDirection:"row", alignItems:"flex-start", gap:"2vw"}}> 
   <div style={{display:"flex", flexDirection:"column"}}>
   
-  <span style={{position:"absolute", top:"2%",marginLeft:"1%"}}>{React.createElement(AiOutlineSearch, {size : '13'} )}</span> 
-   <ValidatedField name='search'  placeholder="   Rechercher..." onChange={event =>setQuery(event.target.value)} style={{backgroundColor:"#F9F9FB", fontFamily:"Mulish", fontWeight:"900",borderRadius:"15px",height:"5vh",borderColor:"#F9F9FB",fontSize:"10px",paddingLeft:"30px"}} />
+  <span style={{position:"absolute", top:"3%",marginLeft:"1%",color:"#C9CED6"}}>{React.createElement(AiOutlineSearch, {size : '18'} )}</span> 
+   <ValidatedField name='search'  placeholder="   Rechercher..." onChange={event =>setQuery(event.target.value)} 
+      style={{
+              backgroundColor:"#F9F9FB",
+              fontFamily:"Mulish",
+              fontWeight:"900",
+              borderRadius:"12px",
+              height:"5vh",
+              width:"15vw",
+              borderColor:"#F9F9FB",
+              fontSize:"13px",
+              paddingLeft:"30px",
+              boxShadow:"0px 4px 11px rgba(0, 0, 0, 0.25)"
+            }} 
+    />
       {  
       patientLists.filter(post => {
       if (query === "") {
@@ -52,10 +65,27 @@ const Header = (props) => {
       }else if (post.firstName.toLowerCase().includes(query.toLowerCase())) {
        
         return post;
+      }else if (post.cni.toLowerCase().includes(query.toLowerCase())) {
+       
+        return post;
+      }else if (post.phone.toLowerCase().includes(query.toLowerCase())) {
+       
+        return post;
       }
     }).map((patient, i)=>
 
-      <Link hidden={query===""?true:false} key={patient.id} to={`/patient/${patient.id}`} style={{backgroundColor:"white",margin:"0px",position:"sticky",top:"0",borderColor:"#F9F9FB",color:"#11485C", borderRadius:"3px",textDecoration:"none",height:"5vh",fontSize:"13px"}}>{patient.firstName+' '+patient.lastName}</Link>
+      <Link hidden={query===""?true:false} key={patient.id} to={`/patient/${patient.id}`} 
+      style={{
+        backgroundColor:"white",
+        margin:"0px",
+        position:"sticky",
+        top:"0",
+        borderColor:"#F9F9FB",
+        color:"#11485C",
+        borderRadius:"3px",
+        textDecoration:"none",
+        height:"5vh",
+        fontSize:"13px"}}>{patient.firstName+' '+patient.lastName}</Link>
     
 
 

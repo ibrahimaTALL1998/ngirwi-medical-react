@@ -125,41 +125,7 @@ export const PrescriptionUpdate = () => {
     setFormValues(newFormValues);
   };
 
-  const styles = StyleSheet.create({
-    page: {
-      flexDirection: "row",
-      backgroundColor: "#E4E4E4",
-    },
-    title: {
-      fontSize: 24,
-      textAlign: "center",
-      fontFamily: "Times-Roman",
-      color: "green"
-    },
-    section: {
-      margin: 10,
-      padding: 10,
-      flexGrow: 1,
-    },
-    text: {
-      margin: 12,
-      fontSize: 14,
-      textAlign: "justify",
-      fontFamily: "Times-Roman",
-    },
-    image: {
-      marginVertical: 10,
-      marginHorizontal: 200,
-      alignContent: "center",
-      maxWidth: "30%",
-      maxHeight: "30%",
-    },
-    imageHeader: {
-      float: "right",
-      maxWidth: "20%",
-      maxHeight: "20%",
-    }
-  });
+ 
 
   const doc = (
 
@@ -240,7 +206,7 @@ export const PrescriptionUpdate = () => {
                 {consultations
                   ? consultations.map(otherEntity => (
                     <option value={otherEntity.id} key={otherEntity.id}>
-                      {otherEntity.id}
+                    Faite le  {otherEntity.dateTime} à { otherEntity.patient.lastName.toUpperCase()} {otherEntity.patient.firstName}
                     </option>
                   ))
                   : null}

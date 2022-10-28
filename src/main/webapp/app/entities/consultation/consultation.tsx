@@ -316,7 +316,7 @@ export const Consultation = () => {
                       {patient.id}
                     </Button>
                   </td>
-                  <td>{patient.lastName}</td>
+                  <td>{patient.lastName.toUpperCase()}</td>
                   <td>{patient.firstName}</td>
                   <td>
                      {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="DD/MM/YYYY" /> : null}
@@ -335,7 +335,7 @@ export const Consultation = () => {
                       >
                          <Button
                           tag={Link}
-                          to={`/consultation/${consultation.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                          to={`/consultation/${consultation.id}/edit`}
                           color="primary"
                           size="sm"
                           data-cy="entityEditButton"
@@ -362,7 +362,7 @@ export const Consultation = () => {
 
               </tbody>
                 </Table>) : (
-           !loading && <div className="alert alert-warning">Aucun Consultation trouvé</div>
+           !loading && <div className="alert alert-warning">Aucune consultation trouvée</div>
          )}
          </Card>
        </div>

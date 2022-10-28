@@ -38,6 +38,16 @@ const handleSearch = (event) => {
                 return patient.firstName.includes(search);
             })
         break;
+        case 'cni':
+            filter = patientList.filter(patient => {
+                return patient.cni.includes(search);
+            })
+        break;
+        case 'phone':
+            filter = patientList.filter(patient => {
+                return patient.phone.includes(search);
+            })
+        break;
         default: 
            filter = null;
     }
@@ -47,7 +57,7 @@ return (
     <div style={style}>
         <ValidatedField type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />
         {filter === null ? patientList.map((patient, i) => ( <div key={0}>Aucun utilisateur trouvé</div>
-        )): filter.map((patient, i) => ( <div key={`entity-${i}`} style={style}>{patient.lastName+' '+patient.firstName}</div>))
+        )): filter.map((patient, i) => ( <div key={`entity-${i}`} style={style}>{patient.lastName+' '+patient.firstName+' '+patient.cni}</div>))
         }
     </div>
 

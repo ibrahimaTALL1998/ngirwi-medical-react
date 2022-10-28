@@ -320,17 +320,19 @@ export const Patient = () => {
                 <tr>
                   <th
                     style={{
-                      fontSize:"9px",
                       position:"sticky",
                       top:"0",
+                      width:"4%",
                       backgroundColor:"white",
-                    }}                
+                    }}                               
                   ></th>
                   <th 
                   style={{
-                    fontSize:"9px",
+                    textAlign:"center",
+                    fontSize:"14px",
                     position:"sticky",
                     top:"0",
+                    width:"16%",
                     backgroundColor:"white",
                   }}
                     className="hand" onClick={sort('id')}>
@@ -338,9 +340,11 @@ export const Patient = () => {
                   </th>
                   <th
                   style={{
-                    fontSize:"9px",
+                    textAlign:"center",
+                    fontSize:"14px",
                     position:"sticky",
                     top:"0",
+                    width:"16%",
                     backgroundColor:"white",
                   }}
                   className="hand" onClick={sort('firstName')}>
@@ -348,9 +352,11 @@ export const Patient = () => {
                   </th>
                   <th 
                   style={{
-                    fontSize:"9px",
+                    textAlign:"center",
+                    fontSize:"14px",
                     position:"sticky",
                     top:"0",
+                    width:"16%",
                     backgroundColor:"white",
                   }}
                   className="hand" onClick={sort('lastName')}>
@@ -358,15 +364,17 @@ export const Patient = () => {
                   </th>
                   <th 
                   style={{
-                    fontSize:"9px",
+                    textAlign:"center",
+                    fontSize:"14px",
                     position:"sticky",
                     top:"0",
+                    width:"16%",
                     backgroundColor:"white",
                   }}
                   className="hand" onClick={sort('birthday')}>
                     Date de naissance 
                   </th>
-                  <th 
+                  {/* <th 
                   style={{
                     fontSize:"9px",
                     position:"sticky",
@@ -405,18 +413,20 @@ export const Patient = () => {
                   }}
                   className="hand" onClick={sort('phone')}>
                     Téléphone 
-                  </th>
+                  </th> */}
                   <th 
                   style={{
-                    fontSize:"9px",
+                    textAlign:"center",
+                    fontSize:"14px",
                     position:"sticky",
                     top:"0",
+                    width:"16%",
                     backgroundColor:"white",
                   }}
                   className="hand" onClick={sort('cni')}>
                     Cni 
                   </th>
-                  <th 
+                  {/* <th 
                   style={{
                     fontSize:"9px",
                     position:"sticky",
@@ -445,13 +455,15 @@ export const Patient = () => {
                   }}
                   className="hand" onClick={sort('maritialStatus')}>
                     Status Matrimonial 
-                  </th>
+                  </th> */}
                       
                   <th
                   style={{
-                    fontSize:"9px",
+                    textAlign:"center",
+                    fontSize:"14px",
                     position:"sticky",
                     top:"0",
+                    width:"16%",
                     backgroundColor:"white",
                   }}
                   >Actions</th>
@@ -462,7 +474,8 @@ export const Patient = () => {
                   backgroundColor:"#F6FAFF",
                   border:"1px solid #F6FAFF",
                   borderRadius:"15px 15px 0px 15px",
-                  fontSize:"9px",
+                  fontSize:"15px",
+                  textAlign:"center",
                   borderBottom:"50px solid white",
                 }}
               >
@@ -480,21 +493,21 @@ export const Patient = () => {
                     </td>
                     
                     <td >
-                      <Button tag={Link} to={`/patient/${patient.id}`} color="link" style={{fontSize:"10px"}} >
-                        #{patient.id}
+                      <Button tag={Link} to={`/patient/${patient.id}`} color="link"  style={{color:"#91A8CD",textDecoration:"none",}} >
+                        {patient.id}
                       </Button>
                     </td>
                     <td>{patient.firstName}</td>
                     <td>{patient.lastName}</td>
                     <td>{patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}</td>
-                    <td>{patient.birthplace}</td>
+                    {/* <td>{patient.birthplace}</td>
                     <td>{translateGender(patient.gender) }</td>
                     <td>{patient.adress}</td>
-                    <td>{patient.phone}</td>
+                    <td>{patient.phone}</td> */}
                     <td>{patient.cni}</td>
-                    <td>{patient.job}</td>
+                    {/* <td>{patient.job}</td>
                     <td>{translateBloodType(patient.bloodType) }</td>
-                    <td>{translateMaritalStatus(patient.maritialStatus) }</td>
+                    <td>{translateMaritalStatus(patient.maritialStatus) }</td> */}
                     <td className="text-end">
                       <div 
                         style={{
@@ -504,18 +517,19 @@ export const Patient = () => {
                           fontSize:"9px"
                         }}
                       >
-                        <Button tag={Link} to={`/patient/${patient.id}`} color="info" size="sm" data-cy="entityDetailsButton">
+                      <Button
+                        tag={Link}
+                        to={`/patient/${patient.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        color="primary"
+                        size="sm"
+                        data-cy="entityEditButton"
+                      >
+                        <span className="d-none d-md-inline">Mettre à jour</span>
+                      </Button>
+                        <Button tag={Link} to={`/patient/${patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
                             <span className="d-none d-md-inline">Voir détails</span>
                         </Button>
-                        <Button
-                          tag={Link}
-                          to={`/patient/${patient.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                          color="primary"
-                          size="sm"
-                          data-cy="entityEditButton"
-                        >
-                            <span className="d-none d-md-inline">Mettre à jour</span>
-                        </Button>
+                        
 
                       </div>
                     </td>
@@ -536,9 +550,9 @@ export const Patient = () => {
                     <td>{patient.adress}</td>
                     <td>{patient.phone}</td>
                     <td>{patient.cni}</td>
-                    <td>{patient.job}</td>
+                    {/* <td>{patient.job}</td>
                     <td>{translateBloodType(patient.bloodType) }</td>
-                    <td>{translateMaritalStatus(patient.maritialStatus)}</td>
+                    <td>{translateMaritalStatus(patient.maritialStatus)}</td> */}
                     <td className="text-end">
                       <div className="btn-group flex-btn-group-container">
                         <Button tag={Link} to={`/patient/${patient.id}`} color="info" size="sm" data-cy="entityDetailsButton">

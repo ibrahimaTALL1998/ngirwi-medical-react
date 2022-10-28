@@ -4,7 +4,7 @@ import { Button, Row, Col, FormText, Label, Card } from 'reactstrap';
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
 import {FiLock, FiLogOut} from 'react-icons/fi';
 
-import { convertDateTimeFromServerToDate, convertDateTimeFromServerToHours, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeFromServerToDate, convertDateTimeFromServerToHours, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
@@ -20,6 +20,7 @@ import makeAnimated from 'react-select/animated';
 import { examsList } from 'app/shared/util/exams-list';
 import Header from 'app/shared/layout/header/header'
 import dayjs from 'dayjs';
+import { IoIosArrowBack } from 'react-icons/io';
 
 export const ConsultationUpdate = () => {
   const dispatch = useAppDispatch();
@@ -28,6 +29,7 @@ export const ConsultationUpdate = () => {
 
   const { id } = useParams<'id'>();
   const { idPatient } = useParams<'idPatient'>();
+  const { idEdit } = useParams<'idEdit'>();
   const isNew = id === undefined;
 
   const patients = useAppSelector(state => state.patient.entities);
@@ -83,18 +85,21 @@ export const ConsultationUpdate = () => {
     isNew
       ? {
 
-        hours: dayjs().startOf('minute').format("HH:mm:ss"),
-        date : dayjs().startOf('minute').format("DD/MM/YYYY"),
+        hours: dayjs().format("HH:mm:ss"),
+        date : dayjs().format("DD/MM/YYYY"),
+        dateTime: displayDefaultDateTime(),
         author: account.login,
         exams: JSON.stringify(exams),
         patient: idPatient, 
       }
       : {
         ...consultationEntity,
+        dateTime: convertDateTimeFromServer(consultationEntity.dateTime),
         hours: convertDateTimeFromServerToHours(consultationEntity.dateTime),
         date: convertDateTimeFromServerToDate(consultationEntity.dateTime),
         patient: consultationEntity?.patient?.id,
         author: account.login,
+        ...consultationEntity?.exams
       };
 
   const animatedComponents = makeAnimated();
@@ -129,7 +134,7 @@ export const ConsultationUpdate = () => {
 
           }}
           >
-          <Card
+          {/* <Card
             style={{
               height:"6.28vh",
               width:"50vw",
@@ -146,7 +151,7 @@ export const ConsultationUpdate = () => {
           >
            {
            isNew ? (<span style={{marginTop:"2.5%"}}>Enregistrement nouvelle consultation 
-           {/* {patients
+           {patients
             ? patients.map(otherEntity => (
               (idPatient == otherEntity.id)?(
                 <span key={otherEntity.id}>
@@ -155,7 +160,7 @@ export const ConsultationUpdate = () => {
               ):(<span></span>))
               
               )
-          : null} */}
+          : null}
           </span>):
            (<span style={{marginTop:"2.5%"}}>
             Mise à jour consultation patient {patients
@@ -169,8 +174,53 @@ export const ConsultationUpdate = () => {
                     )
                 : null}  
            </span>)}  
+          </Card> */}
+          <Card
+            style={{
+              height:"6.28vh",
+              minWidth:"35vw",
+              borderRadius:"20px",
+              backgroundColor:"#11485C",
+              textAlign:"center",
+              color:"white",
+              marginBottom:"5vh",
+              boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
+              display:"flex",
+              flexDirection:"row",
+              justifyContent:"center",
+              alignItems:"center",
+              paddingLeft:"1%",
+              paddingRight:"1%"
+              }}
+          >
+            <Button tag={Link} replace to={idPatient==undefined?(`/consultation/list/${consultationEntity?.patient?.id}`):(`/consultation/list/${idPatient}`)} style={{color:"#53BFD1",backgroundColor:"#11485C",borderColor:"#11485C"}}>{React.createElement(IoIosArrowBack , {size:"20"})}</Button >
+            {
+           isNew ? (<span >Enregistrement nouvelle consultation 
+           {patients
+            ? patients.map(otherEntity => (
+              (idPatient === otherEntity.id.toString())?(
+                <span key={otherEntity.id}>
+                {' '+otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName}
+              </span>
+              ):(<span></span>))
+              
+              )
+          : null}
+          </span>):
+           (<span >
+            {idEdit==="voir"?"Consulation patient ":"Mise à jour consultation patient "}
+            {patients
+                  ? patients.map(otherEntity => (
+                    (consultationEntity?.patient?.id === otherEntity.id)?(
+                      <span key={otherEntity.id}>
+                      {otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName}
+                    </span>
+                    ):(null))
+                    
+                    )
+                : null}  
+           </span>)}          
           </Card>
-          
             <Card
             style={{
               height:"30vh",
@@ -252,7 +302,7 @@ export const ConsultationUpdate = () => {
             }}
           >
              {isNew?(<span style={{marginTop:"1%", color:"#141414",fontSize:"19px", marginLeft:"3%"}}>Remplir informations patient</span>):(
-              <span style={{marginTop:"1%", color:"#141414",fontSize:"19px", fontFamily:"jost", marginLeft:"3%"}}>Modifications consultation patient</span>
+              <span style={{marginTop:"1%", color:"#141414",fontSize:"19px", fontFamily:"jost", marginLeft:"3%"}}> {idEdit==="voir"?"Consultation patient":"Modifications consultation patient"} </span>
              )} 
               
               
@@ -269,7 +319,16 @@ export const ConsultationUpdate = () => {
                   fontWeight:"900",
                 }}
               >
-              
+              <ValidatedField
+                hidden
+                disabled
+                label="Date et heure"
+                id="consultation-dateTime"
+                name="dateTime"
+                data-cy="dateTime"
+                type="datetime-local"
+                placeholder="YYYY-MM-DD HH:mm"
+              />
                <ValidatedField
                 disabled
                 label="Date"
@@ -309,6 +368,7 @@ export const ConsultationUpdate = () => {
                 }}>{React.createElement(FiLock,{size:"20"})}</span>
                 </ValidatedField>
               <ValidatedField
+                disabled={idEdit==="voir"?true:false}
                 label="Temperature"
                 id="consultation-temperature"
                 name="temperature"
@@ -320,11 +380,13 @@ export const ConsultationUpdate = () => {
                 }}
                 style={{
                   borderRadius:"25px",
-                  backgroundColor:"#F7FAFF",
-                  borderColor:"#CBDCF7"
+                  backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
+                  borderColor:"#CBDCF7",
+                  color:(idEdit === "voir")?("#F6FAFF"):("black")
                 }}
               />
               <ValidatedField
+                disabled={idEdit==="voir"?true:false}
                 label="Poids"
                 id="consultation-weight"
                 name="weight"
@@ -336,11 +398,13 @@ export const ConsultationUpdate = () => {
                 }}
                 style={{
                   borderRadius:"25px",
-                  backgroundColor:"#F7FAFF",
-                  borderColor:"#CBDCF7"
+                  backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
+                  borderColor:"#CBDCF7",
+                  color:(idEdit === "voir")?("#F6FAFF"):("black")
                 }}
               />
               <ValidatedField
+                disabled={idEdit==="voir"?true:false}
                 label="Tension"
                 id="consultation-tension"
                 name="tension"
@@ -351,20 +415,29 @@ export const ConsultationUpdate = () => {
                 }}
                 style={{
                   borderRadius:"25px",
-                  backgroundColor:"#F7FAFF",
-                  borderColor:"#CBDCF7"
+                  backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
+                  borderColor:"#CBDCF7",
+                  color:(idEdit === "voir")?("#F6FAFF"):("black")
                 }}
               />
-              <ValidatedField label="Glycemie" id="consultation-glycemie" name="glycemie" data-cy="glycemie" type="text"
+              <ValidatedField 
+                disabled={idEdit==="voir"?true:false}
+                label="Glycemie" 
+                id="consultation-glycemie" 
+                name="glycemie" 
+                data-cy="glycemie" 
+                type="text"
                 style={{
                   borderRadius:"25px",
-                  backgroundColor:"#F7FAFF",
-                  borderColor:"#CBDCF7"
+                  backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
+                  borderColor:"#CBDCF7",
+                  color:(idEdit === "voir")?("#F6FAFF"):("black")
                 }}
               />
               
 
               <ValidatedField
+                disabled={idEdit==="voir"?true:false}
                 label="Hypothèse diagnostique"
                 id="consultation-hypothesis"
                 name="hypothesis"
@@ -375,26 +448,25 @@ export const ConsultationUpdate = () => {
                 }}
                 style={{
                   borderRadius:"25px",
-                  backgroundColor:"#F7FAFF",
-                  borderColor:"#CBDCF7"
+                  backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
+                  borderColor:"#CBDCF7",
+                  color:(idEdit === "voir")?("#F6FAFF"):("black")
                 }}
               />
-              <div
+              {/* <div
                 style={{
                   borderRadius:"25px",
                   backgroundColor:"#F7FAFF",
-                  borderColor:"#CBDCF7"
+                  borderColor:"#CBDCF7",
                 }}>
-              {/* <Label>Examens complémentaires</Label>
-               <Select options={examsList}                 
-              
-                components={animatedComponents} isMulti onChange={(e) => setExams(e)} /> */}
                 <Label>Examens complémentaires</Label>
-              <Select options={examsList} components={animatedComponents} isMulti onChange={(e) => setExams(e)} />
-              </div>
+              <Select  name="exams"
+              options={examsList} components={animatedComponents} isMulti onChange={(e) => setExams(e)} />
+              </div> */}
              
-                {/* <ValidatedField label="Examens paracliniques" name="examspara" type="select" 
+                <ValidatedField label="Examens paracliniques" name="exams" type="select" 
                   isMulti
+                  components={animatedComponents}
                   onChange={(e) => setExams(e)}
                   style={{
                     borderRadius:"25px",
@@ -402,18 +474,18 @@ export const ConsultationUpdate = () => {
                     borderColor:"#CBDCF7"
                   }}
                 >
-                <option value="" key="0" />
                 { examsList.map((otherEntity, i) => (
                     <option value={otherEntity.value} key={`entity-${i}`}>
                       {otherEntity.label}
                     </option>
                     ))
                 }
-                </ValidatedField> */}
+                </ValidatedField>
 
               
               
               <ValidatedField 
+                disabled={idEdit==="voir"?true:false}
                 label="Traitement"
                 id="consultation-treatment"
                 name="treatment"
@@ -426,12 +498,18 @@ export const ConsultationUpdate = () => {
                   width:"150%",
                   marginBottom:"20px",
                   borderRadius:"10px",
-                  backgroundColor:"#F7FAFF",
+                  color:(idEdit === "voir")?("#F6FAFF"):("black"),
+                  backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
                   borderColor:"#CBDCF7"
                 }}
               />
 
-              <Button id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}
+              <Button 
+              hidden={idEdit==="voir"?true:false}
+              id="save-entity" 
+              data-cy="entityCreateSaveButton" 
+              type="submit" 
+              disabled={updating}
                 style={{
                   gridColumn:"1/3",
                   borderRadius:"25px",
@@ -444,17 +522,19 @@ export const ConsultationUpdate = () => {
               </Button>
               &nbsp;
 
-              <Button onClick={()=>window.history.back()} id="cancel-save" data-cy="entityCreateCancelButton"  replace color="info"
+              <Button tag={Link} to={idPatient==undefined?(`/consultation/list/${consultationEntity?.patient?.id}`):(`/consultation/list/${idPatient}`)} id="cancel-save" data-cy="entityCreateCancelButton"  replace color="info"
                 style={{
                   gridColumn:"1/3",
                   borderRadius:"25px",
                   color:"white",
                   backgroundColor:"#EC4747",
                   borderColor:"#EC4747",
-                  textAlign:"center"
+                  textAlign:"center",
+                  fontSize:(idEdit === "voir")?("20px"):("")
+
                 }}
               >
-                <span className="d-none d-md-inline">Annuler</span>
+                <span className="d-none d-md-inline">{idEdit==="voir"?"Retour":"Annuler"}</span>
               </Button>
               <ValidatedField hidden label="Author" id="consultation-author" name="author" data-cy="author" type="text"/>
               

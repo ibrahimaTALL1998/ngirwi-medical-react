@@ -18,6 +18,7 @@ const ConsultationRoutes = () => (
     <Route path=":id">
       <Route index element={<ConsultationDetail />} />
       <Route path="edit" element={<ConsultationUpdate />} />
+      <Route path="edit/:idEdit" element={<ConsultationUpdate/>}/>
       <Route path="delete" element={<ConsultationDeleteDialog />} />
     </Route>
   </ErrorBoundaryRoutes>

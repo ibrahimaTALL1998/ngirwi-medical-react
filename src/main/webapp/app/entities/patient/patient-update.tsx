@@ -18,6 +18,7 @@ import { MARITALSTATUS } from 'app/shared/model/enumerations/maritalstatus.model
 import { getEntity, updateEntity, createEntity, reset } from './patient.reducer';
 import { FiLogOut } from 'react-icons/fi';
 import { is } from 'immer/dist/internal';
+import { IoIosArrowBack } from 'react-icons/io';
 
 export const PatientUpdate = () => {
   const dispatch = useAppDispatch();
@@ -120,24 +121,32 @@ export const PatientUpdate = () => {
               marginTop:"9.5vh"
             }}
           >
+            
             <Card
-              style={{
-                height:"8.28vh",
-                width:"33.38vw",
-                borderRadius:"20px",
-                backgroundColor:"#11485C",
-                marginLeft:"25%",
-                textAlign:"center",
-                color:"white",
-                boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
-                }}
-            >
-             {
-             isNew ? (<span style={{marginTop:"2.5%"}}>Enregistrer Patients</span>):
-             (<span style={{marginTop:"2.5%"}}>
-              Editer Patient {patientEntity.lastName + ' ' + patientEntity.firstName}<br/>cni : {patientEntity.cni} 
-             </span>)}  
-            </Card>
+            style={{
+              height:"6.28vh",
+              width:"32vw",
+              maxWidth:"50vw",
+              borderRadius:"20px",
+              backgroundColor:"#11485C",
+              textAlign:"center",
+              color:"white",
+              marginBottom:"5vh",
+              marginLeft:"25vw",
+              boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
+              display:"flex",
+              flexDirection:"row",
+              justifyContent:"center",
+              alignItems:"center",
+              }}
+          >
+            <Button replace onClick={() => window.history.back()} style={{color:"#53BFD1",backgroundColor:"#11485C",borderColor:"#11485C"}}>{React.createElement(IoIosArrowBack , {size:"20"})}</Button>
+            {
+            isNew ? (<span>Enregistrement nouveau patient</span>):
+            (<span>
+              Mise à jour patient {patientEntity.lastName+' '+patientEntity.firstName}
+             </span>)}          
+          </Card>
             <Card 
               style={{
                 height:"70vh",
@@ -147,8 +156,10 @@ export const PatientUpdate = () => {
 
               }}
             >
-                <span style={{marginTop:"1%", color:"#141414",fontSize:"15px", marginLeft:"3%"}}>Remplir informations patient</span>
-                <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}
+            {isNew?(<span style={{marginTop:"1%", color:"#141414",fontSize:"19px", marginLeft:"3%"}}>Remplir informations patient</span>):(
+              <span style={{marginTop:"1%", color:"#141414",fontSize:"19px", fontFamily:"jost", marginLeft:"3%"}}>Modifications informations patient</span>
+            )}
+            <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}
                   style={{
                     width:"94%",
                     marginLeft:"3%",

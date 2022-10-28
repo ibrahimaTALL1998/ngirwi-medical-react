@@ -166,7 +166,7 @@ export const Prescription = () => {
             </tbody>
           </Table>
         ) : (
-          !loading && <div className="alert alert-warning">Aucun Prescription trouvé</div>
+          !loading && <div className="alert alert-warning">Aucune ordonnance trouvée</div>
         )}
       </div>
       {totalItems ? (
