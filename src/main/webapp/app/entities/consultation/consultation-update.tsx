@@ -134,51 +134,11 @@ export const ConsultationUpdate = () => {
 
           }}
           >
-          {/* <Card
-            style={{
-              height:"6.28vh",
-              width:"50vw",
-              borderRadius:"15px",
-              backgroundColor:"#11485C",
-              marginLeft:"1%",
-              textAlign:"center",
-              color:"white",
-              boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
-              fontSize:"15px",
-              fontFamily:"Ubuntu",
-              fontWeight:"700"
-              }}
-          >
-           {
-           isNew ? (<span style={{marginTop:"2.5%"}}>Enregistrement nouvelle consultation 
-           {patients
-            ? patients.map(otherEntity => (
-              (idPatient == otherEntity.id)?(
-                <span key={otherEntity.id}>
-                {otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName}
-              </span>
-              ):(<span></span>))
-              
-              )
-          : null}
-          </span>):
-           (<span style={{marginTop:"2.5%"}}>
-            Mise à jour consultation patient {patients
-                  ? patients.map(otherEntity => (
-                    (consultationEntity?.patient?.id === otherEntity.id)?(
-                      <span key={otherEntity.id}>
-                      {otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName}
-                    </span>
-                    ):(null))
-                    
-                    )
-                : null}  
-           </span>)}  
-          </Card> */}
+          
           <Card
             style={{
               height:"6.28vh",
-              minWidth:"35vw",
+              width:"30vw",
               borderRadius:"20px",
               backgroundColor:"#11485C",
               textAlign:"center",
@@ -187,38 +147,20 @@ export const ConsultationUpdate = () => {
               boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
               display:"flex",
               flexDirection:"row",
-              justifyContent:"center",
+              justifyContent:"flex-start",
               alignItems:"center",
-              paddingLeft:"1%",
-              paddingRight:"1%"
+              gap:isNew?"2vw":"4vw",
+              paddingLeft:isNew?"1vw":"2vw"
               }}
           >
-            <Button tag={Link} replace to={idPatient==undefined?(`/consultation/list/${consultationEntity?.patient?.id}`):(`/consultation/list/${idPatient}`)} style={{color:"#53BFD1",backgroundColor:"#11485C",borderColor:"#11485C"}}>{React.createElement(IoIosArrowBack , {size:"20"})}</Button >
+            <Link to={idPatient==undefined?(`/consultation/list/${consultationEntity?.patient?.id}`):(`/consultation/list/${idPatient}`)} style={{color:"#53BFD1",}}>{React.createElement(IoIosArrowBack , {size:"20"})}</Link >
             {
            isNew ? (<span >Enregistrement nouvelle consultation 
-           {patients
-            ? patients.map(otherEntity => (
-              (idPatient === otherEntity.id.toString())?(
-                <span key={otherEntity.id}>
-                {' '+otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName}
-              </span>
-              ):(<span></span>))
-              
-              )
-          : null}
+          
           </span>):
            (<span >
-            {idEdit==="voir"?"Consulation patient ":"Mise à jour consultation patient "}
-            {patients
-                  ? patients.map(otherEntity => (
-                    (consultationEntity?.patient?.id === otherEntity.id)?(
-                      <span key={otherEntity.id}>
-                      {otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName}
-                    </span>
-                    ):(null))
-                    
-                    )
-                : null}  
+            {idEdit==="voir"?"Consultation patient ":"Mise à jour consultation patient "}
+           
            </span>)}          
           </Card>
             <Card
@@ -242,26 +184,18 @@ export const ConsultationUpdate = () => {
               height:"30%",
               display:"flex",
               flexDirection:"row",
-              gap:"10%",
+              gap:"50%",
               alignItems:"center",
               justifyContent:"center",
               paddingTop:"2%",
               paddingLeft:"2%"
             }}>
-              <span style={{}}>
-            Dossier médical {patients
-                  ? patients.map(otherEntity => (
-                    (consultationEntity?.patient?.id === otherEntity.id || idPatient === otherEntity.id.toString())?(
-                      <span key={otherEntity.id}>
-                      {otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName}
-                    </span>
-                    ):(null))
-                    
-                    )
-                : null}  
+              <span style={{fontSize:"18px",fontWeight:"900"}}>
+            Dossier médical
+            
            </span>
            <Link  to="#"
-           style={{fontSize:"13px",color:"#F6FAFF",textDecoration:"none"}}>Tout voir </Link>
+           style={{fontSize:"13px",color:"#F6FAFF",textDecoration:"none",border:"1px solid #72C9D8",backgroundColor:"#0075F5",padding:"10px",borderRadius:"25px",boxShadow:"2px 5px 11px rgba(0, 0, 0, 0.25)"}}>Tout voir </Link>
            
             </Card>
             <div style={{
@@ -289,7 +223,7 @@ export const ConsultationUpdate = () => {
 
           <Card 
             style={{
-              height:"110vh",
+              minHeight:"110vh",
               width:"80vw",
               boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
               borderRadius:"15px",
@@ -304,7 +238,33 @@ export const ConsultationUpdate = () => {
              {isNew?(<span style={{marginTop:"1%", color:"#141414",fontSize:"19px", marginLeft:"3%"}}>Remplir informations patient</span>):(
               <span style={{marginTop:"1%", color:"#141414",fontSize:"19px", fontFamily:"jost", marginLeft:"3%"}}> {idEdit==="voir"?"Consultation patient":"Modifications consultation patient"} </span>
              )} 
-              
+             <span
+            style={{
+              marginTop:"2%",
+              color:"#141414",
+              fontSize:"25px",
+              marginBottom:"3%",
+              textAlign:"center",
+              fontWeight:"900"
+            }}
+          > 
+               {patients
+                  ? patients.map(otherEntity => (
+                    (consultationEntity?.patient?.id === otherEntity.id || idPatient == otherEntity.id)?(
+                      <div>
+                        <span key={otherEntity.id}>
+                          {'Patient: '+otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName}
+                       </span> <br/>
+                        <span style={{fontWeight:"400"}}>{'Matricule: #'+otherEntity.id}</span>
+                      </div>
+                      
+                ):(null))
+                    
+                    )
+                : null}  
+            </span> 
+           
+           
               
               <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}
                 style={{
@@ -315,7 +275,7 @@ export const ConsultationUpdate = () => {
                   columnGap:"30px",
                   marginTop:"1%",
                   gridTemplateColumns : "repeat(2,1fr)",
-                  fontSize:"12px",
+                  fontSize:"18px",
                   fontWeight:"900",
                 }}
               >

@@ -44,7 +44,7 @@ const SideBar = (props : ISideBarProps) => {
                 style={{
                     backgroundColor:"#FFFFFF",
                     height:"100vh",
-                    minWidth:"14.06vw", 
+                    width:"14.06vw", 
                     position:"fixed",
                     color:"#54BFD0", 
                 }}
@@ -219,7 +219,7 @@ const SideBar = (props : ISideBarProps) => {
                     </h6>
                     </Link>
                     <Link 
-                        to="/logout"
+                        to="/logoutDialog"
                         style={{
                             marginLeft : "2vw",
                             marginRight: "3vw",

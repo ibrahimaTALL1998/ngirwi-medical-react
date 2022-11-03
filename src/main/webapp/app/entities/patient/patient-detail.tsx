@@ -21,6 +21,7 @@ export const PatientDetail = () => {
   }, []);
 
   const patientEntity = useAppSelector(state => state.patient.entity);
+  const dossierMedicalEntity = useAppSelector(state => state.dossierMedical.entities)
   return (
     <div
       style={{
@@ -247,7 +248,8 @@ export const PatientDetail = () => {
             }}
           >
             <Button
-              href="dossier-medical/?page=1&sort=id,asc"
+              tag={Link}
+              to={`/dossier-medical/${patientEntity.id}`}    
               style={{
                 borderColor:"#0075FF",
                 backgroundColor:"#0075FF",

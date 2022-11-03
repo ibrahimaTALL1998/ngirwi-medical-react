@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Button, Card, Table } from 'reactstrap';
+import { Button, Card, Label, Table } from 'reactstrap';
 import { Translate, TextFormat, getSortState, JhiPagination, JhiItemCount, ValidatedField } from 'react-jhipster';
 import { RiUserAddLine } from 'react-icons/ri';
 import {BiTrash} from 'react-icons/bi';
@@ -20,6 +20,7 @@ import { IPatient } from 'app/shared/model/patient.model';
 import { getEntities } from './patient.reducer';
 import { AiOutlineSearch } from 'react-icons/ai';
 import Header from 'app/shared/layout/header/header';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const Patient = () => {
   const dispatch = useAppDispatch();
@@ -37,7 +38,7 @@ export const Patient = () => {
 
   // filter
   const [search, setSearch] = useState('');
-  const [criteria, setCriteria] = useState('lastName');
+  const [criteria, setCriteria] = useState(' ');
 
   const getAllEntities = () => {
     dispatch(
@@ -104,32 +105,22 @@ export const Patient = () => {
     switch (criteria) {
       case 'lastName':
         filter = patientList.filter(patient => {
-          return patient.lastName.includes(search);
+          return patient.lastName.toLowerCase().includes(search.toLowerCase());
         })
         break;
       case 'firstName':
         filter = patientList.filter(patient => {
-          return patient.firstName.includes(search);
+          return patient.firstName.toLowerCase().includes(search.toLowerCase());
         })
         break;
       case 'birthday':
         filter = patientList.filter(patient => {
-          return patient.birthday.includes(search);
-        })
-        break;
-      case 'phone':
-        filter = patientList.filter(patient => {
-          return patient.phone.includes(search);
+          return patient.birthday.toLowerCase().includes(search.toLowerCase());
         })
         break;
       case 'cni':
         filter = patientList.filter(patient => {
-          return patient.cni.includes(search);
-        })
-        break;
-      case 'maritialStatus':
-        filter = patientList.filter(patient => {
-          return patient.maritialStatus.includes(search);
+          return patient.cni.toLowerCase().includes(search.toLowerCase());
         })
         break;
       default: filter=null;
@@ -149,52 +140,7 @@ export const Patient = () => {
           flexDirection:"column"
         }}    
     >
-          {/* <div style={{display:"flex", flexDirection:"row",gap:"70vw"}}>
-            <span>Gestion Patients</span>  
-            <div>
-              <Link to="/logout" style={{color:"silver", fontWeight:"900"}}>
-                <div>{React.createElement(FiLogOut)} </div>
-              </Link>
-            </div>
-          </div> */}
 
-          {/* <div style={{display:"flex", flexDirection:"row",gap:"50vw", fontFamily:"Jost", fontSize:"20px",position:"fixed" , zIndex:"1"}}>
-            <span>Gestion Patients</span>  
-            <div style={{display:"flex", flexDirection:"row", alignItems:"flex-start", gap:"2vw"}}> 
-          <div style={{display:"flex", flexDirection:"column"}}>
-          
-          <span style={{position:"fixed", top:"2%",marginLeft:"1%"}}>{React.createElement(AiOutlineSearch, {size : '13'} )}</span> 
-           <ValidatedField name='search'  placeholder="   Rechercher..." onChange={event =>setQuery(event.target.value)} style={{backgroundColor:"#F9F9FB", fontFamily:"Mulish", fontWeight:"900",borderRadius:"15px",height:"5vh",borderColor:"#F9F9FB",fontSize:"10px",paddingLeft:"30px"}} />
-              {  
-              patientList.filter(post => {
-              if (query === "") {
-              
-                post = "Recherche de patients..."
-                return post;
-              } else if (post.lastName.toLowerCase().includes(query.toLowerCase())) {
-               
-                return post;
-              }else if (post.firstName.toLowerCase().includes(query.toLowerCase())) {
-               
-                return post;
-              }
-            }).map((patient, i)=>
-        
-              <Link hidden={query===""?true:false} key={patient.id} to={`/patient/${patient.id}`} style={{backgroundColor:"white",margin:"0px",position:"sticky",top:"0",borderColor:"#F9F9FB",color:"#11485C", borderRadius:"3px",textDecoration:"none",height:"5vh",fontSize:"13px"}}>{patient.firstName+' '+patient.lastName}</Link>
-            
-       
-
-                   )
-
-              }
-            
-          </div>
-   
-              <Link to="/logout" style={{color:"silver", fontWeight:"900"}}>
-                <div>{React.createElement(FiLogOut)} </div>
-              </Link>
-            </div>
-          </div> */}
           <Header pageName="Patients"/>
 
           <div
@@ -219,14 +165,14 @@ export const Patient = () => {
 
               <div
                 style={{
-                  justifyContent:"center",
+                  justifyContent:"flex-start",
                   alignItems:"center",
                   width:"15vw",
                   height:"25vh",
                   borderRadius:"50%",
                   backgroundColor:"#CBDCF7",
-                  paddingTop:"9vh",
-                  paddingLeft:"6%",
+                  paddingTop:"5vh",
+                  paddingLeft:"8%",
                   color:"#56B5C5"
                 }}
               >
@@ -234,11 +180,12 @@ export const Patient = () => {
                     <span 
                       style={{
                         color:"#56B5C5",
-                        fontSize:"15px",
-                        fontFamily:"Ubuntu"
+                        fontSize:"20px",
+                        fontFamily:"Ubuntu",
+                        textAlign:"justify"
                         }}
                     >
-                    {React.createElement( RiUserAddLine  ,{size: "15"})}  Enregistrer nouveau patient
+                    {React.createElement( RiUserAddLine  ,{size: "24"})}  Enregistrer nouveau patient
                     </span>                
                   </Link>
                 
@@ -261,14 +208,14 @@ export const Patient = () => {
 
               <div
                 style={{
-                  justifyContent:"center",
+                  justifyContent:"justify",
                   alignItems:"center",
                   width:"15vw",
                   height:"25vh",
                   borderRadius:"50%",
                   backgroundColor:"#CBDCF7",
-                  paddingTop:"10vh",
-                  paddingLeft:"3%"
+                  paddingTop:"5vh",
+                  paddingLeft:"9%"
                 }}
               >
                   <Link to="/consultation/new/" style={{textDecoration:"none",color:"#56B5C5"}}>
@@ -276,11 +223,22 @@ export const Patient = () => {
                       style={{
                         fontFamily:"Ubuntu",
                         color:"#56B5C5",
-                        fontSize:"15px",
+                        fontSize:"20px",
+                        textAlign:"justify"
                         }}
                     >
-                     {React.createElement( RiUserAddLine  ,{size: "15"})} Enregistrer consultation
-                    </span>                
+                     {React.createElement( RiUserAddLine  ,{size: "24"})} Enregistrer 
+                    </span>
+                    <br/> 
+                    <span
+                     style={{
+                      fontFamily:"Ubuntu",
+                      color:"#56B5C5",
+                      fontSize:"20px",
+                      textAlign:"justify",
+                      marginLeft:"2vw"
+                      }}
+                  >consultation</span>               
                   </Link>
                 
               </div>
@@ -305,8 +263,44 @@ export const Patient = () => {
 
               }}
             >
-              <span style={{marginTop:"1%", color:"#141414",fontSize:"15px", marginLeft:"3%", marginBottom:"1%"}}>Patients enregistrés</span>
+              <span style={{marginTop:"1%", color:"#141414",fontSize:"20px", marginLeft:"3%", marginBottom:"1%"}}>Patients enregistrés</span>
 
+              
+       <div 
+        style={{
+          display:"flex",
+          flexDirection:"row",
+          justifyContent:"flex-end",
+          marginBottom:"5vh",
+          marginRight:"2vw",
+          gap:"1vw"
+        }}
+       >
+         <ValidatedField label={`${"   "}`} style={{borderRadius:"12px"}}  id="criteria" name="criteria" type="select" onChange={(e) => setCriteria(e.target.value)}>
+           {/* <select name="criteria" > */}
+           <option value=" ">
+            Critère de recherche
+           </option>
+           <option value="lastName">
+             Nom
+           </option>
+           <option value="firstName">
+             Prénom
+           </option>
+           <option value="birthday">
+             Date de naissance
+           </option>
+           <option value="cni">
+             Numéro de carte d'identité
+           </option>
+            {/* </select> */}
+     
+    
+       </ValidatedField>
+       <ValidatedField label={`${"   "}`} style={{borderRadius:"12px"}} placeholder="Barre de recherche" id="search" name="search" type={criteria==="birthday"?"date":"text"} onChange={handleSearch} />
+          {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
+
+       </div>
                 <Table responsive
                 
                 >
@@ -336,7 +330,7 @@ export const Patient = () => {
                     backgroundColor:"white",
                   }}
                     className="hand" onClick={sort('id')}>
-                    ID 
+                    ID <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
                   </th>
                   <th
                   style={{
@@ -348,7 +342,7 @@ export const Patient = () => {
                     backgroundColor:"white",
                   }}
                   className="hand" onClick={sort('firstName')}>
-                    Prénom 
+                    Prénom <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
                   </th>
                   <th 
                   style={{
@@ -360,7 +354,7 @@ export const Patient = () => {
                     backgroundColor:"white",
                   }}
                   className="hand" onClick={sort('lastName')}>
-                    Nom 
+                    Nom <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
                   </th>
                   <th 
                   style={{
@@ -372,48 +366,8 @@ export const Patient = () => {
                     backgroundColor:"white",
                   }}
                   className="hand" onClick={sort('birthday')}>
-                    Date de naissance 
+                    Date de naissance <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
                   </th>
-                  {/* <th 
-                  style={{
-                    fontSize:"9px",
-                    position:"sticky",
-                    top:"0",
-                    backgroundColor:"white",
-                  }}
-                  className="hand" onClick={sort('birthplace')}>
-                    Lieu de naissance 
-                  </th>
-                  <th 
-                  style={{
-                    fontSize:"9px",
-                    position:"sticky",
-                    top:"0",
-                    backgroundColor:"white",
-                  }}
-                  className="hand" onClick={sort('gender')}>
-                    Genre 
-                  </th>
-                  <th 
-                  style={{
-                    fontSize:"9px",
-                    position:"sticky",
-                    top:"0",
-                    backgroundColor:"white",
-                  }}
-                  className="hand" onClick={sort('adress')}>
-                    Adresse 
-                  </th>
-                  <th 
-                  style={{
-                    fontSize:"9px",
-                    position:"sticky",
-                    top:"0",
-                    backgroundColor:"white",
-                  }}
-                  className="hand" onClick={sort('phone')}>
-                    Téléphone 
-                  </th> */}
                   <th 
                   style={{
                     textAlign:"center",
@@ -424,38 +378,8 @@ export const Patient = () => {
                     backgroundColor:"white",
                   }}
                   className="hand" onClick={sort('cni')}>
-                    Cni 
+                    Cni <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
                   </th>
-                  {/* <th 
-                  style={{
-                    fontSize:"9px",
-                    position:"sticky",
-                    top:"0",
-                    backgroundColor:"white",
-                  }}
-                  className="hand" onClick={sort('job')}>
-                    Profession 
-                  </th>
-                  <th 
-                  style={{
-                    fontSize:"9px",
-                    position:"sticky",
-                    top:"0",
-                    backgroundColor:"white",
-                  }}
-                  className="hand" onClick={sort('bloodType')}>
-                    Groupe Sanguin 
-                  </th>
-                  <th 
-                  style={{
-                    fontSize:"9px",
-                    position:"sticky",
-                    top:"0",
-                    backgroundColor:"white",
-                  }}
-                  className="hand" onClick={sort('maritialStatus')}>
-                    Status Matrimonial 
-                  </th> */}
                       
                   <th
                   style={{
@@ -500,14 +424,7 @@ export const Patient = () => {
                     <td>{patient.firstName}</td>
                     <td>{patient.lastName}</td>
                     <td>{patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}</td>
-                    {/* <td>{patient.birthplace}</td>
-                    <td>{translateGender(patient.gender) }</td>
-                    <td>{patient.adress}</td>
-                    <td>{patient.phone}</td> */}
                     <td>{patient.cni}</td>
-                    {/* <td>{patient.job}</td>
-                    <td>{translateBloodType(patient.bloodType) }</td>
-                    <td>{translateMaritalStatus(patient.maritialStatus) }</td> */}
                     <td className="text-end">
                       <div 
                         style={{
@@ -536,7 +453,17 @@ export const Patient = () => {
                   </tr>
                 )) : filter.map((patient, i) => (
                   <tr key={`entity-${i}`} data-cy="entityTable">
+                    
                     <td>
+                      <Button
+                        tag={Link}
+                        to={`/patient/${patient.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        data-cy="entityDeleteButton"
+                        style={{color:"red",backgroundColor:"#F6FAFF",borderColor:"#F6FAFF"}}
+                      >
+                        {React.createElement( BiTrash, {size: "15"})}
+                      </Button>
+                    </td><td>
                       <Button tag={Link} to={`/patient/${patient.id}`} color="link" size="sm">
                         {patient.id}
                       </Button>
@@ -544,38 +471,31 @@ export const Patient = () => {
                     <td>{patient.firstName}</td>
                     <td>{patient.lastName}</td>
                     <td>{patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}</td>
-                    <td>{patient.birthplace}</td>
                     
-                    <td>{translateGender(patient.gender)}</td> 
-                    <td>{patient.adress}</td>
-                    <td>{patient.phone}</td>
                     <td>{patient.cni}</td>
-                    {/* <td>{patient.job}</td>
-                    <td>{translateBloodType(patient.bloodType) }</td>
-                    <td>{translateMaritalStatus(patient.maritialStatus)}</td> */}
                     <td className="text-end">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`/patient/${patient.id}`} color="info" size="sm" data-cy="entityDetailsButton">
-                            <span className="d-none d-md-inline">Voir</span>
+                      <div 
+                        style={{
+                          display:"flex",
+                          flexDirection:"column",
+                          gap:"1px",
+                          fontSize:"9px"
+                        }}
+                      >
+                      <Button
+                        tag={Link}
+                        to={`/patient/${patient.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        color="primary"
+                        size="sm"
+                        data-cy="entityEditButton"
+                      >
+                        <span className="d-none d-md-inline">Mettre à jour</span>
+                      </Button>
+                        <Button tag={Link} to={`/patient/${patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
+                            <span className="d-none d-md-inline">Voir détails</span>
                         </Button>
-                        <Button
-                          tag={Link}
-                          to={`/patient/${patient.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                          color="primary"
-                          size="sm"
-                          data-cy="entityEditButton"
-                        >
-                            <span className="d-none d-md-inline">Editer</span>
-                        </Button>
-                        <Button
-                          tag={Link}
-                          to={`/patient/${patient.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                          color="danger"
-                          size="sm"
-                          data-cy="entityDeleteButton"
-                        >
-                            <span className="d-none d-md-inline">Supprimer</span>
-                        </Button>
+                        
+
                       </div>
                     </td>
                   </tr>

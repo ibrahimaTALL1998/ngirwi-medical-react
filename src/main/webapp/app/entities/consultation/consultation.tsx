@@ -88,7 +88,36 @@ export const Consultation = () => {
     sortEntities();
   };
 
+  // filtering table
+  const handleSearch = (event) => {
+    setSearch(event.target.value);
+  };
+  // filter
+  const [search, setSearch] = useState('');
+  const [criteria, setCriteria] = useState(' ');
 
+  let filter = null
+  if (search !== '') {
+    switch (criteria) {
+      case 'patient.lastName':
+        filter = consultationList.filter(consultation => {
+          return consultation.patient.lastName.toLowerCase().includes(search.toLowerCase());
+        })
+        break;
+      case 'patient.firstName':
+        filter = consultationList.filter(consultation => {
+          return consultation.patient.firstName.toLowerCase().includes(search.toLowerCase());
+        })
+        break;
+      case 'dateTime':
+        filter = consultationList.filter(consultation => {
+          return consultation.dateTime.toLowerCase().includes(search.toLowerCase());
+        })
+        break;
+     
+      default: filter=null;
+    }
+  }
   const [query, setQuery] = useState("");
 
   return (
@@ -129,14 +158,14 @@ export const Consultation = () => {
 
               <div
                 style={{
-                  justifyContent:"center",
+                  justifyContent:"flex-start",
                   alignItems:"center",
                   width:"15vw",
                   height:"25vh",
                   borderRadius:"50%",
                   backgroundColor:"#CBDCF7",
-                  paddingTop:"9vh",
-                  paddingLeft:"6%",
+                  paddingTop:"5vh",
+                  paddingLeft:"8%",
                   color:"#56B5C5"
                 }}
               >
@@ -144,11 +173,12 @@ export const Consultation = () => {
                     <span 
                       style={{
                         color:"#56B5C5",
-                        fontSize:"15px",
-                        fontFamily:"Ubuntu"
+                        fontSize:"20px",
+                        fontFamily:"Ubuntu",
+                        textAlign:"justify"
                         }}
                     >
-                    {React.createElement( RiUserAddLine  ,{size: "15"})}  Enregistrer nouveau patient
+                    {React.createElement( RiUserAddLine  ,{size: "24"})}  Enregistrer nouveau patient
                     </span>                
                   </Link>
                 
@@ -171,14 +201,14 @@ export const Consultation = () => {
 
               <div
                 style={{
-                  justifyContent:"center",
+                  justifyContent:"justify",
                   alignItems:"center",
                   width:"15vw",
                   height:"25vh",
                   borderRadius:"50%",
                   backgroundColor:"#CBDCF7",
-                  paddingTop:"10vh",
-                  paddingLeft:"3%"
+                  paddingTop:"5vh",
+                  paddingLeft:"9%"
                 }}
               >
                   <Link to="/consultation/new/" style={{textDecoration:"none",color:"#56B5C5"}}>
@@ -186,11 +216,22 @@ export const Consultation = () => {
                       style={{
                         fontFamily:"Ubuntu",
                         color:"#56B5C5",
-                        fontSize:"15px",
+                        fontSize:"20px",
+                        textAlign:"justify"
                         }}
                     >
-                     {React.createElement( RiUserAddLine  ,{size: "15"})} Enregistrer consultation
-                    </span>                
+                     {React.createElement( RiUserAddLine  ,{size: "24"})} Enregistrer 
+                    </span>
+                    <br/> 
+                    <span
+                     style={{
+                      fontFamily:"Ubuntu",
+                      color:"#56B5C5",
+                      fontSize:"20px",
+                      textAlign:"justify",
+                      marginLeft:"2vw"
+                      }}
+                  >consultation</span>               
                   </Link>
                 
               </div>
@@ -213,7 +254,40 @@ export const Consultation = () => {
                 boxShadow:"0px 2px 12px 4px rgba(138, 161, 203, 0.23)"
               }}
             >
+
               <span style={{marginTop:"1%", color:"#141414",fontSize:"15px", marginLeft:"3%", marginBottom:"1%"}}>Consultations enregistrées</span>
+              <div 
+        style={{
+          display:"flex",
+          flexDirection:"row",
+          justifyContent:"flex-end",
+          marginBottom:"5vh",
+          marginRight:"2vw",
+          gap:"1vw"
+        }}
+       >
+         <ValidatedField label={`${"   "}`} style={{borderRadius:"12px"}}  id="criteria" name="criteria" type="select" onChange={(e) => setCriteria(e.target.value)}>
+           {/* <select name="criteria" > */}
+           <option value=" ">
+            Critère de recherche
+           </option>
+           <option value="patient.lastName">
+             Nom
+           </option>
+           <option value="patient.firstName">
+             Prénom
+           </option>
+           <option value="dateTime">
+             Date de consultation
+           </option>
+            {/* </select> */}
+     
+    
+       </ValidatedField>
+       <ValidatedField label={`${"   "}`} style={{borderRadius:"12px"}} placeholder="Barre de recherche" id="search" name="search" type={criteria==="dateTime"?"date":"text"} onChange={handleSearch} />
+          {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
+
+       </div>
                    {consultationList && consultationList.length > 0 ? (
 
                 <Table responsive>
@@ -235,7 +309,7 @@ export const Consultation = () => {
                     backgroundColor:"white",
                   }}
                     className="hand" onClick={sort('id')}>
-                    ID 
+                    ID <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
                   </th>
                   <th
                   style={{
@@ -245,7 +319,7 @@ export const Consultation = () => {
                     backgroundColor:"white",
                   }}
                   className="hand" onClick={sort('patient.lastName')}>
-                    Nom
+                    Nom <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
                   </th>
                   <th 
                   style={{
@@ -255,7 +329,7 @@ export const Consultation = () => {
                     backgroundColor:"white",
                   }}
                   className="hand" onClick={sort('patient.firstName')}>
-                    Prénom  
+                    Prénom <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" /> 
                   </th>
                   <th 
                   style={{
@@ -265,7 +339,7 @@ export const Consultation = () => {
                     backgroundColor:"white",
                   }}
                   className="hand" onClick={sort('dateTime')}>
-                   Date
+                   Date <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
                   </th>
                   <th 
                   style={{
@@ -275,7 +349,7 @@ export const Consultation = () => {
                     backgroundColor:"white",
                   }}
                   className="hand" onClick={sort('dateTime')}>
-                    Heure 
+                    Heure <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
                   </th>
                       
                   <th
@@ -297,7 +371,7 @@ export const Consultation = () => {
                   borderBottom:"50px solid white",
                 }}
               >
-             {consultationList.map((consultation, i) => (
+             {filter === null ? consultationList.map((consultation, i) => (
                 <tr key={`entity-${i}`} data-cy="entityTable">               
                     <td>
                       <Button
@@ -356,6 +430,61 @@ export const Consultation = () => {
 
                    
                  </tr>
+               )):filter.map((consultation,i)=>(
+                
+                   <tr key={`entity-${i}`} data-cy="entityTable">
+                   <td>
+                      <Button
+                        tag={Link}
+                        to={`/consultation/${consultation.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}                        data-cy="entityDeleteButton"
+                        style={{color:"red",backgroundColor:"#F6FAFF",borderColor:"#F6FAFF"}}
+                      >
+                        {React.createElement( BiTrash, {size: "15"})}
+                      </Button>
+                    </td>
+                   
+                   
+                   <td>
+                    <Button tag={Link} to={`/patient/${consultation.patient.id}`} color="link" size="sm">
+                      {consultation.patient.id}
+                    </Button>
+                  </td>
+                  <td>{consultation.patient.lastName.toUpperCase()}</td>
+                  <td>{consultation.patient.firstName}</td>
+                  <td>
+                     {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="DD/MM/YYYY" /> : null}
+                   </td>
+                   <td>
+                     {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="HH:mm:ss"/> : null}
+                   </td>
+                   <td >
+                      <div 
+                        style={{
+                          display:"flex",
+                          flexDirection:"row",
+                          gap:"3px",
+                          fontSize:"9px"
+                        }}
+                      >
+                         <Button
+                          tag={Link}
+                          to={`/consultation/${consultation.id}/edit`}
+                          color="primary"
+                          size="sm"
+                          data-cy="entityEditButton"
+                        >
+                            <span className="d-none d-md-inline">Mettre à jour</span>
+                        </Button>
+                        <Button tag={Link} to={`/consultation/list/${consultation.patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
+                            <span className="d-none d-md-inline">Voir sa liste</span>
+                        </Button>
+                       
+
+                      </div>
+                    </td>
+                   </tr>
+                   
+                  
                ))}
      
 

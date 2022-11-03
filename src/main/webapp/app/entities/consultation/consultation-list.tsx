@@ -9,6 +9,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Card, Table } from "reactstrap";
 import {IoIosArrowBack} from 'react-icons/io';
 import { getEntities } from "./consultation.reducer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 export const ConsultationPatient = () =>{
@@ -107,7 +108,7 @@ export const ConsultationPatient = () =>{
           <Card
             style={{
               height:"6.28vh",
-              minWidth:"33.38vw",
+              minWidth:"30vw",
               borderRadius:"20px",
               backgroundColor:"#11485C",
               textAlign:"center",
@@ -122,7 +123,7 @@ export const ConsultationPatient = () =>{
               }}
           >
             <Button replace tag={Link} to={`/consultation/`} style={{color:"#53BFD1",backgroundColor:"#11485C",borderColor:"#11485C"}}>{React.createElement(IoIosArrowBack , {size:"20"})}</Button>
-          <span >Liste consultations patient {patients.map(patient => patient.id.toString() === idPatient?(<span>{patient.lastName.toUpperCase()+' '+patient.firstName}</span>):(null) )} </span>
+          <span >Liste consultations patient </span>
           </Card>
 
       
@@ -146,20 +147,37 @@ export const ConsultationPatient = () =>{
           }}
         >
           <span style={{marginTop:"1%", color:"#141414",fontSize:"15px", marginLeft:"3%", marginBottom:"1%"}}>Liste consultations patient</span>
+          <span
+            style={{
+              marginTop:"2%",
+              color:"#141414",
+              fontSize:"25px",
+              marginBottom:"3%",
+              textAlign:"center"
+            }}
+          > 
+              {patients.map(patient => patient.id.toString() === idPatient?(
+              <div>
+                {'Patient: '+patient.lastName.toUpperCase()+' '+patient.firstName}<br/>
+                <span style={{fontWeight:"400"}}>{'Matricule: #'+patient.id}</span>
+              </div>)
+              :(null) 
+              )}
+            </span>
                {consultationList && consultationList.length > 0 ? (
 
-            <Table responsive>
-            <thead>
+            <Table style={{width:"82vw"}} responsive>
+            <thead >
             <tr>
               <th
                 style={{
                   position:"sticky",
                   top:"0",
-                  width:"4%",
+                  width:"3.32vw",
                   backgroundColor:"white",
                 }}                
               ></th>
-              <th 
+              {/* <th 
               style={{
                 textAlign:"center",
                 fontSize:"14px",
@@ -170,6 +188,18 @@ export const ConsultationPatient = () =>{
               }}
                 className="hand" onClick={sort('id')}>
                 ID 
+              </th> */}
+              <th 
+              style={{
+                textAlign:"center",
+                fontSize:"14px",
+                position:"sticky",
+                top:"0",
+                width:"19.92vw",
+                backgroundColor:"white",
+              }}
+              className="hand" onClick={sort('dateTime')}>
+               Date <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
               </th>
               <th 
               style={{
@@ -177,11 +207,11 @@ export const ConsultationPatient = () =>{
                 fontSize:"14px",
                 position:"sticky",
                 top:"0",
-                width:"24%",
+                width:"19.92vw",
                 backgroundColor:"white",
               }}
               className="hand" onClick={sort('dateTime')}>
-               Date
+                Heure <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
               </th>
               <th 
               style={{
@@ -189,12 +219,16 @@ export const ConsultationPatient = () =>{
                 fontSize:"14px",
                 position:"sticky",
                 top:"0",
-                width:"24%",
+                width:"19.92vw",
                 backgroundColor:"white",
+                wordWrap:"break-word",
+                textOverflow:"ellipsis"
+
               }}
-              className="hand" onClick={sort('dateTime')}>
-                Heure 
+              className="hand" onClick={sort('hypothesis')}>
+                Hypothèse diagnostique <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
               </th>
+              
                   
               <th
               style={{
@@ -202,7 +236,7 @@ export const ConsultationPatient = () =>{
                 fontSize:"14px",
                 position:"sticky",
                 top:"0",
-                width:"24%",
+                maxWidth:"19.92vw",
                 backgroundColor:"white",
               }}
               >Actions</th>
@@ -216,6 +250,8 @@ export const ConsultationPatient = () =>{
               fontSize:"18px",
               textAlign:"center",
               borderBottom:"50px solid white",
+              wordWrap:"break-word",
+              textOverflow:"ellipsis"
             }}
           >
          {consultationList.map((consultation, i) => (consultation.patient.id.toString() === idPatient)?(
@@ -232,16 +268,19 @@ export const ConsultationPatient = () =>{
                
               {patients.map( (patient,b) => (( consultation.patient.lastName === patient.lastName && consultation.patient.id === patient.id) ? (
                <>
-               <td>
+               {/* <td>
                 <Button tag={Link} to={`/patient/${patient.id}`} color="link" size="sm">
                   {patient.id}
                 </Button>
-              </td>
-              <td>
+              </td> */}
+              <td style={{width:'19.92vw'}}>
                  {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="DD/MM/YYYY" /> : null}
                </td>
-               <td>
+               <td style={{width:'19.92vw'}}>
                  {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="HH:mm:ss"/> : null}
+               </td>
+               <td style={{width:'19.92vw',wordWrap:"break-word"}}>
+                 {consultation.hypothesis}
                </td>
                <td >
                   <div 

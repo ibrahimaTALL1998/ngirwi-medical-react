@@ -47,17 +47,18 @@ export const Home = () => {
           fontFamily:"Mulish",
           fontWeight:"900",
           display:"flex",
-          flexDirection:"column"
+          flexDirection:"column",
+          zIndex:"3"
         }}>
 
           <Header pageName="Accueil" />
           <div style={{display:"flex", flexDirection:"row", gap:"2vw",position:"fixed",top:"9vh",right:"2.5vw"}}>
           <div style={{display:"flex", flexDirection:"column", gap:"3vh", marginTop:"3vh"}}>
-          <Card style={{width:"33.38vw",height:"20vh",borderColor:"#53BFD1",backgroundColor:"#53BFD1", borderRadius:"20px" ,color:"#FFFFFF", display:"flex", flexDirection:"column", paddingTop:"3%", paddingLeft:"4%",  boxShadow:"0px 0px 5px silver" }}> 
+          <Card style={{width:"33.38vw",minHeight:"20vh",borderColor:"#53BFD1",backgroundColor:"#53BFD1", borderRadius:"20px" ,color:"#FFFFFF", display:"flex", flexDirection:"column", paddingTop:"3%", paddingLeft:"4%",  boxShadow:"0px 0px 5px silver" }}> 
             <div>Bienvenue Docteur {account.login}</div>
             <p style={{fontSize:"small", marginTop:"1.2%", opacity:"0.5",width:"25vw"}}>Ngirwi Medical l’application pour la numérisation des dossiers médicaux, développé par la société NGIRWI S.A.R.L.</p>
           </Card>
-          <Card style={{width:"36.25vw",height:"18vh", boxShadow:"0px 0px 5px silver" ,marginLeft:"3%",display:"flex", borderRadius:"15px" ,flexDirection:"column", alignItems:"center"}}> 
+          <Card style={{width:"36.25vw",minHeight:"18vh", boxShadow:"0px 0px 5px silver" ,marginLeft:"3%",display:"flex", borderRadius:"15px" ,flexDirection:"column", alignItems:"center"}}> 
             <Button 
               href="patient?page=1&sort=id,asc"
               className='btn btn-lg' 
@@ -127,7 +128,7 @@ export const Home = () => {
               </Link>
             </div>
           </Card>
-          <Card style={{width:"36.25vw",height:"18vh",borderRadius:"15px", boxShadow:"0px 0px 5px silver" , marginLeft:"3%",display:"flex",flexDirection:"column", alignItems:"center"}}>
+          <Card style={{width:"36.25vw",minHeight:"18vh",borderRadius:"15px", boxShadow:"0px 0px 5px silver" , marginLeft:"3%",display:"flex",flexDirection:"column", alignItems:"center"}}>
           <Button 
               href="consultation?page=1&sort=id,asc"
               className='btn btn-lg' 
@@ -197,7 +198,7 @@ export const Home = () => {
               </Link>
             </div>
           </Card>
-          <Card style={{width:"36.25vw",height:"18vh",borderRadius:"15px", boxShadow:"0px 0px 5px silver" , marginLeft:"3%",display:"flex",flexDirection:"column", alignItems:"center"}}>
+          <Card style={{width:"36.25vw",minHeight:"18vh",borderRadius:"15px", boxShadow:"0px 0px 5px silver" , marginLeft:"3%",display:"flex",flexDirection:"column", alignItems:"center"}}>
           <Button 
               className='btn btn-lg' 
               href="bill?page=1&sort=id,asc"
@@ -269,7 +270,7 @@ export const Home = () => {
           </Card>
           </div>
 
-          <div style={{display:"flex", flexDirection:"column", gap:"2vw",alignItems:"center"}}>
+          <div style={{display:"flex", flexDirection:"column", gap:"1.7vw",alignItems:"center"}}>
         
           
           <div

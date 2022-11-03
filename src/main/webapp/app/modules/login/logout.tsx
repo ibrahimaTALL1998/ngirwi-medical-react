@@ -23,10 +23,9 @@ export const Logout = () => {
  
   return (
     
-    <div className="p-5">
-      <h4>Déconnecté avec succès!</h4>
+  
       <Navigate to="/login"/>
-    </div>
+    
     
     
   );

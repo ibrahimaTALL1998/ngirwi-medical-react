@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Button, Row, Col, FormText } from 'reactstrap';
+import { Button, Row, Col, FormText, Card } from 'reactstrap';
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -12,6 +12,9 @@ import { IPatient } from 'app/shared/model/patient.model';
 import { getEntities as getPatients } from 'app/entities/patient/patient.reducer';
 import { IDossierMedical } from 'app/shared/model/dossier-medical.model';
 import { getEntity, updateEntity, createEntity, reset } from './dossier-medical.reducer';
+import Header from 'app/shared/layout/header/header';
+import { IoIosArrowBack } from 'react-icons/io';
+import { FiLock } from 'react-icons/fi';
 
 export const DossierMedicalUpdate = () => {
   const dispatch = useAppDispatch();
@@ -20,6 +23,7 @@ export const DossierMedicalUpdate = () => {
 
   const { id } = useParams<'id'>();
   const { idPatient } = useParams<'idPatient'>();
+  const { idEdit } = useParams<'idEdit'>();
   const isNew = id === undefined;
 
   const patients = useAppSelector(state => state.patient.entities);
@@ -84,108 +88,329 @@ export const DossierMedicalUpdate = () => {
       };
 
   return (
-    <div style={{marginLeft:"16vw"}}>
-      <Row className="justify-content-center">
-        <Col md="8">
-          <h2 id="ngirwiFrontEndApp.dossierMedical.home.createOrEditLabel" data-cy="DossierMedicalCreateUpdateHeading">
-            Créer ou éditer un Dossier Medical
-          </h2>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col md="8">
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
-            <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
-              {!isNew ? (
-                <ValidatedField name="id" required readOnly id="dossier-medical-id" label="ID" validate={{ required: true }} />
-              ) : null}
-              <ValidatedField
-                label="Motif Consultation"
+
+    <div 
+    style={{
+      paddingLeft:"16vw",
+      paddingTop:"1%",
+      fontFamily:"Mulish",
+      fontWeight:"900",
+      display:"flex",
+      flexDirection:"column"
+    }}
+  >
+      <Header pageName="Dossier médical" />
+ 
+        <div
+          style={{
+            display:"flex",
+            flexDirection:"column",
+            marginTop:"7.5vh",
+          }}
+        >
+          <div
+          style={{
+            display:"flex",
+            flexDirection:"row",
+            alignItems:"center",
+            marginRight:"10%",
+            gap:"6vw"
+
+          }}
+          >
+          
+          <Card
+            style={{
+              height:"6.28vh",
+              width:"30vw",
+              borderRadius:"20px",
+              backgroundColor:"#11485C",
+              textAlign:"center",
+              color:"white",
+              marginBottom:"5vh",
+              boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
+              display:"flex",
+              flexDirection:"row",
+              justifyContent:"flex-start",
+              alignItems:"center",
+              gap:isNew?"2vw":"4vw",
+              paddingLeft:isNew?"1vw":"2vw"
+              }}
+          >
+            <Link to={idPatient==undefined?(`/dossier-medical/${dossierMedicalEntity?.patient?.id}`):(`/dossier-medical/${idPatient}`)} style={{color:"#53BFD1",}}>{React.createElement(IoIosArrowBack , {size:"20"})}</Link >
+            {
+           isNew ? (<span >Enregistrement nouveau dossier médical
+          
+          </span>):
+           (<span >
+            {idEdit==="voir"?"Consultation dossier médical ":"Mise à jour dossier médical "}
+           
+           </span>)}          
+          </Card>
+           
+          
+        
+          </div>
+
+
+          <Card 
+            style={{
+              minHeight:"110vh",
+              width:"80vw",
+              boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
+              borderRadius:"15px",
+              marginBottom:"30px",
+              fontFamily: 'Jost',
+              fontStyle: 'normal',
+              fontWeight: '500',
+              fontSize:"15px"
+
+            }}
+          >
+             {isNew?(<span style={{marginTop:"1%", color:"#141414",fontSize:"19px", marginLeft:"3%"}}>Remplir informations patient</span>):(
+              <span style={{marginTop:"1%", color:"#141414",fontSize:"19px", fontFamily:"jost", marginLeft:"3%"}}> {idEdit==="voir"?"Dossier médical patient":"Modifications dossier médical patient"} </span>
+             )} 
+             <span
+            style={{
+              marginTop:"2%",
+              color:"#141414",
+              fontSize:"25px",
+              marginBottom:"3%",
+              textAlign:"center",
+              fontWeight:"900"
+            }}
+          > 
+               {patients
+                  ? patients.map(otherEntity => (
+                    (dossierMedicalEntity?.patient?.id === otherEntity.id || idPatient == otherEntity.id)?(
+                      <div>
+                        <span key={otherEntity.id}>
+                          {'Patient: '+otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName}
+                       </span> <br/>
+                        <span style={{fontWeight:"400"}}>{'Matricule: #'+otherEntity.id}</span>
+                      </div>
+                      
+                ):(null))
+                    
+                    )
+                : null}  
+            </span> 
+           
+           
+              
+              <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}
+                style={{
+                  width:"94%",
+                  height:"80%",
+                  marginLeft:"3%",
+                  display:"grid",
+                  columnGap:"30px",
+                  marginTop:"1%",
+                  gridTemplateColumns : "repeat(3,1fr)",
+                  fontSize:"18px",
+                  fontWeight:"900",
+                }}
+              >
+              <ValidatedField 
+                disabled={idEdit==="voir"?true:false}
+                label="Motif de la consultation"
                 id="dossier-medical-motifConsultation"
                 name="motifConsultation"
                 data-cy="motifConsultation"
-                type="text"
+                type="textarea"
                 validate={{
                   required: { value: true, message: 'Ce champ est obligatoire.' },
                 }}
+                style={{
+                  marginBottom:"20px",
+                  borderRadius:"25px",
+                  color:(idEdit === "voir")?("#F6FAFF"):("black"),
+                  backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
+                  borderColor:"#CBDCF7"
+                }}
               />
-              <ValidatedField
-                label="Histoire Maladie"
+              <ValidatedField 
+                disabled={idEdit==="voir"?true:false}
+                label="Histoire de la maladie"
                 id="dossier-medical-histoireMaladie"
                 name="histoireMaladie"
                 data-cy="histoireMaladie"
-                type="text"
+                type="textarea"
                 validate={{
                   required: { value: true, message: 'Ce champ est obligatoire.' },
                 }}
-              />
-              <ValidatedField
-                label="Terrain"
-                id="dossier-medical-terrain"
-                name="terrain"
-                data-cy="terrain"
-                type="text"
-                validate={{
-                  required: { value: true, message: 'Ce champ est obligatoire.' },
+                style={{
+                  marginBottom:"20px",
+                  borderRadius:"25px",
+                  color:(idEdit === "voir")?("#F6FAFF"):("black"),
+                  backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
+                  borderColor:"#CBDCF7"
                 }}
               />
-              <ValidatedField
-                label="Antecedants Personnels"
+              <ValidatedField 
+                disabled={idEdit==="voir"?true:false}
+                label="Antécédants personnels"
                 id="dossier-medical-antecedantsPersonnels"
                 name="antecedantsPersonnels"
                 data-cy="antecedantsPersonnels"
-                type="text"
+                type="textarea"
                 validate={{
                   required: { value: true, message: 'Ce champ est obligatoire.' },
                 }}
+                style={{
+                  marginBottom:"20px",
+                  borderRadius:"25px",
+                  color:(idEdit === "voir")?("#F6FAFF"):("black"),
+                  backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
+                  borderColor:"#CBDCF7"
+                }}
               />
-              <ValidatedField
-                label="Antecedants Chirurgicaux"
+              <ValidatedField 
+                disabled={idEdit==="voir"?true:false}
+                label="Antécédants chirurgicaux"
                 id="dossier-medical-antecedantsChirurgicaux"
                 name="antecedantsChirurgicaux"
                 data-cy="antecedantsChirurgicaux"
-                type="text"
+                type="textarea"
                 validate={{
                   required: { value: true, message: 'Ce champ est obligatoire.' },
                 }}
+                style={{
+                  marginBottom:"20px",
+                  borderRadius:"25px",
+                  color:(idEdit === "voir")?("#F6FAFF"):("black"),
+                  backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
+                  borderColor:"#CBDCF7"
+                }}
               />
-              <ValidatedField
-                label="Antecedants Familiaux"
+              <ValidatedField 
+                disabled={idEdit==="voir"?true:false}
+                label="Antécédants familiaux"
                 id="dossier-medical-antecedantsFamiliaux"
                 name="antecedantsFamiliaux"
                 data-cy="antecedantsFamiliaux"
-                type="text"
+                type="textarea"
                 validate={{
                   required: { value: true, message: 'Ce champ est obligatoire.' },
                 }}
+                style={{
+                  marginBottom:"20px",
+                  borderRadius:"25px",
+                  color:(idEdit === "voir")?("#F6FAFF"):("black"),
+                  backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
+                  borderColor:"#CBDCF7"
+                }}
               />
-              <ValidatedField
-                label="Gyneco Obstretrique"
+              <ValidatedField 
+                disabled={idEdit==="voir"?true:false}
+                label="Gynéco-Obstétrique"
                 id="dossier-medical-gynecoObstretrique"
                 name="gynecoObstretrique"
                 data-cy="gynecoObstretrique"
-                type="text"
-              />
-              <ValidatedField
-                label="Résumé Syndromique"
-                id="dossier-medical-syndromique"
-                name="syndromique"
-                data-cy="syndromique"
-                type="text"
+                type="textarea"
                 validate={{
                   required: { value: true, message: 'Ce champ est obligatoire.' },
                 }}
+                style={{
+                  rowGap:"5vh",
+                  marginBottom:"20px",
+                  borderRadius:"25px",
+                  color:(idEdit === "voir")?("#F6FAFF"):("black"),
+                  backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
+                  borderColor:"#CBDCF7",
+                }}
               />
-              <ValidatedField label="Père" id="dossier-medical-dad" name="dad" data-cy="dad" type="text" />
-              <ValidatedField label="Mère" id="dossier-medical-mom" name="mom" data-cy="mom" type="text" />
-              <ValidatedField label="Frères" id="dossier-medical-siblings" name="siblings" data-cy="siblings" type="text" />
-              <ValidatedField label="Descendants" id="dossier-medical-descendants" name="descendants" data-cy="descendants" type="text" />
+              
+              
+                <ValidatedField 
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:idEdit ==="voir"?"#A9B7CD":"#F7FAFF",
+                    color:(idEdit === "voir")?("#F6FAFF"):("black")
+                  }} 
+                  label="Père" 
+                  id="dossier-medical-dad" 
+                  name="dad" 
+                  data-cy="dad" 
+                  type="text" 
+                />
+                <ValidatedField  
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:idEdit ==="voir"?"#A9B7CD":"#F7FAFF",
+                    color:(idEdit === "voir")?("#F6FAFF"):("black")
+                  }}
+                  label="Mère" 
+                  id="dossier-medical-mom"
+                  name="mom" 
+                  data-cy="mom" 
+                  type="text" 
+                />
+                <ValidatedField  
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:idEdit ==="voir"?"#A9B7CD":"#F7FAFF",
+                    color:(idEdit === "voir")?("#F6FAFF"):("black")
+                  }}
+                  label="Frères/Soeurs" 
+                  id="dossier-medical-siblings" 
+                  name="siblings" 
+                  data-cy="siblings" 
+                  type="text" 
+                />
+                <ValidatedField
+                  style={{
+                    borderRadius:"25px",
+                    backgroundColor:idEdit ==="voir"?"#A9B7CD":"#F7FAFF",
+                    color:(idEdit === "voir")?("#F6FAFF"):("black")
+                  }}
+                  label="Descendants"
+                  id="dossier-medical-descendants"
+                  name="descendants" 
+                  data-cy="descendants" 
+                  type="text"
+                />
+              
+
+              <Button 
+              hidden={idEdit==="voir"?true:false}
+              id="save-entity" 
+              data-cy="entityCreateSaveButton" 
+              type="submit" 
+              disabled={updating}
+                style={{
+                  gridColumn:"1/4",
+                  borderRadius:"25px",
+                  color:"white",
+                  backgroundColor:"#56B5C5",
+                  borderColor:"#56B5C5"
+                }}
+              >
+                 Enregistrer
+              </Button>
+              &nbsp;
+
+              <Button onClick={()=>{window.history.back()}} id="cancel-save" data-cy="entityCreateCancelButton"  replace color="info"
+                style={{
+                  gridColumn:"1/4",
+                  borderRadius:"25px",
+                  color:"white",
+                  backgroundColor:"#EC4747",
+                  borderColor:"#EC4747",
+                  textAlign:"center",
+                  fontSize:(idEdit === "voir")?("20px"):("")
+
+                }}
+              >
+                <span className="d-none d-md-inline">{idEdit==="voir"?"Retour":"Annuler"}</span>
+              </Button>
+              <ValidatedField hidden label="Author" id="consultation-author" name="author" data-cy="author" type="text"/>
+              
+               
               <ValidatedField
                 hidden
                 label="Date Created"
-                id="dossier-medical-dateCreated"
+                id="patient-dateCreated"
                 name="dateCreated"
                 data-cy="dateCreated"
                 type="datetime-local"
@@ -194,38 +419,161 @@ export const DossierMedicalUpdate = () => {
               <ValidatedField
                 hidden
                 label="Date Updated"
-                id="dossier-medical-dateUpdated"
+                id="patient-dateUpdated"
                 name="dateUpdated"
                 data-cy="dateUpdated"
                 type="datetime-local"
                 placeholder="YYYY-MM-DD HH:mm"
               />
-              <ValidatedField hidden label="Author" id="dossier-medical-author" name="author" data-cy="author" type="text" />
-              <ValidatedField hidden id="dossier-medical-patient" name="patient" data-cy="patient" label="Patient" type="select">
-                <option value="" key="0" />
-                {patients
-                  ? patients.map(otherEntity => (
-                    <option value={otherEntity.id} key={otherEntity.id}>
-                      {otherEntity.id}
-                    </option>
-                  ))
-                  : null}
-              </ValidatedField>
-              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/dossier-medical" replace color="info">
-                <FontAwesomeIcon icon="arrow-left" />
-                &nbsp;
-                <span className="d-none d-md-inline">Retour</span>
-              </Button>
-              &nbsp;
-              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
-                <FontAwesomeIcon icon="save" />
-                &nbsp; Sauvegarder
-              </Button>
+              <ValidatedField hidden label="Author" id="patient-author" name="author" data-cy="author" type="text" />
+
             </ValidatedForm>
-          )}
-        </Col>
-      </Row>
-    </div>
+          </Card>
+        </div>
+  
+  </div>
+    // <div style={{marginLeft:"16vw"}}>
+    //   <Row className="justify-content-center">
+    //     <Col md="8">
+    //       <h2 id="ngirwiFrontEndApp.dossierMedical.home.createOrEditLabel" data-cy="DossierMedicalCreateUpdateHeading">
+    //         Créer ou éditer un Dossier Medical
+    //       </h2>
+    //     </Col>
+    //   </Row>
+    //   <Row className="justify-content-center">
+    //     <Col md="8">
+    //       {loading ? (
+    //         <p>Loading...</p>
+    //       ) : (
+    //         <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
+    //           {!isNew ? (
+    //             <ValidatedField name="id" required readOnly id="dossier-medical-id" label="ID" validate={{ required: true }} />
+    //           ) : null}
+    //           <ValidatedField
+    //             label="Motif Consultation"
+                // id="dossier-medical-motifConsultation"
+                // name="motifConsultation"
+                // data-cy="motifConsultation"
+    //             type="text"
+    //             validate={{
+    //               required: { value: true, message: 'Ce champ est obligatoire.' },
+    //             }}
+    //           />
+    //           <ValidatedField
+                // label="Histoire Maladie"
+                // id="dossier-medical-histoireMaladie"
+                // name="histoireMaladie"
+                // data-cy="histoireMaladie"
+    //             type="text"
+    //             validate={{
+    //               required: { value: true, message: 'Ce champ est obligatoire.' },
+    //             }}
+    //           />
+    //           <ValidatedField
+    //             label="Terrain"
+    //             id="dossier-medical-terrain"
+    //             name="terrain"
+    //             data-cy="terrain"
+    //             type="text"
+    //             validate={{
+    //               required: { value: true, message: 'Ce champ est obligatoire.' },
+    //             }}
+    //           />
+    //           <ValidatedField
+    //             label="Antecedants Personnels"
+    //             id="dossier-medical-antecedantsPersonnels"
+    //             name="antecedantsPersonnels"
+    //             data-cy="antecedantsPersonnels"
+    //             type="text"
+    //             validate={{
+    //               required: { value: true, message: 'Ce champ est obligatoire.' },
+    //             }}
+    //           />
+    //           <ValidatedField
+    //             label="Antecedants Chirurgicaux"
+                // id="dossier-medical-antecedantsChirurgicaux"
+                // name="antecedantsChirurgicaux"
+                // data-cy="antecedantsChirurgicaux"
+    //             type="text"
+    //             validate={{
+    //               required: { value: true, message: 'Ce champ est obligatoire.' },
+    //             }}
+    //           />
+    //           <ValidatedField
+    //             label="Antecedants Familiaux"
+                // id="dossier-medical-antecedantsFamiliaux"
+                // name="antecedantsFamiliaux"
+                // data-cy="antecedantsFamiliaux"
+    //             type="text"
+    //             validate={{
+    //               required: { value: true, message: 'Ce champ est obligatoire.' },
+    //             }}
+    //           />
+    //           <ValidatedField
+    //             label="Gyneco Obstretrique"
+                // id="dossier-medical-gynecoObstretrique"
+                // name="gynecoObstretrique"
+                // data-cy="gynecoObstretrique"
+    //             type="text"
+    //           />
+    //           <ValidatedField
+    //             label="Résumé Syndromique"
+    //             id="dossier-medical-syndromique"
+    //             name="syndromique"
+    //             data-cy="syndromique"
+    //             type="text"
+    //             validate={{
+    //               required: { value: true, message: 'Ce champ est obligatoire.' },
+    //             }}
+    //           />
+              // <ValidatedField label="Père" id="dossier-medical-dad" name="dad" data-cy="dad" type="text" />
+              // <ValidatedField label="Mère" id="dossier-medical-mom" name="mom" data-cy="mom" type="text" />
+              // <ValidatedField label="Frères" id="dossier-medical-siblings" name="siblings" data-cy="siblings" type="text" />
+              // <ValidatedField label="Descendants" id="dossier-medical-descendants" name="descendants" data-cy="descendants" type="text" />
+    //           <ValidatedField
+    //             hidden
+    //             label="Date Created"
+    //             id="dossier-medical-dateCreated"
+    //             name="dateCreated"
+    //             data-cy="dateCreated"
+    //             type="datetime-local"
+    //             placeholder="YYYY-MM-DD HH:mm"
+    //           />
+    //           <ValidatedField
+    //             hidden
+    //             label="Date Updated"
+    //             id="dossier-medical-dateUpdated"
+    //             name="dateUpdated"
+    //             data-cy="dateUpdated"
+    //             type="datetime-local"
+    //             placeholder="YYYY-MM-DD HH:mm"
+    //           />
+    //           <ValidatedField hidden label="Author" id="dossier-medical-author" name="author" data-cy="author" type="text" />
+    //           <ValidatedField hidden id="dossier-medical-patient" name="patient" data-cy="patient" label="Patient" type="select">
+    //             <option value="" key="0" />
+    //             {patients
+    //               ? patients.map(otherEntity => (
+    //                 <option value={otherEntity.id} key={otherEntity.id}>
+    //                   {otherEntity.id}
+    //                 </option>
+    //               ))
+    //               : null}
+    //           </ValidatedField>
+    //           <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/dossier-medical" replace color="info">
+    //             <FontAwesomeIcon icon="arrow-left" />
+    //             &nbsp;
+    //             <span className="d-none d-md-inline">Retour</span>
+    //           </Button>
+    //           &nbsp;
+    //           <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
+    //             <FontAwesomeIcon icon="save" />
+    //             &nbsp; Sauvegarder
+    //           </Button>
+    //         </ValidatedForm>
+    //       )}
+    //     </Col>
+    //   </Row>
+    // </div>
   );
 };
 

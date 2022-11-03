@@ -95,7 +95,7 @@ const Header = (props) => {
     
   </div>
 
-      <Link to="/logout" style={{color:"silver", fontWeight:"900"}}>
+      <Link to="/logoutDialog" style={{color:"silver", fontWeight:"1800"}}>
         <div>{React.createElement(FiLogOut)} </div>
       </Link>
     </div>

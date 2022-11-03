@@ -190,7 +190,7 @@ export const DossierMedical = () => {
                   </td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`/dossier-medical/${dossierMedical.id}`} color="info" size="sm" data-cy="entityDetailsButton">
+                      <Button tag={Link} to={`/dossier-medical/${dossierMedical.patient.id}`} color="info" size="sm" data-cy="entityDetailsButton">
                         <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir</span>
                       </Button>
                       <Button
