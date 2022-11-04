@@ -106,9 +106,10 @@ export const Bill = () => {
           return bill.author.toLowerCase().includes(search.toLowerCase());
         })
         break;
-      case 'bill':
+      case 'patient':
         filter = billList.filter(bill => {
-          return bill.bill.toLowerCase().includes(search.toLowerCase());
+          const all = bill.patient.lastName+' '+bill.patient.firstName;
+          return all.toLowerCase().includes(search.toLowerCase());
         })
         break;
       default: filter=null;
@@ -154,11 +155,11 @@ export const Bill = () => {
                   style={{
                     justifyContent:"center",
                     alignItems:"center",
-                    width:"15vw",
+                    minWidth:"15vw",
                     height:"25vh",
                     borderRadius:"50%",
                     backgroundColor:"#CBDCF7",
-                    paddingTop:"5vh",
+                    paddingTop:"9vh",
                     paddingLeft:"9%"
                   }}
                 >
@@ -167,7 +168,7 @@ export const Bill = () => {
                     style={{
                       fontFamily:"Ubuntu",
                       color:"#56B5C5",
-                      fontSize:"20px",
+                      fontSize:"18px",
                       textAlign:"center"
                       }}
                   >
@@ -194,12 +195,12 @@ export const Bill = () => {
                   style={{
                     justifyContent:"justify",
                     alignItems:"center",
-                    width:"15vw",
+                    minWidth:"15vw",
                     height:"25vh",
                     borderRadius:"50%",
                     backgroundColor:"#CBDCF7",
-                    paddingTop:"5vh",
-                    paddingLeft:"9%"
+                    paddingTop:"7vh",
+                    paddingLeft:"5%"
                   }}
                 >
                     <Link to="/bill/new/" style={{textDecoration:"none",color:"#56B5C5"}}>
@@ -207,7 +208,7 @@ export const Bill = () => {
                         style={{
                           fontFamily:"Ubuntu",
                           color:"#56B5C5",
-                          fontSize:"20px",
+                          fontSize:"18px",
                           textAlign:"justify",
                           fontWeight:"600"
                           }}
@@ -262,7 +263,7 @@ export const Bill = () => {
                     <option value="author">
                         Auteur
                     </option>
-                    <option value="birthday">
+                    <option value="patient">
                         Patient
                     </option>
                       {/* </select> */}
@@ -330,7 +331,7 @@ export const Bill = () => {
                       width:"25%",
                       backgroundColor:"white",
                     }}
-                    className="hand" onClick={sort('bill')}>
+                    className="hand" onClick={sort('patient')}>
                       Patient <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
                     </th>
                     <th
@@ -364,7 +365,7 @@ export const Bill = () => {
                       </td>
                       <td>{bill.date ? <TextFormat type="date" value={bill.date} format={APP_DATE_FORMAT} /> : null}</td>
                       <td>{bill.author}</td>
-                      <td>{bill.bill ? <Link to={`/bill/${bill.bill.id}`}>{bill.bill.id}</Link> : ''}</td>
+                      <td>{bill.patient ?<span>{bill.patient.lastName.toUpperCase()+' '+bill.patient.firstName}</span>  : ''}</td>
                       <td className="text-end">
                         <div 
                           style={{
@@ -409,7 +410,7 @@ export const Bill = () => {
                       </td>
                       <td>{bill.date ? <TextFormat type="date" value={bill.date} format={APP_DATE_FORMAT} /> : null}</td>
                       <td>{bill.author}</td>
-                      <td>{bill.bill ? <Link to={`/bill/${bill.bill.id}`}>{bill.bill.id}</Link> : ''}</td>
+                      <td>{bill.patient ?<span>{bill.patient.lastName.toUpperCase()+' '+bill.patient.firstName}</span>  : ''}</td>
                       <td className="text-end">
                         <div 
                           style={{

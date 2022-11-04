@@ -187,7 +187,7 @@ export const PatientUpdate = () => {
                   validate={{
                     required: { value: true, message: 'Ce champ est obligatoire.' },
                   }}
-                  placeholder="saisissez votre nom"
+                  placeholder="Nom patient"
                   style={{
                     borderRadius:"25px",
                     backgroundColor:"#F7FAFF",
@@ -203,7 +203,7 @@ export const PatientUpdate = () => {
                   validate={{
                     required: { value: true, message: 'Ce champ est obligatoire.' },
                   }}
-                  placeholder="saisissez votre prénom"
+                  placeholder="Prénom patient"
                   style={{
                     borderRadius:"25px",
                     backgroundColor:"#F7FAFF",
@@ -226,7 +226,7 @@ export const PatientUpdate = () => {
                   }}
                 />
                 <ValidatedField label="Lieu de naissance" id="patient-birthplace" name="birthplace" data-cy="birthplace" type="text" 
-                  placeholder="saisissez votre lieu de naissance"
+                  placeholder="Lieu de naissance patient"
                   style={{
                     borderRadius:"25px",
                     backgroundColor:"#F7FAFF",
@@ -255,7 +255,7 @@ export const PatientUpdate = () => {
                   validate={{
                     required: { value: true, message: 'Ce champ est obligatoire.' },
                   }}
-                  placeholder="saisissez votre adresse"
+                  placeholder="Adresse patient"
                   style={{
                     borderRadius:"25px",
                     backgroundColor:"#F7FAFF",
@@ -271,7 +271,7 @@ export const PatientUpdate = () => {
                   validate={{
                     required: { value: true, message: 'Ce champ est obligatoire.' },
                   }}
-                  placeholder="saisissez votre numéro de téléphone"
+                  placeholder="Téléphone patient"
                   style={{
                     borderRadius:"25px",
                     backgroundColor:"#F7FAFF",
@@ -287,7 +287,7 @@ export const PatientUpdate = () => {
                   validate={{
                     required: { value: true, message: 'Ce champ est obligatoire.' },
                   }}
-                  placeholder="saisissez votre CNI"
+                  placeholder="Numéro carte d'identité patient"
                   style={{
                     borderRadius:"25px",
                     backgroundColor:"#F7FAFF",

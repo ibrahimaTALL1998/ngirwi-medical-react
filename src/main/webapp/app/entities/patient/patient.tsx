@@ -167,12 +167,12 @@ export const Patient = () => {
                 style={{
                   justifyContent:"flex-start",
                   alignItems:"center",
-                  width:"15vw",
+                  minWidth:"15vw",
                   height:"25vh",
                   borderRadius:"50%",
                   backgroundColor:"#CBDCF7",
-                  paddingTop:"5vh",
-                  paddingLeft:"8%",
+                  paddingTop:"7vh",
+                  paddingLeft:"5%",
                   color:"#56B5C5"
                 }}
               >
@@ -180,7 +180,7 @@ export const Patient = () => {
                     <span 
                       style={{
                         color:"#56B5C5",
-                        fontSize:"20px",
+                        fontSize:"18px",
                         fontFamily:"Ubuntu",
                         textAlign:"justify"
                         }}
@@ -210,12 +210,12 @@ export const Patient = () => {
                 style={{
                   justifyContent:"justify",
                   alignItems:"center",
-                  width:"15vw",
+                  minWidth:"15vw",
                   height:"25vh",
                   borderRadius:"50%",
                   backgroundColor:"#CBDCF7",
-                  paddingTop:"5vh",
-                  paddingLeft:"9%"
+                  paddingTop:"7vh",
+                  paddingLeft:"5%"
                 }}
               >
                   <Link to="/consultation/new/" style={{textDecoration:"none",color:"#56B5C5"}}>
@@ -223,7 +223,7 @@ export const Patient = () => {
                       style={{
                         fontFamily:"Ubuntu",
                         color:"#56B5C5",
-                        fontSize:"20px",
+                        fontSize:"18px",
                         textAlign:"justify"
                         }}
                     >
@@ -234,7 +234,7 @@ export const Patient = () => {
                      style={{
                       fontFamily:"Ubuntu",
                       color:"#56B5C5",
-                      fontSize:"20px",
+                      fontSize:"18px",
                       textAlign:"justify",
                       marginLeft:"2vw"
                       }}

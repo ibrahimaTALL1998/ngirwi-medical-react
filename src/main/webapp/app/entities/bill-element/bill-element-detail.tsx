@@ -20,7 +20,7 @@ export const BillElementDetail = () => {
 
   const billElementEntity = useAppSelector(state => state.billElement.entity);
   return (
-    <Row>
+    <Row style={{marginLeft:"16vw"}}>
       <Col md="8">
         <h2 data-cy="billElementDetailsHeading">Bill Element</h2>
         <dl className="jh-entity-details">

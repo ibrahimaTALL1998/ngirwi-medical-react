@@ -306,7 +306,7 @@ export const DossierMedicalDetail = () => {
         </Card>
 
 
-        <Button  id="cancel-save" data-cy="entityCreateCancelButton" onClick={()=> console.log(dispatch(getPatient(id)).unwrap().finally() }  replace color="info"
+        <Button  id="cancel-save" data-cy="entityCreateCancelButton" onClick={()=>window.history.back() }  replace color="info"
           style={{
             marginLeft:"7%",
             width:"66vw",
