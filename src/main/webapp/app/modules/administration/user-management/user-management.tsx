@@ -85,7 +85,7 @@ export const UserManagement = () => {
   const loading = useAppSelector(state => state.userManagement.loading);
 
   return (
-    <div>
+    <div style={{marginLeft:"16vw"}}>
       <h2 id="user-management-page-heading" data-cy="userManagementPageHeading">
         Utilisateurs
         <div className="d-flex justify-content-end">

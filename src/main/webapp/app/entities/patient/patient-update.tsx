@@ -371,7 +371,7 @@ export const PatientUpdate = () => {
                 </Button>
                 &nbsp;
 
-                <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/patient" replace color="info"
+                <Button onClick={()=>window.history.back()} id="cancel-save" data-cy="entityCreateCancelButton"  replace color="info"
                   style={{
                     gridColumn:"1/4",
                     borderRadius:"25px",

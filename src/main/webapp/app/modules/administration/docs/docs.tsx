@@ -3,7 +3,7 @@ import './docs.scss';
 import React from 'react';
 
 const DocsPage = () => (
-  <div>
+  <div style={{marginLeft:"16vw"}}>
     <iframe
       src="../swagger-ui/index.html"
       width="100%"

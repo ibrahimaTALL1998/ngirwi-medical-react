@@ -21,7 +21,7 @@ export const UserManagementDetail = () => {
   const user = useAppSelector(state => state.userManagement.user);
 
   return (
-    <div>
+    <div style={{marginLeft:"16vw"}}>
       <h2>
         Utilisateur [<strong>{user.login}</strong>]
       </h2>

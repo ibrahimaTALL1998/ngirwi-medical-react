@@ -22,6 +22,7 @@ import { TextFormat, ValidatedField } from 'react-jhipster';
 import { translateGender } from 'app/shared/util/translation-utils';
 import { APP_DATE_FORMAT } from 'app/config/constants';
 import Header from 'app/shared/layout/header/header'
+import { BrandIcon } from 'app/shared/layout/header/header-components';
 
 export const Home = () => {
   const account = useAppSelector(state => state.authentication.account);
@@ -48,7 +49,11 @@ export const Home = () => {
           fontWeight:"900",
           display:"flex",
           flexDirection:"column",
-          zIndex:"3"
+          zIndex:"3",
+          // backgroundImage:`url(content/images/Ngirwi_Transparent.png)`,
+          // backgroundRepeat:"no-repeat",
+          // backgroundSize:"contain",
+          // height:"100vh",width:"100vw",backgroundPositionX:"30%",backgroundImageOpacity:"0.1"
         }}>
 
           <Header pageName="Accueil" />
@@ -339,7 +344,7 @@ export const Home = () => {
               <span >Patients récents</span>
                 <Link to="#" style={{textDecoration:"none",color:"#11485C"}}>Tout voir</Link>
             </div>
-            {dossierMedicalList && dossierMedicalList.length > 0 ?(
+            {patientList && patientList.length > 0 ?(
               <Table responsive>
               <thead>
                 <tr style={{paddingLeft:"5%",color:"#747678"}} >
@@ -383,7 +388,6 @@ export const Home = () => {
               </thead>
               <tbody 
                  style={{
-                  backgroundColor:"#FFFFFF",
                   fontSize:"12px",
                   borderBottom:"1px solid #222",
                 }}
@@ -401,9 +405,13 @@ export const Home = () => {
                 </tr>
              })} */}
              {
-              dossierMedicalList.map((dossierMedical,i) => {
+              patientList.map((patient,i) => {
                 <tr key={`entity-${i}`} data-cy="entityTable">
-                  <td>{dossierMedical.patient.lastName}</td>
+                <td>{patient.lastName}</td>
+                <td>{patient.lastName}</td>
+                <td>{patient.lastName}</td>
+                <td>{patient.lastName}</td>
+                <td>{patient.lastName}</td>
                 </tr>
               })
              }

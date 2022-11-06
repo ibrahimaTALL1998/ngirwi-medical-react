@@ -47,7 +47,7 @@ export const UserManagementUpdate = () => {
   const authorities = useAppSelector(state => state.userManagement.authorities);
 
   return (
-    <div>
+    <div style={{marginLeft:"16vw"}}>
       <Row className="justify-content-center">
         <Col md="8">
           <h1>Créer ou éditer un utilisateur</h1>

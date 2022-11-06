@@ -40,7 +40,7 @@ export const DossierMedicalDetail = () => {
       }}
     >
       
-      <Header pageName="Gestion Patients" />
+      <Header pageName="Dossier médical" />
       <div
         style={{
           display:"flex",

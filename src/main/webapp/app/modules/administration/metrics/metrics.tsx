@@ -35,7 +35,7 @@ export const MetricsPage = () => {
   };
 
   return (
-    <div>
+    <div style={{marginLeft:"16vw"}}>
       <h2 id="metrics-page-heading" data-cy="metricsPageHeading">
         Métriques de l&apos;application
       </h2>

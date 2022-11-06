@@ -15,6 +15,8 @@ import { getEntities as getPrescriptions } from 'app/entities/prescription/presc
 import { IConsultation } from 'app/shared/model/consultation.model';
 import { getEntity, updateEntity, createEntity, reset } from './consultation.reducer';
 
+import { getPatient as getDossierPatient } from '../dossier-medical/dossier-medical.reducer';
+
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { examsList } from 'app/shared/util/exams-list';
@@ -34,10 +36,13 @@ export const ConsultationUpdate = () => {
 
   const patients = useAppSelector(state => state.patient.entities);
   const prescriptions = useAppSelector(state => state.prescription.entities);
+  const dossierMedicalEntity = useAppSelector(state => state.dossierMedical.entity);
   const consultationEntity = useAppSelector(state => state.consultation.entity);
   const loading = useAppSelector(state => state.consultation.loading);
   const updating = useAppSelector(state => state.consultation.updating);
   const updateSuccess = useAppSelector(state => state.consultation.updateSuccess);
+  const [dossier, setDossier] = useState();
+
 
   const account = useAppSelector(state => state.authentication.account);
   // const [exams, setExams] = useState([{"label" : '', "value" : ''}])
@@ -57,6 +62,7 @@ export const ConsultationUpdate = () => {
 
     dispatch(getPatients({}));
     dispatch(getPrescriptions({}));
+    // dispatch(getDossierPatient(idPatient));
   }, []);
 
   useEffect(() => {
@@ -150,7 +156,10 @@ export const ConsultationUpdate = () => {
               justifyContent: "flex-start",
               alignItems: "center",
               gap: isNew ? "2vw" : "4vw",
-              paddingLeft: isNew ? "1vw" : "2vw"
+              paddingLeft: isNew ? "1vw" : "2vw",
+              marginLeft:(idPatient==undefined && isNew===true)? "25vw":"",
+              marginTop:idPatient==undefined?"10vh":""
+
             }}
           >
             <Link to={idPatient == undefined ? (`/consultation/`) : (`/consultation/list/${idPatient}`)} style={{ color: "#53BFD1", }}>{React.createElement(IoIosArrowBack, { size: "20" })}</Link >
@@ -163,59 +172,65 @@ export const ConsultationUpdate = () => {
 
                 </span>)}
           </Card>
-          <Card
-            style={{
-              height: "30vh",
-              width: "40vw",
-              boxShadow: "0px 10px 50px rgba(138, 161, 203, 0.23)",
-              borderRadius: "15px",
-              borderColor: "#0075FF",
-              backgroundColor: "#F6FAFF"
+          {(idPatient==undefined && isNew===true)?null:
+                    <Card
+                    style={{
+                      minHeight: "30vh",
+                      width: "40vw",
+                      boxShadow: "0px 10px 50px rgba(138, 161, 203, 0.23)",
+                      borderRadius: "15px",
+                      borderColor: "#0075FF",
+                      backgroundColor: "#F6FAFF"
+        
+                    }}
+                  >
+                    <Card
+                      style={{
+                        backgroundColor: "#0075FF",
+                        borderColor: "#0075FF",
+                        color: "#F6FAFF",
+                        fontSize: "15px",
+                        borderRadius: "13px",
+                        minHeight: "9vh",
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: "50%",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        paddingTop: "2%",
+                        paddingLeft: "2%"
+                      }}>
+                      <span style={{ fontSize: "18px", fontWeight: "900" }}>
+                        Dossier médical
+        
+                      </span>
+                      <Link to="#"
+                        style={{ fontSize: "13px", color: "#F6FAFF", textDecoration: "none", border: "1px solid #72C9D8", backgroundColor: "#0075F5", padding: "10px", borderRadius: "25px", boxShadow: "2px 5px 11px rgba(0, 0, 0, 0.25)" }}>Tout voir </Link>
+        
+                    </Card>
+                    <div style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "flex-start",
+                      fontSize: "13px",
+                      color: "#A9B7CD",
+                      fontWeight: "700",
+                      marginTop: "15px",
+                      marginLeft: "5%",
+                      gap: "1vh"
+                    }}>
+                      {dossierMedicalEntity? 
+                      <>
+                      <div>Motif: {dossierMedicalEntity?.motifConsultation}</div>
+                      <div>Histoire de la maladie:{dossierMedicalEntity?.histoireMaladie}</div>
+                      <div>Antécédants chirigicaux:{dossierMedicalEntity?.antecedantsChirurgicaux}</div>
+                      <div>Antécédants familiaux:{dossierMedicalEntity?.antecedantsFamiliaux}</div>
+                      <div>Gynéco-Obstrétique:{dossierMedicalEntity?.gynecoObstretrique}</div>
+                      </>:<></>}
+                      
+                    </div>
+                  </Card>}
 
-            }}
-          >
-            <Card
-              style={{
-                backgroundColor: "#0075FF",
-                borderColor: "#0075FF",
-                color: "#F6FAFF",
-                fontSize: "15px",
-                borderRadius: "13px",
-                height: "30%",
-                display: "flex",
-                flexDirection: "row",
-                gap: "50%",
-                alignItems: "center",
-                justifyContent: "center",
-                paddingTop: "2%",
-                paddingLeft: "2%"
-              }}>
-              <span style={{ fontSize: "18px", fontWeight: "900" }}>
-                Dossier médical
-
-              </span>
-              <Link to="#"
-                style={{ fontSize: "13px", color: "#F6FAFF", textDecoration: "none", border: "1px solid #72C9D8", backgroundColor: "#0075F5", padding: "10px", borderRadius: "25px", boxShadow: "2px 5px 11px rgba(0, 0, 0, 0.25)" }}>Tout voir </Link>
-
-            </Card>
-            <div style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              fontSize: "13px",
-              color: "#A9B7CD",
-              fontWeight: "700",
-              marginTop: "15px",
-              marginLeft: "5%",
-              gap: "1vh"
-            }}>
-              <div>Motif:</div>
-              <div>Histoire de la maladie:</div>
-              <div>Antécédants chirigicaux:</div>
-              <div>Antécédants familiaux:</div>
-              <div>Gynéco-Obstrétique:</div>
-            </div>
-          </Card>
 
 
         </div>

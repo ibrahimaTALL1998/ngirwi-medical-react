@@ -39,7 +39,7 @@ export const HealthPage = () => {
   const data = (health || {}).components || {};
 
   return (
-    <div>
+    <div style={{marginLeft:"16vw"}}>
       <h2 id="health-page-heading" data-cy="healthPageHeading">
         Diagnostics
       </h2>

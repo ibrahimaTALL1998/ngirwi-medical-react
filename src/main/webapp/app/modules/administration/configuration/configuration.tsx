@@ -37,7 +37,7 @@ export const ConfigurationPage = () => {
   const env = configuration?.env ?? {};
 
   return (
-    <div>
+    <div style={{marginLeft:"16vw"}}>
       <h2 id="configuration-page-heading" data-cy="configurationPageHeading">
         Configuration
       </h2>

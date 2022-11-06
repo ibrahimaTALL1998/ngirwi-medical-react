@@ -24,7 +24,7 @@ export const LogsPage = () => {
   const loggers = logs ? Object.entries(logs.loggers).map((e: any) => ({ name: e[0], level: e[1].effectiveLevel })) : [];
 
   return (
-    <div>
+    <div style={{marginLeft:"16vw"}}>
       <h2 id="logs-page-heading" data-cy="logsPageHeading">
         Logs
       </h2>
