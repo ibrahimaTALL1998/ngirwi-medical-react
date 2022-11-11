@@ -153,22 +153,23 @@ export const Prescription = () => {
               justifyContent: "center",
               alignItems: "center",
               minWidth: "15vw",
-              height: "25vh",
+              minHeight: "15vw",
               borderRadius: "50%",
               backgroundColor: "#CBDCF7",
-              paddingTop: "9vh",
-              paddingLeft: "9%"
+              paddingTop: "25%",
+              paddingLeft: "4%",
+              cursor:"pointer",
+              display:"inline-block"
             }}
           >
             <span
               onClick={() => handleSyncList()}
               style={{
+                display:"block",
                 fontFamily: "Ubuntu",
                 color: "#56B5C5",
                 fontSize: "18px",
                 textAlign: "center",
-                justifyContent: "center",
-                alignItems: "center",
               }}
             >
               <FontAwesomeIcon icon="sync" spin={loading} /> Actualiser la liste
@@ -190,34 +191,25 @@ export const Prescription = () => {
             <span style={{ marginTop: "1.5%" }}>Liste des ordonnances enregstrées</span>
           </Card>
 
-          <div
-            style={{
-              justifyContent: "justify",
-              alignItems: "center",
-              minWidth: "15vw",
-              height: "25vh",
-              borderRadius: "50%",
-              backgroundColor: "#CBDCF7",
-              paddingTop: "7vh",
-              paddingLeft: "5%"
-            }}
-          >
-            <Link to="/prescription/new/" style={{ textDecoration: "none", color: "#56B5C5" }}>
-              <span
-                style={{
-                  fontFamily: "Ubuntu",
-                  color: "#56B5C5",
-                  fontSize: "18px",
-                  textAlign: "justify",
-                  fontWeight: "600"
-                }}
-              >
-                {React.createElement(RiUserAddLine, { size: "24" })} Enregistrer nouvelle ordonnance
-              </span>
-              <br />
-            </Link>
-
-          </div>
+          <Link to="/prescription/new/"
+                    style={{
+                      display:"inline-block",
+                      textDecoration:"none",
+                      textAlign:"center", 
+                      color:"#56B5C5",
+                      minWidth:"15vw",
+                      minHeight:"15vw",
+                      borderRadius:"50%",
+                      backgroundColor:"#CBDCF7",
+                      fontSize:"18px",
+                      }}
+                    >
+                    <span style={{display:"block",marginTop:"20%"}}>
+                      {React.createElement( RiUserAddLine  ,{size: "24"})}   Enregistrer nouvelle ordonnance
+                    </span>
+                   
+                                 
+                  </Link>
 
 
 
@@ -269,7 +261,7 @@ export const Prescription = () => {
 
 
             </ValidatedField>
-            <ValidatedField label={`${"   "}`} style={{ borderRadius: "12px" }} placeholder="Barre de recherche" id="search" name="search" type={criteria === "date" ? "date" : "text"} onChange={handleSearch} />
+            <ValidatedField label={`${"   "}`} style={{ borderRadius: "12px" }} placeholder="Barre de recherche" id="search" name="search" type={criteria === "creationDate" ? "date" : "text"} onChange={handleSearch} />
             {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
 
           </div>

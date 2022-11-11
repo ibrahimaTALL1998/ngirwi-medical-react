@@ -124,20 +124,21 @@ export const PatientUpdate = () => {
             
             <Card
             style={{
-              height:"6.28vh",
-              width:"32vw",
-              maxWidth:"50vw",
+              minHeight:"6.28vh",
+              minWidth:"32vw",
               borderRadius:"20px",
               backgroundColor:"#11485C",
               textAlign:"center",
               color:"white",
               marginBottom:"5vh",
               marginLeft:"25vw",
+              marginRight:"25vw",
               boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
               display:"flex",
               flexDirection:"row",
               justifyContent:"center",
               alignItems:"center",
+              paddingLeft:"1vw"
               }}
           >
             <Button replace onClick={() => window.history.back()} style={{color:"#53BFD1",backgroundColor:"#11485C",borderColor:"#11485C"}}>{React.createElement(IoIosArrowBack , {size:"20"})}</Button>

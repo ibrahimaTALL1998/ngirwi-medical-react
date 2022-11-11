@@ -121,7 +121,7 @@ export const ConsultationUpdate = () => {
         flexDirection: "column"
       }}
     >
-      <Header pageName="Consultations" />
+      <Header pageName="Gestion consultations" />
 
       <div
         style={{
@@ -158,11 +158,11 @@ export const ConsultationUpdate = () => {
               gap: isNew ? "2vw" : "4vw",
               paddingLeft: isNew ? "1vw" : "2vw",
               marginLeft:(idPatient==undefined && isNew===true)? "25vw":"",
-              marginTop:idPatient==undefined?"10vh":""
+              marginTop:"10vh"
 
             }}
           >
-            <Link to={idPatient == undefined ? (`/consultation/`) : (`/consultation/list/${idPatient}`)} style={{ color: "#53BFD1", }}>{React.createElement(IoIosArrowBack, { size: "20" })}</Link >
+            <Button  onClick={() => window.history.back()} style={{color:"#53BFD1",backgroundColor:"#11485C",borderColor:"#11485C"}}>{React.createElement(IoIosArrowBack , {size:"20"})}</Button>
             {
               isNew ? (<span >Enregistrement nouvelle consultation
 
@@ -204,7 +204,7 @@ export const ConsultationUpdate = () => {
                         Dossier médical
         
                       </span>
-                      <Link to="#"
+                      <Link to={`/dossier-medical/${idPatient?idPatient:consultationEntity?.patient?.id}`}
                         style={{ fontSize: "13px", color: "#F6FAFF", textDecoration: "none", border: "1px solid #72C9D8", backgroundColor: "#0075F5", padding: "10px", borderRadius: "25px", boxShadow: "2px 5px 11px rgba(0, 0, 0, 0.25)" }}>Tout voir </Link>
         
                     </Card>

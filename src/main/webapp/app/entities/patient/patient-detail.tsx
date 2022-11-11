@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Row, Col, Card } from 'reactstrap';
 import { TextFormat } from 'react-jhipster';
@@ -8,6 +8,7 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntity } from './patient.reducer';
+import { getPatient} from '../dossier-medical/dossier-medical.reducer';
 import { FiLogOut } from 'react-icons/fi';
 import Header from 'app/shared/layout/header/header';
 
@@ -16,12 +17,23 @@ export const PatientDetail = () => {
 
   const { id } = useParams<'id'>();
 
+  function changeColor(e) {
+    e.target.style.color = '#0075FF';
+    e.target.style.backgroundColor = "#FFFFFF";
+  }
+function setColor(e){
+  e.target.style.backgroundColor = "#0075FF";
+  e.target.style.color = '#FFFFFF';
+}
+
   useEffect(() => {
     dispatch(getEntity(id));
+    dispatch(getPatient(id));
   }, []);
+ 
 
   const patientEntity = useAppSelector(state => state.patient.entity);
-  const dossierMedicalEntity = useAppSelector(state => state.dossierMedical.entities)
+  const dossierMedicalEntity = useAppSelector(state => state.dossierMedical.entity)
   return (
     <div
       style={{
@@ -34,7 +46,7 @@ export const PatientDetail = () => {
       }}
     >
       
-      <Header pageName="Gestion Patients" />
+      <Header pageName="Gestion patients" />
       <div
         style={{
           display:"flex",
@@ -248,36 +260,44 @@ export const PatientDetail = () => {
             }}
           >
             <Button
+              onMouseOver={changeColor}
+              onMouseLeave={setColor}
               tag={Link}
-              to={`/dossier-medical/${patientEntity.id}`}    
+              to={`/dossier-medical/${dossierMedicalEntity?.id}/edit/${"voir"}`}   
               style={{
                 borderColor:"#0075FF",
                 backgroundColor:"#0075FF",
                 color:"#FFFFFF",
                 width:"25vh",
-                height:"8vh",
+                height:"9vh",
                 borderRadius:"4px",
                 fontFamily:"Ubuntu",
-                paddingTop:"10%"
+                padding:"10%"
               }}
             >
-              Dossier médical
+             Dossier médical
             </Button>
             <Button
+              onMouseOver={changeColor}
+              onMouseLeave={setColor}
               href={`/consultation/new/${patientEntity.id}/`}
               style={{
                 borderColor:"#0075FF",
                 backgroundColor:"#0075FF",
                 color:"#FFFFFF",
                 width:"25vh",
-                height:"8vh",
+                height:"9vh",
                 borderRadius:"4px",
                 fontFamily:"Ubuntu",
+                textAlign:"center",
+                paddingTop:"3.75%"
               }}
             >
               Nouvelle consultation
             </Button>
             <Button
+              onMouseOver={changeColor}
+              onMouseLeave={setColor}
               tag={Link}
               to={`/consultation/list/${patientEntity.id}`}
               style={{
@@ -285,7 +305,7 @@ export const PatientDetail = () => {
                 backgroundColor:"#0075FF",
                 color:"#FFFFFF",
                 width:"25vh",
-                height:"8vh",
+                height:"9vh",
                 borderRadius:"4px",
                 fontFamily:"Ubuntu",
               }}

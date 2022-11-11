@@ -49,7 +49,7 @@ export const Patient = () => {
       })
     );
   };
-
+ 
   const sortEntities = () => {
     getAllEntities();
     const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
@@ -137,11 +137,11 @@ export const Patient = () => {
           fontFamily:"Mulish",
           fontWeight:"900",
           display:"flex",
-          flexDirection:"column"
+          flexDirection:"column",
         }}    
     >
 
-          <Header pageName="Patients"/>
+          <Header pageName="Gestion patients"/>
 
           <div
             style={{
@@ -163,34 +163,28 @@ export const Patient = () => {
               }}
             >
 
-              <div
-                style={{
-                  justifyContent:"flex-start",
-                  alignItems:"center",
-                  minWidth:"15vw",
-                  height:"25vh",
-                  borderRadius:"50%",
-                  backgroundColor:"#CBDCF7",
-                  paddingTop:"7vh",
-                  paddingLeft:"5%",
-                  color:"#56B5C5"
-                }}
-              >
-                  <Link style={{textDecoration:"none"}} to="/patient/new">
-                    <span 
-                      style={{
-                        color:"#56B5C5",
-                        fontSize:"18px",
-                        fontFamily:"Ubuntu",
-                        textAlign:"justify"
-                        }}
+              
+              <Link to="/patient/new/"
+                    style={{
+                      display:"inline-block",
+                      textDecoration:"none",
+                      textAlign:"center", 
+                      color:"#56B5C5",
+                      minWidth:"15vw",
+                      minHeight:"15vw",
+                      borderRadius:"50%",
+                      backgroundColor:"#CBDCF7",
+                      fontSize:"18px",
+                      }}
                     >
-                    {React.createElement( RiUserAddLine  ,{size: "24"})}  Enregistrer nouveau patient
-                    </span>                
+                    <span
+                    
+                    style={{display:"block",backgroundColor:'transparent',marginTop:"20%"}}>
+                      {React.createElement( RiUserAddLine  ,{size: "24"})}   Enregistrer nouveau patient
+                    </span>
+                   
+                                 
                   </Link>
-                
-              </div>
-
               <Card
                 style={{
                   height:"6.28vh",
@@ -205,43 +199,27 @@ export const Patient = () => {
               >
               <span style={{marginTop:"1.5%"}}>Liste des patients enregistrés</span>
               </Card>
-
-              <div
-                style={{
-                  justifyContent:"justify",
-                  alignItems:"center",
-                  minWidth:"15vw",
-                  height:"25vh",
-                  borderRadius:"50%",
-                  backgroundColor:"#CBDCF7",
-                  paddingTop:"7vh",
-                  paddingLeft:"5%"
-                }}
-              >
-                  <Link to="/consultation/new/" style={{textDecoration:"none",color:"#56B5C5"}}>
-                    <span 
-                      style={{
-                        fontFamily:"Ubuntu",
-                        color:"#56B5C5",
-                        fontSize:"18px",
-                        textAlign:"justify"
-                        }}
-                    >
-                     {React.createElement( RiUserAddLine  ,{size: "24"})} Enregistrer 
-                    </span>
-                    <br/> 
-                    <span
-                     style={{
-                      fontFamily:"Ubuntu",
+              <Link to="/consultation/new/"
+                    style={{
+                      display:"inline-block",
+                      textDecoration:"none",
+                      textAlign:"center", 
                       color:"#56B5C5",
+                      minWidth:"15vw",
+                      minHeight:"15vw",
+                      borderRadius:"50%",
+                      backgroundColor:"#CBDCF7",
                       fontSize:"18px",
-                      textAlign:"justify",
-                      marginLeft:"2vw"
                       }}
-                  >consultation</span>               
+                    >
+                    <span
+                    style={{display:"block",backgroundColor:'transparent',marginTop:"20%"}}>
+                      {React.createElement( RiUserAddLine  ,{size: "24"})}   Enregistrer nouvelle consultation
+                    </span>
+                   
+                                 
                   </Link>
-                
-              </div>
+          
           
 
             
@@ -291,7 +269,7 @@ export const Patient = () => {
              Date de naissance
            </option>
            <option value="cni">
-             Numéro de carte d'identité
+             Numéro de carte d&apos;identité
            </option>
             {/* </select> */}
      

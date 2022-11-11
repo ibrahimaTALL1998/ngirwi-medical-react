@@ -90,7 +90,7 @@ export const ConsultationPatient = () =>{
       flexDirection:"column"
     }}    
 >
-     <Header pageName="Consultations" />
+     <Header pageName="Gestion consultations" />
 
 
       <div
@@ -146,7 +146,7 @@ export const ConsultationPatient = () =>{
             boxShadow:"0px 2px 12px 4px rgba(138, 161, 203, 0.23)"
           }}
         >
-          <span style={{marginTop:"1%", color:"#141414",fontSize:"15px", marginLeft:"3%", marginBottom:"1%"}}>Liste consultations patient</span>
+          {/* <span style={{marginTop:"1%", color:"#141414",fontSize:"20px", marginLeft:"3%", marginBottom:"1%"}}>Liste consultations patient</span> */}
           <span
             style={{
               marginTop:"2%",

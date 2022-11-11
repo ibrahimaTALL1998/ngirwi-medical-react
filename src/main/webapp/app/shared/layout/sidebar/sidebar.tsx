@@ -8,7 +8,8 @@ import { Link } from "react-router-dom";
 import { BrandIcon } from "../header/header-components";
 import "../header/header.scss"
 import { Col, Nav } from "reactstrap";
-import { RiFilePaperLine } from "react-icons/ri";
+import { RiAdminLine, RiFilePaperLine } from "react-icons/ri";
+import { AUTHORITIES } from "app/config/constants";
      
 
 export interface ISideBarProps {
@@ -28,7 +29,7 @@ const SideBar = (props : ISideBarProps) => {
       </div>
     ) : null;
 
-    const [isShown, setIsShown] = useState(false);
+    const [isShown, setIsShown] = useState(true);
 
     function changeColor(e) {
         e.target.style.color = '#000000';
@@ -36,7 +37,7 @@ const SideBar = (props : ISideBarProps) => {
     function setColor(e){
         e.target.style.color = '#3C5681';
     }
-
+    
     return (
         <Nav  >
             {renderDevRibbon()}
@@ -218,6 +219,34 @@ const SideBar = (props : ISideBarProps) => {
                         Factures
                     </h6>
                     </Link>
+                    {AUTHORITIES.ADMIN?(<Link 
+                        to="/admin/user-management/"
+                        style={{
+                            marginLeft : "2vw",
+                            marginRight: "3vw",
+                            color:"#54BFD0",
+                            display:"flex",
+                            alignItems:"flex-start",
+                            fontSize:"5px",
+                            gap:"5%",
+                            padding:"5px",
+                            fontFamily:"Mulish",
+                            textDecoration:"none",
+                        }}
+                    >
+                        <div>{React.createElement(RiAdminLine ,{size: "15"})}</div>
+                        <h6 
+                        onMouseOver={changeColor}
+                        onMouseLeave={setColor}
+                        style={{
+                            fontFamily:"Mulish",
+                            color:"#3C5681"
+                            }}
+                    >
+                        Administration
+                    </h6>
+                    </Link>):null}
+                    
                     <Link 
                         to="/logoutDialog"
                         style={{

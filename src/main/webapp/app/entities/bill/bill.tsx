@@ -140,90 +140,84 @@ export const Bill = () => {
 
               }}          
             >
-              <div
-                style={{
-                  display:"grid",
-                  gridTemplateColumns:"repeat(3, 3fr)",
-                  alignItems:"center",
-                  columnGap:"5%",
-                  width:"75vw",
-                  marginLeft:"5%"
-                }}
-              >
-
-                <div
-                  style={{
-                    justifyContent:"center",
-                    alignItems:"center",
-                    minWidth:"15vw",
-                    height:"25vh",
-                    borderRadius:"50%",
-                    backgroundColor:"#CBDCF7",
-                    paddingTop:"9vh",
-                    paddingLeft:"9%"
-                  }}
-                >
-                  <span 
-                  onClick={()=>handleSyncList()}
-                    style={{
-                      fontFamily:"Ubuntu",
-                      color:"#56B5C5",
-                      fontSize:"18px",
-                      textAlign:"center"
-                      }}
-                  >
-                  <FontAwesomeIcon icon="sync" spin={loading} /> Actualiser la liste
-                  </span> 
-                </div>
-
-                <Card
-                  style={{
-                    height:"6.28vh",
-                    width:"33.38vw",
-                    borderRadius:"20px",
-                    backgroundColor:"#11485C",
-                    textAlign:"center",
-                    color:"white",
-                    marginBottom:"5vh",
-                    boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
-                    }}
-                >
-                <span style={{marginTop:"1.5%"}}>Liste des factures enregstrées</span>
-                </Card>
-
-                <div
-                  style={{
-                    justifyContent:"justify",
-                    alignItems:"center",
-                    minWidth:"15vw",
-                    height:"25vh",
-                    borderRadius:"50%",
-                    backgroundColor:"#CBDCF7",
-                    paddingTop:"7vh",
-                    paddingLeft:"5%"
-                  }}
-                >
-                    <Link to="/bill/new/" style={{textDecoration:"none",color:"#56B5C5"}}>
-                      <span 
-                        style={{
-                          fontFamily:"Ubuntu",
-                          color:"#56B5C5",
-                          fontSize:"18px",
-                          textAlign:"justify",
-                          fontWeight:"600"
-                          }}
-                      >
-                      {React.createElement( RiUserAddLine  ,{size: "24"})} Enregistrer nouvelle facture
-                      </span>
-                      <br/>               
-                    </Link>
-                  
-                </div>
             
+              <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 3fr)",
+            alignItems: "center",
+            columnGap: "5%",
+            width: "75vw",
+            marginLeft: "5%"
+          }}
+        >
 
-              
-              </div>
+<div
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              minWidth: "15vw",
+              minHeight: "15vw",
+              borderRadius: "50%",
+              backgroundColor: "#CBDCF7",
+              paddingTop: "25%",
+              paddingLeft: "4%",
+              cursor:"pointer",
+              display:"inline-block"
+            }}
+          >
+            <span
+              onClick={() => handleSyncList()}
+              style={{
+                display:"block",
+                fontFamily: "Ubuntu",
+                color: "#56B5C5",
+                fontSize: "18px",
+                textAlign: "center",
+              }}
+            >
+              <FontAwesomeIcon icon="sync" spin={loading} /> Actualiser la liste
+            </span>
+          </div>
 
+          <Card
+            style={{
+              height: "6.28vh",
+              width: "33.38vw",
+              borderRadius: "20px",
+              backgroundColor: "#11485C",
+              textAlign: "center",
+              color: "white",
+              marginBottom: "5vh",
+              boxShadow: "0px 10px 50px rgba(138, 161, 203, 0.23)",
+            }}
+          >
+            <span style={{ marginTop: "1.5%" }}>Liste des factures enregstrées</span>
+          </Card>
+
+          <Link to="/bill/new/"
+                    style={{
+                      display:"inline-block",
+                      textDecoration:"none",
+                      textAlign:"center", 
+                      color:"#56B5C5",
+                      minWidth:"15vw",
+                      minHeight:"15vw",
+                      borderRadius:"50%",
+                      backgroundColor:"#CBDCF7",
+                      fontSize:"18px",
+                      }}
+                    >
+                    <span style={{display:"block",marginTop:"20%"}}>
+                      {React.createElement( RiUserAddLine  ,{size: "24"})}   Enregistrer nouvelle facture
+                    </span>
+                   
+                                 
+                  </Link>
+
+
+
+        </div>
 
 
               <Card

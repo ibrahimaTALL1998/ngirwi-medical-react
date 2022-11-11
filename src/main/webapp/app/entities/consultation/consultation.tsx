@@ -134,7 +134,7 @@ export const Consultation = () => {
           flexDirection:"column"
         }}    
     >
-      <Header pageName="Consultations" />
+      <Header pageName="Gestion consultations" />
 
 
           <div
@@ -156,34 +156,26 @@ export const Consultation = () => {
               }}
             >
 
-              <div
-                style={{
-                  justifyContent:"flex-start",
-                  alignItems:"center",
-                  minWidth:"15vw",
-                  height:"25vh",
-                  borderRadius:"50%",
-                  backgroundColor:"#CBDCF7",
-                  paddingTop:"7vh",
-                  paddingLeft:"5%",
-                  color:"#56B5C5"
-                }}
-              >
-                  <Link style={{textDecoration:"none"}} to="/patient/new">
-                    <span 
-                      style={{
-                        color:"#56B5C5",
-                        fontSize:"18px",
-                        fontFamily:"Ubuntu",
-                        textAlign:"justify"
-                        }}
+              
+              <Link to="/patient/new/"
+                    style={{
+                      display:"inline-block",
+                      textDecoration:"none",
+                      textAlign:"center", 
+                      color:"#56B5C5",
+                      minWidth:"15vw",
+                      minHeight:"15vw",
+                      borderRadius:"50%",
+                      backgroundColor:"#CBDCF7",
+                      fontSize:"18px",
+                      }}
                     >
-                    {React.createElement( RiUserAddLine  ,{size: "24"})}  Enregistrer nouveau patient
-                    </span>                
+                    <span style={{display:"block",marginTop:"20%"}}>
+                      {React.createElement( RiUserAddLine  ,{size: "24"})}   Enregistrer nouveau patient
+                    </span>
+                   
+                                 
                   </Link>
-                
-              </div>
-
               <Card
                 style={{
                   height:"6.28vh",
@@ -198,43 +190,26 @@ export const Consultation = () => {
               >
               <span style={{marginTop:"1.5%"}}>Liste des consultations enregistrées</span>
               </Card>
-
-              <div
-                style={{
-                  justifyContent:"justify",
-                  alignItems:"center",
-                  minWidth:"15vw",
-                  height:"25vh",
-                  borderRadius:"50%",
-                  backgroundColor:"#CBDCF7",
-                  paddingTop:"7vh",
-                  paddingLeft:"5%"
-                }}
-              >
-                  <Link to="/consultation/new/" style={{textDecoration:"none",color:"#56B5C5"}}>
-                    <span 
-                      style={{
-                        fontFamily:"Ubuntu",
-                        color:"#56B5C5",
-                        fontSize:"18px",
-                        textAlign:"justify"
-                        }}
-                    >
-                     {React.createElement( RiUserAddLine  ,{size: "24"})} Enregistrer 
-                    </span>
-                    <br/> 
-                    <span
-                     style={{
-                      fontFamily:"Ubuntu",
+              <Link to="/consultation/new/"
+                    style={{
+                      display:"inline-block",
+                      textDecoration:"none",
+                      textAlign:"center", 
                       color:"#56B5C5",
+                      minWidth:"15vw",
+                      minHeight:"15vw",
+                      borderRadius:"50%",
+                      backgroundColor:"#CBDCF7",
                       fontSize:"18px",
-                      textAlign:"justify",
-                      marginLeft:"2vw"
                       }}
-                  >consultation</span>               
+                    >
+                    <span style={{display:"block",marginTop:"20%"}}>
+                      {React.createElement( RiUserAddLine  ,{size: "24"})}   Enregistrer nouvelle consultation
+                    </span>
+                   
+                                 
                   </Link>
-                
-              </div>
+          
           
 
             
@@ -255,7 +230,7 @@ export const Consultation = () => {
               }}
             >
 
-              <span style={{marginTop:"1%", color:"#141414",fontSize:"15px", marginLeft:"3%", marginBottom:"1%"}}>Consultations enregistrées</span>
+              <span style={{marginTop:"1%", color:"#141414",fontSize:"20px", marginLeft:"3%", marginBottom:"1%"}}>Consultations enregistrées</span>
               <div 
         style={{
           display:"flex",
@@ -299,6 +274,7 @@ export const Consultation = () => {
                       position:"sticky",
                       top:"0",
                       backgroundColor:"white",
+                      width:"1%"
                     }}                
                   ></th>
                   <th 
@@ -307,6 +283,8 @@ export const Consultation = () => {
                     position:"sticky",
                     top:"0",
                     backgroundColor:"white",
+                    width:"10%",
+                    textAlign:"center"
                   }}
                     className="hand" onClick={sort('id')}>
                     ID <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
@@ -317,6 +295,8 @@ export const Consultation = () => {
                     position:"sticky",
                     top:"0",
                     backgroundColor:"white",
+                    width:"17%",
+                    textAlign:"center"
                   }}
                   className="hand" onClick={sort('patient.lastName')}>
                     Nom <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
@@ -327,6 +307,8 @@ export const Consultation = () => {
                     position:"sticky",
                     top:"0",
                     backgroundColor:"white",
+                    width:"17%",
+                    textAlign:"center"
                   }}
                   className="hand" onClick={sort('patient.firstName')}>
                     Prénom <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" /> 
@@ -337,6 +319,8 @@ export const Consultation = () => {
                     position:"sticky",
                     top:"0",
                     backgroundColor:"white",
+                    width:"10%",
+                    textAlign:"center"
                   }}
                   className="hand" onClick={sort('dateTime')}>
                    Date <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
@@ -347,6 +331,8 @@ export const Consultation = () => {
                     position:"sticky",
                     top:"0",
                     backgroundColor:"white",
+                    width:"11%",
+                    textAlign:"center"
                   }}
                   className="hand" onClick={sort('dateTime')}>
                     Heure <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
@@ -358,6 +344,8 @@ export const Consultation = () => {
                     position:"sticky",
                     top:"0",
                     backgroundColor:"white",
+                    width:"28%",
+                    textAlign:"center"
                   }}
                   >Actions</th>
                 </tr>
@@ -368,7 +356,7 @@ export const Consultation = () => {
                   border:"1px solid #F6FAFF",
                   borderRadius:"15px 15px 0px 15px",
                   fontSize:"14px",
-                  borderBottom:"50px solid white",
+                  borderBottom:"50px solid white",textAlign:"center"
                 }}
               >
              {filter === null ? consultationList.map((consultation, i) => (
@@ -418,6 +406,9 @@ export const Consultation = () => {
                         </Button>
                         <Button tag={Link} to={`/consultation/list/${patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
                             <span className="d-none d-md-inline">Voir sa liste</span>
+                        </Button>
+                        <Button tag={Link} to={`/prescription/new/${consultation.id}`} color="success" size="sm" data-cy="entityDetailsButton">
+                            <span className="d-none d-md-inline">Ordonnace</span>
                         </Button>
                        
 
@@ -477,6 +468,9 @@ export const Consultation = () => {
                         </Button>
                         <Button tag={Link} to={`/consultation/list/${consultation.patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
                             <span className="d-none d-md-inline">Voir sa liste</span>
+                        </Button>
+                        <Button tag={Link} to={`/prescription/new/${consultation.id}`} color="success" size="sm" data-cy="entityDetailsButton">
+                            <span className="d-none d-md-inline">Ordonnace</span>
                         </Button>
                        
 

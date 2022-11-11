@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Button, Table, Badge } from 'reactstrap';
-import { TextFormat, JhiPagination, JhiItemCount, getSortState } from 'react-jhipster';
+import { Button, Table, Badge, Card } from 'reactstrap';
+import { TextFormat, JhiPagination, JhiItemCount, getSortState, ValidatedField } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { APP_DATE_FORMAT } from 'app/config/constants';
@@ -9,6 +9,8 @@ import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.cons
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { getUsersAsAdmin, updateUser } from './user-management.reducer';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
+import { RiUserAddLine } from 'react-icons/ri';
+import Header from 'app/shared/layout/header/header';
 
 export const UserManagement = () => {
   const dispatch = useAppDispatch();
@@ -85,51 +87,264 @@ export const UserManagement = () => {
   const loading = useAppSelector(state => state.userManagement.loading);
 
   return (
-    <div style={{marginLeft:"16vw"}}>
-      <h2 id="user-management-page-heading" data-cy="userManagementPageHeading">
-        Utilisateurs
-        <div className="d-flex justify-content-end">
-          <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon="sync" spin={loading} /> Actualiser la liste
-          </Button>
-          <Link to="new" className="btn btn-primary jh-create-entity">
-            <FontAwesomeIcon icon="plus" /> Créer un nouvel utilisateur
-          </Link>
-        </div>
-      </h2>
-      <Table responsive striped>
-        <thead>
+    <div
+    style={{
+      paddingLeft:"16vw",
+      paddingTop:"1%",
+      fontFamily:"Mulish",
+      fontWeight:"900",
+      display:"flex",
+      flexDirection:"column"
+    }}    
+>
+
+      <Header pageName="Administration"/>
+
+      <div
+        style={{
+          display:"flex",
+          flexDirection:"column",
+          position:"fixed",
+          top:"15.5vh",
+
+        }}          
+      >
+      
+        <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(3, 3fr)",
+      alignItems: "center",
+      columnGap: "5%",
+      width: "75vw",
+      marginLeft: "5%"
+    }}
+  >
+
+<div
+      style={{
+        justifyContent: "center",
+        alignItems: "center",
+        minWidth: "15vw",
+        minHeight: "15vw",
+        borderRadius: "50%",
+        backgroundColor: "#CBDCF7",
+        paddingTop: "25%",
+        paddingLeft: "4%",
+        cursor:"pointer",
+        display:"inline-block"
+      }}
+    >
+      <span
+        onClick={() => handleSyncList()}
+        style={{
+          display:"block",
+          fontFamily: "Ubuntu",
+          color: "#56B5C5",
+          fontSize: "18px",
+          textAlign: "center",
+        }}
+      >
+        <FontAwesomeIcon icon="sync" spin={loading} /> Actualiser la liste
+      </span>
+    </div>
+
+    <Card
+      style={{
+        height: "6.28vh",
+        width: "33.38vw",
+        borderRadius: "20px",
+        backgroundColor: "#11485C",
+        textAlign: "center",
+        color: "white",
+        marginBottom: "5vh",
+        boxShadow: "0px 10px 50px rgba(138, 161, 203, 0.23)",
+      }}
+    >
+      <span style={{ marginTop: "1.5%" }}>Liste des comptes enregstrés</span>
+    </Card>
+
+    <Link to="/admin/user-management/new/"
+              style={{
+                display:"inline-block",
+                textDecoration:"none",
+                textAlign:"center", 
+                color:"#56B5C5",
+                minWidth:"15vw",
+                minHeight:"15vw",
+                borderRadius:"50%",
+                backgroundColor:"#CBDCF7",
+                fontSize:"18px",
+                }}
+              >
+              <span style={{display:"block",marginTop:"20%"}}>
+                {React.createElement( RiUserAddLine  ,{size: "24"})}   Enregistrer nouveau compte
+              </span>
+             
+                           
+            </Link>
+
+
+
+  </div>
+
+
+        <Card
+          style={{
+            width:"83vw",
+            height:"70vh",
+            backgroundColor:"white",
+            position:"fixed",
+            top:"32vh",
+            marginRight:"1%",
+            borderRadius:"15px 15px 0px 0px",
+            boxShadow:"0px 2px 12px 4px rgba(138, 161, 203, 0.23)"
+
+
+          }}
+        >
+          <span style={{marginTop:"1%", color:"#141414",fontSize:"20px", marginLeft:"3%", marginBottom:"1%"}}>Factures enregistrées</span>
+
+          <div 
+            style={{
+              display:"flex",
+              flexDirection:"row",
+              justifyContent:"flex-end",
+              marginBottom:"3vh",
+              marginRight:"2vw",
+              gap:"1vw"
+            }}
+          >
+
+          </div>
+            <Table responsive
+            
+            >
+          <thead 
+           style={{
+            position:"sticky",
+            top:"0"
+          }}
+          >
           <tr>
-            <th className="hand" onClick={sort('id')}>
+            <th 
+            style={{
+              textAlign:"center",
+              fontSize:"14px",
+              position:"sticky",
+              top:"0",
+              
+              backgroundColor:"white",
+            }}
+            className="hand" onClick={sort('id')}>
               ID
               <FontAwesomeIcon icon="sort" />
             </th>
-            <th className="hand" onClick={sort('login')}>
+            <th 
+            style={{
+              textAlign:"center",
+              fontSize:"14px",
+              position:"sticky",
+              top:"0",
+              
+              backgroundColor:"white",
+            }}
+            className="hand" onClick={sort('login')}>
               Login
               <FontAwesomeIcon icon="sort" />
             </th>
-            <th className="hand" onClick={sort('email')}>
+            <th 
+            style={{
+              textAlign:"center",
+              fontSize:"14px",
+              position:"sticky",
+              top:"0",
+              
+              backgroundColor:"white",
+            }}
+            className="hand" onClick={sort('email')}>
               Email
               <FontAwesomeIcon icon="sort" />
             </th>
-            <th />
-            <th>Droits</th>
-            <th className="hand" onClick={sort('createdDate')}>
+            <th 
+            style={{
+              textAlign:"center",
+              fontSize:"14px",
+              position:"sticky",
+              top:"0",
+              
+              backgroundColor:"white",
+            }}
+            >Statut</th>
+            <th 
+            style={{
+              textAlign:"center",
+              fontSize:"14px",
+              position:"sticky",
+              top:"0",
+              
+              backgroundColor:"white",
+            }}
+            >Droits</th>
+            <th
+            style={{
+              textAlign:"center",
+              fontSize:"14px",
+              position:"sticky",
+              top:"0",
+              
+              backgroundColor:"white",
+            }}
+            className="hand" onClick={sort('createdDate')}>
               Créé le
               <FontAwesomeIcon icon="sort" />
             </th>
-            <th className="hand" onClick={sort('lastModifiedBy')}>
+            <th 
+            style={{
+              textAlign:"center",
+              fontSize:"14px",
+              position:"sticky",
+              top:"0",
+              
+              backgroundColor:"white",
+            }}
+            className="hand" onClick={sort('lastModifiedBy')}>
               Modifié par
               <FontAwesomeIcon icon="sort" />
             </th>
-            <th id="modified-date-sort" className="hand" onClick={sort('lastModifiedDate')}>
+            <th 
+            style={{
+              textAlign:"center",
+              fontSize:"14px",
+              position:"sticky",
+              top:"0",
+              
+              backgroundColor:"white",
+            }}
+            id="modified-date-sort" className="hand" onClick={sort('lastModifiedDate')}>
               Modifié le
               <FontAwesomeIcon icon="sort" />
             </th>
-            <th />
+            <th style={{
+                textAlign:"center",
+                fontSize:"14px",
+                position:"sticky",
+                top:"0",
+                
+                backgroundColor:"white",
+              }} />
           </tr>
         </thead>
-        <tbody>
+          <tbody 
+          style={{
+            backgroundColor:"#F6FAFF",
+            border:"1px solid #F6FAFF",
+            borderRadius:"15px 15px 0px 15px",
+            fontSize:"15px",
+            textAlign:"center",
+            borderBottom:"50px solid white",
+          }}
+          >
           {users.map((user, i) => (
             <tr id={user.login} key={`user-${i}`}>
               <td>
@@ -168,13 +383,23 @@ export const UserManagement = () => {
                   <TextFormat value={user.lastModifiedDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
                 ) : null}
               </td>
-              <td className="text-end">
-                <div className="btn-group flex-btn-group-container">
-                  <Button tag={Link} to={user.login} color="info" size="sm">
-                    <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir</span>
-                  </Button>
+              <td  
+                className="text-end"
+              >
+                <div
+                
+                  style={{
+                    display:"flex",
+                    flexDirection:"row",
+                    gap:"3px",
+                    fontSize:"9px"
+                  }} 
+                  className="btn-group flex-btn-group-container">
                   <Button tag={Link} to={`${user.login}/edit`} color="primary" size="sm">
                     <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
+                  </Button>
+                  <Button tag={Link} to={user.login} color="dark" size="sm">
+                    <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir</span>
                   </Button>
                   <Button tag={Link} to={`${user.login}/delete`} color="danger" size="sm" disabled={account.login === user.login}>
                     <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Supprimer</span>
@@ -184,26 +409,134 @@ export const UserManagement = () => {
             </tr>
           ))}
         </tbody>
-      </Table>
-      {totalItems ? (
-        <div className={users?.length > 0 ? '' : 'd-none'}>
-          <div className="justify-content-center d-flex">
-            <JhiItemCount page={pagination.activePage} total={totalItems} itemsPerPage={pagination.itemsPerPage} i18nEnabled />
-          </div>
-          <div className="justify-content-center d-flex">
-            <JhiPagination
-              activePage={pagination.activePage}
-              onSelect={handlePagination}
-              maxButtons={5}
-              itemsPerPage={pagination.itemsPerPage}
-              totalItems={totalItems}
-            />
-          </div>
-        </div>
-      ) : (
-        ''
-      )}
-    </div>
+            </Table>
+          
+
+
+        </Card>
+      </div>
+
+    
+</div>
+    // <div style={{marginLeft:"16vw"}}>
+    //   <h2 id="user-management-page-heading" data-cy="userManagementPageHeading">
+    //     Utilisateurs
+    //     <div className="d-flex justify-content-end">
+    //       <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
+    //         <FontAwesomeIcon icon="sync" spin={loading} /> Actualiser la liste
+    //       </Button>
+    //       <Link to="new" className="btn btn-primary jh-create-entity">
+    //         <FontAwesomeIcon icon="plus" /> Créer un nouvel utilisateur
+    //       </Link>
+    //     </div>
+    //   </h2>
+    //   <Table responsive striped>
+        // <thead>
+        //   <tr>
+        //     <th className="hand" onClick={sort('id')}>
+        //       ID
+        //       <FontAwesomeIcon icon="sort" />
+        //     </th>
+        //     <th className="hand" onClick={sort('login')}>
+        //       Login
+        //       <FontAwesomeIcon icon="sort" />
+        //     </th>
+        //     <th className="hand" onClick={sort('email')}>
+        //       Email
+        //       <FontAwesomeIcon icon="sort" />
+        //     </th>
+        //     <th />
+        //     <th>Droits</th>
+        //     <th className="hand" onClick={sort('createdDate')}>
+        //       Créé le
+        //       <FontAwesomeIcon icon="sort" />
+        //     </th>
+        //     <th className="hand" onClick={sort('lastModifiedBy')}>
+        //       Modifié par
+        //       <FontAwesomeIcon icon="sort" />
+        //     </th>
+        //     <th id="modified-date-sort" className="hand" onClick={sort('lastModifiedDate')}>
+        //       Modifié le
+        //       <FontAwesomeIcon icon="sort" />
+        //     </th>
+        //     <th />
+        //   </tr>
+        // </thead>
+        // <tbody>
+        //   {users.map((user, i) => (
+        //     <tr id={user.login} key={`user-${i}`}>
+        //       <td>
+        //         <Button tag={Link} to={user.login} color="link" size="sm">
+        //           {user.id}
+        //         </Button>
+        //       </td>
+        //       <td>{user.login}</td>
+        //       <td>{user.email}</td>
+        //       <td>
+        //         {user.activated ? (
+        //           <Button color="success" onClick={toggleActive(user)}>
+        //             Activé
+        //           </Button>
+        //         ) : (
+        //           <Button color="danger" onClick={toggleActive(user)}>
+        //             Désactivé
+        //           </Button>
+        //         )}
+        //       </td>
+        //       <td>
+        //         {user.authorities
+        //           ? user.authorities.map((authority, j) => (
+        //               <div key={`user-auth-${i}-${j}`}>
+        //                 <Badge color="info">{authority}</Badge>
+        //               </div>
+        //             ))
+        //           : null}
+        //       </td>
+        //       <td>
+        //         {user.createdDate ? <TextFormat value={user.createdDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid /> : null}
+        //       </td>
+        //       <td>{user.lastModifiedBy}</td>
+        //       <td>
+        //         {user.lastModifiedDate ? (
+        //           <TextFormat value={user.lastModifiedDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+        //         ) : null}
+        //       </td>
+        //       <td className="text-end">
+        //         <div className="btn-group flex-btn-group-container">
+        //           <Button tag={Link} to={user.login} color="info" size="sm">
+        //             <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir</span>
+        //           </Button>
+        //           <Button tag={Link} to={`${user.login}/edit`} color="primary" size="sm">
+        //             <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
+        //           </Button>
+        //           <Button tag={Link} to={`${user.login}/delete`} color="danger" size="sm" disabled={account.login === user.login}>
+        //             <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Supprimer</span>
+        //           </Button>
+        //         </div>
+        //       </td>
+        //     </tr>
+        //   ))}
+        // </tbody>
+    //   </Table>
+    //   {totalItems ? (
+    //     <div className={users?.length > 0 ? '' : 'd-none'}>
+    //       <div className="justify-content-center d-flex">
+    //         <JhiItemCount page={pagination.activePage} total={totalItems} itemsPerPage={pagination.itemsPerPage} i18nEnabled />
+    //       </div>
+    //       <div className="justify-content-center d-flex">
+    //         <JhiPagination
+    //           activePage={pagination.activePage}
+    //           onSelect={handlePagination}
+    //           maxButtons={5}
+    //           itemsPerPage={pagination.itemsPerPage}
+    //           totalItems={totalItems}
+    //         />
+    //       </div>
+    //     </div>
+    //   ) : (
+    //     ''
+    //   )}
+    // </div>
   );
 };
 

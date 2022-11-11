@@ -99,7 +99,7 @@ export const DossierMedicalUpdate = () => {
       flexDirection:"column"
     }}
   >
-      <Header pageName="Dossier médical" />
+      <Header pageName="Gestion patients" />
  
         <div
           style={{
@@ -122,22 +122,24 @@ export const DossierMedicalUpdate = () => {
           <Card
             style={{
               height:"6.28vh",
-              width:"30vw",
+              minWidth:"30vw",
               borderRadius:"20px",
               backgroundColor:"#11485C",
               textAlign:"center",
               color:"white",
+              marginTop:"5vh",
               marginBottom:"5vh",
               boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
               display:"flex",
               flexDirection:"row",
               justifyContent:"flex-start",
               alignItems:"center",
-              gap:isNew?"2vw":"4vw",
-              paddingLeft:isNew?"1vw":"2vw"
+              gap:"2vw",
+              paddingLeft:isNew?"1vw":"2vw",
+              marginLeft:"25vw"
               }}
           >
-            <Link to={idPatient==undefined?(`/dossier-medical/${dossierMedicalEntity?.patient?.id}`):(`/dossier-medical/${idPatient}`)} style={{color:"#53BFD1",}}>{React.createElement(IoIosArrowBack , {size:"20"})}</Link >
+            <Button  onClick={() => window.history.back()} style={{color:"#53BFD1",backgroundColor:"#11485C",borderColor:"#11485C"}}>{React.createElement(IoIosArrowBack , {size:"20"})}</Button>
             {
            isNew ? (<span >Enregistrement nouveau dossier médical
           
@@ -167,9 +169,10 @@ export const DossierMedicalUpdate = () => {
 
             }}
           >
-             {isNew?(<span style={{marginTop:"1%", color:"#141414",fontSize:"19px", marginLeft:"3%"}}>Remplir informations patient</span>):(
+            {idEdit==="voir"?<Button className="btn btn-primary btn-sm" tag={Link} to={`/dossier-medical/${dossierMedicalEntity?.id}/edit`}  style={{marginTop:"1%",backgroundColor:"#53BFD1", borderColor:"#53BFD1",color:"#FFFFFF",fontSize:"19px", marginLeft:"3%",width:"10%",borderRadius:"25px",boxShadow:"0px 1px 3px #141414"}} >Modifier</Button>:null}
+             {/* {isNew?(<span style={{marginTop:"1%", color:"#141414",fontSize:"19px", marginLeft:"3%"}}>Remplir informations patient</span>):(
               <span style={{marginTop:"1%", color:"#141414",fontSize:"19px", fontFamily:"jost", marginLeft:"3%"}}> {idEdit==="voir"?"Dossier médical patient":"Modifications dossier médical patient"} </span>
-             )} 
+             )}  */}
              <span
             style={{
               marginTop:"2%",
@@ -352,7 +355,7 @@ export const DossierMedicalUpdate = () => {
                     backgroundColor:idEdit ==="voir"?"#A9B7CD":"#F7FAFF",
                     color:(idEdit === "voir")?("#F6FAFF"):("black")
                   }}
-                  label="Frères/Soeurs" 
+                  label="Fratrie" 
                   id="dossier-medical-siblings" 
                   name="siblings" 
                   data-cy="siblings" 
