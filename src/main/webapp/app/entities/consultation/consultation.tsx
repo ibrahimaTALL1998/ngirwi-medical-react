@@ -229,40 +229,43 @@ export const Consultation = () => {
                 boxShadow:"0px 2px 12px 4px rgba(138, 161, 203, 0.23)"
               }}
             >
+          <div style={{display:"flex",flexDirection:"row",marginTop:"1%"}}>
 
-              <span style={{marginTop:"1%", color:"#141414",fontSize:"20px", marginLeft:"3%", marginBottom:"1%"}}>Consultations enregistrées</span>
-              <div 
-        style={{
-          display:"flex",
-          flexDirection:"row",
-          justifyContent:"flex-end",
-          marginBottom:"5vh",
-          marginRight:"2vw",
-          gap:"1vw"
-        }}
-       >
-         <ValidatedField label={`${"   "}`} style={{borderRadius:"12px"}}  id="criteria" name="criteria" type="select" onChange={(e) => setCriteria(e.target.value)}>
-           {/* <select name="criteria" > */}
-           <option value=" ">
-            Critère de recherche
-           </option>
-           <option value="patient.lastName">
-             Nom
-           </option>
-           <option value="patient.firstName">
-             Prénom
-           </option>
-           <option value="dateTime">
-             Date de consultation
-           </option>
-            {/* </select> */}
-     
-    
-       </ValidatedField>
-       <ValidatedField label={`${"   "}`} style={{borderRadius:"12px"}} placeholder="Barre de recherche" id="search" name="search" type={criteria==="dateTime"?"date":"text"} onChange={handleSearch} />
-          {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
+                <span style={{ color:"#141414",fontSize:"20px", marginLeft:"3%", marginBottom:"1%",width:"45vw"}}>Consultations enregistrées</span>
+                <div 
+                  style={{
+                    display:"flex",
+                    flexDirection:"row",
+                    justifyContent:"flex-end",
+                    marginBottom:"5vh",
+                    marginRight:"2vw",
+                    gap:"1vw"
+                  }}  
+                >
+                <ValidatedField  style={{borderRadius:"12px",width:"17vw"}}  id="criteria" name="criteria" type="select" onChange={(e) => setCriteria(e.target.value)}>
+                  {/* <select name="criteria" > */}
+                  <option value=" ">
+                    Critère de recherche
+                  </option>
+                  <option value="patient.lastName">
+                    Nom
+                  </option>
+                  <option value="patient.firstName">
+                    Prénom
+                  </option>
+                  <option value="dateTime">
+                    Date de consultation
+                  </option>
+                    {/* </select> */}
+            
+            
+                </ValidatedField>
+                <ValidatedField  style={{borderRadius:"12px",width:"17vw"}} placeholder="Barre de recherche" id="search" name="search" type={criteria==="dateTime"?"date":"text"} onChange={handleSearch} />
+                  {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
 
-       </div>
+             </div>
+
+          </div>
                    {consultationList && consultationList.length > 0 ? (
 
                 <Table responsive>
@@ -344,7 +347,7 @@ export const Consultation = () => {
                     position:"sticky",
                     top:"0",
                     backgroundColor:"white",
-                    width:"28%",
+                    width:"32%",
                     textAlign:"center"
                   }}
                   >Actions</th>
@@ -402,13 +405,13 @@ export const Consultation = () => {
                           size="sm"
                           data-cy="entityEditButton"
                         >
-                            <span className="d-none d-md-inline">Mettre à jour</span>
+                         <FontAwesomeIcon icon="pencil" /> <span className="d-none d-md-inline">Mettre à jour</span>
                         </Button>
-                        <Button tag={Link} to={`/consultation/list/${patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
-                            <span className="d-none d-md-inline">Voir sa liste</span>
+                        <Button tag={Link} to={`/consultation/list/${patient.id}?page=1&sort=id,asc`} color="dark" size="sm" data-cy="entityDetailsButton">
+                        <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir sa liste</span>
                         </Button>
                         <Button tag={Link} to={`/prescription/new/${consultation.id}`} color="success" size="sm" data-cy="entityDetailsButton">
-                            <span className="d-none d-md-inline">Ordonnace</span>
+                        <FontAwesomeIcon icon="file" />  <span className="d-none d-md-inline">Ordonnance</span>
                         </Button>
                        
 
@@ -464,10 +467,10 @@ export const Consultation = () => {
                           size="sm"
                           data-cy="entityEditButton"
                         >
-                            <span className="d-none d-md-inline">Mettre à jour</span>
+                            <FontAwesomeIcon icon="pencil" /> <span className="d-none d-md-inline">Mettre à jour</span>
                         </Button>
-                        <Button tag={Link} to={`/consultation/list/${consultation.patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
-                            <span className="d-none d-md-inline">Voir sa liste</span>
+                        <Button tag={Link} to={`/consultation/list/${consultation.patient.id}?page=1&sort=id,asc`} color="dark" size="sm" data-cy="entityDetailsButton">
+                        <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir sa liste</span>
                         </Button>
                         <Button tag={Link} to={`/prescription/new/${consultation.id}`} color="success" size="sm" data-cy="entityDetailsButton">
                             <span className="d-none d-md-inline">Ordonnace</span>

@@ -203,7 +203,7 @@ export const UserManagement = () => {
 
           }}
         >
-          <span style={{marginTop:"1%", color:"#141414",fontSize:"20px", marginLeft:"3%", marginBottom:"1%"}}>Factures enregistrées</span>
+          <span style={{marginTop:"1%", color:"#141414",fontSize:"20px", marginLeft:"3%", marginBottom:"1%"}}>Comptes enregistrés</span>
 
           <div 
             style={{
@@ -238,7 +238,7 @@ export const UserManagement = () => {
             }}
             className="hand" onClick={sort('id')}>
               ID
-              <FontAwesomeIcon icon="sort" />
+              <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
             </th>
             <th 
             style={{
@@ -251,7 +251,7 @@ export const UserManagement = () => {
             }}
             className="hand" onClick={sort('login')}>
               Login
-              <FontAwesomeIcon icon="sort" />
+              <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
             </th>
             <th 
             style={{
@@ -264,7 +264,7 @@ export const UserManagement = () => {
             }}
             className="hand" onClick={sort('email')}>
               Email
-              <FontAwesomeIcon icon="sort" />
+              <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
             </th>
             <th 
             style={{
@@ -275,7 +275,11 @@ export const UserManagement = () => {
               
               backgroundColor:"white",
             }}
-            >Statut</th>
+            className="hand" onClick={sort('activated')}
+            >
+              Statut
+              <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
+            </th>
             <th 
             style={{
               textAlign:"center",
@@ -297,7 +301,7 @@ export const UserManagement = () => {
             }}
             className="hand" onClick={sort('createdDate')}>
               Créé le
-              <FontAwesomeIcon icon="sort" />
+              <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
             </th>
             <th 
             style={{
@@ -310,7 +314,7 @@ export const UserManagement = () => {
             }}
             className="hand" onClick={sort('lastModifiedBy')}>
               Modifié par
-              <FontAwesomeIcon icon="sort" />
+              <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
             </th>
             <th 
             style={{
@@ -323,7 +327,7 @@ export const UserManagement = () => {
             }}
             id="modified-date-sort" className="hand" onClick={sort('lastModifiedDate')}>
               Modifié le
-              <FontAwesomeIcon icon="sort" />
+              <FontAwesomeIcon style={{marginLeft:"10px"}} icon="sort" />
             </th>
             <th style={{
                 textAlign:"center",

@@ -280,7 +280,7 @@ export const PatientUpdate = () => {
                   }}
                 />
                 <ValidatedField
-                  label="Cni"
+                  label="Pièce d'identité"
                   id="patient-cni"
                   name="cni"
                   data-cy="cni"
@@ -322,7 +322,7 @@ export const PatientUpdate = () => {
                   ))}
                 </ValidatedField>
                 <ValidatedField
-                  label="Status Matrimonial"
+                  label="Statut matrimonial"
                   id="patient-maritialStatus"
                   name="maritialStatus"
                   data-cy="maritialStatus"

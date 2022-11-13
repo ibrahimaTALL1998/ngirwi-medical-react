@@ -241,44 +241,48 @@ export const Patient = () => {
 
               }}
             >
-              <span style={{marginTop:"1%", color:"#141414",fontSize:"20px", marginLeft:"3%", marginBottom:"1%"}}>Patients enregistrés</span>
+                            <div style={{display:"flex",flexDirection:"row",marginTop:"1%"}}>
+                  <span style={{ color:"#141414",fontSize:"20px", marginLeft:"3%", marginBottom:"1%",width:"45vw"}}>Patients enregistrés</span>
+
+                  <div 
+                    style={{
+                      display:"flex",
+                      flexDirection:"row",
+                      justifyContent:"flex-end",
+                      marginBottom:"3vh",
+                      marginRight:"2vw",
+                      gap:"1vw"
+                    }}
+                  >
+                    <ValidatedField  style={{borderRadius:"12px",width:"17vw"}}  id="criteria" name="criteria" type="select" onChange={(e) => setCriteria(e.target.value)}>
+                     {/* <select name="criteria" > */}
+                      <option value=" ">
+                        Critère de recherche
+                      </option>
+                      <option value="lastName">
+                        Nom
+                      </option>
+                      <option value="firstName">
+                        Prénom
+                      </option>
+                      <option value="birthday">
+                        Date de naissance
+                      </option>
+                      <option value="cni">
+                        Numéro de carte d&apos;identité
+                      </option>
+                        {/* </select> */}
+
+
+                  </ValidatedField>
+                    <ValidatedField  style={{borderRadius:"12px",width:"17vw"}} placeholder="Barre de recherche" id="search" name="search" type={criteria==="birthday"?"date":"text"}  onChange={handleSearch} />
+                      {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
+
+                  </div>
+                </div>
 
               
-       <div 
-        style={{
-          display:"flex",
-          flexDirection:"row",
-          justifyContent:"flex-end",
-          marginBottom:"5vh",
-          marginRight:"2vw",
-          gap:"1vw"
-        }}
-       >
-         <ValidatedField label={`${"   "}`} style={{borderRadius:"12px"}}  id="criteria" name="criteria" type="select" onChange={(e) => setCriteria(e.target.value)}>
-           {/* <select name="criteria" > */}
-           <option value=" ">
-            Critère de recherche
-           </option>
-           <option value="lastName">
-             Nom
-           </option>
-           <option value="firstName">
-             Prénom
-           </option>
-           <option value="birthday">
-             Date de naissance
-           </option>
-           <option value="cni">
-             Numéro de carte d&apos;identité
-           </option>
-            {/* </select> */}
-     
     
-       </ValidatedField>
-       <ValidatedField label={`${"   "}`} style={{borderRadius:"12px"}} placeholder="Barre de recherche" id="search" name="search" type={criteria==="birthday"?"date":"text"} onChange={handleSearch} />
-          {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
-
-       </div>
                 <Table responsive
                 
                 >
@@ -419,10 +423,10 @@ export const Patient = () => {
                         size="sm"
                         data-cy="entityEditButton"
                       >
-                        <span className="d-none d-md-inline">Mettre à jour</span>
+                        <FontAwesomeIcon icon="pencil" /> <span className="d-none d-md-inline">Mettre à jour</span>
                       </Button>
                         <Button tag={Link} to={`/patient/${patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
-                            <span className="d-none d-md-inline">Voir détails</span>
+                        <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir détails</span>
                         </Button>
                         
 
@@ -467,10 +471,10 @@ export const Patient = () => {
                         size="sm"
                         data-cy="entityEditButton"
                       >
-                        <span className="d-none d-md-inline">Mettre à jour</span>
+                        <FontAwesomeIcon icon="pencil" /> <span className="d-none d-md-inline">Mettre à jour</span>
                       </Button>
                         <Button tag={Link} to={`/patient/${patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
-                            <span className="d-none d-md-inline">Voir détails</span>
+                        <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir détails</span>
                         </Button>
                         
 

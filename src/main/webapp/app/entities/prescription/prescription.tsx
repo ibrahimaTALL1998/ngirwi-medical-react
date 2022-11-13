@@ -231,40 +231,43 @@ export const Prescription = () => {
 
           }}
         >
-          <span style={{ marginTop: "1%", color: "#141414", fontSize: "20px", marginLeft: "3%", marginBottom: "1%" }}>Ordonnances enregistrées</span>
+              <div style={{display:"flex",flexDirection:"row",marginTop:"1%"}}>
+                  <span style={{ color:"#141414",fontSize:"20px", marginLeft:"3%", marginBottom:"1%",width:"45vw"}}>Ordonnances enregistrées</span>
 
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              marginBottom: "3vh",
-              marginRight: "2vw",
-              gap: "1vw"
-            }}
-          >
-            <ValidatedField label={`${"   "}`} style={{ borderRadius: "12px" }} id="criteria" name="criteria" type="select" onChange={(e) => setCriteria(e.target.value)}>
-              {/* <select name="criteria" > */}
-              <option value=" ">
-                Critère de recherche
-              </option>
-              <option value="creationDate">
-                Date
-              </option>
-              <option value="author">
-                Auteur
-              </option>
-              <option value="patient">
-                Patient
-              </option>
-              {/* </select> */}
+                  <div 
+                    style={{
+                      display:"flex",
+                      flexDirection:"row",
+                      justifyContent:"flex-end",
+                      marginBottom:"3vh",
+                      marginRight:"2vw",
+                      gap:"1vw"
+                    }}
+                  >
+                    <ValidatedField  style={{borderRadius:"12px",width:"17vw"}}  id="criteria" name="criteria" type="select" onChange={(e) => setCriteria(e.target.value)}>
+                     {/* <select name="criteria" > */}
+                      <option value=" ">
+                        Critère de recherche
+                      </option>
+                      <option value="creationDate">
+                        Date
+                      </option>
+                      <option value="author">
+                        Auteur
+                      </option>
+                      <option value="patient">
+                        Patient
+                      </option>
+                      {/* </select> */}
 
 
-            </ValidatedField>
-            <ValidatedField label={`${"   "}`} style={{ borderRadius: "12px" }} placeholder="Barre de recherche" id="search" name="search" type={criteria === "creationDate" ? "date" : "text"} onChange={handleSearch} />
-            {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
+                  </ValidatedField>
+                    <ValidatedField  style={{borderRadius:"12px",width:"17vw"}} placeholder="Barre de recherche" id="search" name="search" type={criteria === "creationDate" ? "date" : "text"}  onChange={handleSearch} />
+                      {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
 
-          </div>
+                  </div>
+                </div>
+       
           <Table responsive
 
           >

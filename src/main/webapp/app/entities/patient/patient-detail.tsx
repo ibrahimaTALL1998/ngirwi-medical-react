@@ -299,7 +299,7 @@ function setColor(e){
               onMouseOver={changeColor}
               onMouseLeave={setColor}
               tag={Link}
-              to={`/consultation/list/${patientEntity.id}`}
+              to={`/consultation/list/${patientEntity.id}?page=1&sort=id,asc`}
               style={{
                 borderColor:"#0075FF",
                 backgroundColor:"#0075FF",

@@ -10,6 +10,9 @@ import "../header/header.scss"
 import { Col, Nav } from "reactstrap";
 import { RiAdminLine, RiFilePaperLine } from "react-icons/ri";
 import { AUTHORITIES } from "app/config/constants";
+import { AccountMenu } from "../menus";
+import { getAccount } from "app/shared/reducers/authentication";
+import { useAppSelector } from "app/config/store";
      
 
 export interface ISideBarProps {
@@ -21,6 +24,8 @@ export interface ISideBarProps {
 }
 
 const SideBar = (props : ISideBarProps) => {
+
+    const account = useAppSelector(state => state.authentication.account);
 
     const renderDevRibbon = () =>
     props.isInProduction === false ? (
@@ -219,7 +224,7 @@ const SideBar = (props : ISideBarProps) => {
                         Factures
                     </h6>
                     </Link>
-                    {AUTHORITIES.ADMIN?(<Link 
+                    {account.authorities==="ROLE_ADMIN, ROLE_USER"?(<Link 
                         to="/admin/user-management/"
                         style={{
                             marginLeft : "2vw",

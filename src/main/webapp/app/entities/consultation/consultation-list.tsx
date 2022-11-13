@@ -122,7 +122,7 @@ export const ConsultationPatient = () =>{
               marginLeft:"25vw"
               }}
           >
-            <Button replace tag={Link} to={`/consultation/`} style={{color:"#53BFD1",backgroundColor:"#11485C",borderColor:"#11485C"}}>{React.createElement(IoIosArrowBack , {size:"20"})}</Button>
+            <Button onClick={()=>window.history.back()}  style={{color:"#53BFD1",backgroundColor:"#11485C",borderColor:"#11485C"}}>{React.createElement(IoIosArrowBack , {size:"20"})}</Button>
           <span >Liste consultations patient </span>
           </Card>
 

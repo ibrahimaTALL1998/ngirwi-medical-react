@@ -33,8 +33,8 @@ const Header = (props) => {
   /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
 
   return (
-    <div style={{display:"flex", flexDirection:"row",gap:"50vw", fontFamily:"Jost", fontSize:"20px" , zIndex:"1", position:"absolute", top:"2"}}>
-    <span>{props.pageName}</span>  
+    <div style={{display:"flex", flexDirection:"row" ,fontFamily:"Jost", fontSize:"20px" , zIndex:"1", position:"absolute", top:"2"}}>
+    <span style={{width:"62vw"}}>{props.pageName}</span>  
     <div style={{display:"flex", flexDirection:"row", alignItems:"flex-start", gap:"2vw"}}> 
   <div style={{display:"flex", flexDirection:"column"}}>
   
