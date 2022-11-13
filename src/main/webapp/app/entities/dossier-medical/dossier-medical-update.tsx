@@ -306,8 +306,8 @@ export const DossierMedicalUpdate = () => {
               />
               <ValidatedField 
                 disabled={idEdit==="voir"?true:false}
-                label="Gynéco-Obstétrique"
-                id="dossier-medical-gynecoObstretrique"
+                label="Gynéco"
+                id="dossier-medical-gyneco"
                 name="gynecoObstretrique"
                 data-cy="gynecoObstretrique"
                 type="textarea"
@@ -322,6 +322,35 @@ export const DossierMedicalUpdate = () => {
                   backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
                   borderColor:"#CBDCF7",
                 }}
+              />
+              <ValidatedField 
+                disabled={idEdit==="voir"?true:false}
+                label="Obstétrique"
+                id="dossier-medical-syndromique"
+                name="syndromique"
+                data-cy="syndromique"
+                type="textarea"
+                validate={{
+                  required: { value: true, message: 'Ce champ est obligatoire.' },
+                }}
+                style={{
+                  rowGap:"5vh",
+                  marginBottom:"20px",
+                  borderRadius:"25px",
+                  color:(idEdit === "voir")?("#F6FAFF"):("black"),
+                  backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
+                  borderColor:"#CBDCF7",
+                }}
+              />
+              <ValidatedField 
+                hidden
+                defaultValue={"aucun"}
+                disabled={idEdit==="voir"?true:false}
+                label="Obstétrique"
+                id="dossier-medical-terrain"
+                name="terrain"
+                data-cy="terrain"
+                type="textarea"
               />
               
               

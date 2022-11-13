@@ -188,7 +188,7 @@ export const Prescription = () => {
               boxShadow: "0px 10px 50px rgba(138, 161, 203, 0.23)",
             }}
           >
-            <span style={{ marginTop: "1.5%" }}>Liste des ordonnances enregstrées</span>
+            <span style={{ marginTop: "1.5%" }}>Liste des ordonnances enregistrées</span>
           </Card>
 
           <Link to="/prescription/new/"
@@ -358,8 +358,8 @@ export const Prescription = () => {
                     </Button>
                   </td>
                   <td>{prescription.creationDate ? <TextFormat type="date" value={prescription.creationDate} format={APP_DATE_FORMAT} /> : null}</td>
-                  <td>{prescription.author}</td>
-                  <td>{prescription.consultation.id ? <span>{prescription.consultation.patient.lastName.toUpperCase()+' '+prescription.consultation.patient.firstName}</span> : ''}</td>
+                  <td style={{wordBreak:"break-all"}}>{prescription.author}</td>
+                  <td style={{wordBreak:"break-all"}}>{prescription.consultation.id ? <span>{prescription.consultation.patient.lastName.toUpperCase()+' '+prescription.consultation.patient.firstName}</span> : ''}</td>
                   <td className="text-end">
                     <div
                       style={{
@@ -403,8 +403,8 @@ export const Prescription = () => {
                     </Button>
                   </td>
                   <td>{prescription.creationDate ? <TextFormat type="date" value={prescription.creationDate} format={APP_DATE_FORMAT} /> : null}</td>
-                  <td>{prescription.author}</td>
-                  <td>{prescription.consultation.id ? <span>{prescription.consultation.patient.lastName.toUpperCase()+' '+prescription.consultation.patient.firstName}</span> : ''}</td>
+                  <td style={{wordBreak:"break-all"}}>{prescription.author}</td>
+                  <td style={{wordBreak:"break-all"}}>{prescription.consultation.id ? <span>{prescription.consultation.patient.lastName.toUpperCase()+' '+prescription.consultation.patient.firstName}</span> : ''}</td>
                   <td className="text-end">
                     <div
                       style={{

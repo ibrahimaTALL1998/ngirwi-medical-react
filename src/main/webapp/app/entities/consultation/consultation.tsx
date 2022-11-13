@@ -347,7 +347,7 @@ export const Consultation = () => {
                     position:"sticky",
                     top:"0",
                     backgroundColor:"white",
-                    width:"32%",
+                    width:"40%",
                     textAlign:"center"
                   }}
                   >Actions</th>
@@ -382,7 +382,7 @@ export const Consultation = () => {
                     </Button>
                   </td>
                   <td>{patient.lastName.toUpperCase()}</td>
-                  <td>{patient.firstName}</td>
+                  <td style={{wordBreak:"break-all"}}>{patient.firstName}</td>
                   <td>
                      {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="DD/MM/YYYY" /> : null}
                    </td>
@@ -411,7 +411,7 @@ export const Consultation = () => {
                         <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir sa liste</span>
                         </Button>
                         <Button tag={Link} to={`/prescription/new/${consultation.id}`} color="success" size="sm" data-cy="entityDetailsButton">
-                        <FontAwesomeIcon icon="file" />  <span className="d-none d-md-inline">Ordonnance</span>
+                        <FontAwesomeIcon icon="plus" />  <span className="d-none d-md-inline">Ordonnance</span>
                         </Button>
                        
 
@@ -444,7 +444,7 @@ export const Consultation = () => {
                     </Button>
                   </td>
                   <td>{consultation.patient.lastName.toUpperCase()}</td>
-                  <td>{consultation.patient.firstName}</td>
+                  <td style={{wordBreak:"break-all"}}>{consultation.patient.firstName}</td>
                   <td>
                      {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="DD/MM/YYYY" /> : null}
                    </td>
@@ -473,7 +473,7 @@ export const Consultation = () => {
                         <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir sa liste</span>
                         </Button>
                         <Button tag={Link} to={`/prescription/new/${consultation.id}`} color="success" size="sm" data-cy="entityDetailsButton">
-                            <span className="d-none d-md-inline">Ordonnace</span>
+                          <FontAwesomeIcon icon="plus"/> <span className="d-none d-md-inline">Ordonnance</span>
                         </Button>
                        
 

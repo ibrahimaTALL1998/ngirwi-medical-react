@@ -403,7 +403,7 @@ export const Patient = () => {
                         {patient.id}
                       </Button>
                     </td>
-                    <td>{patient.firstName}</td>
+                    <td style={{wordBreak:"break-all"}}>{patient.firstName}</td>
                     <td>{patient.lastName}</td>
                     <td>{patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}</td>
                     <td>{patient.cni}</td>
@@ -450,8 +450,8 @@ export const Patient = () => {
                         {patient.id}
                       </Button>
                     </td>
-                    <td>{patient.firstName}</td>
-                    <td>{patient.lastName}</td>
+                    <td style={{wordBreak:"break-all"}}>{patient.firstName}</td>
+                    <td >{patient.lastName}</td>
                     <td>{patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}</td>
                     
                     <td>{patient.cni}</td>

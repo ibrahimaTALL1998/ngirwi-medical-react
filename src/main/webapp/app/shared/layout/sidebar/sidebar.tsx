@@ -224,7 +224,7 @@ const SideBar = (props : ISideBarProps) => {
                         Factures
                     </h6>
                     </Link>
-                    {account.authorities==="ROLE_ADMIN, ROLE_USER"?(<Link 
+                    <Link 
                         to="/admin/user-management/"
                         style={{
                             marginLeft : "2vw",
@@ -250,7 +250,7 @@ const SideBar = (props : ISideBarProps) => {
                     >
                         Administration
                     </h6>
-                    </Link>):null}
+                    </Link>
                     
                     <Link 
                         to="/logoutDialog"

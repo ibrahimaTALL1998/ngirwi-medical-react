@@ -161,7 +161,7 @@ export const UserManagement = () => {
         boxShadow: "0px 10px 50px rgba(138, 161, 203, 0.23)",
       }}
     >
-      <span style={{ marginTop: "1.5%" }}>Liste des comptes enregstrés</span>
+      <span style={{ marginTop: "1.5%" }}>Liste des comptes enregistrés</span>
     </Card>
 
     <Link to="/admin/user-management/new/"

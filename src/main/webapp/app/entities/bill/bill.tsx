@@ -192,7 +192,7 @@ export const Bill = () => {
               boxShadow: "0px 10px 50px rgba(138, 161, 203, 0.23)",
             }}
           >
-            <span style={{ marginTop: "1.5%" }}>Liste des factures enregstrées</span>
+            <span style={{ marginTop: "1.5%" }}>Liste des factures enregistrées</span>
           </Card>
 
           <Link to="/bill/new/"
@@ -361,8 +361,8 @@ export const Bill = () => {
                         </Button>
                       </td>
                       <td>{bill.date ? <TextFormat type="date" value={bill.date} format={APP_DATE_FORMAT} /> : null}</td>
-                      <td>{bill.author}</td>
-                      <td>{bill.patient ?<span>{bill.patient.lastName.toUpperCase()+' '+bill.patient.firstName}</span>  : ''}</td>
+                      <td style={{wordBreak:"break-all"}}>{bill.author}</td>
+                      <td style={{wordBreak:"break-all"}}>{bill.patient ?<span>{bill.patient.lastName.toUpperCase()+' '+bill.patient.firstName}</span>  : ''}</td>
                       <td className="text-end">
                         <div 
                           style={{
@@ -406,8 +406,8 @@ export const Bill = () => {
                         </Button>
                       </td>
                       <td>{bill.date ? <TextFormat type="date" value={bill.date} format={APP_DATE_FORMAT} /> : null}</td>
-                      <td>{bill.author}</td>
-                      <td>{bill.patient ?<span>{bill.patient.lastName.toUpperCase()+' '+bill.patient.firstName}</span>  : ''}</td>
+                      <td style={{wordBreak:"break-all"}}>{bill.author}</td>
+                      <td style={{wordBreak:"break-all"}}>{bill.patient ?<span>{bill.patient.lastName.toUpperCase()+' '+bill.patient.firstName}</span>  : ''}</td>
                       <td className="text-end">
                         <div 
                           style={{

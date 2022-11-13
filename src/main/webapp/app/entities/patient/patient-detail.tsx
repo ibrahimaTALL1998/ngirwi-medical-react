@@ -9,7 +9,6 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntity } from './patient.reducer';
 import { getPatient} from '../dossier-medical/dossier-medical.reducer';
-import { FiLogOut } from 'react-icons/fi';
 import Header from 'app/shared/layout/header/header';
 
 export const PatientDetail = () => {

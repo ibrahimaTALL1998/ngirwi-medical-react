@@ -48,6 +48,12 @@ export const ConsultationUpdate = () => {
   // const [exams, setExams] = useState([{"label" : '', "value" : ''}])
   const [exams, setExams] = useState(Object)
 
+  const [iPatient, setIPatient] = useState(idPatient)
+
+  
+  const getPatientId = (e) => {
+    setIPatient(e.target.value.toString());
+  }
 
   const handleClose = () => {
     navigate('/consultation' + location.search);
@@ -56,13 +62,15 @@ export const ConsultationUpdate = () => {
   useEffect(() => {
     if (isNew) {
       dispatch(reset());
+      dispatch(getDossierPatient(idPatient));
     } else {
       dispatch(getEntity(id));
+      dispatch(getDossierPatient(idPatient?idPatient:consultationEntity?.patient?.id));
+
     }
 
     dispatch(getPatients({}));
     dispatch(getPrescriptions({}));
-    // dispatch(getDossierPatient(idPatient));
   }, []);
 
   useEffect(() => {
@@ -86,6 +94,7 @@ export const ConsultationUpdate = () => {
       dispatch(updateEntity(entity));
     }
   };
+  
 
   const defaultValues = () =>
     isNew
@@ -107,6 +116,7 @@ export const ConsultationUpdate = () => {
         author: account.login,
         ...consultationEntity?.exams
       };
+      
 
   const animatedComponents = makeAnimated();
 
@@ -204,7 +214,7 @@ export const ConsultationUpdate = () => {
                         Dossier médical
         
                       </span>
-                      <Link to={`/dossier-medical/${idPatient?idPatient:consultationEntity?.patient?.id}`}
+                      <Link to={`/dossier-medical/${dossierMedicalEntity?.id}/edit/${"voir"}`}
                         style={{ fontSize: "13px", color: "#F6FAFF", textDecoration: "none", border: "1px solid #72C9D8", backgroundColor: "#0075F5", padding: "10px", borderRadius: "25px", boxShadow: "2px 5px 11px rgba(0, 0, 0, 0.25)" }}>Tout voir </Link>
         
                     </Card>
@@ -212,7 +222,7 @@ export const ConsultationUpdate = () => {
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "flex-start",
-                      fontSize: "13px",
+                      fontSize: "15px",
                       color: "#A9B7CD",
                       fontWeight: "700",
                       marginTop: "15px",
@@ -345,6 +355,7 @@ export const ConsultationUpdate = () => {
             <ValidatedField label="Patient" name="patient" type="select"
               hidden={isNew?false:true}
               disabled={isNew?false:true}
+              onChange={(b)=>getPatientId(b)}
               style={{
                 borderRadius: "25px",
                 backgroundColor: "#F7FAFF",

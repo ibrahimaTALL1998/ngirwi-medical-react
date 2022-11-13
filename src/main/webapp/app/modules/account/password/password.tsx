@@ -104,7 +104,7 @@ export const PasswordPage = () => {
                     flexDirection:"column",
                     justifyContent:"center",
                     marginTop:"2%",
-                    fontSize:"12px",
+                    fontSize:"15px",
                     fontWeight:"900",
                     alignItems:"center",
                     textAlign:"center"

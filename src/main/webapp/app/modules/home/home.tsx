@@ -61,7 +61,7 @@ export const Home = () => {
           <div style={{display:"flex", flexDirection:"column", gap:"3vh", marginTop:"3vh"}}>
           <Card style={{width:"33.38vw",minHeight:"20vh",borderColor:"#53BFD1",backgroundColor:"#53BFD1", borderRadius:"20px" ,color:"#FFFFFF", display:"flex", flexDirection:"column", paddingTop:"3%", paddingLeft:"4%",  boxShadow:"0px 0px 5px silver" }}> 
             <div>Bienvenue Docteur {account.login}</div>
-            <p style={{fontSize:"small", marginTop:"1.2%", opacity:"0.5",width:"25vw"}}>Ngirwi Medical l’application pour la numérisation des dossiers médicaux, développé par la société NGIRWI S.A.R.L.</p>
+            <p style={{fontSize:"small", marginTop:"1.2%", opacity:"0.7",width:"25vw"}}>Ngirwi Medical l’application pour la numérisation des dossiers médicaux, développée par la société NGIRWI S.A.R.L.</p>
           </Card>
           <Card style={{width:"36.25vw",minHeight:"18vh", boxShadow:"0px 0px 5px silver" ,marginLeft:"3%",display:"flex", borderRadius:"15px" ,flexDirection:"column", alignItems:"center"}}> 
             <Button 
