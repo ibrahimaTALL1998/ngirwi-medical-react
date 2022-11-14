@@ -272,7 +272,7 @@ export const Bill = () => {
                 </div>
                 
                   <Table responsive
-                  
+                    style={{borderCollapse:"separate",borderSpacing:"0 15px"}}  
                   >
                   <thead
                   
@@ -354,7 +354,7 @@ export const Bill = () => {
                   }}
                 >
                   {filter === null ? billList.map((bill, i) => (
-                    <tr key={`entity-${i}`} data-cy="entityTable" >
+                    <tr style={{border:"1px solid #E9F1FF",borderRadius:"15px"}} key={`entity-${i}`} data-cy="entityTable" >
                       <td >
                         <Button tag={Link} to={`/bill/${bill.id}`} color="link"  style={{color:"#91A8CD",textDecoration:"none",}} >
                           {bill.id}
@@ -399,7 +399,7 @@ export const Bill = () => {
                       </td>
                     </tr>
                   )) : filter.map((bill, i) => (
-                    <tr key={`entity-${i}`} data-cy="entityTable" >
+                    <tr style={{border:"1px solid #E9F1FF",borderRadius:"15px"}} key={`entity-${i}`} data-cy="entityTable" >
                       <td >
                         <Button tag={Link} to={`/bill/${bill.id}`} color="link"  style={{color:"#91A8CD",textDecoration:"none",}} >
                           {bill.id}

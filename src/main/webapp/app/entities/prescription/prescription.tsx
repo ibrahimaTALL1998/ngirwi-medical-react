@@ -269,8 +269,8 @@ export const Prescription = () => {
                 </div>
        
           <Table responsive
-
-          >
+            style={{borderCollapse:"separate",borderSpacing:"0 15px"}}
+            >
             <thead
 
               style={{
@@ -351,7 +351,7 @@ export const Prescription = () => {
               }}
             >
               {filter === null ? prescriptionList.map((prescription, i) => (
-                <tr key={`entity-${i}`} data-cy="entityTable" >
+                <tr style={{border:"1px solid #E9F1FF",borderRadius:"15px"}} key={`entity-${i}`} data-cy="entityTable" >
                   <td >
                     <Button tag={Link} to={`/prescription/${prescription.id}`} color="link" style={{ color: "#91A8CD", textDecoration: "none", }} >
                       {prescription.id}
@@ -396,7 +396,7 @@ export const Prescription = () => {
                   </td>
                 </tr>
               )) : filter.map((prescription, i) => (
-                <tr key={`entity-${i}`} data-cy="entityTable" >
+                <tr style={{border:"1px solid #E9F1FF",borderRadius:"15px"}} key={`entity-${i}`} data-cy="entityTable" >
                   <td >
                     <Button tag={Link} to={`/prescription/${prescription.id}`} color="link" style={{ color: "#91A8CD", textDecoration: "none", }} >
                       {prescription.id}

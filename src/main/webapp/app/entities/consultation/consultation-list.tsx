@@ -166,7 +166,7 @@ export const ConsultationPatient = () =>{
             </span>
                {consultationList && consultationList.length > 0 ? (
 
-            <Table style={{width:"82vw"}} responsive>
+            <Table style={{width:"82vw",borderCollapse:"separate",borderSpacing:"0 15px"}}  responsive>
             <thead >
             <tr>
               <th
@@ -255,7 +255,7 @@ export const ConsultationPatient = () =>{
             }}
           >
          {consultationList.map((consultation, i) => (consultation.patient.id.toString() === idPatient)?(
-            <tr key={`entity-${i}`} data-cy="entityTable">               
+            <tr style={{border:"1px solid #E9F1FF",borderRadius:"15px"}} key={`entity-${i}`} data-cy="entityTable">               
                 <td>
                   <Button
                     tag={Link}

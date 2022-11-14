@@ -255,7 +255,7 @@ export const BillUpdate = () => {
         <Card
           style={{
             minHeight: "70vh",
-            marginRight: "5%",
+            marginRight: "3%",
             boxShadow: "0px 10px 50px rgba(138, 161, 203, 0.23)",
             borderRadius: "15px"
 
@@ -277,7 +277,6 @@ export const BillUpdate = () => {
           >
             <span style={{ marginLeft: "3%", color: "#141414", fontSize: "19px", }}>Nouvelle facture patient</span>
             <div style={{ display: "flex", flexDirection: "row", gap: "3vh" }}>
-              <Button onClick={() => addFormFields()} style={{ backgroundColor: "white", borderColor: "white", color: "#B3C0D3", fontWeight: "900" }}>{React.createElement(IoIosAddCircleOutline, { size: "30" })}</Button>
               <PDFDownloadLink
                 document={doc}
                 fileName={`facture_${account.login}_${JSON.stringify(convertDateTimeFromServerToDate)}`}
@@ -296,21 +295,19 @@ export const BillUpdate = () => {
             style={{
               width: "94%",
               marginLeft: "3%",
-              height: "70%",
-              display: "grid",
+              height: "70%", display: "flex", flexWrap:"wrap",
               columnGap: "25px",
               marginTop: "1%",
-              gridTemplateColumns: "repeat(2, 1fr)",
               fontSize: "12px",
               fontWeight: "900"
             }}
             defaultValues={defaultValues()} onSubmit={saveEntity}>
             {!isNew ? <ValidatedField hidden name="id" required readOnly id="bill-id" label="ID" validate={{ required: true }} /> : null}
             <ValidatedField
-              style={{ borderRadius: "25px", backgroundColor: "#A9B7CD", color: "#F6FAFF", borderColor: "#CBDCF7" }}
+              style={{ borderRadius: "25px", backgroundColor: "#A9B7CD", color: "#F6FAFF", borderColor: "#CBDCF7", width:"75vw" }}
               disabled label="Date" id="bill-date" name="date" data-cy="date" type="datetime-local" placeholder="YYYY-MM-DD HH:mm" />
             <ValidatedField hidden label="Author" id="bill-author" name="author" data-cy="author" type="text" />
-            <ValidatedField style={isNew ? { borderRadius: "25px", borderColor: "#CBDCF7" } : { borderRadius: "25px", backgroundColor: "#A9B7CD", borderColor: "#CBDCF7", color: "#F6FAFF" }} disabled={isNew ? false : true} id="bill-patient" name="patient" data-cy="patient" label="Patient" type="select">
+            <ValidatedField style={isNew ? { borderRadius: "25px", borderColor: "#CBDCF7", width:"37vw" } : { borderRadius: "25px", backgroundColor: "#A9B7CD", borderColor: "#CBDCF7", color: "#F6FAFF", width:"37vw" }} disabled={isNew ? false : true} id="bill-patient" name="patient" data-cy="patient" label="Patient" type="select">
               <option value="" key="0" />
               {patients
                 ? patients.map(otherEntity => (
@@ -320,15 +317,20 @@ export const BillUpdate = () => {
                 ))
                 : null}
             </ValidatedField>
+            <ValidatedField style={isNew ? { borderRadius: "25px", borderColor: "#CBDCF7", width:"36vw" } : { borderRadius: "25px", backgroundColor: "#A9B7CD", borderColor: "#CBDCF7", color: "#F6FAFF", width:"36vw" }} disabled={isNew ? false : true} id="bill-ipm" name="ipm" data-cy="ipm" label="Assurance/IPM" type="select">
+              <option value="" key="0" />
+              
+            </ValidatedField>
             {formValues.map((element, index) => (
-              <div style={{ display: "grid", gridColumn: "1/3", gridTemplateColumns: "repeat(3,1fr)", columnGap: "2vh" }} key={index}>
+              <div style={{flex:"1 1 100%",display:"flex",flexWrap:"wrap",gap:"1vw"}} key={index}>
                 <ValidatedField
                   style={{
                     borderRadius: "25px",
-                    borderColor: "#CBDCF7"
+                    borderColor: "#CBDCF7",width:"20vw"
                   }}
                   type="text"
-                  label='Désignation'
+                  label='Intervention'
+                  placeholder="Intervention..."
                   name="service"
                   value={element.service || ""}
                   onChange={(e) => handleChange(index, e)}
@@ -336,10 +338,11 @@ export const BillUpdate = () => {
                 <ValidatedField
                   style={{
                     borderRadius: "25px",
-                    borderColor: "#CBDCF7"
+                    borderColor: "#CBDCF7",width:"25vw"
                   }}
                   type="number"
-                  label='Quantité'
+                  label='Tarif(FCFA)'
+                  placeholder="Tarif..."
                   name="description"
                   value={element.description || ""}
                   onChange={(e) => handleChange(index, e)}
@@ -347,11 +350,12 @@ export const BillUpdate = () => {
                 <ValidatedField
                   style={{
                     borderRadius: "25px",
-                    borderColor: "#CBDCF7"
+                    borderColor: "#CBDCF7",width:"25vw"
                   }}
-                  label='Prix (FCFA)'
+                  label='Taux de remboursement'
                   type="number"
                   name="amount"
+                  placeholder="Taux..."
                   value={element.amount || ""}
                   onChange={(e) => handleChange(index, e)}
                   validate={{
@@ -359,6 +363,8 @@ export const BillUpdate = () => {
                     validate: v => isNumber(v) || 'Ce champ doit être un nombre.',
                   }}
                 />
+              <Button onClick={() => addFormFields()} style={{ backgroundColor: "white", borderColor: "white", color: "#B3C0D3", fontWeight: "900",width:"1vw" }}>{React.createElement(IoIosAddCircleOutline, { size: "30" })}</Button>
+
                 {index ? (
                   <Button
                     type="button"
@@ -371,11 +377,11 @@ export const BillUpdate = () => {
               </div>
             ))}
 
-            <Button style={{ borderRadius: "25px", gridColumn: "1/3", marginTop: "2vh" }} id="cancel-save" data-cy="entityCreateCancelButton" onClick={() => window.history.back()} replace color="danger">
-              <span className="d-none d-md-inline"> Retour</span>
+            <Button style={{ borderRadius: "25px", flex:"1 1 100%", marginTop: "2vh",backgroundColor:"#56B5C5", borderColor:"#56B5C5" }} id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
+              Enregistrer
             </Button>
-            <Button style={{ borderRadius: "25px", gridColumn: "1/3", marginTop: "2vh" }} color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
-              Sauvegarder
+            <Button style={{ borderRadius: "25px", flex:"1 1 100%", marginTop: "2vh",backgroundColor:"#EC4747", borderColor:"#EC4747" }} id="cancel-save" data-cy="entityCreateCancelButton" onClick={() => window.history.back()} replace color="danger">
+              <span className="d-none d-md-inline"> Annuler </span>
             </Button>
           </ValidatedForm>
 

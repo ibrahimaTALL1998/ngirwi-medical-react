@@ -268,7 +268,7 @@ export const Consultation = () => {
           </div>
                    {consultationList && consultationList.length > 0 ? (
 
-                <Table responsive>
+                <Table style={{borderCollapse:"separate",borderSpacing:"0 15px"}} responsive>
                 <thead>
                 <tr>
                   <th
@@ -363,7 +363,7 @@ export const Consultation = () => {
                 }}
               >
              {filter === null ? consultationList.map((consultation, i) => (
-                <tr key={`entity-${i}`} data-cy="entityTable">               
+                <tr style={{border:"1px solid #E9F1FF",borderRadius:"15px"}} key={`entity-${i}`} data-cy="entityTable">               
                     <td>
                       <Button
                         tag={Link}
@@ -426,7 +426,7 @@ export const Consultation = () => {
                  </tr>
                )):filter.map((consultation,i)=>(
                 
-                   <tr key={`entity-${i}`} data-cy="entityTable">
+                   <tr style={{border:"1px solid #E9F1FF",borderRadius:"15px"}} key={`entity-${i}`} data-cy="entityTable">
                    <td>
                       <Button
                         tag={Link}

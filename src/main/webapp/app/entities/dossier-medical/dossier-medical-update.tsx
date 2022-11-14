@@ -169,7 +169,22 @@ export const DossierMedicalUpdate = () => {
 
             }}
           >
-            {idEdit==="voir"?<Button className="btn btn-primary btn-sm" tag={Link} to={`/dossier-medical/${dossierMedicalEntity?.id}/edit`}  style={{marginTop:"1%",backgroundColor:"#53BFD1", borderColor:"#53BFD1",color:"#FFFFFF",fontSize:"19px", marginLeft:"3%",width:"10%",borderRadius:"25px",boxShadow:"0px 1px 3px #141414"}} >Modifier</Button>:null}
+            <div style={{marginTop:"1%",display:"flex",justifyContent:"flex-end"}}>
+            {idEdit==="voir"?<Button className="btn btn-primary btn-sm" tag={Link} to={`/dossier-medical/${dossierMedicalEntity?.id}/edit`}  
+              style={{
+                backgroundColor:"#53BFD1",
+                borderColor:"#53BFD1",
+                color:"#FFFFFF",
+                fontSize:"19px", 
+                marginRight:"3%",
+                width:"13%",
+                borderRadius:"25px",
+                boxShadow:"0px 1px 3px #141414",
+              }} >
+               <FontAwesomeIcon icon={"pencil"}/> Modifier
+              </Button>:null}
+            </div>
+            
              {/* {isNew?(<span style={{marginTop:"1%", color:"#141414",fontSize:"19px", marginLeft:"3%"}}>Remplir informations patient</span>):(
               <span style={{marginTop:"1%", color:"#141414",fontSize:"19px", fontFamily:"jost", marginLeft:"3%"}}> {idEdit==="voir"?"Dossier médical patient":"Modifications dossier médical patient"} </span>
              )}  */}
@@ -201,20 +216,23 @@ export const DossierMedicalUpdate = () => {
            
            
               
-              <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}
+              <ValidatedForm  defaultValues={defaultValues()} onSubmit={saveEntity}
                 style={{
                   width:"94%",
                   height:"80%",
                   marginLeft:"3%",
-                  display:"grid",
+                  display:"flex",
                   columnGap:"30px",
                   marginTop:"1%",
-                  gridTemplateColumns : "repeat(3,1fr)",
                   fontSize:"18px",
                   fontWeight:"900",
+                  flexWrap:"wrap"
                 }}
               >
+              
               <ValidatedField 
+                
+                
                 disabled={idEdit==="voir"?true:false}
                 label="Motif de la consultation"
                 id="dossier-medical-motifConsultation"
@@ -229,10 +247,11 @@ export const DossierMedicalUpdate = () => {
                   borderRadius:"25px",
                   color:(idEdit === "voir")?("#F6FAFF"):("black"),
                   backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
-                  borderColor:"#CBDCF7"
+                  borderColor:"#CBDCF7",width:"35vw",height:"20vh"
                 }}
               />
               <ValidatedField 
+               
                 disabled={idEdit==="voir"?true:false}
                 label="Histoire de la maladie"
                 id="dossier-medical-histoireMaladie"
@@ -247,10 +266,14 @@ export const DossierMedicalUpdate = () => {
                   borderRadius:"25px",
                   color:(idEdit === "voir")?("#F6FAFF"):("black"),
                   backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
-                  borderColor:"#CBDCF7"
+                  borderColor:"#CBDCF7",width:"35vw",height:"20vh"
                 }}
               />
+             
+             
+              
               <ValidatedField 
+              
                 disabled={idEdit==="voir"?true:false}
                 label="Antécédants personnels"
                 id="dossier-medical-antecedantsPersonnels"
@@ -265,10 +288,11 @@ export const DossierMedicalUpdate = () => {
                   borderRadius:"25px",
                   color:(idEdit === "voir")?("#F6FAFF"):("black"),
                   backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
-                  borderColor:"#CBDCF7"
+                  borderColor:"#CBDCF7",width:"22vw",height:"20vh"
                 }}
               />
               <ValidatedField 
+              
                 disabled={idEdit==="voir"?true:false}
                 label="Antécédants chirurgicaux"
                 id="dossier-medical-antecedantsChirurgicaux"
@@ -283,10 +307,11 @@ export const DossierMedicalUpdate = () => {
                   borderRadius:"25px",
                   color:(idEdit === "voir")?("#F6FAFF"):("black"),
                   backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
-                  borderColor:"#CBDCF7"
+                  borderColor:"#CBDCF7",width:"22vw",height:"20vh"
                 }}
               />
               <ValidatedField 
+              
                 disabled={idEdit==="voir"?true:false}
                 label="Antécédants familiaux"
                 id="dossier-medical-antecedantsFamiliaux"
@@ -301,10 +326,12 @@ export const DossierMedicalUpdate = () => {
                   borderRadius:"25px",
                   color:(idEdit === "voir")?("#F6FAFF"):("black"),
                   backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
-                  borderColor:"#CBDCF7"
+                  borderColor:"#CBDCF7",width:"24vw",height:"20vh"
                 }}
               />
+             
               <ValidatedField 
+              
                 disabled={idEdit==="voir"?true:false}
                 label="Gynéco"
                 id="dossier-medical-gyneco"
@@ -320,7 +347,7 @@ export const DossierMedicalUpdate = () => {
                   borderRadius:"25px",
                   color:(idEdit === "voir")?("#F6FAFF"):("black"),
                   backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
-                  borderColor:"#CBDCF7",
+                  borderColor:"#CBDCF7",width:"35vw",height:"10vh"
                 }}
               />
               <ValidatedField 
@@ -339,7 +366,7 @@ export const DossierMedicalUpdate = () => {
                   borderRadius:"25px",
                   color:(idEdit === "voir")?("#F6FAFF"):("black"),
                   backgroundColor:(idEdit === "voir")?("#A9B7CD"):("#F7FAFF"),
-                  borderColor:"#CBDCF7",
+                  borderColor:"#CBDCF7",width:"35vw",height:"10vh"
                 }}
               />
               <ValidatedField 
@@ -358,7 +385,7 @@ export const DossierMedicalUpdate = () => {
                   style={{
                     borderRadius:"25px",
                     backgroundColor:idEdit ==="voir"?"#A9B7CD":"#F7FAFF",
-                    color:(idEdit === "voir")?("#F6FAFF"):("black")
+                    color:(idEdit === "voir")?("#F6FAFF"):("black"),width:"15vw"
                   }} 
                   label="Père" 
                   id="dossier-medical-dad" 
@@ -370,7 +397,7 @@ export const DossierMedicalUpdate = () => {
                   style={{
                     borderRadius:"25px",
                     backgroundColor:idEdit ==="voir"?"#A9B7CD":"#F7FAFF",
-                    color:(idEdit === "voir")?("#F6FAFF"):("black")
+                    color:(idEdit === "voir")?("#F6FAFF"):("black"),width:"15vw"
                   }}
                   label="Mère" 
                   id="dossier-medical-mom"
@@ -382,7 +409,7 @@ export const DossierMedicalUpdate = () => {
                   style={{
                     borderRadius:"25px",
                     backgroundColor:idEdit ==="voir"?"#A9B7CD":"#F7FAFF",
-                    color:(idEdit === "voir")?("#F6FAFF"):("black")
+                    color:(idEdit === "voir")?("#F6FAFF"):("black"),width:"15vw"
                   }}
                   label="Fratrie" 
                   id="dossier-medical-siblings" 
@@ -394,7 +421,7 @@ export const DossierMedicalUpdate = () => {
                   style={{
                     borderRadius:"25px",
                     backgroundColor:idEdit ==="voir"?"#A9B7CD":"#F7FAFF",
-                    color:(idEdit === "voir")?("#F6FAFF"):("black")
+                    color:(idEdit === "voir")?("#F6FAFF"):("black"),width:"15vw"
                   }}
                   label="Descendants"
                   id="dossier-medical-descendants"
@@ -411,11 +438,10 @@ export const DossierMedicalUpdate = () => {
               type="submit" 
               disabled={updating}
                 style={{
-                  gridColumn:"1/4",
                   borderRadius:"25px",
                   color:"white",
                   backgroundColor:"#56B5C5",
-                  borderColor:"#56B5C5"
+                  borderColor:"#56B5C5",flex:"1 1 100%"
                 }}
               >
                  Enregistrer
@@ -424,13 +450,12 @@ export const DossierMedicalUpdate = () => {
 
               <Button onClick={()=>{window.history.back()}} id="cancel-save" data-cy="entityCreateCancelButton"  replace color="info"
                 style={{
-                  gridColumn:"1/4",
                   borderRadius:"25px",
                   color:"white",
                   backgroundColor:"#EC4747",
                   borderColor:"#EC4747",
                   textAlign:"center",
-                  fontSize:(idEdit === "voir")?("20px"):("")
+                  fontSize:(idEdit === "voir")?("20px"):(""),flex:"1 1 100%",marginBottom:"20px"
 
                 }}
               >

@@ -90,14 +90,14 @@ const SideBar = (props : ISideBarProps) => {
                     <Link 
                         to="/"
                         style={{
-                            marginLeft : "2vw",
-                            marginRight: "3vw",
+                            paddingLeft:"1.5vw",
+                            marginBottom:"1vh",
+                            width:"14.06vw",
                             color:"#54BFD0",
                             display:"flex",
                             alignItems:"flex-start",
                             fontSize:"5px",
                             gap:"5%",
-                            padding:"5px",
                             fontFamily:"Mulish",
                             textDecoration:"none",
                         }}
@@ -118,14 +118,14 @@ const SideBar = (props : ISideBarProps) => {
                     <Link 
                         to="patient?page=1&sort=id,asc"
                         style={{
-                            marginLeft : "2vw",
-                            marginRight: "3vw",
+                            paddingLeft:"1.5vw",
+                            marginBottom:"1vh",
+                            width:"14.06vw",
                             color:"#54BFD0",
                             display:"flex",
                             alignItems:"flex-start",
                             fontSize:"5px",
                             gap:"5%",
-                            padding:"5px",
                             fontFamily:"Mulish",
                             textDecoration:"none",
                         }}
@@ -146,14 +146,14 @@ const SideBar = (props : ISideBarProps) => {
                     <Link 
                         to="/consultation?page=1&sort=id,asc"
                         style={{
-                            marginLeft : "2vw",
-                            marginRight: "3vw",
+                            paddingLeft:"1.5vw",
+                            marginBottom:"1vh",
+                            width:"14.06vw",
                             color:"#54BFD0",
                             display:"flex",
                             alignItems:"flex-start",
                             fontSize:"5px",
                             gap:"5%",
-                            padding:"5px",
                             fontFamily:"Mulish",
                             textDecoration:"none",
                         }}
@@ -173,14 +173,14 @@ const SideBar = (props : ISideBarProps) => {
                     <Link 
                         to="/prescription?page=1&sort=id,asc"
                         style={{
-                            marginLeft : "2vw",
-                            marginRight: "3vw",
+                            paddingLeft:"1.5vw",
+                            marginBottom:"1vh",
+                            width:"14.06vw",
                             color:"#54BFD0",
                             display:"flex",
                             alignItems:"flex-start",
                             fontSize:"5px",
                             gap:"5%",
-                            padding:"5px",
                             fontFamily:"Mulish",
                             textDecoration:"none",
                         }}
@@ -200,14 +200,14 @@ const SideBar = (props : ISideBarProps) => {
                     <Link 
                         to="bill?page=1&sort=id,asc"
                         style={{
-                            marginLeft : "2vw",
-                            marginRight: "3vw",
+                            paddingLeft:"1.5vw",
+                            marginBottom:"1vh",
+                            width:"14.06vw",
                             color:"#54BFD0",
                             display:"flex",
                             alignItems:"flex-start",
                             fontSize:"5px",
                             gap:"5%",
-                            padding:"5px",
                             fontFamily:"Mulish",
                             textDecoration:"none",
                         }}
@@ -227,14 +227,14 @@ const SideBar = (props : ISideBarProps) => {
                     <Link 
                         to="/admin/user-management/"
                         style={{
-                            marginLeft : "2vw",
-                            marginRight: "3vw",
+                            paddingLeft:"1.5vw",
+                            marginBottom:"1vh",
+                            width:"14.06vw",
                             color:"#54BFD0",
                             display:"flex",
                             alignItems:"flex-start",
                             fontSize:"5px",
                             gap:"5%",
-                            padding:"5px",
                             fontFamily:"Mulish",
                             textDecoration:"none",
                         }}
@@ -255,14 +255,14 @@ const SideBar = (props : ISideBarProps) => {
                     <Link 
                         to="/logoutDialog"
                         style={{
-                            marginLeft : "2vw",
-                            marginRight: "3vw",
+                            paddingLeft:"1.5vw",
+                            marginBottom:"1vh",
+                            width:"14.06vw",
                             color:"#54BFD0",
                             display:"flex",
                             alignItems:"flex-start",
                             fontSize:"5px",
                             gap:"5%",
-                            padding:"5px",
                             fontFamily:"Mulish",
                             textDecoration:"none",
                             marginTop:"30vh"

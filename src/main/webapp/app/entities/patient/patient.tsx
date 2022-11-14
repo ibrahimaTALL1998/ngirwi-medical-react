@@ -284,7 +284,7 @@ export const Patient = () => {
               
     
                 <Table responsive
-                
+                  style={{borderCollapse:"separate",borderSpacing:"0 15px"}}
                 >
                 <thead
                 
@@ -386,7 +386,7 @@ export const Patient = () => {
                 }}
               >
                 {filter === null ? patientList.map((patient, i) => (
-                  <tr key={`entity-${i}`} data-cy="entityTable" >
+                  <tr style={{border:"1px solid #E9F1FF",borderRadius:"15px"}} key={`entity-${i}`} data-cy="entityTable" >
                     <td>
                       <Button
                         tag={Link}
@@ -434,7 +434,7 @@ export const Patient = () => {
                     </td>
                   </tr>
                 )) : filter.map((patient, i) => (
-                  <tr key={`entity-${i}`} data-cy="entityTable">
+                  <tr style={{border:"1px solid #E9F1FF",borderRadius:"15px"}} key={`entity-${i}`} data-cy="entityTable">
                     
                     <td>
                       <Button

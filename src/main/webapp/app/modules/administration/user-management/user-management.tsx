@@ -350,7 +350,7 @@ export const UserManagement = () => {
           }}
           >
           {users.map((user, i) => (
-            <tr id={user.login} key={`user-${i}`}>
+            <tr  style={{border:"1px solid #E9F1FF",borderRadius:"15px"}} id={user.login} key={`user-${i}`}>
               <td>
                 <Button tag={Link} to={user.login} color="link" size="sm">
                   {user.id}
