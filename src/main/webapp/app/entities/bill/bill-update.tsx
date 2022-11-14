@@ -25,8 +25,10 @@ import {
   PDFDownloadLink,
 } from "@react-pdf/renderer";
 import Header from 'app/shared/layout/header/header';
-import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io';
+import { IoIosAddCircleOutline, IoIosArrowBack,IoIosAddCircle, IoIosRemoveCircle } from 'react-icons/io';
 import { size } from 'lodash';
+import { AiOutlineLock } from 'react-icons/ai';
+import { BiDownload } from 'react-icons/bi';
 
 export const BillUpdate = () => {
   const dispatch = useAppDispatch();
@@ -250,7 +252,7 @@ export const BillUpdate = () => {
           }}
         >
           <Button replace onClick={() => window.history.back()} style={{ color: "#53BFD1", backgroundColor: "#11485C", borderColor: "#11485C" }}>{React.createElement(IoIosArrowBack, { size: "20" })}</Button>
-          <span>Enregistrement nouvelle facture</span>
+          <span>{isNew?"Enregistrement nouvelle ":"Modification "} facture</span>
         </Card>
         <Card
           style={{
@@ -270,12 +272,11 @@ export const BillUpdate = () => {
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
-              gap: "45%",
               backgroundColor: "white",
               borderBottom: "1px solid #B3C0D3"
             }}
           >
-            <span style={{ marginLeft: "3%", color: "#141414", fontSize: "19px", }}>Nouvelle facture patient</span>
+            <span style={{ marginLeft: "3%", color: "#141414", fontSize: "19px",width:"75vw" }}>{isNew?"Nouvelle facture ":"Facture "}patient</span>
             <div style={{ display: "flex", flexDirection: "row", gap: "3vh" }}>
               <PDFDownloadLink
                 document={doc}
@@ -283,9 +284,10 @@ export const BillUpdate = () => {
               >
                 {({ loading }) =>
                   loading ? (
-                    <Button style={{ borderRadius: "25px" }} color='dark' disabled>Préparer fichier...</Button>
+                    // <Button style={{ borderRadius: "25px" }} color='dark' disabled>Préparer fichier...</Button>
+                    <FontAwesomeIcon style={{color:"black",fontSize:"25px"}} icon={"loader"} spin={loading}/>
                   ) : (
-                    <Button style={{ borderRadius: "25px" }} color='primary'>Télécharger la facture</Button>
+                    <span style={{ borderRadius: "25px" , cursor:"pointer",color:"#B3C0D3",fontWeight:"900" }} >{React.createElement(BiDownload, {size:"25"})} </span>
                   )
                 }
               </PDFDownloadLink>
@@ -305,9 +307,11 @@ export const BillUpdate = () => {
             {!isNew ? <ValidatedField hidden name="id" required readOnly id="bill-id" label="ID" validate={{ required: true }} /> : null}
             <ValidatedField
               style={{ borderRadius: "25px", backgroundColor: "#A9B7CD", color: "#F6FAFF", borderColor: "#CBDCF7", width:"75vw" }}
-              disabled label="Date" id="bill-date" name="date" data-cy="date" type="datetime-local" placeholder="YYYY-MM-DD HH:mm" />
+              disabled label="Date" id="bill-date" name="date" data-cy="date" type="datetime-local" placeholder="YYYY-MM-DD HH:mm" >
+               <i className='fa-light fa-lock' style={{position:"absolute",zIndex:"0",color:"white",right:"0"}}> </i>
+              </ValidatedField>
             <ValidatedField hidden label="Author" id="bill-author" name="author" data-cy="author" type="text" />
-            <ValidatedField style={isNew ? { borderRadius: "25px", borderColor: "#CBDCF7", width:"37vw" } : { borderRadius: "25px", backgroundColor: "#A9B7CD", borderColor: "#CBDCF7", color: "#F6FAFF", width:"37vw" }} disabled={isNew ? false : true} id="bill-patient" name="patient" data-cy="patient" label="Patient" type="select">
+            <ValidatedField  style={isNew ? { borderRadius: "25px", borderColor: "#CBDCF7", width:"37vw" } : { borderRadius: "25px", backgroundColor: "#A9B7CD", borderColor: "#CBDCF7", color: "#F6FAFF", width:"37vw" }} disabled={isNew ? false : true} id="bill-patient" name="patient" data-cy="patient" label="Patient" type="select">
               <option value="" key="0" />
               {patients
                 ? patients.map(otherEntity => (
@@ -321,14 +325,14 @@ export const BillUpdate = () => {
               <option value="" key="0" />
               
             </ValidatedField>
-            {formValues.map((element, index) => (
-              <div style={{flex:"1 1 100%",display:"flex",flexWrap:"wrap",gap:"1vw"}} key={index}>
+            {formValues.map((element, index, arr) => (
+              <div style={{flex:"1 1 100%",display:"flex",flexWrap:"wrap",gap:"0.7vw",alignItems:"center",justifyContent:"center"}} key={index}>
                 <ValidatedField
                   style={{
                     borderRadius: "25px",
-                    borderColor: "#CBDCF7",width:"20vw"
+                    borderColor: "#CBDCF7",width:"28vw"
                   }}
-                  type="text"
+                  type="select"
                   label='Intervention'
                   placeholder="Intervention..."
                   name="service"
@@ -338,9 +342,9 @@ export const BillUpdate = () => {
                 <ValidatedField
                   style={{
                     borderRadius: "25px",
-                    borderColor: "#CBDCF7",width:"25vw"
+                    borderColor: "#CBDCF7",width:"20vw"
                   }}
-                  type="number"
+                  type="select"
                   label='Tarif(FCFA)'
                   placeholder="Tarif..."
                   name="description"
@@ -350,10 +354,10 @@ export const BillUpdate = () => {
                 <ValidatedField
                   style={{
                     borderRadius: "25px",
-                    borderColor: "#CBDCF7",width:"25vw"
+                    borderColor: "#CBDCF7",width:"20vw"
                   }}
                   label='Taux de remboursement'
-                  type="number"
+                  type="select"
                   name="amount"
                   placeholder="Taux..."
                   value={element.amount || ""}
@@ -363,20 +367,23 @@ export const BillUpdate = () => {
                     validate: v => isNumber(v) || 'Ce champ doit être un nombre.',
                   }}
                 />
-              <Button onClick={() => addFormFields()} style={{ backgroundColor: "white", borderColor: "white", color: "#B3C0D3", fontWeight: "900",width:"1vw" }}>{React.createElement(IoIosAddCircleOutline, { size: "30" })}</Button>
+             {arr.length-1===index?<span onClick={()=>addFormFields()} style={{ backgroundColor: "transparent", borderColor: "transparent", color: "#11485C",borderRadius:"50%", fontWeight: "900",width:"1vw",cursor:"pointer" }}>{React.createElement(IoIosAddCircle, { size: "25" })}</span>:<span style={{width:"1vw",color:"transparent"}}>{React.createElement(IoIosAddCircleOutline, { size: "25" })}</span>} 
 
                 {index ? (
-                  <Button
-                    type="button"
-                    className="btn btn-danger"
+                  <span
                     onClick={() => removeFormFields(index)}
+                    style={{ backgroundColor: "transparent",cursor:"pointer", borderColor: "transparent", color: "#EC4747", fontWeight: "900",width:"0.1vw",display:"inline" }}
+
                   >
-                    Retirer
-                  </Button>
+                    {React.createElement(IoIosRemoveCircle, {size:"25"})}
+                  </span>
                 ) : null}
               </div>
             ))}
-
+            <ValidatedField style={isNew ? { borderRadius: "25px", borderColor: "#CBDCF7", width:"36vw" } : { borderRadius: "25px", backgroundColor: "#A9B7CD", borderColor: "#CBDCF7", color: "#F6FAFF", width:"36vw" }} disabled={isNew ? false : true} id="bill-total" name="total" data-cy="total" label="Montant Total(CFA)" placeholder='Montant...' type="text"/>
+            <ValidatedField style={isNew ? { borderRadius: "25px", borderColor: "#CBDCF7", width:"36vw",height:"20vh" } : { borderRadius: "25px", backgroundColor: "#A9B7CD", borderColor: "#CBDCF7", color: "#F6FAFF", width:"36vw",height:"20vh"}} disabled={isNew ? false : true} id="bill-desc" name="desc" data-cy="total" label="Description" placeholder='Description...' type="textarea"/>
+              
+           
             <Button style={{ borderRadius: "25px", flex:"1 1 100%", marginTop: "2vh",backgroundColor:"#56B5C5", borderColor:"#56B5C5" }} id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
               Enregistrer
             </Button>
