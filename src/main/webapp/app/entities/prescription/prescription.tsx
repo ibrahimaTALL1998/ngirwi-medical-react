@@ -20,10 +20,10 @@ export const Prescription = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-     // filter
-     const [search, setSearch] = useState('');
-     const [criteria, setCriteria] = useState(' ');
-     
+  // filter
+  const [search, setSearch] = useState('');
+  const [criteria, setCriteria] = useState(' ');
+
   const [paginationState, setPaginationState] = useState(
     overridePaginationStateWithQueryParams(getSortState(location, ITEMS_PER_PAGE, 'id'), location.search)
   );
@@ -87,89 +87,87 @@ export const Prescription = () => {
     sortEntities();
   };
   // filtering table
-  const handleSearch = (event) => {
+  const handleSearch = event => {
     setSearch(event.target.value);
   };
 
-  let filter = null
+  let filter = null;
   if (search !== '') {
     switch (criteria) {
       case 'creationDate':
         filter = prescriptionList.filter(prescription => {
           return prescription.creationDate.includes(search);
-        })
+        });
         break;
       case 'author':
         filter = prescriptionList.filter(prescription => {
           return prescription.author.toLowerCase().includes(search.toLowerCase());
-        })
+        });
         break;
       case 'patient':
         filter = prescriptionList.filter(prescription => {
           const all = prescription.consultation.patient.lastName + ' ' + prescription.consultation.patient.firstName;
           return all.toLowerCase().includes(search.toLowerCase());
-        })
+        });
         break;
-      default: filter = null;
+      default:
+        filter = null;
     }
   }
 
   return (
     <div
       style={{
-        paddingLeft: "16vw",
-        paddingTop: "1%",
-        fontFamily: "Mulish",
-        fontWeight: "900",
-        display: "flex",
-        flexDirection: "column"
+        paddingLeft: '16vw',
+        paddingTop: '1%',
+        fontFamily: 'Mulish',
+        fontWeight: '900',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-
       <Header pageName="Ordonnances" />
 
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          position: "fixed",
-          top: "15.5vh",
-
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'fixed',
+          top: '15.5vh',
         }}
       >
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 3fr)",
-            alignItems: "center",
-            columnGap: "5%",
-            width: "75vw",
-            marginLeft: "5%"
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 3fr)',
+            alignItems: 'center',
+            columnGap: '5%',
+            width: '75vw',
+            marginLeft: '5%',
           }}
         >
-
           <div
             style={{
-              justifyContent: "center",
-              alignItems: "center",
-              minWidth: "15vw",
-              minHeight: "15vw",
-              borderRadius: "50%",
-              backgroundColor: "#CBDCF7",
-              paddingTop: "25%",
-              paddingLeft: "4%",
-              cursor:"pointer",
-              display:"inline-block"
+              justifyContent: 'center',
+              alignItems: 'center',
+              minWidth: '15vw',
+              minHeight: '15vw',
+              borderRadius: '50%',
+              backgroundColor: '#CBDCF7',
+              paddingTop: '25%',
+              paddingLeft: '4%',
+              cursor: 'pointer',
+              display: 'inline-block',
             }}
           >
             <span
               onClick={() => handleSyncList()}
               style={{
-                display:"block",
-                fontFamily: "Ubuntu",
-                color: "#56B5C5",
-                fontSize: "18px",
-                textAlign: "center",
+                display: 'block',
+                fontFamily: 'Ubuntu',
+                color: '#56B5C5',
+                fontSize: '18px',
+                textAlign: 'center',
               }}
             >
               <FontAwesomeIcon icon="sync" spin={loading} /> Actualiser la liste
@@ -178,278 +176,324 @@ export const Prescription = () => {
 
           <Card
             style={{
-              height: "6.28vh",
-              width: "33.38vw",
-              borderRadius: "20px",
-              backgroundColor: "#11485C",
-              textAlign: "center",
-              color: "white",
-              marginBottom: "5vh",
-              boxShadow: "0px 10px 50px rgba(138, 161, 203, 0.23)",
+              height: '6.28vh',
+              width: '33.38vw',
+              borderRadius: '20px',
+              backgroundColor: '#11485C',
+              textAlign: 'center',
+              color: 'white',
+              marginBottom: '5vh',
+              boxShadow: '0px 10px 50px rgba(138, 161, 203, 0.23)',
             }}
           >
-            <span style={{ marginTop: "1.5%" }}>Liste des ordonnances enregistrées</span>
+            <span style={{ marginTop: '1.5%' }}>Liste des ordonnances enregistrées</span>
           </Card>
 
-          <Link to="/prescription/new/"
-                    style={{
-                      display:"inline-block",
-                      textDecoration:"none",
-                      textAlign:"center", 
-                      color:"#56B5C5",
-                      minWidth:"15vw",
-                      minHeight:"15vw",
-                      borderRadius:"50%",
-                      backgroundColor:"#CBDCF7",
-                      fontSize:"18px",
-                      }}
-                    >
-                    <span style={{display:"block",marginTop:"20%"}}>
-                      {React.createElement( RiUserAddLine  ,{size: "24"})}   Enregistrer nouvelle ordonnance
-                    </span>
-                   
-                                 
-                  </Link>
-
-
-
+          <Link
+            to="/prescription/new/"
+            style={{
+              display: 'inline-block',
+              textDecoration: 'none',
+              textAlign: 'center',
+              color: '#56B5C5',
+              minWidth: '15vw',
+              minHeight: '15vw',
+              borderRadius: '50%',
+              backgroundColor: '#CBDCF7',
+              fontSize: '18px',
+            }}
+          >
+            <span style={{ display: 'block', marginTop: '20%' }}>
+              {React.createElement(RiUserAddLine, { size: '24' })} Enregistrer nouvelle ordonnance
+            </span>
+          </Link>
         </div>
-
-
 
         <Card
           style={{
-            width: "83vw",
-            height: "70vh",
-            backgroundColor: "white",
-            position: "fixed",
-            top: "32vh",
-            marginRight: "1%",
-            borderRadius: "15px 15px 0px 0px",
-            boxShadow: "0px 2px 12px 4px rgba(138, 161, 203, 0.23)"
-
-
+            width: '83vw',
+            height: '70vh',
+            backgroundColor: 'white',
+            position: 'fixed',
+            top: '32vh',
+            marginRight: '1%',
+            borderRadius: '15px 15px 0px 0px',
+            boxShadow: '0px 2px 12px 4px rgba(138, 161, 203, 0.23)',
           }}
         >
-              <div style={{display:"flex",flexDirection:"row",marginTop:"1%"}}>
-                  <span style={{ color:"#141414",fontSize:"20px", marginLeft:"3%", marginBottom:"1%",width:"45vw"}}>Ordonnances enregistrées</span>
+          <div style={{ display: 'flex', flexDirection: 'row', marginTop: '1%' }}>
+            <span style={{ color: '#141414', fontSize: '20px', marginLeft: '3%', marginBottom: '1%', width: '45vw' }}>
+              Ordonnances enregistrées
+            </span>
 
-                  <div 
-                    style={{
-                      display:"flex",
-                      flexDirection:"row",
-                      justifyContent:"flex-end",
-                      marginBottom:"3vh",
-                      marginRight:"2vw",
-                      gap:"1vw"
-                    }}
-                  >
-                    <ValidatedField  style={{borderRadius:"12px",width:"17vw"}}  id="criteria" name="criteria" type="select" onChange={(e) => setCriteria(e.target.value)}>
-                     {/* <select name="criteria" > */}
-                      <option value=" ">
-                        Critère de recherche
-                      </option>
-                      <option value="creationDate">
-                        Date
-                      </option>
-                      <option value="author">
-                        Auteur
-                      </option>
-                      <option value="patient">
-                        Patient
-                      </option>
-                      {/* </select> */}
-
-
-                  </ValidatedField>
-                    <ValidatedField  style={{borderRadius:"12px",width:"17vw"}} placeholder="Barre de recherche" id="search" name="search" type={criteria === "creationDate" ? "date" : "text"}  onChange={handleSearch} />
-                      {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
-
-                  </div>
-                </div>
-       
-          <Table responsive
-            style={{borderCollapse:"separate",borderSpacing:"0 15px"}}
-            >
-            <thead
-
+            <div
               style={{
-                position: "sticky",
-                top: "0"
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                marginBottom: '3vh',
+                marginRight: '2vw',
+                gap: '1vw',
+              }}
+            >
+              <ValidatedField
+                style={{ borderRadius: '12px', width: '17vw' }}
+                id="criteria"
+                name="criteria"
+                type="select"
+                onChange={e => setCriteria(e.target.value)}
+              >
+                {/* <select name="criteria" > */}
+                <option value=" ">Critère de recherche</option>
+                <option value="creationDate">Date</option>
+                <option value="author">Auteur</option>
+                <option value="patient">Patient</option>
+                {/* </select> */}
+              </ValidatedField>
+              <ValidatedField
+                style={{ borderRadius: '12px', width: '17vw' }}
+                placeholder="Barre de recherche"
+                id="search"
+                name="search"
+                type={criteria === 'creationDate' ? 'date' : 'text'}
+                onChange={handleSearch}
+              />
+              {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
+            </div>
+          </div>
+
+          <Table responsive style={{ borderCollapse: 'separate', borderSpacing: '0 15px' }}>
+            <thead
+              style={{
+                position: 'sticky',
+                top: '0',
               }}
             >
               <tr>
-
                 <th
                   style={{
-                    textAlign: "center",
-                    fontSize: "14px",
-                    position: "sticky",
-                    top: "0",
-                    width: "10%",
-                    backgroundColor: "white",
+                    textAlign: 'center',
+                    fontSize: '14px',
+                    position: 'sticky',
+                    top: '0',
+                    width: '10%',
+                    backgroundColor: 'white',
                   }}
-                  className="hand" onClick={sort('id')}>
-                  ID <FontAwesomeIcon style={{ marginLeft: "10px" }} icon="sort" />
+                  className="hand"
+                  onClick={sort('id')}
+                >
+                  ID <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
                 </th>
                 <th
                   style={{
-                    textAlign: "center",
-                    fontSize: "14px",
-                    position: "sticky",
-                    top: "0",
-                    width: "10%",
-                    backgroundColor: "white",
+                    textAlign: 'center',
+                    fontSize: '14px',
+                    position: 'sticky',
+                    top: '0',
+                    width: '10%',
+                    backgroundColor: 'white',
                   }}
-                  className="hand" onClick={sort('creationDate')}>
-                  Date <FontAwesomeIcon style={{ marginLeft: "10px" }} icon="sort" />
+                  className="hand"
+                  onClick={sort('creationDate')}
+                >
+                  Date <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
                 </th>
                 <th
                   style={{
-                    textAlign: "center",
-                    fontSize: "14px",
-                    position: "sticky",
-                    top: "0",
-                    width: "25%",
-                    backgroundColor: "white",
+                    textAlign: 'center',
+                    fontSize: '14px',
+                    position: 'sticky',
+                    top: '0',
+                    width: '25%',
+                    backgroundColor: 'white',
                   }}
-                  className="hand" onClick={sort('author')}>
-                  Auteur <FontAwesomeIcon style={{ marginLeft: "10px" }} icon="sort" />
+                  className="hand"
+                  onClick={sort('author')}
+                >
+                  Auteur <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
                 </th>
                 <th
                   style={{
-                    textAlign: "center",
-                    fontSize: "14px",
-                    position: "sticky",
-                    top: "0",
-                    width: "25%",
-                    backgroundColor: "white",
+                    textAlign: 'center',
+                    fontSize: '14px',
+                    position: 'sticky',
+                    top: '0',
+                    width: '25%',
+                    backgroundColor: 'white',
                   }}
-                  className="hand" onClick={sort('consultation.patient')}>
-                  Patient <FontAwesomeIcon style={{ marginLeft: "10px" }} icon="sort" />
+                  className="hand"
+                  onClick={sort('consultation.patient')}
+                >
+                  Patient <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
                 </th>
                 <th
                   style={{
-                    textAlign: "center",
-                    fontSize: "14px",
-                    position: "sticky",
-                    top: "0",
-                    width: "30%",
-                    backgroundColor: "white",
+                    textAlign: 'center',
+                    fontSize: '14px',
+                    position: 'sticky',
+                    top: '0',
+                    width: '30%',
+                    backgroundColor: 'white',
                   }}
-                >Actions</th>
+                >
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody
               style={{
-                backgroundColor: "#F6FAFF",
-                border: "1px solid #F6FAFF",
-                borderRadius: "15px 15px 0px 15px",
-                fontSize: "15px",
-                textAlign: "center",
-                borderBottom: "50px solid white",
+                backgroundColor: '#F6FAFF',
+                border: '1px solid #F6FAFF',
+                borderRadius: '15px 15px 0px 15px',
+                fontSize: '15px',
+                textAlign: 'center',
+                borderBottom: '50px solid white',
+                backgroundImage: 'url(content/images/NgirwiLogo.png)',
+                backgroundRepeat: 'no-repeat',
+                backgroundAttachment: 'fixed',
+                backgroundPosition: '65% 110%',
+                backgroundSize: '50% 50%',
               }}
             >
-              {filter === null ? prescriptionList.map((prescription, i) => (
-                <tr style={{border:"1px solid #E9F1FF",borderRadius:"15px"}} key={`entity-${i}`} data-cy="entityTable" >
-                  <td >
-                    <Button tag={Link} to={`/prescription/${prescription.id}`} color="link" style={{ color: "#91A8CD", textDecoration: "none", }} >
-                      {prescription.id}
-                    </Button>
-                  </td>
-                  <td>{prescription.creationDate ? <TextFormat type="date" value={prescription.creationDate} format={APP_DATE_FORMAT} /> : null}</td>
-                  <td style={{wordBreak:"break-all"}}>{prescription.author}</td>
-                  <td style={{wordBreak:"break-all"}}>{prescription.consultation.id ? <span>{prescription.consultation.patient.lastName.toUpperCase()+' '+prescription.consultation.patient.firstName}</span> : ''}</td>
-                  <td className="text-end">
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        gap: "1px",
-                        fontSize: "9px"
-                      }}
-                    >
-                      <Button
-                        tag={Link}
-                        to={`/prescription/${prescription.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                        color="primary"
-                        size="sm"
-                        data-cy="entityEditButton"
-                      >
-                        <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
-                      </Button>
-                      <Button tag={Link} to={`/prescription/${prescription.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
-                        <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir Ordonnance</span>
-                      </Button>
-                      <Button
-                        tag={Link}
-                        to={`/prescription/${prescription.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                        color="danger"
-                        size="sm"
-                        data-cy="entityDeleteButton"
-                      >
-                        <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Supprimer</span>
-                      </Button>
-
-
-                    </div>
-                  </td>
-                </tr>
-              )) : filter.map((prescription, i) => (
-                <tr style={{border:"1px solid #E9F1FF",borderRadius:"15px"}} key={`entity-${i}`} data-cy="entityTable" >
-                  <td >
-                    <Button tag={Link} to={`/prescription/${prescription.id}`} color="link" style={{ color: "#91A8CD", textDecoration: "none", }} >
-                      {prescription.id}
-                    </Button>
-                  </td>
-                  <td>{prescription.creationDate ? <TextFormat type="date" value={prescription.creationDate} format={APP_DATE_FORMAT} /> : null}</td>
-                  <td style={{wordBreak:"break-all"}}>{prescription.author}</td>
-                  <td style={{wordBreak:"break-all"}}>{prescription.consultation.id ? <span>{prescription.consultation.patient.lastName.toUpperCase()+' '+prescription.consultation.patient.firstName}</span> : ''}</td>
-                  <td className="text-end">
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        gap: "1px",
-                        fontSize: "9px"
-                      }}
-                    >
-                      <Button
-                        tag={Link}
-                        to={`/prescription/${prescription.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                        color="primary"
-                        size="sm"
-                        data-cy="entityEditButton"
-                      >
-                        <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
-                      </Button>
-                      <Button tag={Link} to={`/prescription/${prescription.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
-                        <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir Ordonnance</span>
-                      </Button>
-                      <Button
-                        tag={Link}
-                        to={`/prescription/${prescription.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                        color="danger"
-                        size="sm"
-                        data-cy="entityDeleteButton"
-                      >
-                        <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Supprimer</span>
-                      </Button>
-
-
-                    </div>
-                  </td>
-                </tr>
-              ))}
+              {filter === null
+                ? prescriptionList.map((prescription, i) => (
+                    <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
+                      <td>
+                        <Button
+                          tag={Link}
+                          to={`/prescription/${prescription.id}`}
+                          color="link"
+                          style={{ color: '#91A8CD', textDecoration: 'none' }}
+                        >
+                          {prescription.id}
+                        </Button>
+                      </td>
+                      <td>
+                        {prescription.creationDate ? (
+                          <TextFormat type="date" value={prescription.creationDate} format={APP_DATE_FORMAT} />
+                        ) : null}
+                      </td>
+                      <td style={{ wordBreak: 'break-all' }}>{prescription.author}</td>
+                      <td style={{ wordBreak: 'break-all' }}>
+                        {prescription.consultation.id ? (
+                          <span>
+                            {prescription.consultation.patient.lastName.toUpperCase() + ' ' + prescription.consultation.patient.firstName}
+                          </span>
+                        ) : (
+                          ''
+                        )}
+                      </td>
+                      <td className="text-end">
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '1px',
+                            fontSize: '9px',
+                          }}
+                        >
+                          <Button
+                            tag={Link}
+                            to={`/prescription/${prescription.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                            color="primary"
+                            size="sm"
+                            data-cy="entityEditButton"
+                          >
+                            <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
+                          </Button>
+                          <Button
+                            tag={Link}
+                            to={`/prescription/${prescription.id}/edit/voir?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                            color="dark"
+                            size="sm"
+                            data-cy="entityDetailsButton"
+                          >
+                            <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir Ordonnance</span>
+                          </Button>
+                          <Button
+                            tag={Link}
+                            to={`/prescription/${prescription.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                            color="danger"
+                            size="sm"
+                            data-cy="entityDeleteButton"
+                          >
+                            <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Supprimer</span>
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                : filter.map((prescription, i) => (
+                    <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
+                      <td>
+                        <Button
+                          tag={Link}
+                          to={`/prescription/${prescription.id}`}
+                          color="link"
+                          style={{ color: '#91A8CD', textDecoration: 'none' }}
+                        >
+                          {prescription.id}
+                        </Button>
+                      </td>
+                      <td>
+                        {prescription.creationDate ? (
+                          <TextFormat type="date" value={prescription.creationDate} format={APP_DATE_FORMAT} />
+                        ) : null}
+                      </td>
+                      <td style={{ wordBreak: 'break-all' }}>{prescription.author}</td>
+                      <td style={{ wordBreak: 'break-all' }}>
+                        {prescription.consultation.id ? (
+                          <span>
+                            {prescription.consultation.patient.lastName.toUpperCase() + ' ' + prescription.consultation.patient.firstName}
+                          </span>
+                        ) : (
+                          ''
+                        )}
+                      </td>
+                      <td className="text-end">
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '1px',
+                            fontSize: '9px',
+                          }}
+                        >
+                          <Button
+                            tag={Link}
+                            to={`/prescription/${prescription.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                            color="primary"
+                            size="sm"
+                            data-cy="entityEditButton"
+                          >
+                            <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
+                          </Button>
+                          <Button
+                            tag={Link}
+                            to={`/prescription/${prescription.id}/edit/voir?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                            color="dark"
+                            size="sm"
+                            data-cy="entityDetailsButton"
+                          >
+                            <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir Ordonnance</span>
+                          </Button>
+                          <Button
+                            tag={Link}
+                            to={`/prescription/${prescription.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                            color="danger"
+                            size="sm"
+                            data-cy="entityDeleteButton"
+                          >
+                            <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Supprimer</span>
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
             </tbody>
           </Table>
-
-
-
         </Card>
       </div>
-
-
     </div>
     // <div style={{marginLeft:"16vw"}}>
     //   <h2 id="prescription-heading" data-cy="PrescriptionHeading">

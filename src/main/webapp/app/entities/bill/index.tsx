@@ -16,6 +16,7 @@ const BillRoutes = () => (
     <Route path=":id">
       <Route index element={<BillDetail />} />
       <Route path="edit" element={<BillUpdate />} />
+      <Route path="edit/:idEdit" element={<BillUpdate />} />
       <Route path="delete" element={<BillDeleteDialog />} />
     </Route>
   </ErrorBoundaryRoutes>

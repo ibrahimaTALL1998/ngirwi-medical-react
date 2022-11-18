@@ -4,7 +4,13 @@ import { Button, Row, Col, FormText, Card } from 'reactstrap';
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { convertDateTimeFromServer, convertDateTimeFromServerToDate, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
+import {
+  convertDateTimeFromServer,
+  convertDateTimeFromServerToDate,
+  convertDateTimeFromServerToHours,
+  convertDateTimeToServer,
+  displayDefaultDateTime,
+} from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
@@ -12,31 +18,105 @@ import { IPatient } from 'app/shared/model/patient.model';
 import { getEntities as getPatients } from 'app/entities/patient/patient.reducer';
 import { IBill } from 'app/shared/model/bill.model';
 import { getEntity, updateEntity, createEntity, reset } from './bill.reducer';
-import { createEntity as createElement, getEntity as getElement, updateEntity as updateElement } from '../bill-element/bill-element.reducer';
+import {
+  createEntity as createElement,
+  getEntity as getElement,
+  updateEntity as updateElement,
+} from '../bill-element/bill-element.reducer';
 
 //pdf
-import {
-  Page,
-  Text,
-  Image,
-  View,
-  Document,
-  StyleSheet,
-  PDFDownloadLink,
-} from "@react-pdf/renderer";
+import { Page, Text, Image, View, Document, StyleSheet, PDFDownloadLink, Font } from '@react-pdf/renderer';
 import Header from 'app/shared/layout/header/header';
-import { IoIosAddCircleOutline, IoIosArrowBack,IoIosAddCircle, IoIosRemoveCircle } from 'react-icons/io';
+import { IoIosAddCircleOutline, IoIosArrowBack, IoIosAddCircle, IoIosRemoveCircle } from 'react-icons/io';
 import { size } from 'lodash';
 import { AiOutlineLock } from 'react-icons/ai';
 import { BiDownload } from 'react-icons/bi';
-
+import { BrandIcon } from 'app/shared/layout/header/header-components';
+import Autocomplete from '@mui/material/Autocomplete';
+import { TextField } from '@mui/material';
 export const BillUpdate = () => {
   const dispatch = useAppDispatch();
-
+  const assurance = [
+    { label: 'ALLIANCE INTERNATIONAL', id: '1' },
+    { label: 'AMSA ASSURANCES', id: '2' },
+    { label: 'ASKIA ASSURANCES', id: '3' },
+    { label: 'ASSOCIATION ASSOFAL', id: '4' },
+    { label: 'ASSUR CONSEILS MARSH', id: '5' },
+    { label: 'ASSURANCES LA SECURITE SENEGALAISE', id: '6' },
+    { label: 'AXA ASSURANCES', id: '7' },
+    { label: 'AXA INTERNATIONAL', id: '8' },
+    { label: 'CGA SANTE', id: '9' },
+    { label: 'CIGNA', id: '10' },
+    { label: 'CNART ASSURANCES', id: '11' },
+    { label: 'COLINA', id: '12' },
+    { label: 'EURO CENTER', id: '13' },
+    { label: 'EUROP ASSISTANCE', id: '14' },
+    { label: 'GMC', id: '15' },
+    { label: 'GRAS SAVOYE', id: '16' },
+    { label: 'NSIA', id: '17' },
+    { label: 'PREVOYANCE ASSURANCE', id: '18' },
+    { label: 'SAAR VIE', id: '19' },
+    { label: 'SALAMA ASSURANCES', id: '20' },
+    { label: 'SEGMA', id: '21' },
+    { label: 'SONAM', id: '22' },
+    { label: 'UASEN VIE', id: '23' },
+  ];
+  const ipm = [
+    { label: 'AFRIC MANAGEMENT', id: '1' },
+    { label: 'ARMEMENT DE PECHE', id: '2' },
+    { label: 'BANQUE ISLAMIQUE DE SENEGAL', id: '3' },
+    { label: 'BCEAO', id: '4' },
+    { label: 'BHS', id: '5' },
+    { label: 'BICIS', id: '6' },
+    { label: 'BOKK', id: '7' },
+    { label: 'CAISSE SECU SOC', id: '8' },
+    { label: 'CBAO', id: '9' },
+    { label: 'CITIBANK', id: '10' },
+    { label: 'CNCAS', id: '11' },
+    { label: 'COTONIERE DU CAP VERT', id: '12' },
+    { label: 'CNCAS', id: '13' },
+    { label: 'CSE', id: '14' },
+    { label: 'CSS', id: '15' },
+    { label: 'ECOBANK', id: '16' },
+    { label: 'EIFFAGE SENEGAL', id: '17' },
+    { label: 'FILFILI', id: '18' },
+    { label: 'GROUPE MIMRAN', id: '19' },
+    { label: 'ICS', id: '20' },
+    { label: 'INTER-ENTREPRISE DU PERSONNEL', id: '21' },
+    { label: 'IPM NDIMBAL', id: '22' },
+    { label: 'KEUR GU MAG', id: '23' },
+    { label: 'LA POSTE', id: '24' },
+    { label: 'LONASE', id: '25' },
+    { label: 'MBARUM KOLUTE', id: '26' },
+    { label: 'MERIDIEN KING FAHD PALACE', id: '27' },
+    { label: 'MUTUELLE HOTELIERE DU CAP VERT', id: '28' },
+    { label: 'NDIMBAL', id: '29' },
+    { label: 'NESTLE SENEGAL', id: '30' },
+    { label: 'NJABOOT', id: '31' },
+    { label: 'OXFAM', id: '32' },
+    { label: 'PREVOYANCE DU PERSONEL SOSETER', id: '33' },
+    { label: 'PROFESSION LIBERALE', id: '34' },
+    { label: 'SAGAM', id: '35' },
+    { label: 'SANTE POUR TOUS', id: '36' },
+    { label: 'SAR', id: '37' },
+    { label: 'SDE', id: '38' },
+    { label: 'SENELEC', id: '39' },
+    { label: 'SENTENAC', id: '40' },
+    { label: 'SERA', id: '41' },
+    { label: 'SGBS', id: '42' },
+    { label: 'SOBOA', id: '43' },
+    { label: 'SODEFITEX', id: '44' },
+    { label: 'SONATEL', id: '45' },
+    { label: 'SOSETER', id: '46' },
+    { label: 'SYPAOA', id: '47' },
+    { label: 'TRANSIT', id: '48' },
+    { label: 'TRANSPORT AERIEN', id: '49' },
+  ];
   const navigate = useNavigate();
 
   const { id } = useParams<'id'>();
   const { idPatient } = useParams<'idPatient'>();
+  const { idEdit } = useParams<'idEdit'>();
   const isNew = id === undefined;
 
   const patients = useAppSelector(state => state.patient.entities);
@@ -44,9 +124,34 @@ export const BillUpdate = () => {
   const loading = useAppSelector(state => state.bill.loading);
   const updating = useAppSelector(state => state.bill.updating);
   const updateSuccess = useAppSelector(state => state.bill.updateSuccess);
+  const [blockIPM, setBlockIPM] = useState('');
+  const [blockAssurance, setBlockAssurance] = useState('');
 
   const account = useAppSelector(state => state.authentication.account);
+  const [patientId, setPatientId] = useState(patients);
 
+  let getPatient = e => {
+    setPatientId(e.target.value);
+  };
+
+  let getIPM = e => {
+    setBlockIPM(e.target.value);
+  };
+  let getAssurance = e => {
+    setBlockAssurance(e.target.value);
+  };
+  let p;
+  let infosPatient = () => {
+    patients.map(otherEntity =>
+      otherEntity.id.toString() === patientId.toString()
+        ? // console.log(otherEntity.id+"."+otherEntity.patient.lastName)
+          (p = otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName)
+        : console.log(otherEntity.id)
+    );
+
+    return p;
+  };
+  p = infosPatient();
   const handleClose = () => {
     navigate('/bill' + location.search);
   };
@@ -69,9 +174,7 @@ export const BillUpdate = () => {
 
   const patient = patients.filter(pat => {
     return pat.id == idPatient;
-  })
-
-
+  });
 
   const saveEntity = values => {
     values.date = convertDateTimeToServer(values.date);
@@ -92,22 +195,18 @@ export const BillUpdate = () => {
   const defaultValues = () =>
     isNew
       ? {
-        date: displayDefaultDateTime(),
-        patient: idPatient,
-        author: account.login
-      }
+          date: displayDefaultDateTime(),
+          patient: idPatient,
+          author: account.login,
+        }
       : {
-        ...billEntity,
-        date: convertDateTimeFromServer(billEntity.date),
-        patient: billEntity?.patient?.id,
-      };
-
-
+          ...billEntity,
+          date: convertDateTimeFromServer(billEntity.date),
+          patient: billEntity?.patient?.id,
+        };
 
   //info ordonance
-  const [formValues, setFormValues] = useState([
-    { service: "", description: "", amount: "" },
-  ]);
+  const [formValues, setFormValues] = useState([{ service: '', amount: '', taux: '' }]);
 
   let handleChange = (i, e) => {
     let newFormValues = [...formValues];
@@ -116,13 +215,10 @@ export const BillUpdate = () => {
   };
 
   let addFormFields = () => {
-    setFormValues([
-      ...formValues,
-      { service: "", description: "", amount: "" },
-    ]);
+    setFormValues([...formValues, { service: '', amount: '', taux: '' }]);
   };
 
-  let removeFormFields = (i) => {
+  let removeFormFields = i => {
     let newFormValues = [...formValues];
     newFormValues.splice(i, 1);
     setFormValues(newFormValues);
@@ -130,14 +226,14 @@ export const BillUpdate = () => {
 
   const styles = StyleSheet.create({
     page: {
-      flexDirection: "row",
-      backgroundColor: "#E4E4E4",
+      flexDirection: 'row',
+      backgroundColor: '#E4E4E4',
     },
     title: {
       fontSize: 24,
-      textAlign: "center",
-      fontFamily: "Times-Roman",
-      color: "green"
+      textAlign: 'center',
+      fontFamily: 'Times-Roman',
+      color: 'green',
     },
     section: {
       margin: 10,
@@ -147,147 +243,328 @@ export const BillUpdate = () => {
     text: {
       margin: 12,
       fontSize: 14,
-      textAlign: "justify",
-      fontFamily: "Times-Roman",
+      textAlign: 'justify',
+      fontFamily: 'Times-Roman',
     },
     image: {
       marginVertical: 10,
       marginHorizontal: 200,
-      alignContent: "center",
-      maxWidth: "30%",
-      maxHeight: "30%",
+      alignContent: 'center',
+      maxWidth: '30%',
+      maxHeight: '30%',
     },
     imageHeader: {
-      float: "right",
-      maxWidth: "20%",
-      maxHeight: "20%",
-    }
+      float: 'right',
+      maxWidth: '20%',
+      maxHeight: '20%',
+    },
   });
 
-
-
   let total = 0;
-
+  let remise = 0;
   let tab = () => {
-    let newElement = [...formValues]
+    let newElement = [...formValues];
 
     for (let i = 0; i < newElement.length; i++) {
-      total += parseInt(newElement[i].amount);
+      if (newElement[i].taux !== '') {
+        remise = 1 - parseInt(newElement[i].taux, 10) / 100;
+      } else {
+        remise = 1;
+      }
+      total += parseInt(newElement[i].amount, 10) * remise;
     }
     return total;
-  }
+  };
 
   total = tab();
 
-
+  Font.register({ family: 'Poppins', src: 'https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJbecmNE.woff2', fontStyle: 'normal' });
   const doc = (
     <Document>
-      <Page size="A4" style={styles.page} wrap>
-        <View style={styles.section}>
-          <Image style={styles.imageHeader} src='content/images/Ngirwi_Transparent.png' />
-          {/* <Image style={styles.image} src='content/images/serpent.png' /> */}
-          <Text style={styles.title}> Facture</Text>
-          <Text style={styles.text}>
-            Date: {displayDefaultDateTime()}
+      <Page style={{ display: 'flex', flexDirection: 'column', fontFamily: 'Poppins' }}>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            borderBottom: '1px solid green',
+            paddingBottom: '10px',
+            marginTop: '20px',
+          }}
+        >
+          {/* <View style={{ display: "flex", flexDirection: "column", justifyContent: 'space-around', alignItems: "center" }}>
+            <Text style={{ fontSize: "20px", color: "green", marginBottom: "9px",fontWeight:"bold"}}>Nom médecin</Text>
+            <Text style={{ fontSize: "15px", marginBottom: "9px" ,fontWeight:"medium"}}>Médecin général</Text>
+            <Text style={{ fontSize: "15px",fontWeight:"thin" }}>Téléphone</Text>
+          </View> */}
+          {/* <View>
+            <Image style={{ width: "50px", height: "50px" }} src='content/images/serpent.png' />
+          </View> */}
+          <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center' }}>
+            <Text style={{ fontSize: '20px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>Nom clinique</Text>
+            <Text style={{ fontSize: '15px', marginBottom: '9px', fontWeight: 'medium' }}>Adresse</Text>
+            <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>Email Clinique</Text>
+          </View>
+        </View>
+        <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', marginTop: '15px' }}>
+          <Text style={{ fontSize: '35px', fontWeight: 'extrabold', marginBottom: '9px' }}>Facture</Text>
+          <Text style={{ fontSize: '18px', marginBottom: '9px' }}>
+            {' '}
+            Fait à: ...................... Le:{' '}
+            {convertDateTimeFromServerToDate(displayDefaultDateTime()) + ' à ' + convertDateTimeFromServerToHours(displayDefaultDateTime())}
           </Text>
-          {/* <Text style={styles.text}>
-            Patient: {patient.lastName + ' ' + patient.firstName}
-          </Text> */}
-          <Text style={styles.text}>
-            Médecin: {account.login}
+          <Text style={{ fontSize: '18px', marginBottom: '7px' }}>
+            Nom et Prénom(s): {billEntity.patient ? billEntity?.patient?.lastName.toUpperCase() + ' ' + billEntity?.patient?.firstName : p}{' '}
           </Text>
-          {formValues.map(element => (
-            <Text style={styles.text}>
-              Service : {element.service} | Description : {element.description} | Montant : {element.amount}
+        </View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            marginTop: '15px',
+            border: '3px solid silver',
+            marginLeft: '10vw',
+            marginRight: '5vw',
+            width: '80vw',
+          }}
+        >
+          <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <Text
+              style={{
+                width: '40vw',
+                height: '6vh',
+                borderRight: '3px solid silver',
+                textTransform: 'uppercase',
+                fontSize: '15px',
+                color: 'green',
+                paddingTop: '4px',
+                textAlign: 'center',
+              }}
+            >
+              Intervention
             </Text>
-            // <Text style={styles.text}>
-            //   <b>Service</b> : {element.service} | <b>Description</b> : {element.description} | <b>Montant</b> : {element.amount} {'\n\n'}
-            // </Text>
-          ))}
-          <Text style={styles.text}>
-            Total (en FCFA): {total}
-          </Text>
+            <Text
+              style={{
+                width: '20vw',
+                height: '6vh',
+                textTransform: 'uppercase',
+                fontSize: '15px',
+                color: 'green',
+                paddingTop: '4px',
+                textAlign: 'center',
+              }}
+            >
+              Tarif
+            </Text>
+            <Text
+              style={{
+                width: '10vw',
+                height: '6vh',
+                borderLeft: '3px solid silver',
+                textTransform: 'uppercase',
+                fontSize: '15px',
+                padding: '4px',
+                color: 'green',
+                textAlign: 'center',
+              }}
+            >
+              Remise
+            </Text>
+            <Text
+              style={{
+                width: '10vw',
+                height: '6vh',
+                borderLeft: '3px solid silver',
+                textTransform: 'uppercase',
+                fontSize: '15px',
+                color: 'green',
+                textAlign: 'center',
+              }}
+            >
+              Tarif total
+            </Text>
+          </View>
+          {formValues.map((element, i) =>
+            element.service.length > 0 ? (
+              <View key={`entity-${i}`} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                <Text
+                  style={{
+                    width: '40vw',
+                    height: '6vh',
+                    borderRight: '3px solid silver',
+                    borderTop: '3px solid silver',
+                    fontSize: '15px',
+                    paddingTop: '5px',
+                    paddingBottom: '3px',
+                    textAlign: 'center',
+                  }}
+                >
+                  {element.service}
+                </Text>
+                <Text
+                  style={{
+                    width: '20vw',
+                    height: '6vh',
+                    borderTop: '3px solid silver',
+                    fontSize: '15px',
+                    paddingTop: '5px',
+                    paddingBottom: '3px',
+                    textAlign: 'center',
+                  }}
+                >
+                  {element.amount} FCFA
+                </Text>
+                <Text
+                  style={{
+                    width: '10vw',
+                    height: '6vh',
+                    borderTop: '3px solid silver',
+                    borderLeft: '3px solid silver',
+                    fontSize: '15px',
+                    paddingTop: '5px',
+                    paddingBottom: '3px',
+                    textAlign: 'center',
+                  }}
+                >
+                  {element.taux} %
+                </Text>
+                <Text
+                  style={{
+                    width: '10vw',
+                    height: '6vh',
+                    borderTop: '3px solid silver',
+                    borderLeft: '3px solid silver',
+                    fontSize: '15px',
+                    paddingTop: '5px',
+                    paddingBottom: '3px',
+                    textAlign: 'center',
+                  }}
+                >
+                  {parseInt(element.amount, 10) * (1 - parseInt(element.taux, 10) / 100)} FCFA
+                </Text>
+              </View>
+            ) : null
+          )}
+          <View style={{ borderTop: '3px solid silver', width: '80vw' }}>
+            <Text>{'Montant total : ' + total + 'FCFA'} </Text>
+          </View>
         </View>
       </Page>
     </Document>
   );
-
+  // const doc = (
+  //   <Document>
+  //     <Page size="A4" style={styles.page} wrap>
+  //       <View style={styles.section}>
+  //         <Image style={styles.imageHeader} src='content/images/Ngirwi_Transparent.png' />
+  //         <Text style={styles.title}> Facture</Text>
+  //         <Text style={styles.text}>
+  //           Date: {displayDefaultDateTime()}
+  //         </Text>
+  //         <Text style={styles.text}>
+  //           Médecin: {account.login}
+  //         </Text>
+  //         {formValues.map((element,i) => (
+  //           <Text key={`e${i}`} style={styles.text}>
+  //             Service : {element.service} | Description : {element.amount} | Montant : {element.taux}
+  //           </Text>
+  //         ))}
+  //         <Text style={styles.text}>
+  //           Total (en FCFA): {total}
+  //         </Text>
+  //       </View>
+  //     </Page>
+  //   </Document>
+  // );
+  console.log(blockAssurance);
+  console.log(blockIPM);
   return (
     <div
       style={{
-        paddingLeft: "16vw",
-        paddingTop: "1%",
-        fontFamily: "Mulish",
-        fontWeight: "900",
-        display: "flex",
-        flexDirection: "column"
+        paddingLeft: '16vw',
+        paddingTop: '1%',
+        fontFamily: 'Mulish',
+        fontWeight: '900',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      <Header pageName={"Facture"} />
+      <Header pageName={'Facture'} />
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "5vh",
-          marginTop: "9.5vh"
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '5vh',
+          marginTop: '9.5vh',
         }}
       >
-
         <Card
           style={{
-            height: "6.28vh",
-            width: "32vw",
-            maxWidth: "50vw",
-            borderRadius: "20px",
-            backgroundColor: "#11485C",
-            textAlign: "center",
-            color: "white",
-            marginBottom: "5vh",
-            marginLeft: "25vw",
-            boxShadow: "0px 10px 50px rgba(138, 161, 203, 0.23)",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
+            height: '6.28vh',
+            width: '32vw',
+            maxWidth: '50vw',
+            borderRadius: '20px',
+            backgroundColor: '#11485C',
+            textAlign: 'center',
+            color: 'white',
+            marginBottom: '5vh',
+            marginLeft: '25vw',
+            boxShadow: '0px 10px 50px rgba(138, 161, 203, 0.23)',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
-          <Button replace onClick={() => window.history.back()} style={{ color: "#53BFD1", backgroundColor: "#11485C", borderColor: "#11485C" }}>{React.createElement(IoIosArrowBack, { size: "20" })}</Button>
-          <span>{isNew?"Enregistrement nouvelle ":"Modification "} facture</span>
+          <Button
+            replace
+            onClick={() => window.history.back()}
+            style={{ color: '#53BFD1', backgroundColor: '#11485C', borderColor: '#11485C' }}
+          >
+            {React.createElement(IoIosArrowBack, { size: '20' })}
+          </Button>
+          <span>{isNew ? 'Enregistrement nouvelle ' : idEdit === 'voir' ? 'Consultation ' : 'Modification '} facture</span>
         </Card>
         <Card
           style={{
-            minHeight: "70vh",
-            marginRight: "3%",
-            boxShadow: "0px 10px 50px rgba(138, 161, 203, 0.23)",
-            borderRadius: "15px"
-
+            minHeight: '70vh',
+            marginRight: '3%',
+            boxShadow: '0px 10px 50px rgba(138, 161, 203, 0.23)',
+            borderRadius: '15px',
+            marginBottom: '2vh',
           }}
         >
           <div
             style={{
-              marginTop: "1%",
-              paddingBottom: "2vh",
-              position: "sticky",
-              top: "0",
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              backgroundColor: "white",
-              borderBottom: "1px solid #B3C0D3"
+              marginTop: '1%',
+              paddingBottom: '2vh',
+              position: 'sticky',
+              top: '0',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: 'white',
+              borderBottom: '1px solid #B3C0D3',
             }}
           >
-            <span style={{ marginLeft: "3%", color: "#141414", fontSize: "19px",width:"75vw" }}>{isNew?"Nouvelle facture ":"Facture "}patient</span>
-            <div style={{ display: "flex", flexDirection: "row", gap: "3vh" }}>
-              <PDFDownloadLink
-                document={doc}
-                fileName={`facture_${account.login}_${JSON.stringify(convertDateTimeFromServerToDate)}`}
-              >
+            <span style={{ marginLeft: '3%', color: '#141414', fontSize: '19px', width: '65vw' }}>
+              {isNew ? 'Nouvelle facture ' : 'Facture '}patient
+            </span>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '3vh' }}>
+              <PDFDownloadLink document={doc} fileName={`facture_${account.login}_${JSON.stringify(convertDateTimeFromServerToDate)}`}>
                 {({ loading }) =>
                   loading ? (
                     // <Button style={{ borderRadius: "25px" }} color='dark' disabled>Préparer fichier...</Button>
-                    <FontAwesomeIcon style={{color:"black",fontSize:"25px"}} icon={"loader"} spin={loading}/>
+                    <span style={{ cursor: 'pointer', fontWeight: '900', color: '#B3C0D3', textAlign: 'center', marginRight: '2vw' }}>
+                      Préparation en cours...
+                    </span>
                   ) : (
-                    <span style={{ borderRadius: "25px" , cursor:"pointer",color:"#B3C0D3",fontWeight:"900" }} >{React.createElement(BiDownload, {size:"25"})} </span>
+                    // <FontAwesomeIcon style={{ color: "black", fontSize: "25px" }} icon={"loader"} spin={loading} />
+                    <span style={{ cursor: 'pointer', fontWeight: '900', color: '#B3C0D3', textAlign: 'center' }}>
+                      {React.createElement(BiDownload, { size: '25' })} Télécharger
+                    </span>
                   )
                 }
               </PDFDownloadLink>
@@ -295,107 +572,308 @@ export const BillUpdate = () => {
           </div>
           <ValidatedForm
             style={{
-              width: "94%",
-              marginLeft: "3%",
-              height: "70%", display: "flex", flexWrap:"wrap",
-              columnGap: "25px",
-              marginTop: "1%",
-              fontSize: "12px",
-              fontWeight: "900"
+              width: '94%',
+              marginLeft: '3%',
+              height: '70%',
+              display: 'flex',
+              flexWrap: 'wrap',
+              columnGap: '25px',
+              marginTop: '1%',
+              fontSize: '12px',
+              fontWeight: '900',
+              backgroundImage: 'url(content/images/NgirwiLogo.png)',
+              backgroundRepeat: 'no-repeat',
+              backgroundAttachment: 'fixed',
+              backgroundPosition: '60% 120%',
             }}
-            defaultValues={defaultValues()} onSubmit={saveEntity}>
+            defaultValues={defaultValues()}
+            onSubmit={saveEntity}
+          >
             {!isNew ? <ValidatedField hidden name="id" required readOnly id="bill-id" label="ID" validate={{ required: true }} /> : null}
             <ValidatedField
-              style={{ borderRadius: "25px", backgroundColor: "#A9B7CD", color: "#F6FAFF", borderColor: "#CBDCF7", width:"75vw" }}
-              disabled label="Date" id="bill-date" name="date" data-cy="date" type="datetime-local" placeholder="YYYY-MM-DD HH:mm" >
-               <i className='fa-light fa-lock' style={{position:"absolute",zIndex:"0",color:"white",right:"0"}}> </i>
-              </ValidatedField>
+              style={{ borderRadius: '25px', backgroundColor: '#A9B7CD', color: '#F6FAFF', borderColor: '#CBDCF7', width: '75vw' }}
+              disabled
+              label="Date"
+              id="bill-date"
+              name="date"
+              data-cy="date"
+              type="datetime-local"
+              placeholder="YYYY-MM-DD HH:mm"
+            >
+              <i className="fa-light fa-lock" style={{ position: 'absolute', zIndex: '0', color: 'white', right: '0' }}>
+                {' '}
+              </i>
+            </ValidatedField>
             <ValidatedField hidden label="Author" id="bill-author" name="author" data-cy="author" type="text" />
-            <ValidatedField  style={isNew ? { borderRadius: "25px", borderColor: "#CBDCF7", width:"37vw" } : { borderRadius: "25px", backgroundColor: "#A9B7CD", borderColor: "#CBDCF7", color: "#F6FAFF", width:"37vw" }} disabled={isNew ? false : true} id="bill-patient" name="patient" data-cy="patient" label="Patient" type="select">
+            <ValidatedField
+              onChange={e => getPatient(e)}
+              style={
+                isNew
+                  ? { borderRadius: '25px', borderColor: '#CBDCF7', width: '28vw' }
+                  : { borderRadius: '25px', backgroundColor: '#A9B7CD', borderColor: '#CBDCF7', color: '#F6FAFF', width: '28vw' }
+              }
+              disabled={isNew ? false : true}
+              id="bill-patient"
+              name="patient"
+              data-cy="patient"
+              label="Patient"
+              type="select"
+            >
               <option value="" key="0" />
               {patients
                 ? patients.map(otherEntity => (
-                  <option value={otherEntity.id} key={otherEntity.id}>
-                    {otherEntity.lastName + ' ' + otherEntity.firstName}
-                  </option>
-                ))
+                    <option value={otherEntity.id} key={otherEntity.id}>
+                      {otherEntity.lastName + ' ' + otherEntity.firstName}
+                    </option>
+                  ))
                 : null}
             </ValidatedField>
-            <ValidatedField style={isNew ? { borderRadius: "25px", borderColor: "#CBDCF7", width:"36vw" } : { borderRadius: "25px", backgroundColor: "#A9B7CD", borderColor: "#CBDCF7", color: "#F6FAFF", width:"36vw" }} disabled={isNew ? false : true} id="bill-ipm" name="ipm" data-cy="ipm" label="Assurance/IPM" type="select">
+            <ValidatedField
+              style={
+                isNew
+                  ? {
+                      borderRadius: '25px',
+                      borderColor: '#CBDCF7',
+                      width: '20vw',
+                    }
+                  : {
+                      borderRadius: '25px',
+                      borderColor: '#CBDCF7',
+                      width: '20vw',
+                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
+                      color: idEdit === 'voir' ? '#F6FAFF' : '',
+                    }
+              }
+              disabled={
+                isNew && blockIPM === '' ? false : isNew && blockIPM !== '' ? true : idEdit !== 'voir' && blockIPM === '' ? false : true
+              }
+              id="bill-asurance"
+              name="asurance"
+              data-cy="asurance"
+              label="Assurance"
+              type="select"
+              autoComplete={`${assurance}`}
+              onChange={e => getAssurance(e)}
+            >
               <option value="" key="0" />
-              
+              {assurance.map((assur, i) => (
+                <option value={assur.label} key={assur.id}>
+                  {assur.label}
+                </option>
+              ))}
+            </ValidatedField>
+            <ValidatedField
+              style={
+                isNew
+                  ? { borderRadius: '25px', borderColor: '#CBDCF7', width: '20vw' }
+                  : {
+                      borderRadius: '25px',
+                      borderColor: '#CBDCF7',
+                      width: '20vw',
+                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
+                      color: idEdit === 'voir' ? '#F6FAFF' : '',
+                    }
+              }
+              id="bill-ipm"
+              name="ipm"
+              data-cy="ipm"
+              label="IPM"
+              type="select"
+              disabled={
+                isNew && blockAssurance === ''
+                  ? false
+                  : isNew && blockAssurance !== ''
+                  ? true
+                  : idEdit !== 'voir' && blockAssurance === ''
+                  ? false
+                  : true
+              }
+              onChange={e => getIPM(e)}
+            >
+              <option value="" key="0" />
+              {ipm.map((a, i) => (
+                <option value={a.label} key={a.id}>
+                  {a.label}
+                </option>
+              ))}
             </ValidatedField>
             {formValues.map((element, index, arr) => (
-              <div style={{flex:"1 1 100%",display:"flex",flexWrap:"wrap",gap:"0.7vw",alignItems:"center",justifyContent:"center"}} key={index}>
+              <div
+                style={{
+                  flex: '1 1 100%',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '0.7vw',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                key={index}
+              >
                 <ValidatedField
+                  disabled={idEdit === 'voir' ? true : false}
                   style={{
-                    borderRadius: "25px",
-                    borderColor: "#CBDCF7",width:"28vw"
+                    borderRadius: '25px',
+                    borderColor: '#CBDCF7',
+                    width: '28vw',
+                    backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
+                    color: idEdit === 'voir' ? '#F6FAFF' : '',
                   }}
-                  type="select"
-                  label='Intervention'
+                  type="text"
+                  label="Intervention"
                   placeholder="Intervention..."
                   name="service"
-                  value={element.service || ""}
-                  onChange={(e) => handleChange(index, e)}
+                  value={element.service || ''}
+                  onChange={e => handleChange(index, e)}
+                  validate={{
+                    required: { value: false, message: 'Ce champ est obligatoire.' },
+                  }}
                 />
                 <ValidatedField
+                  disabled={idEdit === 'voir' ? true : false}
                   style={{
-                    borderRadius: "25px",
-                    borderColor: "#CBDCF7",width:"20vw"
+                    borderRadius: '25px',
+                    borderColor: '#CBDCF7',
+                    width: '20vw',
+                    backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
+                    color: idEdit === 'voir' ? '#F6FAFF' : '',
                   }}
-                  type="select"
-                  label='Tarif(FCFA)'
+                  type="number"
+                  label="Tarif(FCFA)"
                   placeholder="Tarif..."
-                  name="description"
-                  value={element.description || ""}
-                  onChange={(e) => handleChange(index, e)}
-                />
-                <ValidatedField
-                  style={{
-                    borderRadius: "25px",
-                    borderColor: "#CBDCF7",width:"20vw"
-                  }}
-                  label='Taux de remboursement'
-                  type="select"
                   name="amount"
-                  placeholder="Taux..."
-                  value={element.amount || ""}
-                  onChange={(e) => handleChange(index, e)}
+                  value={element.amount || ''}
+                  onChange={e => handleChange(index, e)}
                   validate={{
                     required: { value: false, message: 'Ce champ est obligatoire.' },
                     validate: v => isNumber(v) || 'Ce champ doit être un nombre.',
                   }}
                 />
-             {arr.length-1===index?<span onClick={()=>addFormFields()} style={{ backgroundColor: "transparent", borderColor: "transparent", color: "#11485C",borderRadius:"50%", fontWeight: "900",width:"1vw",cursor:"pointer" }}>{React.createElement(IoIosAddCircle, { size: "25" })}</span>:<span style={{width:"1vw",color:"transparent"}}>{React.createElement(IoIosAddCircleOutline, { size: "25" })}</span>} 
+                <ValidatedField
+                  disabled={idEdit === 'voir' ? true : false}
+                  style={{
+                    borderRadius: '25px',
+                    borderColor: '#CBDCF7',
+                    width: '20vw',
+                    backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
+                    color: idEdit === 'voir' ? '#F6FAFF' : '',
+                  }}
+                  label="Taux de remboursement(en %)"
+                  type="number"
+                  name="taux"
+                  placeholder="Taux..."
+                  value={element.taux || ''}
+                  onChange={e => handleChange(index, e)}
+                />
+                {arr.length - 1 === index ? (
+                  <span
+                    onClick={() => addFormFields()}
+                    style={{
+                      backgroundColor: 'transparent',
+                      borderColor: 'transparent',
+                      color: '#11485C',
+                      borderRadius: '50%',
+                      fontWeight: '900',
+                      width: '1vw',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {React.createElement(IoIosAddCircle, { size: '25' })}
+                  </span>
+                ) : (
+                  <span style={{ width: '1vw', color: 'transparent' }}>{React.createElement(IoIosAddCircleOutline, { size: '25' })}</span>
+                )}
 
                 {index ? (
                   <span
                     onClick={() => removeFormFields(index)}
-                    style={{ backgroundColor: "transparent",cursor:"pointer", borderColor: "transparent", color: "#EC4747", fontWeight: "900",width:"0.1vw",display:"inline" }}
-
+                    style={{
+                      backgroundColor: 'transparent',
+                      cursor: 'pointer',
+                      borderColor: 'transparent',
+                      color: '#EC4747',
+                      fontWeight: '900',
+                      width: '0.1vw',
+                      display: 'inline',
+                    }}
                   >
-                    {React.createElement(IoIosRemoveCircle, {size:"25"})}
+                    {React.createElement(IoIosRemoveCircle, { size: '25' })}
                   </span>
                 ) : null}
               </div>
             ))}
-            <ValidatedField style={isNew ? { borderRadius: "25px", borderColor: "#CBDCF7", width:"36vw" } : { borderRadius: "25px", backgroundColor: "#A9B7CD", borderColor: "#CBDCF7", color: "#F6FAFF", width:"36vw" }} disabled={isNew ? false : true} id="bill-total" name="total" data-cy="total" label="Montant Total(CFA)" placeholder='Montant...' type="text"/>
-            <ValidatedField style={isNew ? { borderRadius: "25px", borderColor: "#CBDCF7", width:"36vw",height:"20vh" } : { borderRadius: "25px", backgroundColor: "#A9B7CD", borderColor: "#CBDCF7", color: "#F6FAFF", width:"36vw",height:"20vh"}} disabled={isNew ? false : true} id="bill-desc" name="desc" data-cy="total" label="Description" placeholder='Description...' type="textarea"/>
-              
-           
-            <Button style={{ borderRadius: "25px", flex:"1 1 100%", marginTop: "2vh",backgroundColor:"#56B5C5", borderColor:"#56B5C5" }} id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
+            <ValidatedField
+              value={isNaN(total) ? 'Calcul en cours...' : total}
+              style={
+                isNew
+                  ? { borderRadius: '25px', borderColor: '#CBDCF7', width: '36vw' }
+                  : {
+                      borderRadius: '25px',
+                      borderColor: '#CBDCF7',
+                      width: '36vw',
+                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
+                      color: idEdit === 'voir' ? '#F6FAFF' : '',
+                    }
+              }
+              disabled
+              id="bill-total"
+              name="total"
+              data-cy="total"
+              label="Montant Total(CFA)"
+              placeholder="Montant..."
+              type="text"
+            />
+            <ValidatedField
+              style={
+                isNew
+                  ? { borderRadius: '25px', borderColor: '#CBDCF7', width: '36vw', height: '20vh' }
+                  : {
+                      borderRadius: '25px',
+                      borderColor: '#CBDCF7',
+                      width: '36vw',
+                      height: '20vh',
+                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
+                      color: idEdit === 'voir' ? '#F6FAFF' : '',
+                    }
+              }
+              disabled={isNew || idEdit !== 'voir' ? false : idEdit === 'voir' ? false : true}
+              id="bill-desc"
+              name="desc"
+              data-cy="total"
+              label="Description"
+              placeholder="Description..."
+              type="textarea"
+            />
+
+            <Button
+              hidden={idEdit === 'voir' ? true : false}
+              style={{ borderRadius: '25px', flex: '1 1 100%', marginTop: '2vh', backgroundColor: '#56B5C5', borderColor: '#56B5C5' }}
+              id="save-entity"
+              data-cy="entityCreateSaveButton"
+              type="submit"
+              disabled={updating}
+            >
               Enregistrer
             </Button>
-            <Button style={{ borderRadius: "25px", flex:"1 1 100%", marginTop: "2vh",backgroundColor:"#EC4747", borderColor:"#EC4747" }} id="cancel-save" data-cy="entityCreateCancelButton" onClick={() => window.history.back()} replace color="danger">
-              <span className="d-none d-md-inline"> Annuler </span>
+            <Button
+              style={{
+                borderRadius: '25px',
+                flex: '1 1 100%',
+                marginTop: '2vh',
+                backgroundColor: '#EC4747',
+                borderColor: '#EC4747',
+                marginBottom: '2vh',
+              }}
+              id="cancel-save"
+              data-cy="entityCreateCancelButton"
+              onClick={() => window.history.back()}
+              replace
+              color="danger"
+            >
+              <span className="d-none d-md-inline"> {idEdit === 'voir' ? 'Retour' : 'Annuler'} </span>
             </Button>
           </ValidatedForm>
-
-
         </Card>
       </div>
-
     </div>
     // <div>
     //   <Row className="justify-content-center">
@@ -422,10 +900,10 @@ export const BillUpdate = () => {
     //   gridTemplateColumns : "repeat(3, 5fr)",
     //   fontSize:"12px",
     //   fontWeight:"900"
-    // }}          
+    // }}
     // defaultValues={defaultValues()} onSubmit={saveEntity}>
     //           {!isNew ? <ValidatedField hidden name="id" required readOnly id="bill-id" label="ID" validate={{ required: true }} /> : null}
-    //           <ValidatedField 
+    //           <ValidatedField
     //           style={{borderRadius:"25px",width:"25vw",backgroundColor:"#A9B7CD",color:"#F6FAFF",borderColor:"#CBDCF7"}}
     //           disabled label="Date" id="bill-date" name="date" data-cy="date" type="datetime-local" placeholder="YYYY-MM-DD HH:mm" />
     //           <ValidatedField hidden label="Author" id="bill-author" name="author" data-cy="author" type="text" />

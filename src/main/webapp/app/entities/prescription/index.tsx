@@ -16,6 +16,7 @@ const PrescriptionRoutes = () => (
     <Route path=":id">
       <Route index element={<PrescriptionDetail />} />
       <Route path="edit" element={<PrescriptionUpdate />} />
+      <Route path="edit/:idEdit" element={<PrescriptionUpdate />} />
       <Route path="delete" element={<PrescriptionDeleteDialog />} />
     </Route>
   </ErrorBoundaryRoutes>
