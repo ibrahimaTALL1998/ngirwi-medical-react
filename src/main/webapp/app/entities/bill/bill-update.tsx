@@ -29,7 +29,7 @@ import { Page, Text, Image, View, Document, StyleSheet, PDFDownloadLink, Font } 
 import Header from 'app/shared/layout/header/header';
 import { IoIosAddCircleOutline, IoIosArrowBack, IoIosAddCircle, IoIosRemoveCircle } from 'react-icons/io';
 import { size } from 'lodash';
-import { AiOutlineLock } from 'react-icons/ai';
+import { AiFillCloseCircle, AiOutlineLock } from 'react-icons/ai';
 import { BiDownload } from 'react-icons/bi';
 import { BrandIcon } from 'app/shared/layout/header/header-components';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -37,6 +37,7 @@ import { TextField } from '@mui/material';
 export const BillUpdate = () => {
   const dispatch = useAppDispatch();
   const assurance = [
+    { label: '', id: '0' },
     { label: 'ALLIANCE INTERNATIONAL', id: '1' },
     { label: 'AMSA ASSURANCES', id: '2' },
     { label: 'ASKIA ASSURANCES', id: '3' },
@@ -62,6 +63,7 @@ export const BillUpdate = () => {
     { label: 'UASEN VIE', id: '23' },
   ];
   const ipm = [
+    { label: '', id: '0' },
     { label: 'AFRIC MANAGEMENT', id: '1' },
     { label: 'ARMEMENT DE PECHE', id: '2' },
     { label: 'BANQUE ISLAMIQUE DE SENEGAL', id: '3' },
@@ -136,22 +138,40 @@ export const BillUpdate = () => {
 
   let getIPM = e => {
     setBlockIPM(e.target.value);
+    return e.target.value;
   };
   let getAssurance = e => {
     setBlockAssurance(e.target.value);
+    return e.target.value;
+  };
+  let resetBlock = () => {
+    setBlockAssurance('');
+    setBlockIPM('');
   };
   let p;
-  let infosPatient = () => {
+  let n;
+  let prenomPatient = () => {
     patients.map(otherEntity =>
       otherEntity.id.toString() === patientId.toString()
         ? // console.log(otherEntity.id+"."+otherEntity.patient.lastName)
-          (p = otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName)
+          (p = otherEntity.firstName)
         : console.log(otherEntity.id)
     );
 
     return p;
   };
-  p = infosPatient();
+  let nomPatient = () => {
+    patients.map(otherEntity =>
+      otherEntity.id.toString() === patientId.toString()
+        ? // console.log(otherEntity.id+"."+otherEntity.patient.lastName)
+          (n = otherEntity.lastName.toUpperCase())
+        : console.log(otherEntity.id)
+    );
+
+    return n;
+  };
+  p = prenomPatient();
+  n = nomPatient();
   const handleClose = () => {
     navigate('/bill' + location.search);
   };
@@ -206,7 +226,7 @@ export const BillUpdate = () => {
         };
 
   //info ordonance
-  const [formValues, setFormValues] = useState([{ service: '', amount: '', taux: '' }]);
+  const [formValues, setFormValues] = useState([{ service: '', amount: '', taux: '', quantity: '' }]);
 
   let handleChange = (i, e) => {
     let newFormValues = [...formValues];
@@ -215,7 +235,7 @@ export const BillUpdate = () => {
   };
 
   let addFormFields = () => {
-    setFormValues([...formValues, { service: '', amount: '', taux: '' }]);
+    setFormValues([...formValues, { service: '', amount: '', taux: '', quantity: '' }]);
   };
 
   let removeFormFields = i => {
@@ -259,7 +279,8 @@ export const BillUpdate = () => {
       maxHeight: '20%',
     },
   });
-
+  let nombre = 1;
+  let tarif = 0;
   let total = 0;
   let remise = 0;
   let tab = () => {
@@ -271,7 +292,17 @@ export const BillUpdate = () => {
       } else {
         remise = 1;
       }
-      total += parseInt(newElement[i].amount, 10) * remise;
+      if (newElement[i].amount !== '') {
+        tarif = parseInt(newElement[i].amount, 10);
+      } else {
+        tarif = 0;
+      }
+      if (newElement[i].quantity === '') {
+        nombre = 1;
+      } else {
+        nombre = parseInt(newElement[i].quantity, 10);
+      }
+      total += Math.round(tarif * remise * nombre);
     }
     return total;
   };
@@ -288,9 +319,12 @@ export const BillUpdate = () => {
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignItems: 'center',
-            borderBottom: '1px solid green',
+            borderBottom: '1px solid #141414',
             paddingBottom: '10px',
             marginTop: '20px',
+            marginLeft: '10vw',
+            marginRight: '10vw',
+            width: '80vw',
           }}
         >
           {/* <View style={{ display: "flex", flexDirection: "column", justifyContent: 'space-around', alignItems: "center" }}>
@@ -302,20 +336,25 @@ export const BillUpdate = () => {
             <Image style={{ width: "50px", height: "50px" }} src='content/images/serpent.png' />
           </View> */}
           <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center' }}>
-            <Text style={{ fontSize: '20px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>Nom clinique</Text>
-            <Text style={{ fontSize: '15px', marginBottom: '9px', fontWeight: 'medium' }}>Adresse</Text>
-            <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>Email Clinique</Text>
+            <Text style={{ fontSize: '10px', marginBottom: '9px', fontWeight: 'bold' }}>Nom clinique</Text>
+            <Text style={{ fontSize: '10px', marginBottom: '9px', fontWeight: 'medium' }}>Adresse</Text>
+            <Text style={{ fontSize: '10px', fontWeight: 'thin' }}>Email Clinique</Text>
+            <Text style={{ fontSize: '10px', fontWeight: 'thin' }}>Telephone Clinique</Text>
           </View>
         </View>
-        <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', marginTop: '15px' }}>
-          <Text style={{ fontSize: '35px', fontWeight: 'extrabold', marginBottom: '9px' }}>Facture</Text>
-          <Text style={{ fontSize: '18px', marginBottom: '9px' }}>
+        <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', marginTop: '10px' }}>
+          <Text style={{ fontSize: '20px', fontWeight: 'extrabold', marginBottom: '5px' }}>Facture</Text>
+          <Text style={{ fontSize: '12px', marginBottom: '9px', marginLeft: '60vw' }}>
             {' '}
-            Fait à: ...................... Le:{' '}
-            {convertDateTimeFromServerToDate(displayDefaultDateTime()) + ' à ' + convertDateTimeFromServerToHours(displayDefaultDateTime())}
+            Dakar, Le {convertDateTimeFromServerToDate(displayDefaultDateTime())}
           </Text>
-          <Text style={{ fontSize: '18px', marginBottom: '7px' }}>
-            Nom et Prénom(s): {billEntity.patient ? billEntity?.patient?.lastName.toUpperCase() + ' ' + billEntity?.patient?.firstName : p}{' '}
+        </View>
+        <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', marginTop: '15px', marginLeft: '5vw' }}>
+          <Text style={{ fontSize: '12px', marginBottom: '7px' }}>
+            Nom : {billEntity.patient ? billEntity?.patient?.lastName.toUpperCase() : n}{' '}
+          </Text>
+          <Text style={{ fontSize: '12px', marginBottom: '7px' }}>
+            Prénom(s): {billEntity.patient ? billEntity?.patient?.firstName : p}{' '}
           </Text>
         </View>
         <View
@@ -324,22 +363,37 @@ export const BillUpdate = () => {
             flexDirection: 'column',
             alignItems: 'center',
             marginTop: '15px',
-            border: '3px solid silver',
-            marginLeft: '10vw',
+            border: '1px solid #141414',
+            marginLeft: '5vw',
             marginRight: '5vw',
-            width: '80vw',
+            width: '90vw',
           }}
         >
           <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
             <Text
               style={{
-                width: '40vw',
+                width: '15vw',
                 height: '6vh',
-                borderRight: '3px solid silver',
+                borderRight: '1px solid #141414',
                 textTransform: 'uppercase',
-                fontSize: '15px',
-                color: 'green',
-                paddingTop: '4px',
+                fontSize: '12px',
+                color: '#141414',
+                paddingTop: '20px',
+                textAlign: 'center',
+              }}
+            >
+              Quantité
+            </Text>
+            <Text
+              style={{
+                width: '25vw',
+                height: '6vh',
+                borderRight: '1px solid #141414',
+                textTransform: 'uppercase',
+                fontSize: '12px',
+                color: '#141414',
+                padding: '10px',
+                paddingTop: '20px',
                 textAlign: 'center',
               }}
             >
@@ -350,23 +404,26 @@ export const BillUpdate = () => {
                 width: '20vw',
                 height: '6vh',
                 textTransform: 'uppercase',
-                fontSize: '15px',
-                color: 'green',
-                paddingTop: '4px',
+                fontSize: '12px',
+                color: '#141414',
+                padding: '10px',
+                paddingTop: '20px',
                 textAlign: 'center',
               }}
             >
-              Tarif
+              Prix unitaire
             </Text>
             <Text
               style={{
                 width: '10vw',
                 height: '6vh',
-                borderLeft: '3px solid silver',
+                borderLeft: '1px solid #141414',
                 textTransform: 'uppercase',
-                fontSize: '15px',
-                padding: '4px',
-                color: 'green',
+                fontSize: '12px',
+                paddingRight: '5px',
+                paddingTop: '20px',
+                paddingLeft: '5px',
+                color: '#141414',
                 textAlign: 'center',
               }}
             >
@@ -374,16 +431,18 @@ export const BillUpdate = () => {
             </Text>
             <Text
               style={{
-                width: '10vw',
+                width: '20vw',
                 height: '6vh',
-                borderLeft: '3px solid silver',
+                borderLeft: '1px solid #141414',
                 textTransform: 'uppercase',
-                fontSize: '15px',
-                color: 'green',
+                fontSize: '12px',
+                color: '#141414',
+                padding: '10px',
+                paddingTop: '20px',
                 textAlign: 'center',
               }}
             >
-              Tarif total
+              Prix total
             </Text>
           </View>
           {formValues.map((element, i) =>
@@ -391,13 +450,25 @@ export const BillUpdate = () => {
               <View key={`entity-${i}`} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <Text
                   style={{
-                    width: '40vw',
+                    width: '15vw',
                     height: '6vh',
-                    borderRight: '3px solid silver',
-                    borderTop: '3px solid silver',
+                    borderRight: '1px solid #141414',
+                    borderTop: '1px solid #141414',
                     fontSize: '15px',
-                    paddingTop: '5px',
-                    paddingBottom: '3px',
+                    padding: '10px',
+                    textAlign: 'center',
+                  }}
+                >
+                  {element.quantity === '' ? '1' : element.quantity}
+                </Text>
+                <Text
+                  style={{
+                    width: '25vw',
+                    height: '6vh',
+                    borderRight: '1px solid #141414',
+                    borderTop: '1px solid #141414',
+                    fontSize: '15px',
+                    padding: '10px',
                     textAlign: 'center',
                   }}
                 >
@@ -407,48 +478,52 @@ export const BillUpdate = () => {
                   style={{
                     width: '20vw',
                     height: '6vh',
-                    borderTop: '3px solid silver',
+                    borderTop: '1px solid #141414',
                     fontSize: '15px',
-                    paddingTop: '5px',
-                    paddingBottom: '3px',
+                    padding: '10px',
                     textAlign: 'center',
                   }}
                 >
-                  {element.amount} FCFA
+                  {element.amount === '' ? '0' : element.amount} FCFA
                 </Text>
                 <Text
                   style={{
                     width: '10vw',
                     height: '6vh',
-                    borderTop: '3px solid silver',
-                    borderLeft: '3px solid silver',
+                    borderTop: '1px solid #141414',
+                    borderLeft: '1px solid #141414',
                     fontSize: '15px',
-                    paddingTop: '5px',
-                    paddingBottom: '3px',
+                    padding: '10px',
                     textAlign: 'center',
                   }}
                 >
-                  {element.taux} %
+                  {element.taux === '' ? '0' : element.taux} %
                 </Text>
                 <Text
                   style={{
-                    width: '10vw',
+                    width: '20vw',
                     height: '6vh',
-                    borderTop: '3px solid silver',
-                    borderLeft: '3px solid silver',
+                    borderTop: '1px solid #141414',
+                    borderLeft: '1px solid #141414',
                     fontSize: '15px',
-                    paddingTop: '5px',
-                    paddingBottom: '3px',
+                    padding: '10px',
                     textAlign: 'center',
                   }}
                 >
-                  {parseInt(element.amount, 10) * (1 - parseInt(element.taux, 10) / 100)} FCFA
+                  {Math.round(
+                    parseInt(element.amount === '' ? '0' : element.amount, 10) *
+                      (1 - parseInt(element.taux === '' ? '0' : element.taux, 10) / 100) *
+                      parseInt(element.quantity === '' ? '1' : element.quantity, 10)
+                  )}{' '}
+                  FCFA
+                  {/* {Math.round(tarif*remise*nombre)} */}
                 </Text>
               </View>
             ) : null
           )}
-          <View style={{ borderTop: '3px solid silver', width: '80vw' }}>
-            <Text>{'Montant total : ' + total + 'FCFA'} </Text>
+          <View style={{ borderTop: '1px solid #141414', width: '90vw', paddingLeft: '5px', paddingRight: '5px' }}>
+            <Text style={{ width: '60vw' }}>Montant total : </Text>
+            <Text style={{ position: 'absolute', right: '0' }}>{total + 'FCFA'} </Text>
           </View>
         </View>
       </Page>
@@ -478,8 +553,6 @@ export const BillUpdate = () => {
   //     </Page>
   //   </Document>
   // );
-  console.log(blockAssurance);
-  console.log(blockIPM);
   return (
     <div
       style={{
@@ -558,7 +631,7 @@ export const BillUpdate = () => {
                   loading ? (
                     // <Button style={{ borderRadius: "25px" }} color='dark' disabled>Préparer fichier...</Button>
                     <span style={{ cursor: 'pointer', fontWeight: '900', color: '#B3C0D3', textAlign: 'center', marginRight: '2vw' }}>
-                      Préparation en cours...
+                      Préparation...
                     </span>
                   ) : (
                     // <FontAwesomeIcon style={{ color: "black", fontSize: "25px" }} icon={"loader"} spin={loading} />
@@ -652,10 +725,8 @@ export const BillUpdate = () => {
               data-cy="asurance"
               label="Assurance"
               type="select"
-              autoComplete={`${assurance}`}
               onChange={e => getAssurance(e)}
             >
-              <option value="" key="0" />
               {assurance.map((assur, i) => (
                 <option value={assur.label} key={assur.id}>
                   {assur.label}
@@ -690,13 +761,23 @@ export const BillUpdate = () => {
               }
               onChange={e => getIPM(e)}
             >
-              <option value="" key="0" />
               {ipm.map((a, i) => (
                 <option value={a.label} key={a.id}>
                   {a.label}
                 </option>
               ))}
             </ValidatedField>
+            {/* <Button
+              onClick={() => resetBlock()}
+              style={{
+                width: "4vw",
+                color: "red",
+                backgroundColor: "transparent",
+                borderColor: "transparent"
+              }}
+            >
+              {React.createElement(AiFillCloseCircle, { size: "25" })}
+            </Button> */}
             {formValues.map((element, index, arr) => (
               <div
                 style={{
@@ -710,11 +791,27 @@ export const BillUpdate = () => {
                 key={index}
               >
                 <ValidatedField
+                  type="number"
+                  label="Quantité"
+                  name="quantity"
+                  min="1"
+                  value={element.quantity || ''}
+                  onChange={e => handleChange(index, e)}
+                  required
+                  style={{
+                    borderRadius: '25px',
+                    borderColor: '#CBDCF7',
+                    width: '6vw',
+                    backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
+                    color: idEdit === 'voir' ? '#F6FAFF' : '',
+                  }}
+                />
+                <ValidatedField
                   disabled={idEdit === 'voir' ? true : false}
                   style={{
                     borderRadius: '25px',
                     borderColor: '#CBDCF7',
-                    width: '28vw',
+                    width: '21vw',
                     backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
                     color: idEdit === 'voir' ? '#F6FAFF' : '',
                   }}
@@ -738,7 +835,7 @@ export const BillUpdate = () => {
                     color: idEdit === 'voir' ? '#F6FAFF' : '',
                   }}
                   type="number"
-                  label="Tarif(FCFA)"
+                  label="Tarif unitaire(FCFA)"
                   placeholder="Tarif..."
                   name="amount"
                   value={element.amount || ''}
