@@ -17,6 +17,7 @@ const DossierMedicalRoutes = () => (
       <Route index element={<DossierMedicalDetail />} />
       <Route path="edit" element={<DossierMedicalUpdate />} />
       <Route path="edit/:idEdit" element={<DossierMedicalUpdate />} />
+      <Route path="edit/:idEdit/:idPatient" element={<DossierMedicalUpdate />} />
       <Route path="delete" element={<DossierMedicalDeleteDialog />} />
     </Route>
   </ErrorBoundaryRoutes>

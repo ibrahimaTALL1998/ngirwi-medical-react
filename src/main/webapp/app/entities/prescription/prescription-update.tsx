@@ -175,12 +175,7 @@ export const PrescriptionUpdate = () => {
             {convertDateTimeFromServerToDate(displayDefaultDateTime()) + ' à ' + convertDateTimeFromServerToHours(displayDefaultDateTime())}
           </Text>
           <Text style={{ fontSize: '18px', marginBottom: '7px' }}>
-            Nom et Prénom(s):{' '}
-            {prescriptionEntity.consultation
-              ? prescriptionEntity?.consultation?.patient?.lastName.toUpperCase() +
-                ' ' +
-                prescriptionEntity?.consultation?.patient?.firstName
-              : p}{' '}
+            Nom et Prénom(s): {prescriptionEntity.consultation ? prescriptionEntity?.consultation?.patient?.lastName.toUpperCase() : p}{' '}
           </Text>
         </View>
         <View

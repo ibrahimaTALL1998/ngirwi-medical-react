@@ -66,8 +66,10 @@ export const DossierMedicalUpdate = () => {
 
     if (isNew) {
       dispatch(createEntity(entity));
+      navigate(`/patient/${idPatient}`);
     } else {
       dispatch(updateEntity(entity));
+      navigate(`/patient/${idPatient}`);
     }
   };
 

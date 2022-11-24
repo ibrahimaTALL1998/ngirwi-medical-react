@@ -386,7 +386,7 @@ export const Home = () => {
                 }}
               >
                 <span>Patients récents</span>
-                <Link to="#" style={{ textDecoration: 'none', color: '#11485C' }}>
+                <Link to="/patient?page=1&sort=id,asc" style={{ textDecoration: 'none', color: '#11485C' }}>
                   Tout voir
                 </Link>
               </div>
@@ -402,7 +402,17 @@ export const Home = () => {
                           backgroundColor: 'white',
                         }}
                       >
-                        Noms
+                        Nom
+                      </th>
+                      <th
+                        style={{
+                          fontSize: '13px',
+                          position: 'sticky',
+                          top: '0',
+                          backgroundColor: 'white',
+                        }}
+                      >
+                        Prénom
                       </th>
                       <th
                         style={{
@@ -413,16 +423,6 @@ export const Home = () => {
                         }}
                       >
                         Sexe
-                      </th>
-                      <th
-                        style={{
-                          fontSize: '13px',
-                          position: 'sticky',
-                          top: '0',
-                          backgroundColor: 'white',
-                        }}
-                      >
-                        Motif
                       </th>
                       <th
                         style={{
@@ -454,25 +454,21 @@ export const Home = () => {
                     }}
                   >
                     {patientList.map((patient, i) => {
-                      <tr key={`entity-${i}`} data-cy="entityTable">
-                        <td>{patient.lastName}</td>
-                        <td>{patient.lastName}</td>
-                        <td>{patient.lastName}</td>
-                        <td>{patient.lastName}</td>
-                        <td>{patient.lastName}</td>
-                      </tr>;
+                      console.log(patient);
+                      return (
+                        <tr key={`entity-${i}`} data-cy="entityTable">
+                          <td>{patient.lastName}</td>
+                          <td>{patient.firstName}</td>
+                          <td>{patient.gender}</td>
+                          <td>{String(patient.dateCreated).slice(0, -1)}</td>
+                          <td>{patient.cni}</td>
+                        </tr>
+                      );
                     })}
-                    <tr>
-                      <td>1</td>
-                      <td>1</td>
-                      <td>1</td>
-                      <td>1</td>
-                      <td>1</td>
-                    </tr>
                   </tbody>
                 </Table>
               ) : (
-                <span>Aucun dossier médical</span>
+                <span>Aucun Patient</span>
               )}
             </Card>
           </div>

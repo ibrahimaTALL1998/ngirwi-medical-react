@@ -469,33 +469,43 @@ export const ConsultationUpdate = () => {
               }}
             />
             {/* <div
-                style={{
-                  borderRadius:"25px",
-                  backgroundColor:"#F7FAFF",
-                  borderColor:"#CBDCF7",
-                }}>
-                <Label>Examens complémentaires</Label>
-              <Select  name="exams"
-              options={examsList} components={animatedComponents} isMulti onChange={(e) => setExams(e)} />
-              </div> */}
+              style={{
+                borderRadius: "25px",
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: "#CBDCF7",
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black'
+              }}>
+              <Label>Examens complémentaires</Label>
+              <Select className='' name="exams"
+                options={examsList} components={animatedComponents} isMulti onChange={(e) => setExams(e)} />
+            </div> */}
+            {/* a revoir */}
             <ValidatedField
               label="Examens paracliniques"
               name="exams"
               type="select"
               isMulti
-              components={animatedComponents}
-              onChange={e => setExams(e)}
+              // onChange={e => setExams(e)}
+              options={examsList}
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
                 borderColor: '#CBDCF7',
               }}
             >
-              {examsList.map((otherEntity, i) => (
-                <option value={otherEntity.value} key={`entity-${i}`}>
-                  {otherEntity.label}
-                </option>
-              ))}
+              <option value="Radio">Radio</option>
+              <option value="TDM">TDM</option>
+              <option value="IRM">IRM</option>
+              <option value="Echographie">Echographie</option>
+              <option value="ECG">ECG</option>
+              <option value="NFS">NFS</option>
+              <option value="CRP">CRP</option>
+              <option value="Urémie">Urémie</option>
+              <option value="Créatininémie">Créatininémie</option>
+              <option value="Hémoglobine Glycosylée">Hémoglobine Glycosylée</option>
+              <option value="Fructosamine">Fructosamine</option>
+              <option value="Hyperglycémie provoquée par voie orale">Hyperglycémie provoquée par voie orale</option>
+              <option key="Créatine">Créatine</option>
             </ValidatedField>
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
