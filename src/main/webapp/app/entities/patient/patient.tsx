@@ -164,7 +164,7 @@ export const Patient = () => {
             <Link
               to="/patient/new/"
               style={{
-                display: 'inline-block',
+                display: 'flex',
                 textDecoration: 'none',
                 textAlign: 'center',
                 color: '#56B5C5',
@@ -173,9 +173,11 @@ export const Patient = () => {
                 borderRadius: '50%',
                 backgroundColor: '#CBDCF7',
                 fontSize: '18px',
+                paddingTop: "20%",
+                justifyContent: "center"
               }}
             >
-              <span style={{ display: 'block', backgroundColor: 'transparent', marginTop: '20%' }}>
+              <span style={{ display: 'block', width: "90%", wordBreak: "break-word" }}>
                 {React.createElement(RiUserAddLine, { size: '24' })} Enregistrer nouveau patient
               </span>
             </Link>
@@ -187,8 +189,8 @@ export const Patient = () => {
                 backgroundColor: '#11485C',
                 textAlign: 'center',
                 color: 'white',
-                marginBottom: '5vh',
-                boxShadow: '0px 10px 50px rgba(138, 161, 203, 0.23)',
+                marginBottom: '4vw',
+                boxShadow: '0px 10px 50px rgba(138, 161, 203, 0.23)'
               }}
             >
               <span style={{ marginTop: '1.5%' }}>Liste des patients enregistrés</span>
@@ -196,7 +198,7 @@ export const Patient = () => {
             <Link
               to="/consultation/new/"
               style={{
-                display: 'inline-block',
+                display: 'flex',
                 textDecoration: 'none',
                 textAlign: 'center',
                 color: '#56B5C5',
@@ -205,9 +207,11 @@ export const Patient = () => {
                 borderRadius: '50%',
                 backgroundColor: '#CBDCF7',
                 fontSize: '18px',
+                paddingTop: "20%",
+                justifyContent: "center"
               }}
             >
-              <span style={{ display: 'block', backgroundColor: 'transparent', marginTop: '20%' }}>
+              <span style={{ display: 'block', width: "90%", wordBreak: "break-word" }}>
                 {React.createElement(RiUserAddLine, { size: '24' })} Enregistrer nouvelle consultation
               </span>
             </Link>
@@ -379,114 +383,113 @@ export const Patient = () => {
                   backgroundImage: 'url(content/images/NgirwiLogo.png)',
                   backgroundRepeat: 'no-repeat',
                   backgroundAttachment: 'fixed',
-                  backgroundPosition: '65% 110%',
-                  backgroundSize: '50% 50%',
+                  backgroundPosition: '60% 165%',
                 }}
               >
                 {filter === null
                   ? patientList.map((patient, i) => (
-                      <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
-                        <td>
-                          <Button
-                            tag={Link}
-                            to={`/patient/${patient.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                            data-cy="entityDeleteButton"
-                            style={{ color: 'red', backgroundColor: '#F6FAFF', borderColor: '#F6FAFF' }}
-                          >
-                            {React.createElement(BiTrash, { size: '15' })}
-                          </Button>
-                        </td>
+                    <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
+                      <td>
+                        <Button
+                          tag={Link}
+                          to={`/patient/${patient.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                          data-cy="entityDeleteButton"
+                          style={{ color: 'red', backgroundColor: '#F6FAFF', borderColor: '#F6FAFF' }}
+                        >
+                          {React.createElement(BiTrash, { size: '15' })}
+                        </Button>
+                      </td>
 
-                        <td>
+                      <td>
+                        <Button
+                          tag={Link}
+                          to={`/patient/${patient.id}`}
+                          color="link"
+                          style={{ color: '#91A8CD', textDecoration: 'none' }}
+                        >
+                          {patient.id}
+                        </Button>
+                      </td>
+                      <td style={{ wordBreak: 'break-all' }}>{patient.firstName}</td>
+                      <td>{patient.lastName}</td>
+                      <td>
+                        {patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}
+                      </td>
+                      <td>{patient.cni}</td>
+                      <td className="text-end">
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '1px',
+                            fontSize: '9px',
+                          }}
+                        >
                           <Button
                             tag={Link}
-                            to={`/patient/${patient.id}`}
-                            color="link"
-                            style={{ color: '#91A8CD', textDecoration: 'none' }}
+                            to={`/patient/${patient.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                            color="primary"
+                            size="sm"
+                            data-cy="entityEditButton"
                           >
-                            {patient.id}
+                            <FontAwesomeIcon icon="pencil" /> <span className="d-none d-md-inline">Mettre à jour</span>
                           </Button>
-                        </td>
-                        <td style={{ wordBreak: 'break-all' }}>{patient.firstName}</td>
-                        <td>{patient.lastName}</td>
-                        <td>
-                          {patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}
-                        </td>
-                        <td>{patient.cni}</td>
-                        <td className="text-end">
-                          <div
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'column',
-                              gap: '1px',
-                              fontSize: '9px',
-                            }}
-                          >
-                            <Button
-                              tag={Link}
-                              to={`/patient/${patient.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                              color="primary"
-                              size="sm"
-                              data-cy="entityEditButton"
-                            >
-                              <FontAwesomeIcon icon="pencil" /> <span className="d-none d-md-inline">Mettre à jour</span>
-                            </Button>
-                            <Button tag={Link} to={`/patient/${patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
-                              <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir détails</span>
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
+                          <Button tag={Link} to={`/patient/${patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
+                            <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir détails</span>
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
                   : filter.map((patient, i) => (
-                      <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
-                        <td>
+                    <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
+                      <td>
+                        <Button
+                          tag={Link}
+                          to={`/patient/${patient.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                          data-cy="entityDeleteButton"
+                          style={{ color: 'red', backgroundColor: '#F6FAFF', borderColor: '#F6FAFF' }}
+                        >
+                          {React.createElement(BiTrash, { size: '15' })}
+                        </Button>
+                      </td>
+                      <td>
+                        <Button tag={Link} to={`/patient/${patient.id}`} color="link" size="sm">
+                          {patient.id}
+                        </Button>
+                      </td>
+                      <td style={{ wordBreak: 'break-all' }}>{patient.firstName}</td>
+                      <td>{patient.lastName}</td>
+                      <td>
+                        {patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}
+                      </td>
+
+                      <td>{patient.cni}</td>
+                      <td className="text-end">
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '1px',
+                            fontSize: '9px',
+                          }}
+                        >
                           <Button
                             tag={Link}
-                            to={`/patient/${patient.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                            data-cy="entityDeleteButton"
-                            style={{ color: 'red', backgroundColor: '#F6FAFF', borderColor: '#F6FAFF' }}
+                            to={`/patient/${patient.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                            color="primary"
+                            size="sm"
+                            data-cy="entityEditButton"
                           >
-                            {React.createElement(BiTrash, { size: '15' })}
+                            <FontAwesomeIcon icon="pencil" /> <span className="d-none d-md-inline">Mettre à jour</span>
                           </Button>
-                        </td>
-                        <td>
-                          <Button tag={Link} to={`/patient/${patient.id}`} color="link" size="sm">
-                            {patient.id}
+                          <Button tag={Link} to={`/patient/${patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
+                            <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir détails</span>
                           </Button>
-                        </td>
-                        <td style={{ wordBreak: 'break-all' }}>{patient.firstName}</td>
-                        <td>{patient.lastName}</td>
-                        <td>
-                          {patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}
-                        </td>
-
-                        <td>{patient.cni}</td>
-                        <td className="text-end">
-                          <div
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'column',
-                              gap: '1px',
-                              fontSize: '9px',
-                            }}
-                          >
-                            <Button
-                              tag={Link}
-                              to={`/patient/${patient.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                              color="primary"
-                              size="sm"
-                              data-cy="entityEditButton"
-                            >
-                              <FontAwesomeIcon icon="pencil" /> <span className="d-none d-md-inline">Mettre à jour</span>
-                            </Button>
-                            <Button tag={Link} to={`/patient/${patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
-                              <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir détails</span>
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </Table>
           </Card>

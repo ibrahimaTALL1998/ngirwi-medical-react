@@ -386,20 +386,21 @@ export const Home = () => {
                 }}
               >
                 <span>Patients récents</span>
-                <Link to="/patient?page=1&sort=id,asc" style={{ textDecoration: 'none', color: '#11485C' }}>
+                <Link to="/patient?page=1&sort=dateCreated,desc" style={{ textDecoration: 'none', color: '#11485C' }}>
                   Tout voir
                 </Link>
               </div>
               {patientList && patientList.length > 0 ? (
-                <Table responsive>
+                <Table responsive style={{ borderCollapse: 'separate', borderSpacing: '0 5px' }}>
                   <thead>
-                    <tr style={{ paddingLeft: '5%', color: '#747678' }}>
+                    <tr style={{ paddingLeft: '5%', color: '#747678' ,}}>
                       <th
                         style={{
                           fontSize: '13px',
                           position: 'sticky',
                           top: '0',
                           backgroundColor: 'white',
+                          textAlign:"center"
                         }}
                       >
                         Nom
@@ -410,6 +411,7 @@ export const Home = () => {
                           position: 'sticky',
                           top: '0',
                           backgroundColor: 'white',
+                          textAlign:"center"
                         }}
                       >
                         Prénom
@@ -420,6 +422,7 @@ export const Home = () => {
                           position: 'sticky',
                           top: '0',
                           backgroundColor: 'white',
+                          textAlign:"center"
                         }}
                       >
                         Sexe
@@ -430,9 +433,10 @@ export const Home = () => {
                           position: 'sticky',
                           top: '0',
                           backgroundColor: 'white',
+                          textAlign:"center"
                         }}
                       >
-                        Date et Heure
+                        Date d&apos;ajout
                       </th>
 
                       <th
@@ -441,6 +445,7 @@ export const Home = () => {
                           position: 'sticky',
                           top: '0',
                           backgroundColor: 'white',
+                          textAlign:"center"
                         }}
                       >
                         Matricule
@@ -449,21 +454,31 @@ export const Home = () => {
                   </thead>
                   <tbody
                     style={{
-                      fontSize: '12px',
-                      borderBottom: '1px solid #222',
+                      backgroundColor: '#F6FAFF',
+                      border: '1px solid #F6FAFF',
+                      borderRadius: '15px 15px 0px 15px',
+                      textAlign: 'center',fontSize:"14px"
                     }}
                   >
                     {patientList.map((patient, i) => {
+                      // eslint-disable-next-line no-console
                       console.log(patient);
                       return (
-                        <tr key={`entity-${i}`} data-cy="entityTable">
-                          <td>{patient.lastName}</td>
-                          <td>{patient.firstName}</td>
-                          <td>{patient.gender}</td>
-                          <td>{String(patient.dateCreated).slice(0, -1)}</td>
-                          <td>{patient.cni}</td>
-                        </tr>
-                      );
+                        i < 4 ?
+
+                          <tr key={`entity-${i}`} data-cy="entityTable">
+                            <td>{patient.lastName}</td>
+                            <td>{patient.firstName}</td>
+                            <td>{translateGender(patient.gender)}</td>
+                            <td>
+                              {patient.dateCreated ? (
+                                <TextFormat type="date" value={patient.dateCreated} format="DD/MM/YYYY" />
+                              ) : null}
+                            </td>
+                            {/* <td>{String(patient.dateCreated).slice(0, -1)}</td> */}
+                            <td>{patient.cni}</td>
+                          </tr>
+                          : null)
                     })}
                   </tbody>
                 </Table>

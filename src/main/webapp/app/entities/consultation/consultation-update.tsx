@@ -202,7 +202,6 @@ export const ConsultationUpdate = () => {
                   gap: '50%',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  paddingTop: '2%',
                   paddingLeft: '2%',
                 }}
               >
@@ -260,15 +259,12 @@ export const ConsultationUpdate = () => {
             borderRadius: '15px',
             marginBottom: '30px',
             fontFamily: 'Jost',
-            fontStyle: 'normal',
-            fontWeight: '500',
-            fontSize: '15px',
           }}
         >
           {isNew ? (
             <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>Remplir informations patient</span>
           ) : (
-            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', fontFamily: 'jost', marginLeft: '3%' }}>
+            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px',  marginLeft: '3%' }}>
               {' '}
               {idEdit === 'voir' ? 'Consultation patient' : 'Modifications consultation patient'}{' '}
             </span>

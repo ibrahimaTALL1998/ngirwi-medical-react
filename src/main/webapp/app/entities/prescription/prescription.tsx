@@ -147,29 +147,22 @@ export const Prescription = () => {
           }}
         >
           <div
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              minWidth: '15vw',
-              minHeight: '15vw',
-              borderRadius: '50%',
-              backgroundColor: '#CBDCF7',
-              paddingTop: '25%',
-              paddingLeft: '4%',
-              cursor: 'pointer',
-              display: 'inline-block',
-            }}
-          >
-            <span
-              onClick={() => handleSyncList()}
-              style={{
-                display: 'block',
-                fontFamily: 'Ubuntu',
-                color: '#56B5C5',
-                fontSize: '18px',
-                textAlign: 'center',
-              }}
-            >
+          style={{
+            display: 'flex',
+            textDecoration: 'none',
+            textAlign: 'center',
+            color: '#56B5C5',
+            minWidth: '15vw',
+            minHeight: '15vw',
+            borderRadius: '50%',
+            backgroundColor: '#CBDCF7',
+            fontSize: '18px',
+            paddingTop:"25%",
+            justifyContent:"center",
+            cursor:"pointer"
+          }}
+        >
+          <span onClick={() => handleSyncList()} style={{ display: 'block', width:"90%",wordBreak:"break-word"}}>
               <FontAwesomeIcon icon="sync" spin={loading} /> Actualiser la liste
             </span>
           </div>
@@ -182,7 +175,7 @@ export const Prescription = () => {
               backgroundColor: '#11485C',
               textAlign: 'center',
               color: 'white',
-              marginBottom: '5vh',
+              marginBottom: '4vw',
               boxShadow: '0px 10px 50px rgba(138, 161, 203, 0.23)',
             }}
           >
@@ -192,7 +185,7 @@ export const Prescription = () => {
           <Link
             to="/prescription/new/"
             style={{
-              display: 'inline-block',
+              display: 'flex',
               textDecoration: 'none',
               textAlign: 'center',
               color: '#56B5C5',
@@ -201,9 +194,11 @@ export const Prescription = () => {
               borderRadius: '50%',
               backgroundColor: '#CBDCF7',
               fontSize: '18px',
+              paddingTop:"20%",
+              justifyContent:"center"
             }}
           >
-            <span style={{ display: 'block', marginTop: '20%' }}>
+            <span style={{ display: 'block', width:"90%",wordBreak:"break-word"}}>
               {React.createElement(RiUserAddLine, { size: '24' })} Enregistrer nouvelle ordonnance
             </span>
           </Link>
@@ -351,8 +346,7 @@ export const Prescription = () => {
                 backgroundImage: 'url(content/images/NgirwiLogo.png)',
                 backgroundRepeat: 'no-repeat',
                 backgroundAttachment: 'fixed',
-                backgroundPosition: '65% 110%',
-                backgroundSize: '50% 50%',
+                backgroundPosition: '50% 165%',
               }}
             >
               {filter === null

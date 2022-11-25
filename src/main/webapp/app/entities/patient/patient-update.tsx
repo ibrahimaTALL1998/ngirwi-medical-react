@@ -154,7 +154,7 @@ export const PatientUpdate = () => {
           }}
         >
           {isNew ? (
-            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>Remplir informations patient</span>
+            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', fontFamily: 'jost', marginLeft: '3%' }}>Remplir informations patient</span>
           ) : (
             <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', fontFamily: 'jost', marginLeft: '3%' }}>
               Modifications informations patient
