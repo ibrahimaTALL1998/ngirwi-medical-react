@@ -9,6 +9,7 @@ import {
   convertDateTimeFromServerToDate,
   convertDateTimeFromServerToHours,
   convertDateTimeToServer,
+  displayDefaultDate,
   displayDefaultDateTime,
 } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
@@ -101,22 +102,22 @@ export const ConsultationUpdate = () => {
   const defaultValues = () =>
     isNew
       ? {
-          hours: dayjs().format('HH:mm:ss'),
-          date: dayjs().format('DD/MM/YYYY'),
-          dateTime: displayDefaultDateTime(),
-          author: account.login,
-          exams: JSON.stringify(exams),
-          patient: idPatient,
-        }
+        hours: dayjs().format('HH:mm:ss'),
+        date: dayjs().format('DD/MM/YYYY'),
+        dateTime: displayDefaultDate(),
+        author: account.login,
+        exams: JSON.stringify(exams),
+        patient: idPatient,
+      }
       : {
-          ...consultationEntity,
-          dateTime: convertDateTimeFromServer(consultationEntity.dateTime),
-          hours: convertDateTimeFromServerToHours(consultationEntity.dateTime),
-          date: convertDateTimeFromServerToDate(consultationEntity.dateTime),
-          patient: consultationEntity?.patient?.id,
-          author: account.login,
-          ...consultationEntity?.exams,
-        };
+        ...consultationEntity,
+        dateTime: convertDateTimeFromServer(consultationEntity.dateTime),
+        hours: convertDateTimeFromServerToHours(consultationEntity.dateTime),
+        date: convertDateTimeFromServerToDate(consultationEntity.dateTime),
+        patient: consultationEntity?.patient?.id,
+        author: account.login,
+        ...consultationEntity?.exams,
+      };
 
   const animatedComponents = makeAnimated();
 
@@ -264,7 +265,7 @@ export const ConsultationUpdate = () => {
           {isNew ? (
             <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>Remplir informations patient</span>
           ) : (
-            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px',  marginLeft: '3%' }}>
+            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>
               {' '}
               {idEdit === 'voir' ? 'Consultation patient' : 'Modifications consultation patient'}{' '}
             </span>
@@ -281,14 +282,14 @@ export const ConsultationUpdate = () => {
           >
             {patients
               ? patients.map(otherEntity =>
-                  consultationEntity?.patient?.id === otherEntity.id || idPatient == otherEntity.id ? (
-                    <div>
-                      <span key={otherEntity.id}>{'Patient: ' + otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName}</span>{' '}
-                      <br />
-                      <span style={{ fontWeight: '400' }}>{'Matricule: #' + otherEntity.id}</span>
-                    </div>
-                  ) : null
-                )
+                consultationEntity?.patient?.id === otherEntity.id || idPatient == otherEntity.id ? (
+                  <div>
+                    <span key={otherEntity.id}>{'Patient: ' + otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName}</span>{' '}
+                    <br />
+                    <span style={{ fontWeight: '400' }}>{'Matricule: #' + otherEntity.id}</span>
+                  </div>
+                ) : null
+              )
               : null}
           </span>
 
@@ -309,7 +310,6 @@ export const ConsultationUpdate = () => {
               backgroundRepeat: 'no-repeat',
               backgroundAttachment: 'fixed',
               backgroundPosition: '65% 90%',
-              backgroundSize: '50% 50%',
             }}
           >
             <ValidatedField
@@ -365,8 +365,10 @@ export const ConsultationUpdate = () => {
               label="Patient"
               name="patient"
               type="select"
-              hidden={isNew ? false : true}
-              disabled={isNew ? false : true}
+              // eslint-disable-next-line eqeqeq
+              hidden={isNew && idPatient == undefined ? false : true}
+              // eslint-disable-next-line eqeqeq
+              disabled={isNew && idPatient == undefined ? false : true}
               onChange={b => getPatientId(b)}
               style={{
                 borderRadius: '25px',
@@ -542,7 +544,7 @@ export const ConsultationUpdate = () => {
             &nbsp;
             <Button
               onClick={() => {
-                window.history.back();
+                confirm("Êtes-vous sur de vouloir quitter?") === true ? (window.history.back()) : (null)
               }}
               id="cancel-save"
               data-cy="entityCreateCancelButton"
@@ -556,6 +558,7 @@ export const ConsultationUpdate = () => {
                 borderColor: '#EC4747',
                 textAlign: 'center',
                 fontSize: idEdit === 'voir' ? '20px' : '',
+                marginBottom: "2vh"
               }}
             >
               <span className="d-none d-md-inline">{idEdit === 'voir' ? 'Retour' : 'Annuler'}</span>

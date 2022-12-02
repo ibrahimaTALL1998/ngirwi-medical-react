@@ -10,12 +10,22 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { getEntity } from './patient.reducer';
 import { getPatient } from '../dossier-medical/dossier-medical.reducer';
 import Header from 'app/shared/layout/header/header';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const PatientDetail = () => {
   const dispatch = useAppDispatch();
 
   const { id } = useParams<'id'>();
-
+  const [hide, setHide] = useState(true);
+  const [hidehos, setHidehos] = useState(true);
+  let showhos = () => {
+    if (hidehos === true) { setHidehos(false) }
+    if (hidehos === false) { setHidehos(true) }
+  }
+  let show = () => {
+    if (hide === true) { setHide(false) }
+    if (hide === false) { setHide(true) }
+  }
   function changeColor(e) {
     e.target.style.color = '#0075FF';
     e.target.style.backgroundColor = '#FFFFFF';
@@ -142,7 +152,7 @@ export const PatientDetail = () => {
               >
                 Nom:{' '}
               </span>
-              <span>{patientEntity.lastName}</span>
+              <span style={{ textTransform: "uppercase" }}>{patientEntity.lastName}</span>
             </div>
             <div>
               <span
@@ -152,7 +162,7 @@ export const PatientDetail = () => {
               >
                 Prénom:{' '}
               </span>
-              <span>{patientEntity.firstName}</span>
+              <span style={{ textTransform: "capitalize" }}>{patientEntity.firstName}</span>
             </div>
             <div>
               <span
@@ -247,73 +257,117 @@ export const PatientDetail = () => {
               </span>
             </div>
           </Card>
-
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '5vh',
-              marginTop: '3vh',
-            }}
-          >
-            <Button
-              onMouseOver={changeColor}
-              onMouseLeave={setColor}
-              tag={Link}
-              to={
-                Object.keys(dossierMedicalEntity).length > 0
-                  ? `/dossier-medical/${dossierMedicalEntity?.id}/edit/${'voir'}`
-                  : `/dossier-medical/new/${patientEntity?.id}`
-              }
+          <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+            <div
               style={{
-                borderColor: '#0075FF',
-                backgroundColor: '#0075FF',
-                color: '#FFFFFF',
-                width: '25vh',
-                height: '9vh',
-                borderRadius: '4px',
-                fontFamily: 'Ubuntu',
-                padding: '10%',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '5vh',
+                marginTop: '3vh',
               }}
             >
-              Dossier médical
-            </Button>
-            <Button
-              onMouseOver={changeColor}
-              onMouseLeave={setColor}
-              href={`/consultation/new/${patientEntity.id}/`}
-              style={{
-                borderColor: '#0075FF',
-                backgroundColor: '#0075FF',
-                color: '#FFFFFF',
-                width: '25vh',
-                height: '9vh',
-                borderRadius: '4px',
-                fontFamily: 'Ubuntu',
-                textAlign: 'center',
-                paddingTop: '3.75%',
-              }}
-            >
-              Nouvelle consultation
-            </Button>
-            <Button
-              onMouseOver={changeColor}
-              onMouseLeave={setColor}
-              tag={Link}
-              to={`/consultation/list/${patientEntity.id}?page=1&sort=id,asc`}
-              style={{
-                borderColor: '#0075FF',
-                backgroundColor: '#0075FF',
-                color: '#FFFFFF',
-                width: '25vh',
-                height: '9vh',
-                borderRadius: '4px',
-                fontFamily: 'Ubuntu',
-              }}
-            >
-              Voir consultations faites
-            </Button>
+              <Button
+                onMouseOver={changeColor}
+                onMouseLeave={setColor}
+                tag={Link}
+                to={
+                  Object.keys(dossierMedicalEntity).length > 0
+                    ? `/dossier-medical/${dossierMedicalEntity?.id}/edit/${'voir'}`
+                    : `/dossier-medical/new/${patientEntity?.id}`
+                }
+                style={{
+                  borderColor: '#0075FF',
+                  backgroundColor: '#0075FF',
+                  color: '#FFFFFF',
+                  width: '25vh',
+                  height: '9vh',
+                  borderRadius: '4px',
+                  fontFamily: 'Ubuntu',
+                  padding: '10%',
+                }}
+              >
+                Dossier médical
+              </Button>
+              <Button
+                onMouseOver={changeColor}
+                onMouseLeave={setColor}
+                hidden={!hide}
+                href={`/consultation/new/${patientEntity.id}/`}
+                style={{
+                  borderColor: '#0075FF',
+                  backgroundColor: '#0075FF',
+                  color: '#FFFFFF',
+                  width: '25vh',
+                  height: '9vh',
+                  borderRadius: '4px',
+                  fontFamily: 'Ubuntu',
+                  textAlign: 'center',
+                  paddingTop: '3.75%',
+                }}
+              >
+                Nouvelle consultation
+              </Button>
+              <Button
+                onMouseOver={changeColor}
+                onMouseLeave={setColor}
+                hidden={hide}
+                tag={Link}
+                to={`/consultation/list/${patientEntity.id}?page=1&sort=id,asc`}
+                style={{
+                  borderColor: '#0075FF',
+                  backgroundColor: '#0075FF',
+                  color: '#FFFFFF',
+                  width: '25vh',
+                  height: '9vh',
+                  borderRadius: '4px',
+                  fontFamily: 'Ubuntu',
+                }}
+              >
+                Voir consultations faites
+              </Button>
+              <Button
+                hidden={!hidehos}
+                onMouseOver={changeColor}
+                onMouseLeave={setColor}
+                
+                href={`/hospitalisation/new/${patientEntity.id}`}
+                style={{
+                  borderColor: '#0075FF',
+                  backgroundColor: '#0075FF',
+                  color: '#FFFFFF',
+                  width: '25vh',
+                  height: '9vh',
+                  borderRadius: '4px',
+                  fontFamily: 'Ubuntu',
+                }}
+              >
+                Démarrer hospitalisation
+              </Button>
+              <Button
+                hidden={hidehos}
+                onMouseOver={changeColor}
+                onMouseLeave={setColor}
+                tag={Link}
+                to={`#`}
+                style={{
+                  borderColor: '#0075FF',
+                  backgroundColor: '#0075FF',
+                  color: '#FFFFFF',
+                  width: '25vh',
+                  height: '9vh',
+                  borderRadius: '4px',
+                  fontFamily: 'Ubuntu',
+                }}
+              >
+                Détails hospitalisation
+              </Button>
+            </div>
+            <div style={{ backgroundColor: "" ,display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",gap:"10vh",marginTop:"15vh"}}>
+              <FontAwesomeIcon onClick={() => show()} style={{ marginLeft: '15px', color: "#0075FF", height: "5vh", cursor: "pointer", marginTop: "2.5vh" }} icon="sort" />
+              <FontAwesomeIcon onClick={() => showhos()} style={{ marginLeft: '15px', color: "#0075FF", height: "5vh", cursor: "pointer" }} icon="sort" />
+            </div>
           </div>
+
         </Card>
 
         <Button

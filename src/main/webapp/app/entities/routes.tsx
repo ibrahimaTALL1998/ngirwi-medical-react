@@ -10,6 +10,7 @@ import Prescription from './prescription';
 import Medecine from './medecine';
 import Bill from './bill';
 import BillElement from './bill-element';
+import Hospitalisation from './hospitalisation';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 export default () => {
@@ -23,6 +24,7 @@ export default () => {
         <Route path="prescription/*" element={<Prescription />} />
         <Route path="medecine/*" element={<Medecine />} />
         <Route path="bill/*" element={<Bill />} />
+        <Route path="hospitalisation/*" element={<Hospitalisation />} />
         <Route path="bill-element/*" element={<BillElement />} />
 
         {/* custom routes */}

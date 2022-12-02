@@ -116,7 +116,7 @@ const SideBar = (props: ISideBarProps) => {
                             </h6>
                         </Link>
                         <Link
-                            to="patient?page=1&sort=dateCreated,desc"
+                            to="patient?page=1&sort=id,asc"
                             style={{
                                 paddingLeft: "1.5vw",
                                 marginBottom: "1vh",

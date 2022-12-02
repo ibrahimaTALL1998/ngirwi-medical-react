@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import { getPatient, deleteEntity as deleteDossier } from '../dossier-medical/dossier-medical.reducer';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { getEntity, deleteEntity } from './patient.reducer';
 
@@ -18,11 +18,13 @@ export const PatientDeleteDialog = () => {
 
   useEffect(() => {
     dispatch(getEntity(id));
+    dispatch(getPatient(id))
     setLoadModal(true);
   }, []);
 
   const patientEntity = useAppSelector(state => state.patient.entity);
   const updateSuccess = useAppSelector(state => state.patient.updateSuccess);
+  const dossierEntity = useAppSelector(state => state.dossierMedical.entity);
 
   const handleClose = () => {
     navigate('/patient' + location.search);
@@ -36,6 +38,7 @@ export const PatientDeleteDialog = () => {
   }, [updateSuccess]);
 
   const confirmDelete = () => {
+    dispatch(deleteDossier(dossierEntity.id));
     dispatch(deleteEntity(patientEntity.id));
   };
 

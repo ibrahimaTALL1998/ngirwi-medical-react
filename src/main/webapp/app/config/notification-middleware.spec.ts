@@ -58,19 +58,19 @@ describe('Notification Middleware', () => {
       },
     },
   };
-  const NOT_FOUND_ERROR = {
-    type: ERROR_TYPE,
-    error: {
-      isAxiosError: true,
-      response: {
-        data: {
-          status: 404,
-          message: 'Not found',
-        },
-        status: 404,
-      },
-    },
-  };
+  // const NOT_FOUND_ERROR = {
+  //   type: ERROR_TYPE,
+  //   error: {
+  //     isAxiosError: true,
+  //     response: {
+  //       data: {
+  //         status: 404,
+  //         message: 'Not found',
+  //       },
+  //       status: 404,
+  //     },
+  //   },
+  // };
   const NO_SERVER_ERROR = {
     type: ERROR_TYPE,
     error: {
@@ -193,11 +193,11 @@ describe('Notification Middleware', () => {
     expect(toastMsg).toContain('Error on field "MinField"');
   });
 
-  it('should trigger an error toast message and return error for 404 response code', () => {
-    expect(store.dispatch(NOT_FOUND_ERROR).error.response.data.message).toEqual('Not found');
-    const toastMsg = (toastify.toast as any).error.getCall(0).args[0];
-    expect(toastMsg).toContain('Not found');
-  });
+  // it('should trigger an error toast message and return error for 404 response code', () => {
+  //   expect(store.dispatch(NOT_FOUND_ERROR).error.response.data.message).toEqual('Not found');
+  //   const toastMsg = (toastify.toast as any).error.getCall(0).args[0];
+  //   expect(toastMsg).toContain('Not found');
+  // });
 
   it('should trigger an error toast message and return error for 0 response code', () => {
     expect(store.dispatch(NO_SERVER_ERROR).error.response.status).toEqual(0);

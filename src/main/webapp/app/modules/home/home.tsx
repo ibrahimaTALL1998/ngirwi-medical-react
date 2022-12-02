@@ -467,8 +467,8 @@ export const Home = () => {
                         i < 4 ?
 
                           <tr key={`entity-${i}`} data-cy="entityTable">
-                            <td>{patient.lastName}</td>
-                            <td>{patient.firstName}</td>
+                            <td>{patient.lastName.toUpperCase()}</td>
+                            <td>{patient.firstName.split(' ').map(a => a.charAt(0).toUpperCase()+a.slice(1)).join(' ')}</td>
                             <td>{translateGender(patient.gender)}</td>
                             <td>
                               {patient.dateCreated ? (

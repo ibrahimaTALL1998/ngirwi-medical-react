@@ -195,7 +195,7 @@ export const DossierMedical = () => {
           </Card>
 
           <Link
-            to="/prescription/new/"
+            to="#"
             style={{
               display: 'inline-block',
               textDecoration: 'none',

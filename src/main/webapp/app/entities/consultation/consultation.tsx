@@ -16,6 +16,7 @@ import { RiUserAddLine } from 'react-icons/ri';
 import { BiTrash } from 'react-icons/bi';
 import { AiOutlineSearch } from 'react-icons/ai';
 import Header from 'app/shared/layout/header/header';
+import { convertDateTimeFromServerToHours } from 'app/shared/util/date-utils';
 
 export const Consultation = () => {
   const dispatch = useAppDispatch();
@@ -395,7 +396,7 @@ export const Consultation = () => {
                                 </Button>
                               </td>
                               <td>{patient.lastName.toUpperCase()}</td>
-                              <td style={{ wordBreak: 'break-all' }}>{patient.firstName}</td>
+                              <td style={{ wordBreak: 'break-all',textTransform:"capitalize" }}>{patient.firstName}</td>
                               <td>
                                 {consultation.dateTime ? (
                                   <TextFormat type="date" value={consultation.dateTime} format="DD/MM/YYYY" />
@@ -403,7 +404,8 @@ export const Consultation = () => {
                               </td>
                               <td>
                                 {consultation.dateTime ? (
-                                  <TextFormat type="date" value={consultation.dateTime} format="HH:mm:ss" />
+                                  // <TextFormat type="date" value={consultation.dateTime} format="HH:mm:ss" />
+                                  convertDateTimeFromServerToHours(consultation.dateTime)
                                 ) : null}
                               </td>
                               <td>
@@ -468,7 +470,7 @@ export const Consultation = () => {
                           </Button>
                         </td>
                         <td>{consultation.patient.lastName.toUpperCase()}</td>
-                        <td style={{ wordBreak: 'break-all' }}>{consultation.patient.firstName}</td>
+                        <td style={{ wordBreak: 'break-all',textTransform:"capitalize" }}>{consultation.patient.firstName}</td>
                         <td>
                           {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="DD/MM/YYYY" /> : null}
                         </td>
@@ -518,7 +520,7 @@ export const Consultation = () => {
                 </tbody>
               </Table>
             ) : (
-              !loading && <div className="alert alert-warning">Aucune consultation trouvée</div>
+              !loading && <div className="alert alert-warning">Aucune consultation enregistrée</div>
             )}
           </Card>
         </div>

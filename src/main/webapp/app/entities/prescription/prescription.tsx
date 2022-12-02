@@ -256,8 +256,7 @@ export const Prescription = () => {
               {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
             </div>
           </div>
-
-          <Table responsive style={{ borderCollapse: 'separate', borderSpacing: '0 15px' }}>
+              {prescriptionList && prescriptionList.length>0?(          <Table responsive style={{ borderCollapse: 'separate', borderSpacing: '0 15px' }}>
             <thead
               style={{
                 position: 'sticky',
@@ -371,7 +370,9 @@ export const Prescription = () => {
                       <td style={{ wordBreak: 'break-all' }}>
                         {prescription.consultation.id ? (
                           <span>
-                            {prescription.consultation.patient.lastName.toUpperCase() + ' ' + prescription.consultation.patient.firstName}
+                            {prescription.consultation.patient.lastName.toUpperCase() + ' ' + 
+                              prescription.consultation.patient.firstName.split(' ').map(a => a.charAt(0).toUpperCase()+a.slice(1)).join(' ')
+                            }
                           </span>
                         ) : (
                           ''
@@ -438,7 +439,8 @@ export const Prescription = () => {
                       <td style={{ wordBreak: 'break-all' }}>
                         {prescription.consultation.id ? (
                           <span>
-                            {prescription.consultation.patient.lastName.toUpperCase() + ' ' + prescription.consultation.patient.firstName}
+                            {prescription.consultation.patient.lastName.toUpperCase() + ' ' + 
+                              prescription.consultation.patient.firstName.split(' ').map(a => a.charAt(0).toUpperCase()+a.slice(1)).join(' ')                            }
                           </span>
                         ) : (
                           ''
@@ -485,7 +487,8 @@ export const Prescription = () => {
                     </tr>
                   ))}
             </tbody>
-          </Table>
+          </Table>):(!loading && <div className='alert alert-warning'>Aucune ordonnance enregistrée</div>)}
+
         </Card>
       </div>
     </div>

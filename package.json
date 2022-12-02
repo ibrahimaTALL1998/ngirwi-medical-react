@@ -38,6 +38,7 @@
     "default_environment": "prod"
   },
   "dependencies": {
+    "@david.kucsai/react-pdf-table": "^0.4.1",
     "@emotion/cache": "^11.10.5",
     "@emotion/serialize": "^1.1.1",
     "@emotion/styled": "^11.10.5",
@@ -64,6 +65,7 @@
     "react-icons": "^4.4.0",
     "react-jhipster": "0.22.0",
     "react-loadable": "5.5.0",
+    "react-pdf-table": "^1.0.0-alfa.3",
     "react-redirect": "^1.0.0",
     "react-redux": "8.0.2",
     "react-redux-loading-bar": "5.0.4",

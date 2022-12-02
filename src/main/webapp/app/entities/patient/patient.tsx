@@ -270,8 +270,7 @@ export const Patient = () => {
                 {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
               </div>
             </div>
-
-            <Table responsive style={{ borderCollapse: 'separate', borderSpacing: '0 15px' }}>
+                {patientList && patientList.length>0?(<Table responsive style={{ borderCollapse: 'separate', borderSpacing: '0 15px' }}>
               <thead
                 style={{
                   position: 'sticky',
@@ -410,8 +409,8 @@ export const Patient = () => {
                           {patient.id}
                         </Button>
                       </td>
-                      <td style={{ wordBreak: 'break-all' }}>{patient.firstName}</td>
-                      <td>{patient.lastName}</td>
+                      <td style={{ wordBreak: 'break-all',textTransform:"capitalize" }}>{patient.firstName}</td>
+                      <td>{patient.lastName.toUpperCase()}</td>
                       <td>
                         {patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}
                       </td>
@@ -458,8 +457,8 @@ export const Patient = () => {
                           {patient.id}
                         </Button>
                       </td>
-                      <td style={{ wordBreak: 'break-all' }}>{patient.firstName}</td>
-                      <td>{patient.lastName}</td>
+                      <td style={{ wordBreak: 'break-all',textTransform:"capitalize" }}>{patient.firstName}</td>
+                      <td>{patient.lastName.toUpperCase()}</td>
                       <td>
                         {patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}
                       </td>
@@ -491,7 +490,8 @@ export const Patient = () => {
                     </tr>
                   ))}
               </tbody>
-            </Table>
+            </Table>):(!loading && <div className="alert alert-warning">Aucun patient enregistré</div>)}
+            
           </Card>
         </div>
       </div>

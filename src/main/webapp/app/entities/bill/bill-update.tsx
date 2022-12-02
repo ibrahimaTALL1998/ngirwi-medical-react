@@ -9,6 +9,7 @@ import {
   convertDateTimeFromServerToDate,
   convertDateTimeFromServerToHours,
   convertDateTimeToServer,
+  displayDefaultDate,
   displayDefaultDateTime,
 } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
@@ -25,7 +26,8 @@ import {
 } from '../bill-element/bill-element.reducer';
 
 //pdf
-import { Page, Text, Image, View, Document, StyleSheet, PDFDownloadLink, Font } from '@react-pdf/renderer';
+import { Page, Text, Image, View, Document, StyleSheet, PDFDownloadLink, Font, PDFViewer, } from '@react-pdf/renderer';
+import { ReactPdfTable } from "react-pdf-table"
 import Header from 'app/shared/layout/header/header';
 import { IoIosAddCircleOutline, IoIosArrowBack, IoIosAddCircle, IoIosRemoveCircle } from 'react-icons/io';
 import { size } from 'lodash';
@@ -114,6 +116,12 @@ export const BillUpdate = () => {
     { label: 'TRANSIT', id: '48' },
     { label: 'TRANSPORT AERIEN', id: '49' },
   ];
+  function changeColor(e) {
+    e.target.style.color = '#000000';
+  }
+  function setColor(e) {
+    e.target.style.color = '#B3C0D3';
+  }
   const navigate = useNavigate();
 
   const { id } = useParams<'id'>();
@@ -154,7 +162,7 @@ export const BillUpdate = () => {
     patients.map(otherEntity =>
       otherEntity.id.toString() === patientId.toString()
         ? // console.log(otherEntity.id+"."+otherEntity.patient.lastName)
-          (p = otherEntity.firstName)
+        (p = otherEntity.firstName.split(' ').map(a => a.charAt(0).toUpperCase() + a.slice(1)).join(' '))
         : console.log(otherEntity.id)
     );
 
@@ -164,7 +172,7 @@ export const BillUpdate = () => {
     patients.map(otherEntity =>
       otherEntity.id.toString() === patientId.toString()
         ? // console.log(otherEntity.id+"."+otherEntity.patient.lastName)
-          (n = otherEntity.lastName.toUpperCase())
+        (n = otherEntity.lastName.toUpperCase())
         : console.log(otherEntity.id)
     );
 
@@ -215,15 +223,15 @@ export const BillUpdate = () => {
   const defaultValues = () =>
     isNew
       ? {
-          date: displayDefaultDateTime(),
-          patient: idPatient,
-          author: account.login,
-        }
+        date: displayDefaultDate(),
+        patient: idPatient,
+        author: account.login,
+      }
       : {
-          ...billEntity,
-          date: convertDateTimeFromServer(billEntity.date),
-          patient: billEntity?.patient?.id,
-        };
+        ...billEntity,
+        date: convertDateTimeFromServer(billEntity.date),
+        patient: billEntity?.patient?.id,
+      };
 
   //info ordonance
   const [formValues, setFormValues] = useState([{ service: '', amount: '', taux: '', quantity: '' }]);
@@ -309,7 +317,15 @@ export const BillUpdate = () => {
 
   total = tab();
 
-  Font.register({ family: 'Poppins', src: 'https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJbecmNE.woff2', fontStyle: 'normal' });
+  Font.register({
+    family: 'Poppins', fonts: [
+      { src: 'https://fonts.cdnfonts.com/s/16009/Poppins-Bold.woff', fontWeight: "bold" },
+      { src: 'https://fonts.cdnfonts.com/s/16009/Poppins-Medium.woff', fontWeight: "medium" },
+      { src: 'https://fonts.cdnfonts.com/s/16009/Poppins-Medium.woff', fontWeight: "thin" }
+    ]
+  });
+  const valuesHeight = 6;
+
   const doc = (
     <Document>
       <Page style={{ display: 'flex', flexDirection: 'column', fontFamily: 'Poppins' }}>
@@ -322,19 +338,12 @@ export const BillUpdate = () => {
             borderBottom: '1px solid #141414',
             paddingBottom: '10px',
             marginTop: '20px',
-            marginLeft: '10vw',
-            marginRight: '10vw',
-            width: '80vw',
+            marginLeft: '5vw',
+            marginRight: '5vw',
+            width: '90vw',
           }}
         >
-          {/* <View style={{ display: "flex", flexDirection: "column", justifyContent: 'space-around', alignItems: "center" }}>
-            <Text style={{ fontSize: "20px", color: "green", marginBottom: "9px",fontWeight:"bold"}}>Nom médecin</Text>
-            <Text style={{ fontSize: "15px", marginBottom: "9px" ,fontWeight:"medium"}}>Médecin général</Text>
-            <Text style={{ fontSize: "15px",fontWeight:"thin" }}>Téléphone</Text>
-          </View> */}
-          {/* <View>
-            <Image style={{ width: "50px", height: "50px" }} src='content/images/serpent.png' />
-          </View> */}
+
           <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center' }}>
             <Text style={{ fontSize: '10px', marginBottom: '9px', fontWeight: 'bold' }}>Nom clinique</Text>
             <Text style={{ fontSize: '10px', marginBottom: '9px', fontWeight: 'medium' }}>Adresse</Text>
@@ -344,17 +353,20 @@ export const BillUpdate = () => {
         </View>
         <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', marginTop: '10px' }}>
           <Text style={{ fontSize: '20px', fontWeight: 'extrabold', marginBottom: '5px' }}>Facture</Text>
-          <Text style={{ fontSize: '12px', marginBottom: '9px', marginLeft: '60vw' }}>
+          <Text style={{ fontSize: '12px', marginBottom: '9px', marginLeft: '70vw' }}>
             {' '}
             Dakar, Le {convertDateTimeFromServerToDate(displayDefaultDateTime())}
           </Text>
         </View>
+
+
+
         <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', marginTop: '15px', marginLeft: '5vw' }}>
           <Text style={{ fontSize: '12px', marginBottom: '7px' }}>
             Nom : {billEntity.patient ? billEntity?.patient?.lastName.toUpperCase() : n}{' '}
           </Text>
           <Text style={{ fontSize: '12px', marginBottom: '7px' }}>
-            Prénom(s): {billEntity.patient ? billEntity?.patient?.firstName : p}{' '}
+            Prénom(s): {billEntity.patient ? billEntity?.patient?.firstName.split(' ').map(a => a.charAt(0).toUpperCase() + a.slice(1)).join(' ') : p}{' '}
           </Text>
         </View>
         <View
@@ -451,10 +463,10 @@ export const BillUpdate = () => {
                 <Text
                   style={{
                     width: '15vw',
-                    height: '6vh',
+                    minHeight: `${valuesHeight}vh`,
                     borderRight: '1px solid #141414',
                     borderTop: '1px solid #141414',
-                    fontSize: '15px',
+                    fontSize: '14px',
                     padding: '10px',
                     textAlign: 'center',
                   }}
@@ -464,12 +476,14 @@ export const BillUpdate = () => {
                 <Text
                   style={{
                     width: '25vw',
-                    height: '6vh',
+                    minHeight: `${valuesHeight}vh`,
                     borderRight: '1px solid #141414',
                     borderTop: '1px solid #141414',
-                    fontSize: '15px',
-                    padding: '10px',
+                    fontSize: '14px',
+                    // padding: '10px',
                     textAlign: 'center',
+                    overflow: "hidden",
+                    textTransform: "capitalize"
                   }}
                 >
                   {element.service}
@@ -477,9 +491,9 @@ export const BillUpdate = () => {
                 <Text
                   style={{
                     width: '20vw',
-                    height: '6vh',
+                    minHeight: `${valuesHeight}vh`,
                     borderTop: '1px solid #141414',
-                    fontSize: '15px',
+                    fontSize: '14px',
                     padding: '10px',
                     textAlign: 'center',
                   }}
@@ -492,7 +506,7 @@ export const BillUpdate = () => {
                     height: '6vh',
                     borderTop: '1px solid #141414',
                     borderLeft: '1px solid #141414',
-                    fontSize: '15px',
+                    fontSize: '14px',
                     padding: '10px',
                     textAlign: 'center',
                   }}
@@ -505,15 +519,15 @@ export const BillUpdate = () => {
                     height: '6vh',
                     borderTop: '1px solid #141414',
                     borderLeft: '1px solid #141414',
-                    fontSize: '15px',
+                    fontSize: '14px',
                     padding: '10px',
                     textAlign: 'center',
                   }}
                 >
                   {Math.round(
                     parseInt(element.amount === '' ? '0' : element.amount, 10) *
-                      (1 - parseInt(element.taux === '' ? '0' : element.taux, 10) / 100) *
-                      parseInt(element.quantity === '' ? '1' : element.quantity, 10)
+                    (1 - parseInt(element.taux === '' ? '0' : element.taux, 10) / 100) *
+                    parseInt(element.quantity === '' ? '1' : element.quantity, 10)
                   )}{' '}
                   FCFA
                   {/* {Math.round(tarif*remise*nombre)} */}
@@ -526,33 +540,18 @@ export const BillUpdate = () => {
             <Text style={{ position: 'absolute', right: '0' }}>{total + 'FCFA'} </Text>
           </View>
         </View>
+        <View style={{ borderTop: "2px solid #141414", position: "absolute", top: "93vh", width: "100vw", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "10px", paddingTop: "6px" }}>
+          <Text style={{ fontSize: "14px" }}>
+            Propulsé par l&apos;entreprise NGIRWI S.A.R.L
+          </Text>
+          <Text style={{ fontSize: "12px" }}>
+            www.ngirwisarl.com
+          </Text>
+        </View>
       </Page>
     </Document>
   );
-  // const doc = (
-  //   <Document>
-  //     <Page size="A4" style={styles.page} wrap>
-  //       <View style={styles.section}>
-  //         <Image style={styles.imageHeader} src='content/images/Ngirwi_Transparent.png' />
-  //         <Text style={styles.title}> Facture</Text>
-  //         <Text style={styles.text}>
-  //           Date: {displayDefaultDateTime()}
-  //         </Text>
-  //         <Text style={styles.text}>
-  //           Médecin: {account.login}
-  //         </Text>
-  //         {formValues.map((element,i) => (
-  //           <Text key={`e${i}`} style={styles.text}>
-  //             Service : {element.service} | Description : {element.amount} | Montant : {element.taux}
-  //           </Text>
-  //         ))}
-  //         <Text style={styles.text}>
-  //           Total (en FCFA): {total}
-  //         </Text>
-  //       </View>
-  //     </Page>
-  //   </Document>
-  // );
+
   return (
     <div
       style={{
@@ -626,7 +625,7 @@ export const BillUpdate = () => {
               {isNew ? 'Nouvelle facture ' : 'Facture '}patient
             </span>
             <div style={{ display: 'flex', flexDirection: 'row', gap: '3vh' }}>
-              <PDFDownloadLink document={doc} fileName={`facture_${account.login}_${JSON.stringify(convertDateTimeFromServerToDate)}`}>
+              <PDFDownloadLink style={{ backgroundColor: "transparent", textDecoration: "none" }} document={doc} fileName={`facture_${account.login}_${JSON.stringify(convertDateTimeFromServerToDate(displayDefaultDateTime()) + "H:" + convertDateTimeFromServerToHours(displayDefaultDateTime()))}`}>
                 {({ loading }) =>
                   loading ? (
                     // <Button style={{ borderRadius: "25px" }} color='dark' disabled>Préparer fichier...</Button>
@@ -635,9 +634,9 @@ export const BillUpdate = () => {
                     </span>
                   ) : (
                     // <FontAwesomeIcon style={{ color: "black", fontSize: "25px" }} icon={"loader"} spin={loading} />
-                    <span style={{ cursor: 'pointer', fontWeight: '900', color: '#B3C0D3', textAlign: 'center' }}>
-                      {React.createElement(BiDownload, { size: '25' })} Télécharger
-                    </span>
+                    <div style={{ cursor: 'pointer', fontWeight: '900', color: '#B3C0D3', textAlign: 'center', display: "flex", flexDirection: "row", alignItems: "center", gap: "3px" }}>
+                      {React.createElement(BiDownload, { size: '23' })}  <span>Télécharger</span>
+                    </div>
                   )
                 }
               </PDFDownloadLink>
@@ -695,27 +694,30 @@ export const BillUpdate = () => {
               <option value="" key="0" />
               {patients
                 ? patients.map(otherEntity => (
-                    <option value={otherEntity.id} key={otherEntity.id}>
-                      {otherEntity.lastName + ' ' + otherEntity.firstName}
-                    </option>
-                  ))
+                  <option value={otherEntity.id} key={otherEntity.id}>
+                    {otherEntity.lastName.toUpperCase()}{' '}
+                    {
+                      otherEntity.firstName.split(' ').map(a => a.charAt(0).toUpperCase() + a.slice(1)).join(' ')
+                    }
+                  </option>
+                ))
                 : null}
             </ValidatedField>
             <ValidatedField
               style={
                 isNew
                   ? {
-                      borderRadius: '25px',
-                      borderColor: '#CBDCF7',
-                      width: '20vw',
-                    }
+                    borderRadius: '25px',
+                    borderColor: '#CBDCF7',
+                    width: '20vw',
+                  }
                   : {
-                      borderRadius: '25px',
-                      borderColor: '#CBDCF7',
-                      width: '20vw',
-                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
-                      color: idEdit === 'voir' ? '#F6FAFF' : '',
-                    }
+                    borderRadius: '25px',
+                    borderColor: '#CBDCF7',
+                    width: '20vw',
+                    backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
+                    color: idEdit === 'voir' ? '#F6FAFF' : '',
+                  }
               }
               disabled={
                 isNew && blockIPM === '' ? false : isNew && blockIPM !== '' ? true : idEdit !== 'voir' && blockIPM === '' ? false : true
@@ -738,12 +740,12 @@ export const BillUpdate = () => {
                 isNew
                   ? { borderRadius: '25px', borderColor: '#CBDCF7', width: '20vw' }
                   : {
-                      borderRadius: '25px',
-                      borderColor: '#CBDCF7',
-                      width: '20vw',
-                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
-                      color: idEdit === 'voir' ? '#F6FAFF' : '',
-                    }
+                    borderRadius: '25px',
+                    borderColor: '#CBDCF7',
+                    width: '20vw',
+                    backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
+                    color: idEdit === 'voir' ? '#F6FAFF' : '',
+                  }
               }
               id="bill-ipm"
               name="ipm"
@@ -754,10 +756,10 @@ export const BillUpdate = () => {
                 isNew && blockAssurance === ''
                   ? false
                   : isNew && blockAssurance !== ''
-                  ? true
-                  : idEdit !== 'voir' && blockAssurance === ''
-                  ? false
-                  : true
+                    ? true
+                    : idEdit !== 'voir' && blockAssurance === ''
+                      ? false
+                      : true
               }
               onChange={e => getIPM(e)}
             >
@@ -904,12 +906,12 @@ export const BillUpdate = () => {
                 isNew
                   ? { borderRadius: '25px', borderColor: '#CBDCF7', width: '36vw' }
                   : {
-                      borderRadius: '25px',
-                      borderColor: '#CBDCF7',
-                      width: '36vw',
-                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
-                      color: idEdit === 'voir' ? '#F6FAFF' : '',
-                    }
+                    borderRadius: '25px',
+                    borderColor: '#CBDCF7',
+                    width: '36vw',
+                    backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
+                    color: idEdit === 'voir' ? '#F6FAFF' : '',
+                  }
               }
               disabled
               id="bill-total"
@@ -924,13 +926,13 @@ export const BillUpdate = () => {
                 isNew
                   ? { borderRadius: '25px', borderColor: '#CBDCF7', width: '36vw', height: '20vh' }
                   : {
-                      borderRadius: '25px',
-                      borderColor: '#CBDCF7',
-                      width: '36vw',
-                      height: '20vh',
-                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
-                      color: idEdit === 'voir' ? '#F6FAFF' : '',
-                    }
+                    borderRadius: '25px',
+                    borderColor: '#CBDCF7',
+                    width: '36vw',
+                    height: '20vh',
+                    backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '',
+                    color: idEdit === 'voir' ? '#F6FAFF' : '',
+                  }
               }
               disabled={isNew || idEdit !== 'voir' ? false : idEdit === 'voir' ? false : true}
               id="bill-desc"
@@ -962,7 +964,10 @@ export const BillUpdate = () => {
               }}
               id="cancel-save"
               data-cy="entityCreateCancelButton"
-              onClick={() => window.history.back()}
+              onClick={
+                () =>
+                  confirm("Êtes-vous sur de vouloir quitter?") === true ? (window.history.back()) : (null)
+              }
               replace
               color="danger"
             >

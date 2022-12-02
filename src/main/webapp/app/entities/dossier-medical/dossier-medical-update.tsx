@@ -4,7 +4,7 @@ import { Button, Row, Col, FormText, Card } from 'reactstrap';
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDate, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
@@ -76,15 +76,15 @@ export const DossierMedicalUpdate = () => {
   const defaultValues = () =>
     isNew
       ? {
-          dateCreated: displayDefaultDateTime(),
-          dateUpdated: displayDefaultDateTime(),
+          dateCreated: displayDefaultDate(),
+          dateUpdated: displayDefaultDate(),
           author: account.login,
           patient: idPatient,
         }
       : {
           ...dossierMedicalEntity,
           // dateCreated: convertDateTimeFromServer(dossierMedicalEntity.dateCreated),
-          dateUpdated: displayDefaultDateTime(),
+          dateUpdated: displayDefaultDate(),
           patient: dossierMedicalEntity?.patient?.id,
           author: account.login,
         };
@@ -453,7 +453,7 @@ export const DossierMedicalUpdate = () => {
             &nbsp;
             <Button
               onClick={() => {
-                window.history.back();
+                confirm("Êtes-vous sur de vouloir quitter?") === true ? (window.history.back()) : (null)
               }}
               id="cancel-save"
               data-cy="entityCreateCancelButton"

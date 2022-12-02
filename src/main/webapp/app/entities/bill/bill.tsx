@@ -258,8 +258,7 @@ export const Bill = () => {
               {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
             </div>
           </div>
-
-          <Table responsive style={{ borderCollapse: 'separate', borderSpacing: '0 15px' }}>
+              {billList && billList.length>0?(<Table responsive style={{ borderCollapse: 'separate', borderSpacing: '0 15px' }}>
             <thead
               style={{
                 position: 'sticky',
@@ -362,7 +361,11 @@ export const Bill = () => {
                     <td>{bill.date ? <TextFormat type="date" value={bill.date} format={APP_DATE_FORMAT} /> : null}</td>
                     <td style={{ wordBreak: 'break-all' }}>{bill.author}</td>
                     <td style={{ wordBreak: 'break-all' }}>
-                      {bill.patient ? <span>{bill.patient.lastName.toUpperCase() + ' ' + bill.patient.firstName}</span> : ''}
+                      {bill.patient ? <span>{bill.patient.lastName.toUpperCase() + ' ' +
+                        bill.patient.firstName.split(' ').map(a => a.charAt(0)+a.slice(1)).join(' ')
+                      }
+                      </span> 
+                      : ''}
                     </td>
                     <td className="text-end">
                       <div
@@ -414,7 +417,8 @@ export const Bill = () => {
                     <td>{bill.date ? <TextFormat type="date" value={bill.date} format={APP_DATE_FORMAT} /> : null}</td>
                     <td style={{ wordBreak: 'break-all' }}>{bill.author}</td>
                     <td style={{ wordBreak: 'break-all' }}>
-                      {bill.patient ? <span>{bill.patient.lastName.toUpperCase() + ' ' + bill.patient.firstName}</span> : ''}
+                      {bill.patient ? <span>{bill.patient.lastName.toUpperCase() + ' ' +
+                        bill.patient.firstName.split(' ').map(a => a.charAt(0).toUpperCase()+a.slice(1)).join(' ') }                      </span> : ''}
                     </td>
                     <td className="text-end">
                       <div
@@ -457,7 +461,8 @@ export const Bill = () => {
                   </tr>
                 ))}
             </tbody>
-          </Table>
+          </Table>):(!loading && <div className="alert alert-warning">Aucune facture enregistrée</div>)}
+          
         </Card>
       </div>
 

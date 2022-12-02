@@ -4,13 +4,11 @@ import { Button, Row, Col, FormText, Card } from 'reactstrap';
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDate, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { translateGender, translateMaritalStatus, translateBloodType } from 'app/shared/util/translation-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { IDossierMedical } from 'app/shared/model/dossier-medical.model';
-import { getEntities as getDossierMedicals } from 'app/entities/dossier-medical/dossier-medical.reducer';
 import { IPatient } from 'app/shared/model/patient.model';
 import { GENDER } from 'app/shared/model/enumerations/gender.model';
 import { BLOODTYPE } from 'app/shared/model/enumerations/bloodtype.model';
@@ -31,9 +29,7 @@ export const PatientUpdate = () => {
 
   const account = useAppSelector(state => state.authentication.account);
 
-  const dossierMedicals = useAppSelector(state => state.dossierMedical.entities);
   const patientEntity = useAppSelector(state => state.patient.entity);
-  const loading = useAppSelector(state => state.patient.loading);
   const updating = useAppSelector(state => state.patient.updating);
   const updateSuccess = useAppSelector(state => state.patient.updateSuccess);
   const gENDERValues = Object.keys(GENDER);
@@ -51,7 +47,6 @@ export const PatientUpdate = () => {
       dispatch(getEntity(id));
     }
 
-    dispatch(getDossierMedicals({}));
   }, []);
 
   useEffect(() => {
@@ -79,8 +74,8 @@ export const PatientUpdate = () => {
   const defaultValues = () =>
     isNew
       ? {
-          dateCreated: displayDefaultDateTime(),
-          dateUpdated: displayDefaultDateTime(),
+          dateCreated:  displayDefaultDate(),
+          dateUpdated: displayDefaultDate(),
           author: account.login,
         }
       : {
@@ -89,7 +84,7 @@ export const PatientUpdate = () => {
           maritialStatus: 'MARRIED',
           ...patientEntity,
           // dateCreated: convertDateTimeFromServer(patientEntity.dateCreated),
-          dateUpdated: displayDefaultDateTime(),
+          dateUpdated: displayDefaultDate(),
           author: account.login,
         };
 
@@ -147,10 +142,10 @@ export const PatientUpdate = () => {
         </Card>
         <Card
           style={{
-            height: '70vh',
+            minHeight: '70vh',
             marginRight: '5%',
             boxShadow: '0px 10px 50px rgba(138, 161, 203, 0.23)',
-            borderRadius: '15px',
+            borderRadius: '15px',marginBottom:"2vh"
           }}
         >
           {isNew ? (
@@ -176,8 +171,7 @@ export const PatientUpdate = () => {
               backgroundImage: 'url(content/images/NgirwiLogo.png)',
               backgroundRepeat: 'no-repeat',
               backgroundAttachment: 'fixed',
-              backgroundPosition: '65% 90%',
-              backgroundSize: '50% 50%',
+              backgroundPosition: '58% 110%',
             }}
           >
             {!isNew ? (
@@ -381,7 +375,7 @@ export const PatientUpdate = () => {
               placeholder="YYYY-MM-DD HH:mm"
             />
             <ValidatedField
-              hidden
+             hidden
               label="Date Updated"
               id="patient-dateUpdated"
               name="dateUpdated"
@@ -403,11 +397,13 @@ export const PatientUpdate = () => {
                 borderColor: '#56B5C5',
               }}
             >
-              {updating ? <FontAwesomeIcon icon="spinner" pulse={updating} /> : 'Enregistrer'}
+               Enregistrer
             </Button>
             &nbsp;
             <Button
-              onClick={() => window.history.back()}
+              onClick={() =>
+                confirm("Êtes-vous sur de vouloir quitter?") === true ? (window.history.back()) : (null)
+                }
               id="cancel-save"
               data-cy="entityCreateCancelButton"
               replace
@@ -417,7 +413,7 @@ export const PatientUpdate = () => {
                 borderRadius: '25px',
                 color: 'white',
                 backgroundColor: '#EC4747',
-                borderColor: '#EC4747',
+                borderColor: '#EC4747',marginBottom:"2vh"
               }}
             >
               <span className="d-none d-md-inline">Annuler</span>
