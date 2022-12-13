@@ -70,19 +70,19 @@ export const PatientDetail = () => {
             borderRadius: '20px',
             backgroundColor: '#11485C',
             marginLeft: '25%',
-            textAlign: 'center',
+            textAlign: 'center', justifyContent: "center",
             color: 'white',
             boxShadow: '0px 10px 50px rgba(138, 161, 203, 0.23)',
           }}
         >
-          <span style={{ marginTop: '2.5%' }}>Details Patient {patientEntity.lastName + ' ' + patientEntity.firstName}</span>
+          <span style={{}}>Details Patient {patientEntity.lastName + ' ' + patientEntity.firstName}</span>
         </Card>
 
         <Card
           style={{
             marginLeft: '4%',
             height: '55vh',
-            width: '70vw',
+            minWidth: '65vw',
             marginRight: '5%',
             boxShadow: '0px 10px 50px rgba(138, 161, 203, 0.23)',
             borderRadius: '15px',
@@ -101,7 +101,7 @@ export const PatientDetail = () => {
               borderRadius: '15px',
               borderColor: '#72C9D8',
               borderTopRightRadius: '0px',
-              borderBottomRightRadius: '0px',
+              borderBottomRightRadius: '0px', justifyContent: "center"
             }}
           >
             <div
@@ -110,7 +110,6 @@ export const PatientDetail = () => {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                paddingTop: '30%',
               }}
             >
               <span>Enregistré le:</span>
@@ -132,7 +131,7 @@ export const PatientDetail = () => {
               width: '40%',
               borderRadius: '15px',
               borderTopLeftRadius: '0px',
-              marginRight: '8%',
+              marginRight: '3%',
               backgroundColor: '#F6FAFF',
               borderColor: '#F6FAFF',
               display: 'flex',
@@ -302,7 +301,7 @@ export const PatientDetail = () => {
                   borderRadius: '4px',
                   fontFamily: 'Ubuntu',
                   textAlign: 'center',
-                  paddingTop: '3.75%',
+                   justifyContent: "center",wordBreak:"break-word"
                 }}
               >
                 Nouvelle consultation
@@ -320,16 +319,17 @@ export const PatientDetail = () => {
                   width: '25vh',
                   height: '9vh',
                   borderRadius: '4px',
-                  fontFamily: 'Ubuntu',
+                  fontFamily: 'Ubuntu', justifyContent: "center",wordBreak:"break-word"
                 }}
               >
-                Voir consultations faites
+                <span>Voir consultations faites</span>
+
               </Button>
               <Button
                 hidden={!hidehos}
                 onMouseOver={changeColor}
                 onMouseLeave={setColor}
-                
+
                 href={`/hospitalisation/new/${patientEntity.id}`}
                 style={{
                   borderColor: '#0075FF',
@@ -338,7 +338,7 @@ export const PatientDetail = () => {
                   width: '25vh',
                   height: '9vh',
                   borderRadius: '4px',
-                  fontFamily: 'Ubuntu',
+                  fontFamily: 'Ubuntu',wordBreak:"break-word"
                 }}
               >
                 Démarrer hospitalisation
@@ -347,8 +347,7 @@ export const PatientDetail = () => {
                 hidden={hidehos}
                 onMouseOver={changeColor}
                 onMouseLeave={setColor}
-                tag={Link}
-                to={`#`}
+                href={`/hospitalisation/${patientEntity.id}`}
                 style={{
                   borderColor: '#0075FF',
                   backgroundColor: '#0075FF',
@@ -356,13 +355,13 @@ export const PatientDetail = () => {
                   width: '25vh',
                   height: '9vh',
                   borderRadius: '4px',
-                  fontFamily: 'Ubuntu',
+                  fontFamily: 'Ubuntu',wordBreak:"break-word"
                 }}
               >
-                Détails hospitalisation
+                Voir hospitalisations faites
               </Button>
             </div>
-            <div style={{ backgroundColor: "" ,display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",gap:"10vh",marginTop:"15vh"}}>
+            <div style={{ backgroundColor: "", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "10vh", marginTop: "15vh" }}>
               <FontAwesomeIcon onClick={() => show()} style={{ marginLeft: '15px', color: "#0075FF", height: "5vh", cursor: "pointer", marginTop: "2.5vh" }} icon="sort" />
               <FontAwesomeIcon onClick={() => showhos()} style={{ marginLeft: '15px', color: "#0075FF", height: "5vh", cursor: "pointer" }} icon="sort" />
             </div>

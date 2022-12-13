@@ -153,7 +153,7 @@ export const ConsultationUpdate = () => {
           <Card
             style={{
               height: '6.28vh',
-              width: '30vw',
+              minWidth: '32vw',
               borderRadius: '20px',
               backgroundColor: '#11485C',
               textAlign: 'center',
@@ -167,7 +167,7 @@ export const ConsultationUpdate = () => {
               gap: isNew ? '2vw' : '4vw',
               paddingLeft: isNew ? '1vw' : '2vw',
               marginLeft: idPatient == undefined && isNew === true ? '25vw' : '',
-              marginTop: '10vh',
+              marginTop: '10vh',paddingRight:"3vw"
             }}
           >
             <Button onClick={() => window.history.back()} style={{ color: '#53BFD1', backgroundColor: '#11485C', borderColor: '#11485C' }}>
@@ -254,7 +254,7 @@ export const ConsultationUpdate = () => {
 
         <Card
           style={{
-            minHeight: '110vh',
+            minHeight: '80vh',
             width: '80vw',
             boxShadow: '0px 10px 50px rgba(138, 161, 203, 0.23)',
             borderRadius: '15px',

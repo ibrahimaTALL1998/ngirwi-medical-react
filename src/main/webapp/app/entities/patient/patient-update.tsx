@@ -161,11 +161,11 @@ export const PatientUpdate = () => {
             style={{
               width: '94%',
               marginLeft: '3%',
-              minHeight: '70%',
-              display: 'grid',
+              minHeight: '80vh',
+              display: 'flex',
+              flexWrap:"wrap",
               columnGap: '25px',
               marginTop: '1%',
-              gridTemplateColumns: 'repeat(3, 5fr)',
               fontSize: '12px',
               fontWeight: '900',
               backgroundImage: 'url(content/images/NgirwiLogo.png)',
@@ -186,7 +186,7 @@ export const PatientUpdate = () => {
                 style={{
                   borderRadius: '25px',
                   backgroundColor: '#F7FAFF',
-                  borderColor: '#CBDCF7',
+                  borderColor: '#CBDCF7',width:"22vw"
                 }}
               />
             ) : null}
@@ -203,7 +203,7 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',
+                borderColor: '#CBDCF7',width:"22vw"
               }}
             />
             <ValidatedField
@@ -219,7 +219,7 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',
+                borderColor: '#CBDCF7',width:"22vw"
               }}
             />
             <ValidatedField
@@ -234,7 +234,7 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',
+                borderColor: '#CBDCF7',width:"22vw"
               }}
             />
             <ValidatedField
@@ -247,7 +247,7 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',
+                borderColor: '#CBDCF7',width:"22vw"
               }}
             />
             <ValidatedField
@@ -259,7 +259,7 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',
+                borderColor: '#CBDCF7',width:"22vw"
               }}
             >
               {gENDERValues.map(gENDER => (
@@ -281,7 +281,7 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',
+                borderColor: '#CBDCF7',width:"22vw"
               }}
             />
             <ValidatedField
@@ -297,7 +297,7 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',
+                borderColor: '#CBDCF7',width:"22vw"
               }}
             />
             <ValidatedField
@@ -313,7 +313,7 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',
+                borderColor: '#CBDCF7',width:"22vw"
               }}
             />
             <ValidatedField
@@ -326,7 +326,7 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',
+                borderColor: '#CBDCF7',width:"22vw"
               }}
             />
             <ValidatedField
@@ -338,7 +338,7 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',
+                borderColor: '#CBDCF7',width:"22vw"
               }}
             >
               {bLOODTYPEValues.map(bLOODTYPE => (
@@ -356,7 +356,7 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',
+                borderColor: '#CBDCF7',width:"22vw"
               }}
             >
               {mARITALSTATUSValues.map(mARITALSTATUS => (
@@ -390,11 +390,10 @@ export const PatientUpdate = () => {
               type="submit"
               disabled={updating}
               style={{
-                gridColumn: '1/4',
                 borderRadius: '25px',
                 color: 'white',
                 backgroundColor: '#56B5C5',
-                borderColor: '#56B5C5',
+                borderColor: '#56B5C5',flex:"1 1 100%"
               }}
             >
                Enregistrer
@@ -406,14 +405,12 @@ export const PatientUpdate = () => {
                 }
               id="cancel-save"
               data-cy="entityCreateCancelButton"
-              replace
               color="info"
               style={{
-                gridColumn: '1/4',
                 borderRadius: '25px',
                 color: 'white',
                 backgroundColor: '#EC4747',
-                borderColor: '#EC4747',marginBottom:"2vh"
+                borderColor: '#EC4747',marginBottom:"2vh",flex:"1 1 100%"
               }}
             >
               <span className="d-none d-md-inline">Annuler</span>
