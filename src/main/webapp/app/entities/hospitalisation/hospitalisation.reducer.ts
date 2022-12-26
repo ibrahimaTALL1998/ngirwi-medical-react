@@ -4,6 +4,7 @@ import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/t
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
 import { IHospitalisation, defaultValue } from 'app/shared/model/hospitalisation.model';
+import { IHospitalisationForm, defaultValue as defaultForm } from 'app/shared/model/hospitalisation-form.model';
 
 const initialState: EntityState<IHospitalisation> = {
   loading: false,
@@ -33,10 +34,29 @@ export const getEntity = createAsyncThunk(
   { serializeError: serializeAxiosError }
 );
 
+export const getPatient = createAsyncThunk(
+  'hospitalisation/fetch_entity',
+  async (id: string | number) => {
+    const requestUrl = `${apiUrl}-patient/${id}`;
+    return axios.get<IHospitalisation>(requestUrl);
+  },
+  { serializeError: serializeAxiosError }
+);
+
 export const createEntity = createAsyncThunk(
   'hospitalisation/create_entity',
   async (entity: IHospitalisation, thunkAPI) => {
     const result = await axios.post<IHospitalisation>(apiUrl, cleanEntity(entity));
+    thunkAPI.dispatch(getEntities({}));
+    return result;
+  },
+  { serializeError: serializeAxiosError }
+);
+
+export const createEntityBis = createAsyncThunk(
+  'hospitalisation/create_entitybis',
+  async (entity: IHospitalisation, thunkAPI) => {
+    const result = await axios.post<IHospitalisationForm>(apiUrl + 'bis', cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
     return result;
   },

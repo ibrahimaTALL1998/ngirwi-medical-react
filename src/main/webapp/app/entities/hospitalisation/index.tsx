@@ -12,8 +12,10 @@ const HospitalisationRoutes = () => (
   <ErrorBoundaryRoutes>
     <Route index element={<Hospitalisation />} />
     <Route path="new" element={<HospitalisationUpdate />} />
+    <Route path="new/:idPatient" element={<HospitalisationUpdate />} />
     <Route path=":id">
       <Route index element={<HospitalisationDetail />} />
+      <Route path=":idPatient" element={<HospitalisationUpdate />} />
       <Route path="edit" element={<HospitalisationUpdate />} />
       <Route path="delete" element={<HospitalisationDeleteDialog />} />
     </Route>

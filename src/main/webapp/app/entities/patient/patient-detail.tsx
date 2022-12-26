@@ -8,7 +8,8 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntity } from './patient.reducer';
-import { getPatient, reset } from '../dossier-medical/dossier-medical.reducer';
+import { getPatient, reset as resetDossier } from '../dossier-medical/dossier-medical.reducer';
+import { getPatient as getHospitalisationPatient, reset as resetHospitalisation } from '../hospitalisation/hospitalisation.reducer';
 import Header from 'app/shared/layout/header/header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -43,15 +44,19 @@ export const PatientDetail = () => {
     e.target.style.color = '#FFFFFF';
   }
 
-  console.log(id);
   useEffect(() => {
-    dispatch(reset());
+    dispatch(resetHospitalisation());
+    dispatch(resetDossier());
     dispatch(getEntity(id));
     dispatch(getPatient(id));
+    dispatch(getHospitalisationPatient(id));
   }, []);
 
   const patientEntity = useAppSelector(state => state.patient.entity);
   const dossierMedicalEntity = useAppSelector(state => state.dossierMedical.entity);
+  const hospitalisationEntity = useAppSelector(state => state.hospitalisation?.entity);
+
+  console.log(hospitalisationEntity);
 
   const verifDossierExist = () => {
     let dossierExist = false;
@@ -59,6 +64,14 @@ export const PatientDetail = () => {
       dossierExist = true;
     }
     return dossierExist;
+  };
+
+  const verifHospitalisationExist = () => {
+    let hospitalisationExist = false;
+    if (hospitalisationEntity && Object.keys(hospitalisationEntity).length > 0) {
+      hospitalisationExist = true;
+    }
+    return hospitalisationExist;
   };
 
   return (
