@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { IConsultation } from 'app/shared/model/consultation.model';
 import { getEntities } from './consultation.reducer';
+import { getEntities as getPatients } from '../patient/patient.reducer';
 import { FiLogOut } from 'react-icons/fi';
 import { RiUserAddLine } from 'react-icons/ri';
 import { BiTrash } from 'react-icons/bi';
@@ -31,12 +32,20 @@ export const Consultation = () => {
   );
 
   const consultationList = useAppSelector(state => state.consultation.entities);
+  const patients = useAppSelector(state => state.patient.entities);
   const loading = useAppSelector(state => state.consultation.loading);
   const totalItems = useAppSelector(state => state.consultation.totalItems);
 
   const getAllEntities = () => {
     dispatch(
       getEntities({
+        page: paginationState.activePage - 1,
+        size: paginationState.itemsPerPage,
+        sort: `${paginationState.sort},${paginationState.order}`,
+      })
+    );
+    dispatch(
+      getPatients({
         page: paginationState.activePage - 1,
         size: paginationState.itemsPerPage,
         sort: `${paginationState.sort},${paginationState.order}`,
@@ -166,11 +175,11 @@ export const Consultation = () => {
                 borderRadius: '50%',
                 backgroundColor: '#CBDCF7',
                 fontSize: '18px',
-                paddingTop: "20%",
-                justifyContent: "center"
+                paddingTop: '20%',
+                justifyContent: 'center',
               }}
             >
-              <span style={{ display: 'block', width: "90%", wordBreak: "break-word" }}>
+              <span style={{ display: 'block', width: '90%', wordBreak: 'break-word' }}>
                 {React.createElement(RiUserAddLine, { size: '24' })} Enregistrer nouveau patient
               </span>
             </Link>
@@ -200,11 +209,11 @@ export const Consultation = () => {
                 borderRadius: '50%',
                 backgroundColor: '#CBDCF7',
                 fontSize: '18px',
-                paddingTop: "20%",
-                justifyContent: "center"
+                paddingTop: '20%',
+                justifyContent: 'center',
               }}
             >
-              <span style={{ display: 'block', width: "90%", wordBreak: "break-word" }}>
+              <span style={{ display: 'block', width: '90%', wordBreak: 'break-word' }}>
                 {React.createElement(RiUserAddLine, { size: '24' })} Enregistrer nouvelle consultation
               </span>
             </Link>
@@ -274,7 +283,7 @@ export const Consultation = () => {
                         width: '1%',
                       }}
                     ></th>
-                    <th
+                    {/* <th
                       style={{
                         fontSize: '14px',
                         position: 'sticky',
@@ -287,7 +296,7 @@ export const Consultation = () => {
                       onClick={sort('id')}
                     >
                       ID <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
-                    </th>
+                    </th> */}
                     <th
                       style={{
                         fontSize: '14px',
@@ -375,148 +384,147 @@ export const Consultation = () => {
                 >
                   {filter === null
                     ? consultationList.map((consultation, i) => (
-                      <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
-                        <td>
-                          <Button
-                            tag={Link}
-                            to={`/consultation/${consultation.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                            data-cy="entityDeleteButton"
-                            style={{ color: 'red', backgroundColor: '#F6FAFF', borderColor: '#F6FAFF' }}
-                          >
-                            {React.createElement(BiTrash, { size: '15' })}
-                          </Button>
-                        </td>
-
-                        {patientList.map((patient, b) =>
-                          consultation.patient.lastName === patient.lastName && consultation.patient.id === patient.id ? (
-                            <>
-                              <td>
-                                <Button tag={Link} to={`/patient/${patient.id}`} color="link" size="sm">
-                                  {patient.id}
-                                </Button>
-                              </td>
-                              <td>{patient.lastName.toUpperCase()}</td>
-                              <td style={{ wordBreak: 'break-all',textTransform:"capitalize" }}>{patient.firstName}</td>
-                              <td>
-                                {consultation.dateTime ? (
-                                  <TextFormat type="date" value={consultation.dateTime} format="DD/MM/YYYY" />
-                                ) : null}
-                              </td>
-                              <td>
-                                {consultation.dateTime ? (
-                                  // <TextFormat type="date" value={consultation.dateTime} format="HH:mm:ss" />
-                                  convertDateTimeFromServerToHours(consultation.dateTime)
-                                ) : null}
-                              </td>
-                              <td>
-                                <div
-                                  style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    gap: '3px',
-                                    fontSize: '9px',
-                                  }}
-                                >
-                                  <Button
-                                    tag={Link}
-                                    to={`/consultation/${consultation.id}/edit`}
-                                    color="primary"
-                                    size="sm"
-                                    data-cy="entityEditButton"
-                                  >
-                                    <FontAwesomeIcon icon="pencil" /> <span className="d-none d-md-inline">Mettre à jour</span>
+                        <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
+                          <td>
+                            <Button
+                              tag={Link}
+                              to={`/consultation/${consultation.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                              data-cy="entityDeleteButton"
+                              style={{ color: 'red', backgroundColor: '#F6FAFF', borderColor: '#F6FAFF' }}
+                            >
+                              {React.createElement(BiTrash, { size: '15' })}
+                            </Button>
+                          </td>
+                          {patientList?.map((patient, b) =>
+                            consultation?.patient?.id === patient?.id ? (
+                              <>
+                                <td>
+                                  <Button tag={Link} to={`/patient/${patient.id}`} color="link" size="sm">
+                                    {patient.id}
                                   </Button>
-                                  <Button
-                                    tag={Link}
-                                    to={`/consultation/list/${patient.id}?page=1&sort=id,asc`}
-                                    color="dark"
-                                    size="sm"
-                                    data-cy="entityDetailsButton"
+                                </td>
+                                <td>{patient.lastName.toUpperCase()}</td>
+                                <td style={{ wordBreak: 'break-all', textTransform: 'capitalize' }}>{patient.firstName}</td>
+                                <td>
+                                  {consultation.dateTime ? (
+                                    <TextFormat type="date" value={consultation.dateTime} format="DD/MM/YYYY" />
+                                  ) : null}
+                                </td>
+                                <td>
+                                  {consultation.dateTime
+                                    ? // <TextFormat type="date" value={consultation.dateTime} format="HH:mm:ss" />
+                                      convertDateTimeFromServerToHours(consultation.dateTime)
+                                    : null}
+                                </td>
+                                <td>
+                                  <div
+                                    style={{
+                                      display: 'flex',
+                                      flexDirection: 'row',
+                                      gap: '3px',
+                                      fontSize: '9px',
+                                    }}
                                   >
-                                    <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir sa liste</span>
-                                  </Button>
-                                  <Button
-                                    tag={Link}
-                                    to={`/prescription/new/${consultation.id}`}
-                                    color="success"
-                                    size="sm"
-                                    data-cy="entityDetailsButton"
-                                  >
-                                    <FontAwesomeIcon icon="plus" /> <span className="d-none d-md-inline">Ordonnance</span>
-                                  </Button>
-                                </div>
-                              </td>
-                            </>
-                          ) : null
-                        )}
-                      </tr>
-                    ))
+                                    <Button
+                                      tag={Link}
+                                      to={`/consultation/${consultation.id}/edit`}
+                                      color="primary"
+                                      size="sm"
+                                      data-cy="entityEditButton"
+                                    >
+                                      <FontAwesomeIcon icon="pencil" /> <span className="d-none d-md-inline">Mettre à jour</span>
+                                    </Button>
+                                    <Button
+                                      tag={Link}
+                                      to={`/consultation/list/${patient.id}?page=1&sort=id,asc`}
+                                      color="dark"
+                                      size="sm"
+                                      data-cy="entityDetailsButton"
+                                    >
+                                      <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir sa liste</span>
+                                    </Button>
+                                    <Button
+                                      tag={Link}
+                                      to={`/prescription/new/${consultation.id}`}
+                                      color="success"
+                                      size="sm"
+                                      data-cy="entityDetailsButton"
+                                    >
+                                      <FontAwesomeIcon icon="plus" /> <span className="d-none d-md-inline">Ordonnance</span>
+                                    </Button>
+                                  </div>
+                                </td>
+                              </>
+                            ) : null
+                          )}
+                        </tr>
+                      ))
                     : filter.map((consultation, i) => (
-                      <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
-                        <td>
-                          <Button
-                            tag={Link}
-                            to={`/consultation/${consultation.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                            data-cy="entityDeleteButton"
-                            style={{ color: 'red', backgroundColor: '#F6FAFF', borderColor: '#F6FAFF' }}
-                          >
-                            {React.createElement(BiTrash, { size: '15' })}
-                          </Button>
-                        </td>
+                        <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
+                          <td>
+                            <Button
+                              tag={Link}
+                              to={`/consultation/${consultation.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                              data-cy="entityDeleteButton"
+                              style={{ color: 'red', backgroundColor: '#F6FAFF', borderColor: '#F6FAFF' }}
+                            >
+                              {React.createElement(BiTrash, { size: '15' })}
+                            </Button>
+                          </td>
 
-                        <td>
-                          <Button tag={Link} to={`/patient/${consultation.patient.id}`} color="link" size="sm">
-                            {consultation.patient.id}
-                          </Button>
-                        </td>
-                        <td>{consultation.patient.lastName.toUpperCase()}</td>
-                        <td style={{ wordBreak: 'break-all',textTransform:"capitalize" }}>{consultation.patient.firstName}</td>
-                        <td>
-                          {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="DD/MM/YYYY" /> : null}
-                        </td>
-                        <td>
-                          {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="HH:mm:ss" /> : null}
-                        </td>
-                        <td>
-                          <div
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              gap: '3px',
-                              fontSize: '9px',
-                            }}
-                          >
-                            <Button
-                              tag={Link}
-                              to={`/consultation/${consultation.id}/edit`}
-                              color="primary"
-                              size="sm"
-                              data-cy="entityEditButton"
-                            >
-                              <FontAwesomeIcon icon="pencil" /> <span className="d-none d-md-inline">Mettre à jour</span>
+                          <td>
+                            <Button tag={Link} to={`/patient/${consultation.patient.id}`} color="link" size="sm">
+                              {consultation.patient.id}
                             </Button>
-                            <Button
-                              tag={Link}
-                              to={`/consultation/list/${consultation.patient.id}?page=1&sort=id,asc`}
-                              color="dark"
-                              size="sm"
-                              data-cy="entityDetailsButton"
+                          </td>
+                          <td>{consultation.patient.lastName.toUpperCase()}</td>
+                          <td style={{ wordBreak: 'break-all', textTransform: 'capitalize' }}>{consultation.patient.firstName}</td>
+                          <td>
+                            {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="DD/MM/YYYY" /> : null}
+                          </td>
+                          <td>
+                            {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="HH:mm:ss" /> : null}
+                          </td>
+                          <td>
+                            <div
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                gap: '3px',
+                                fontSize: '9px',
+                              }}
                             >
-                              <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir sa liste</span>
-                            </Button>
-                            <Button
-                              tag={Link}
-                              to={`/prescription/new/${consultation.id}`}
-                              color="success"
-                              size="sm"
-                              data-cy="entityDetailsButton"
-                            >
-                              <FontAwesomeIcon icon="plus" /> <span className="d-none d-md-inline">Ordonnance</span>
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                              <Button
+                                tag={Link}
+                                to={`/consultation/${consultation.id}/edit`}
+                                color="primary"
+                                size="sm"
+                                data-cy="entityEditButton"
+                              >
+                                <FontAwesomeIcon icon="pencil" /> <span className="d-none d-md-inline">Mettre à jour</span>
+                              </Button>
+                              <Button
+                                tag={Link}
+                                to={`/consultation/list/${consultation.patient.id}?page=1&sort=id,asc`}
+                                color="dark"
+                                size="sm"
+                                data-cy="entityDetailsButton"
+                              >
+                                <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir sa liste</span>
+                              </Button>
+                              <Button
+                                tag={Link}
+                                to={`/prescription/new/${consultation.id}`}
+                                color="success"
+                                size="sm"
+                                data-cy="entityDetailsButton"
+                              >
+                                <FontAwesomeIcon icon="plus" /> <span className="d-none d-md-inline">Ordonnance</span>
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
                 </tbody>
               </Table>
             ) : (

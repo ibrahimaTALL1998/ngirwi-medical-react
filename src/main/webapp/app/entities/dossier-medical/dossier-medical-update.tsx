@@ -66,10 +66,12 @@ export const DossierMedicalUpdate = () => {
 
     if (isNew) {
       dispatch(createEntity(entity));
-      navigate(`/patient/${idPatient}`);
+      window.history.back();
+      // navigate(`/patient/${idPatient}`);
     } else {
       dispatch(updateEntity(entity));
-      navigate(`/patient/${idPatient}`);
+      window.history.back();
+      // navigate(`/patient/${idPatient}`);
     }
   };
 
@@ -453,7 +455,7 @@ export const DossierMedicalUpdate = () => {
             &nbsp;
             <Button
               onClick={() => {
-                confirm("Êtes-vous sur de vouloir quitter?") === true ? (window.history.back()) : (null)
+                confirm('Êtes-vous sur de vouloir quitter?') === true ? window.history.back() : null;
               }}
               id="cancel-save"
               data-cy="entityCreateCancelButton"

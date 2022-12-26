@@ -255,8 +255,8 @@ export const ConsultationPatient = () => {
                   backgroundSize: '50% 50%',
                 }}
               >
-                {consultationList.map((consultation, i) =>
-                  consultation.patient.id.toString() === idPatient ? (
+                {consultationList?.map((consultation, i) =>
+                  consultation?.patient?.id.toString() === idPatient ? (
                     <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
                       <td>
                         <Button
@@ -268,7 +268,42 @@ export const ConsultationPatient = () => {
                           {React.createElement(BiTrash, { size: '15' })}
                         </Button>
                       </td>
-
+                      {/* <td style={{ width: '19.92vw' }}>
+                        {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="DD/MM/YYYY" /> : null}
+                      </td>
+                      <td style={{ width: '19.92vw' }}>
+                        {consultation.dateTime ? <TextFormat type="date" value={consultation.dateTime} format="HH:mm:ss" /> : null}
+                      </td>
+                      <td style={{ width: '19.92vw', wordWrap: 'break-word' }}>{consultation.hypothesis}</td>
+                      <td>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '3px',
+                            fontSize: '9px',
+                          }}
+                        >
+                          <Button
+                            tag={Link}
+                            to={`/consultation/${consultation.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                            color="primary"
+                            size="sm"
+                            data-cy="entityEditButton"
+                          >
+                            <span className="d-none d-md-inline">Mettre à jour</span>
+                          </Button>
+                          <Button
+                            tag={Link}
+                            to={`/consultation/${consultation.id}/edit/${'voir'}`}
+                            color="dark"
+                            size="sm"
+                            data-cy="entityDetailsButton"
+                          >
+                            <span className="d-none d-md-inline">Voir détails</span>
+                          </Button>
+                        </div>
+                      </td> */}
                       {patients.map((patient, b) =>
                         consultation.patient.lastName === patient.lastName && consultation.patient.id === patient.id ? (
                           <>

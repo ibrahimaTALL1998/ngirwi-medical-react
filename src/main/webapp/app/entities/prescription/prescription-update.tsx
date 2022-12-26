@@ -18,8 +18,8 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { IConsultation } from 'app/shared/model/consultation.model';
 import { getEntities as getConsultations } from 'app/entities/consultation/consultation.reducer';
 import { IPrescription } from 'app/shared/model/prescription.model';
-import { getEntity, updateEntity, createEntity, reset } from './prescription.reducer';
-
+import { getEntity, updateEntity, createEntity, reset, createEntityBis } from './prescription.reducer';
+import { getEntities as getPatients } from '../patient/patient.reducer';
 //pdf
 import { Page, Text, Image, View, Document, StyleSheet, PDFDownloadLink, Font } from '@react-pdf/renderer';
 import { AccountMenu } from 'app/shared/layout/menus';
@@ -39,6 +39,7 @@ export const PrescriptionUpdate = () => {
 
   const consultations = useAppSelector(state => state.consultation.entities);
   const prescriptionEntity = useAppSelector(state => state.prescription.entity);
+  const patientList = useAppSelector(state => state.patient.entities);
   const loading = useAppSelector(state => state.prescription.loading);
   const updating = useAppSelector(state => state.prescription.updating);
   const updateSuccess = useAppSelector(state => state.prescription.updateSuccess);
@@ -62,7 +63,7 @@ export const PrescriptionUpdate = () => {
     } else {
       dispatch(getEntity(id));
     }
-
+    dispatch(getPatients({}));
     dispatch(getConsultations({}));
   }, []);
 
@@ -83,10 +84,13 @@ export const PrescriptionUpdate = () => {
       ...prescriptionEntity,
       ...values,
       consultation: consultations.find(it => it.id.toString() === values.consultation.toString()),
+      form: formValues,
     };
 
+    console.log(entity);
+
     if (isNew) {
-      dispatch(createEntity(entity));
+      dispatch(createEntityBis(entity));
     } else {
       dispatch(updateEntity(entity));
     }
@@ -95,15 +99,15 @@ export const PrescriptionUpdate = () => {
   const defaultValues = () =>
     isNew
       ? {
-        creationDate: displayDefaultDate(),
-        consultation: idConsultation,
-        author: account.login,
-      }
+          creationDate: displayDefaultDate(),
+          consultation: idConsultation,
+          author: account.lastName + ' ' + account.firstName,
+        }
       : {
-        ...prescriptionEntity,
-        creationDate: convertDateTimeFromServerToMinute(prescriptionEntity.creationDate),
-        consultation: prescriptionEntity?.consultation?.id,
-      };
+          ...prescriptionEntity,
+          creationDate: convertDateTimeFromServerToMinute(prescriptionEntity.creationDate),
+          consultation: prescriptionEntity?.consultation?.id,
+        };
 
   //info ordonance
   const [formValues, setFormValues] = useState([{ medecine: '', duration: '', frequency: '' }]);
@@ -126,10 +130,16 @@ export const PrescriptionUpdate = () => {
   let p;
   let infosPatient = () => {
     consultations.map(otherEntity =>
-      otherEntity.id.toString() === consul
-        ? // console.log(otherEntity.id+"."+otherEntity.patient.lastName)
-        (p = otherEntity.patient.lastName.toUpperCase() + ' ' + otherEntity.patient.firstName.split(' ').map(a => a.charAt(0).toUpperCase() + a.slice(1)).join(' '))
-        : console.log(otherEntity.id)
+      otherEntity?.id.toString() === consul
+        ? (p =
+            otherEntity?.patient?.lastName?.toUpperCase() +
+            ' ' +
+            otherEntity?.patient?.firstName
+              ?.split(' ')
+              .map(a => a.charAt(0).toUpperCase() + a.slice(1))
+              .join(' '))
+        : //console.log(otherEntity.id)
+          null
     );
 
     return p;
@@ -140,15 +150,16 @@ export const PrescriptionUpdate = () => {
   };
 
   Font.register({
-    family: 'Poppins', fonts: [
-      { src: 'https://fonts.cdnfonts.com/s/16009/Poppins-Bold.woff', fontWeight: "bold" },
-      { src: 'https://fonts.cdnfonts.com/s/16009/Poppins-Medium.woff', fontWeight: "medium" },
-      { src: 'https://fonts.cdnfonts.com/s/16009/Poppins-Medium.woff', fontWeight: "thin" }
-    ]
+    family: 'Poppins',
+    fonts: [
+      { src: 'https://fonts.cdnfonts.com/s/16009/Poppins-Bold.woff', fontWeight: 'bold' },
+      { src: 'https://fonts.cdnfonts.com/s/16009/Poppins-Medium.woff', fontWeight: 'medium' },
+      { src: 'https://fonts.cdnfonts.com/s/16009/Poppins-Medium.woff', fontWeight: 'thin' },
+    ],
   });
   const doc = (
     <Document>
-      <Page style={{ display: 'flex', flexDirection: 'column', fontFamily: "Poppins" }}>
+      <Page style={{ display: 'flex', flexDirection: 'column', fontFamily: 'Poppins' }}>
         <View
           style={{
             display: 'flex',
@@ -177,22 +188,34 @@ export const PrescriptionUpdate = () => {
         <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', marginTop: '15px' }}>
           <Text style={{ fontSize: '35px', fontWeight: 'extrabold', marginBottom: '9px' }}>Ordonnance Médicale</Text>
 
-          <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-            <View style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginRight: "10px" }}>
+          <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: '10px' }}>
+              <Text style={{ fontSize: '18px', marginBottom: '9px' }}>Fait à: Dakar Le:</Text>
+              <Text style={{ fontSize: '18px', marginBottom: '7px' }}>Nom & Prénom(s):</Text>
+            </View>
+            <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
               <Text style={{ fontSize: '18px', marginBottom: '9px' }}>
-                Fait à: Dakar Le:
+                {convertDateTimeFromServerToDate(displayDefaultDateTime()) +
+                  ' à ' +
+                  convertDateTimeFromServerToHours(displayDefaultDateTime())}
               </Text>
               <Text style={{ fontSize: '18px', marginBottom: '7px' }}>
-                Nom & Prénom(s):
+                {prescriptionEntity.consultation
+                  ? prescriptionEntity?.consultation?.patient?.lastName.toUpperCase() +
+                    ' ' +
+                    prescriptionEntity?.consultation?.patient.firstName
+                      .split(' ')
+                      .map(a => a.charAt(0).toUpperCase() + a.slice(1))
+                      .join(' ')
+                  : p}{' '}
               </Text>
-            </View>
-            <View style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-              <Text style={{ fontSize: '18px', marginBottom: '9px' }}>{convertDateTimeFromServerToDate(displayDefaultDateTime()) + ' à ' + convertDateTimeFromServerToHours(displayDefaultDateTime())}</Text>
-              <Text style={{ fontSize: '18px', marginBottom: '7px' }}>{prescriptionEntity.consultation ? prescriptionEntity?.consultation?.patient?.lastName.toUpperCase() + " " + prescriptionEntity?.consultation?.patient.firstName.split(' ').map(a => a.charAt(0).toUpperCase() + a.slice(1)).join(' ') : p}{' '}</Text>
             </View>
           </View>
         </View>
-        <Image src="content/images/logo-medecin-240x300.png" style={{ position: "absolute", top: "335", left: "15vw", zIndex: "1", width: "70vw", height: "40vh", opacity: 0.1 }} />
+        <Image
+          src="content/images/logo-medecin-240x300.png"
+          style={{ position: 'absolute', top: '335', left: '15vw', zIndex: '1', width: '70vw', height: '40vh', opacity: 0.1 }}
+        />
         <View
           style={{
             display: 'flex',
@@ -202,7 +225,8 @@ export const PrescriptionUpdate = () => {
             border: '3px solid silver',
             marginLeft: '10vw',
             marginRight: '5vw',
-            width: '80vw', zIndex: "0"
+            width: '80vw',
+            zIndex: '0',
           }}
         >
           <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -296,13 +320,21 @@ export const PrescriptionUpdate = () => {
             ) : null
           )}
         </View>
-        <View style={{ borderTop: "2px solid green", position: "absolute", top: "93vh", width: "100vw", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "10px", paddingTop: "6px" }}>
-          <Text style={{ fontSize: "14px" }}>
-            Propulsé par l&apos;entreprise NGIRWI S.A.R.L
-          </Text>
-          <Text style={{ fontSize: "12px" }}>
-            www.ngirwisarl.com
-          </Text>
+        <View
+          style={{
+            borderTop: '2px solid green',
+            position: 'absolute',
+            top: '93vh',
+            width: '100vw',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            marginBottom: '10px',
+            paddingTop: '6px',
+          }}
+        >
+          <Text style={{ fontSize: '14px' }}>Propulsé par l&apos;entreprise NGIRWI S.A.R.L</Text>
+          <Text style={{ fontSize: '12px' }}>www.ngirwisarl.com</Text>
         </View>
       </Page>
     </Document>
@@ -381,13 +413,29 @@ export const PrescriptionUpdate = () => {
               {isNew ? 'Nouvelle ordonnance ' : 'Ordonnance '}patient
             </span>
             <div style={{ display: 'flex', flexDirection: 'row', gap: '3vh' }}>
-              <PDFDownloadLink style={{ backgroundColor: "transparent", textDecoration: "none" }} document={doc} fileName={`ordonnance_${account.login}_${JSON.stringify(displayDefaultDateTime())}`}>
+              <PDFDownloadLink
+                style={{ backgroundColor: 'transparent', textDecoration: 'none' }}
+                document={doc}
+                fileName={`ordonnance_${account.login}_${JSON.stringify(displayDefaultDateTime())}`}
+              >
                 {({ loading }) =>
                   loading ? (
                     <span style={{ cursor: 'pointer', fontWeight: '900', color: '#B3C0D3', textAlign: 'center', marginRight: '2vw' }}>
                       Préparation...
-                    </span>) : (
-                    <span style={{ cursor: 'pointer', fontWeight: '900', color: '#B3C0D3', textAlign: 'center', display: "flex", flexDirection: "row", alignItems: "center", gap: "3px" }}>
+                    </span>
+                  ) : (
+                    <span
+                      style={{
+                        cursor: 'pointer',
+                        fontWeight: '900',
+                        color: '#B3C0D3',
+                        textAlign: 'center',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: '3px',
+                      }}
+                    >
                       {React.createElement(BiDownload, { size: '23' })} <span>Télécharger</span>
                     </span>
                   )
@@ -423,7 +471,7 @@ export const PrescriptionUpdate = () => {
               id="prescription-creationDate"
               name="creationDate"
               data-cy="creationDate"
-              type={isNew ? "datetime-local" : "datetime"}
+              type={isNew ? 'datetime-local' : 'datetime'}
               placeholder="YYYY-MM-DD HH:mm"
             />
 
@@ -447,12 +495,16 @@ export const PrescriptionUpdate = () => {
             >
               <option value="" key="0" />
               {consultations
-                ? consultations.map(otherEntity => (
-                  <option value={otherEntity.id} key={otherEntity.id}>
-                    Faite le {convertDateTimeFromServerToDate(otherEntity.dateTime)} à {otherEntity.patient.lastName.toUpperCase()}{' '}
-                    {otherEntity.patient.firstName.charAt(0).toUpperCase() + otherEntity.patient.firstName.slice(1)}
-                  </option>
-                ))
+                ? consultations.map(otherEntity =>
+                    patientList.map(patient =>
+                      patient.id === otherEntity?.patient?.id ? (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          Faite le {convertDateTimeFromServerToDate(otherEntity?.dateTime)} à {patient?.lastName?.toUpperCase()}{' '}
+                          {patient?.firstName?.charAt(0).toUpperCase() + patient?.firstName?.slice(1)}
+                        </option>
+                      ) : null
+                    )
+                  )
                 : null}
             </ValidatedField>
             {/* <ValidatedField style={isNew ? { borderRadius: "25px", borderColor: "#CBDCF7" } : { borderRadius: "25px", backgroundColor: "#A9B7CD", borderColor: "#CBDCF7", color: "#F6FAFF" }} disabled={isNew ? false : true} id="bill-patient" name="patient" data-cy="patient" label="Patient" type="select">
@@ -570,9 +622,7 @@ export const PrescriptionUpdate = () => {
               style={{ borderRadius: '25px', flex: '1 1 100%', marginTop: '2vh' }}
               id="cancel-save"
               data-cy="entityCreateCancelButton"
-              onClick={() => 
-                confirm("Êtes-vous sur de vouloir quitter?") === true ? (window.history.back()) : (null)
-              }
+              onClick={() => (confirm('Êtes-vous sur de vouloir quitter?') === true ? window.history.back() : null)}
               replace
               color="danger"
             >

@@ -3,10 +3,9 @@ import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/t
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
-import { IPrescription, defaultValue } from 'app/shared/model/prescription.model';
-import { IPrescriptionForm } from 'app/shared/model/prescriptionForm.model';
+import { IHospitalisation, defaultValue } from 'app/shared/model/hospitalisation.model';
 
-const initialState: EntityState<IPrescription> = {
+const initialState: EntityState<IHospitalisation> = {
   loading: false,
   errorMessage: null,
   entities: [],
@@ -16,38 +15,28 @@ const initialState: EntityState<IPrescription> = {
   updateSuccess: false,
 };
 
-const apiUrl = 'api/prescriptions';
+const apiUrl = 'api/hospitalisations';
 
 // Actions
 
-export const getEntities = createAsyncThunk('prescription/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
+export const getEntities = createAsyncThunk('hospitalisation/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&` : '?'}cacheBuster=${new Date().getTime()}`;
-  return axios.get<IPrescription[]>(requestUrl);
+  return axios.get<IHospitalisation[]>(requestUrl);
 });
 
 export const getEntity = createAsyncThunk(
-  'prescription/fetch_entity',
+  'hospitalisation/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`;
-    return axios.get<IPrescription>(requestUrl);
+    return axios.get<IHospitalisation>(requestUrl);
   },
   { serializeError: serializeAxiosError }
 );
 
 export const createEntity = createAsyncThunk(
-  'prescription/create_entity',
-  async (entity: IPrescription, thunkAPI) => {
-    const result = await axios.post<IPrescription>(apiUrl, cleanEntity(entity));
-    thunkAPI.dispatch(getEntities({}));
-    return result;
-  },
-  { serializeError: serializeAxiosError }
-);
-
-export const createEntityBis = createAsyncThunk(
-  'prescription/create_entity',
-  async (entity: IPrescriptionForm, thunkAPI) => {
-    const result = await axios.post<IPrescriptionForm>(apiUrl + 'bis', cleanEntity(entity));
+  'hospitalisation/create_entity',
+  async (entity: IHospitalisation, thunkAPI) => {
+    const result = await axios.post<IHospitalisation>(apiUrl, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -55,9 +44,9 @@ export const createEntityBis = createAsyncThunk(
 );
 
 export const updateEntity = createAsyncThunk(
-  'prescription/update_entity',
-  async (entity: IPrescription, thunkAPI) => {
-    const result = await axios.put<IPrescription>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
+  'hospitalisation/update_entity',
+  async (entity: IHospitalisation, thunkAPI) => {
+    const result = await axios.put<IHospitalisation>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -65,9 +54,9 @@ export const updateEntity = createAsyncThunk(
 );
 
 export const partialUpdateEntity = createAsyncThunk(
-  'prescription/partial_update_entity',
-  async (entity: IPrescription, thunkAPI) => {
-    const result = await axios.patch<IPrescription>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
+  'hospitalisation/partial_update_entity',
+  async (entity: IHospitalisation, thunkAPI) => {
+    const result = await axios.patch<IHospitalisation>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -75,10 +64,10 @@ export const partialUpdateEntity = createAsyncThunk(
 );
 
 export const deleteEntity = createAsyncThunk(
-  'prescription/delete_entity',
+  'hospitalisation/delete_entity',
   async (id: string | number, thunkAPI) => {
     const requestUrl = `${apiUrl}/${id}`;
-    const result = await axios.delete<IPrescription>(requestUrl);
+    const result = await axios.delete<IHospitalisation>(requestUrl);
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -87,8 +76,8 @@ export const deleteEntity = createAsyncThunk(
 
 // slice
 
-export const PrescriptionSlice = createEntitySlice({
-  name: 'prescription',
+export const HospitalisationSlice = createEntitySlice({
+  name: 'hospitalisation',
   initialState,
   extraReducers(builder) {
     builder
@@ -130,7 +119,7 @@ export const PrescriptionSlice = createEntitySlice({
   },
 });
 
-export const { reset } = PrescriptionSlice.actions;
+export const { reset } = HospitalisationSlice.actions;
 
 // Reducer
-export default PrescriptionSlice.reducer;
+export default HospitalisationSlice.reducer;

@@ -8,7 +8,7 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntity } from './patient.reducer';
-import { getPatient } from '../dossier-medical/dossier-medical.reducer';
+import { getPatient, reset } from '../dossier-medical/dossier-medical.reducer';
 import Header from 'app/shared/layout/header/header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -19,13 +19,21 @@ export const PatientDetail = () => {
   const [hide, setHide] = useState(true);
   const [hidehos, setHidehos] = useState(true);
   let showhos = () => {
-    if (hidehos === true) { setHidehos(false) }
-    if (hidehos === false) { setHidehos(true) }
-  }
+    if (hidehos === true) {
+      setHidehos(false);
+    }
+    if (hidehos === false) {
+      setHidehos(true);
+    }
+  };
   let show = () => {
-    if (hide === true) { setHide(false) }
-    if (hide === false) { setHide(true) }
-  }
+    if (hide === true) {
+      setHide(false);
+    }
+    if (hide === false) {
+      setHide(true);
+    }
+  };
   function changeColor(e) {
     e.target.style.color = '#0075FF';
     e.target.style.backgroundColor = '#FFFFFF';
@@ -35,13 +43,23 @@ export const PatientDetail = () => {
     e.target.style.color = '#FFFFFF';
   }
 
+  console.log(id);
   useEffect(() => {
+    dispatch(reset());
     dispatch(getEntity(id));
     dispatch(getPatient(id));
   }, []);
 
   const patientEntity = useAppSelector(state => state.patient.entity);
   const dossierMedicalEntity = useAppSelector(state => state.dossierMedical.entity);
+
+  const verifDossierExist = () => {
+    let dossierExist = false;
+    if (dossierMedicalEntity && Object.keys(dossierMedicalEntity).length > 0) {
+      dossierExist = true;
+    }
+    return dossierExist;
+  };
 
   return (
     <div
@@ -70,7 +88,8 @@ export const PatientDetail = () => {
             borderRadius: '20px',
             backgroundColor: '#11485C',
             marginLeft: '25%',
-            textAlign: 'center', justifyContent: "center",
+            textAlign: 'center',
+            justifyContent: 'center',
             color: 'white',
             boxShadow: '0px 10px 50px rgba(138, 161, 203, 0.23)',
           }}
@@ -101,7 +120,8 @@ export const PatientDetail = () => {
               borderRadius: '15px',
               borderColor: '#72C9D8',
               borderTopRightRadius: '0px',
-              borderBottomRightRadius: '0px', justifyContent: "center"
+              borderBottomRightRadius: '0px',
+              justifyContent: 'center',
             }}
           >
             <div
@@ -151,7 +171,7 @@ export const PatientDetail = () => {
               >
                 Nom:{' '}
               </span>
-              <span style={{ textTransform: "uppercase" }}>{patientEntity.lastName}</span>
+              <span style={{ textTransform: 'uppercase' }}>{patientEntity.lastName}</span>
             </div>
             <div>
               <span
@@ -161,7 +181,7 @@ export const PatientDetail = () => {
               >
                 Prénom:{' '}
               </span>
-              <span style={{ textTransform: "capitalize" }}>{patientEntity.firstName}</span>
+              <span style={{ textTransform: 'capitalize' }}>{patientEntity.firstName}</span>
             </div>
             <div>
               <span
@@ -256,7 +276,7 @@ export const PatientDetail = () => {
               </span>
             </div>
           </Card>
-          <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
             <div
               style={{
                 display: 'flex',
@@ -269,9 +289,14 @@ export const PatientDetail = () => {
                 onMouseOver={changeColor}
                 onMouseLeave={setColor}
                 tag={Link}
+                // to={
+                //   Object.keys(dossierMedicalEntity).length > 0
+                //     ? `/dossier-medical/${dossierMedicalEntity?.id}/edit/${'voir'}`
+                //     : `/dossier-medical/new/${patientEntity?.id}`
+                // }
                 to={
-                  Object.keys(dossierMedicalEntity).length > 0
-                    ? `/dossier-medical/${dossierMedicalEntity?.id}/edit/${'voir'}`
+                  verifDossierExist()
+                    ? `/dossier-medical/${dossierMedicalEntity?.id}/${patientEntity?.id}`
                     : `/dossier-medical/new/${patientEntity?.id}`
                 }
                 style={{
@@ -301,7 +326,8 @@ export const PatientDetail = () => {
                   borderRadius: '4px',
                   fontFamily: 'Ubuntu',
                   textAlign: 'center',
-                   justifyContent: "center",wordBreak:"break-word"
+                  justifyContent: 'center',
+                  wordBreak: 'break-word',
                 }}
               >
                 Nouvelle consultation
@@ -319,17 +345,17 @@ export const PatientDetail = () => {
                   width: '25vh',
                   height: '9vh',
                   borderRadius: '4px',
-                  fontFamily: 'Ubuntu', justifyContent: "center",wordBreak:"break-word"
+                  fontFamily: 'Ubuntu',
+                  justifyContent: 'center',
+                  wordBreak: 'break-word',
                 }}
               >
                 <span>Voir consultations faites</span>
-
               </Button>
               <Button
                 hidden={!hidehos}
                 onMouseOver={changeColor}
                 onMouseLeave={setColor}
-
                 href={`/hospitalisation/new/${patientEntity.id}`}
                 style={{
                   borderColor: '#0075FF',
@@ -338,7 +364,8 @@ export const PatientDetail = () => {
                   width: '25vh',
                   height: '9vh',
                   borderRadius: '4px',
-                  fontFamily: 'Ubuntu',wordBreak:"break-word"
+                  fontFamily: 'Ubuntu',
+                  wordBreak: 'break-word',
                 }}
               >
                 Démarrer hospitalisation
@@ -355,18 +382,36 @@ export const PatientDetail = () => {
                   width: '25vh',
                   height: '9vh',
                   borderRadius: '4px',
-                  fontFamily: 'Ubuntu',wordBreak:"break-word"
+                  fontFamily: 'Ubuntu',
+                  wordBreak: 'break-word',
                 }}
               >
                 Voir hospitalisations faites
               </Button>
             </div>
-            <div style={{ backgroundColor: "", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "10vh", marginTop: "15vh" }}>
-              <FontAwesomeIcon onClick={() => show()} style={{ marginLeft: '15px', color: "#0075FF", height: "5vh", cursor: "pointer", marginTop: "2.5vh" }} icon="sort" />
-              <FontAwesomeIcon onClick={() => showhos()} style={{ marginLeft: '15px', color: "#0075FF", height: "5vh", cursor: "pointer" }} icon="sort" />
+            <div
+              style={{
+                backgroundColor: '',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '10vh',
+                marginTop: '15vh',
+              }}
+            >
+              <FontAwesomeIcon
+                onClick={() => show()}
+                style={{ marginLeft: '15px', color: '#0075FF', height: '5vh', cursor: 'pointer', marginTop: '2.5vh' }}
+                icon="sort"
+              />
+              <FontAwesomeIcon
+                onClick={() => showhos()}
+                style={{ marginLeft: '15px', color: '#0075FF', height: '5vh', cursor: 'pointer' }}
+                icon="sort"
+              />
             </div>
           </div>
-
         </Card>
 
         <Button

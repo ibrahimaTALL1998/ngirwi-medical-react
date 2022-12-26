@@ -1,0 +1,33 @@
+{
+  "changelogDate": "20221225165612",
+  "fields": [
+    {
+      "fieldName": "entryDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "releaseDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "doctorName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "HospitalisationStatus",
+      "fieldValues": "STARTED,ONGOING,DONE"
+    }
+  ],
+  "name": "Hospitalisation",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "patient",
+      "relationshipName": "patient",
+      "relationshipType": "many-to-one"
+    }
+  ]
+}

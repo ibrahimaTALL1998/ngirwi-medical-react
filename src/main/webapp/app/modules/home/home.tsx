@@ -393,14 +393,14 @@ export const Home = () => {
               {patientList && patientList.length > 0 ? (
                 <Table responsive style={{ borderCollapse: 'separate', borderSpacing: '0 5px' }}>
                   <thead>
-                    <tr style={{ paddingLeft: '5%', color: '#747678' ,}}>
+                    <tr style={{ paddingLeft: '5%', color: '#747678' }}>
                       <th
                         style={{
                           fontSize: '13px',
                           position: 'sticky',
                           top: '0',
                           backgroundColor: 'white',
-                          textAlign:"center"
+                          textAlign: 'center',
                         }}
                       >
                         Nom
@@ -411,7 +411,7 @@ export const Home = () => {
                           position: 'sticky',
                           top: '0',
                           backgroundColor: 'white',
-                          textAlign:"center"
+                          textAlign: 'center',
                         }}
                       >
                         Prénom
@@ -422,7 +422,7 @@ export const Home = () => {
                           position: 'sticky',
                           top: '0',
                           backgroundColor: 'white',
-                          textAlign:"center"
+                          textAlign: 'center',
                         }}
                       >
                         Sexe
@@ -433,7 +433,7 @@ export const Home = () => {
                           position: 'sticky',
                           top: '0',
                           backgroundColor: 'white',
-                          textAlign:"center"
+                          textAlign: 'center',
                         }}
                       >
                         Date d&apos;ajout
@@ -445,7 +445,7 @@ export const Home = () => {
                           position: 'sticky',
                           top: '0',
                           backgroundColor: 'white',
-                          textAlign:"center"
+                          textAlign: 'center',
                         }}
                       >
                         Matricule
@@ -457,28 +457,26 @@ export const Home = () => {
                       backgroundColor: '#F6FAFF',
                       border: '1px solid #F6FAFF',
                       borderRadius: '15px 15px 0px 15px',
-                      textAlign: 'center',fontSize:"14px"
+                      textAlign: 'center',
+                      fontSize: '14px',
                     }}
                   >
                     {patientList.map((patient, i) => {
-                      // eslint-disable-next-line no-console
-                      console.log(patient);
-                      return (
-                        i < 4 ?
-
-                          <tr key={`entity-${i}`} data-cy="entityTable">
-                            <td>{patient.lastName.toUpperCase()}</td>
-                            <td>{patient.firstName.split(' ').map(a => a.charAt(0).toUpperCase()+a.slice(1)).join(' ')}</td>
-                            <td>{translateGender(patient.gender)}</td>
-                            <td>
-                              {patient.dateCreated ? (
-                                <TextFormat type="date" value={patient.dateCreated} format="DD/MM/YYYY" />
-                              ) : null}
-                            </td>
-                            {/* <td>{String(patient.dateCreated).slice(0, -1)}</td> */}
-                            <td>{patient.cni}</td>
-                          </tr>
-                          : null)
+                      return i < 4 ? (
+                        <tr key={`entity-${i}`} data-cy="entityTable">
+                          <td>{patient.lastName.toUpperCase()}</td>
+                          <td>
+                            {patient.firstName
+                              .split(' ')
+                              .map(a => a.charAt(0).toUpperCase() + a.slice(1))
+                              .join(' ')}
+                          </td>
+                          <td>{translateGender(patient.gender)}</td>
+                          <td>{patient.dateCreated ? <TextFormat type="date" value={patient.dateCreated} format="DD/MM/YYYY" /> : null}</td>
+                          {/* <td>{String(patient.dateCreated).slice(0, -1)}</td> */}
+                          <td>{patient.cni}</td>
+                        </tr>
+                      ) : null;
                     })}
                   </tbody>
                 </Table>

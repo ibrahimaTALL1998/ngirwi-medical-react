@@ -16,194 +16,189 @@ export const DossierMedicalDetail = () => {
 
   const { id } = useParams<'id'>();
 
- 
-
   const dossierMedicalEntity = useAppSelector(state => state.dossierMedical.entity);
   const patientEntity = useAppSelector(state => state.patient.entity);
   useEffect(() => {
-    // console.log(dispatch(getPatient(id)).unwrap())
-    if (dispatch(getPatient(id)).arg < 1){
-      navigate(`/dossier-medical/new/${id}`)
-    //  <Navigate to={`/dossier-medical/new/${id}`}/>
+    if (dispatch(getPatient(id)).arg < 1) {
+      navigate(`/dossier-medical/new/${id}`);
     }
   }, []);
 
   return (
     <div
       style={{
-        paddingLeft:"16vw",
-        paddingTop:"1%",
-        fontFamily:"Mulish",
-        fontWeight:"900",
-        display:"flex",
-        flexDirection:"column"
+        paddingLeft: '16vw',
+        paddingTop: '1%',
+        fontFamily: 'Mulish',
+        fontWeight: '900',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      
       <Header pageName="Dossier médical" />
       <div
         style={{
-          display:"flex",
-          flexDirection:"column",
-          gap:"5vh",
-          marginTop:"9.5vh"
-        }}        
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '5vh',
+          marginTop: '9.5vh',
+        }}
       >
         <Card
           style={{
-            height:"6.28vh",
-            width:"33.38vw",
-            borderRadius:"20px",
-            backgroundColor:"#11485C",
-            marginLeft:"25%",
-            justifyContent:"center",
-            textAlign:"center",
-            color:"white",
-            boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
-            }}
+            height: '6.28vh',
+            width: '33.38vw',
+            borderRadius: '20px',
+            backgroundColor: '#11485C',
+            marginLeft: '25%',
+            justifyContent: 'center',
+            textAlign: 'center',
+            color: 'white',
+            boxShadow: '0px 10px 50px rgba(138, 161, 203, 0.23)',
+          }}
         >
-          <span >Dossier médical</span>  
+          <span>Dossier médical</span>
         </Card>
-
 
         <Card
           style={{
-            marginLeft:"4%",
-            height:"55vh",
-            width:"70vw",
-            marginRight:"5%",
-            boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
-            borderRadius:"15px",
-            display:"flex",
-            flexDirection:"row",
-            alignItems:"flex-start",
-            justifyContent:"center",
-            paddingTop:"5%"
+            marginLeft: '4%',
+            height: '55vh',
+            width: '70vw',
+            marginRight: '5%',
+            boxShadow: '0px 10px 50px rgba(138, 161, 203, 0.23)',
+            borderRadius: '15px',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            paddingTop: '5%',
           }}
         >
           <Card
             style={{
-              height:"55%",
-              width:"22%",
-              backgroundColor:"#72C9D8",
-              borderRadius:"15px",
-              borderColor:"#72C9D8",
-              borderTopRightRadius:"0px",
-              borderBottomRightRadius:"0px"
+              height: '55%',
+              width: '22%',
+              backgroundColor: '#72C9D8',
+              borderRadius: '15px',
+              borderColor: '#72C9D8',
+              borderTopRightRadius: '0px',
+              borderBottomRightRadius: '0px',
             }}
           >
-            <div 
+            <div
               style={{
-                display:"flex",
-                flexDirection:"column",
-                alignItems:"center",
-                justifyContent:"center",
-                paddingTop:"30%"
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingTop: '30%',
               }}
             >
               <span>Enregistré le:</span>
-              <span 
+              <span
                 style={{
-                  color:"#006CEB",
-                  fontFamily:"Mulish",
-                  fontSize:"15px"
+                  color: '#006CEB',
+                  fontFamily: 'Mulish',
+                  fontSize: '15px',
                 }}
               >
-                {dossierMedicalEntity.dateCreated ? <TextFormat value={dossierMedicalEntity.dateCreated} type="date" format={APP_DATE_FORMAT} /> : null}
+                {dossierMedicalEntity.dateCreated ? (
+                  <TextFormat value={dossierMedicalEntity.dateCreated} type="date" format={APP_DATE_FORMAT} />
+                ) : null}
               </span>
             </div>
           </Card>
 
-
           <Card
             style={{
-              height:"90%",
-              width:"40%",
-              borderRadius:"15px",
-              borderTopLeftRadius:"0px",
-              marginRight:"8%",
-              backgroundColor:"#F6FAFF",
-              borderColor:"#F6FAFF",
-              display:"flex",
-              flexDirection:"column",
-              justifyContent:"center",
-              alignItems:"center",
-              fontSize:"20px",
-              fontWeight:"bold",
-              fontFamily:"Mulish"
+              height: '90%',
+              width: '40%',
+              borderRadius: '15px',
+              borderTopLeftRadius: '0px',
+              marginRight: '8%',
+              backgroundColor: '#F6FAFF',
+              borderColor: '#F6FAFF',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              fontSize: '20px',
+              fontWeight: 'bold',
+              fontFamily: 'Mulish',
             }}
           >
-              <div style={{wordBreak:"break-all"}}>
-                <span
-                  style={{
-                    color:"#A9B7CD",
-                  }}
-                >Nom du patient: </span>
-                <span>
-                  {dossierMedicalEntity.patient? dossierMedicalEntity.patient.lastName:" "}  
-                </span>
-              </div>
-              <div style={{wordBreak:"break-all"}}>
-                <span
-                  style={{
-                    color:"#A9B7CD",
-                  }}
-                >Prénom du patient: </span>
-                <span>
-                  {dossierMedicalEntity.patient? dossierMedicalEntity.patient.firstName:" "}  
-                </span>
-              </div>
-              <div style={{wordBreak:"break-all"}}>
-                <span
-                  style={{
-                    color:"#A9B7CD",
-                  }}
-                >Motif Consultation: </span>
-                <span>
-                {dossierMedicalEntity.motifConsultation}  
-                </span>
-              </div>
-              <div style={{wordBreak:"break-all"}}>
-                <span
-                  style={{
-                    color:"#A9B7CD",
-                  }}
-                >Histoire de la maladie: </span>
-                <span style={{}}>
-                  {dossierMedicalEntity.histoireMaladie}
-                </span>
-              </div>
-              <div style={{wordBreak:"break-all"}}>
-                <span
-                  style={{
-                    color:"#A9B7CD"
-                  }}
-                >Antécédants personnels: </span>
-                <span>
-                {dossierMedicalEntity.antecedantsPersonnels}  
-                </span>
-              </div>
-              <div style={{wordBreak:"break-all"}}>
-                <span
-                  style={{
-                    color:"#A9B7CD"
-                  }}
-                >Antécédants chirurgicaux: </span>
-                <span>
-                 {dossierMedicalEntity.antecedantsChirurgicaux}  
-                </span>
-              </div>
-              <div style={{wordBreak:"break-all"}}>
-                <span
-                  style={{
-                    color:"#A9B7CD"
-                  }}
-                >Antécédants familiaux: </span>
-                <span>
-                  {dossierMedicalEntity.antecedantsFamiliaux}  
-                </span>
-              </div>
-              {/* <div>
+            <div style={{ wordBreak: 'break-all' }}>
+              <span
+                style={{
+                  color: '#A9B7CD',
+                }}
+              >
+                Nom du patient:{' '}
+              </span>
+              <span>{dossierMedicalEntity.patient ? dossierMedicalEntity.patient.lastName : ' '}</span>
+            </div>
+            <div style={{ wordBreak: 'break-all' }}>
+              <span
+                style={{
+                  color: '#A9B7CD',
+                }}
+              >
+                Prénom du patient:{' '}
+              </span>
+              <span>{dossierMedicalEntity.patient ? dossierMedicalEntity.patient.firstName : ' '}</span>
+            </div>
+            <div style={{ wordBreak: 'break-all' }}>
+              <span
+                style={{
+                  color: '#A9B7CD',
+                }}
+              >
+                Motif Consultation:{' '}
+              </span>
+              <span>{dossierMedicalEntity.motifConsultation}</span>
+            </div>
+            <div style={{ wordBreak: 'break-all' }}>
+              <span
+                style={{
+                  color: '#A9B7CD',
+                }}
+              >
+                Histoire de la maladie:{' '}
+              </span>
+              <span style={{}}>{dossierMedicalEntity.histoireMaladie}</span>
+            </div>
+            <div style={{ wordBreak: 'break-all' }}>
+              <span
+                style={{
+                  color: '#A9B7CD',
+                }}
+              >
+                Antécédants personnels:{' '}
+              </span>
+              <span>{dossierMedicalEntity.antecedantsPersonnels}</span>
+            </div>
+            <div style={{ wordBreak: 'break-all' }}>
+              <span
+                style={{
+                  color: '#A9B7CD',
+                }}
+              >
+                Antécédants chirurgicaux:{' '}
+              </span>
+              <span>{dossierMedicalEntity.antecedantsChirurgicaux}</span>
+            </div>
+            <div style={{ wordBreak: 'break-all' }}>
+              <span
+                style={{
+                  color: '#A9B7CD',
+                }}
+              >
+                Antécédants familiaux:{' '}
+              </span>
+              <span>{dossierMedicalEntity.antecedantsFamiliaux}</span>
+            </div>
+            {/* <div>
                 <span
                   style={{
                     color:"#A9B7CD"
@@ -245,28 +240,27 @@ export const DossierMedicalDetail = () => {
               </div> */}
           </Card>
 
-
           <div
             style={{
-              display:"flex",
-              flexDirection:"column",
-              gap:"5vh",
-              marginTop:"3vh"
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '5vh',
+              marginTop: '3vh',
             }}
           >
             <Button
-            tag={Link}
-              to={`/dossier-medical/${dossierMedicalEntity?.id}/edit/${"voir"}`}
+              tag={Link}
+              to={`/dossier-medical/${dossierMedicalEntity?.id}/edit/${'voir'}`}
               style={{
-                borderColor:"#0075FF",
-                backgroundColor:"#0075FF",
-                color:"#FFFFFF",
-                width:"25vh",
-                height:"8vh",
-                borderRadius:"4px",
-                fontFamily:"Ubuntu",
-                justifyContent:"center",
-                textAlign:"center"
+                borderColor: '#0075FF',
+                backgroundColor: '#0075FF',
+                color: '#FFFFFF',
+                width: '25vh',
+                height: '8vh',
+                borderRadius: '4px',
+                fontFamily: 'Ubuntu',
+                justifyContent: 'center',
+                textAlign: 'center',
               }}
             >
               Voir détails
@@ -274,15 +268,15 @@ export const DossierMedicalDetail = () => {
             <Button
               href={`/dossier-medical/${dossierMedicalEntity?.id}/edit`}
               style={{
-                borderColor:"#0075FF",
-                backgroundColor:"#0075FF",
-                color:"#FFFFFF",
-                width:"25vh",
-                height:"8vh",
-                borderRadius:"4px",
-                fontFamily:"Ubuntu",
-                justifyContent:"center",
-                textAlign:"center"
+                borderColor: '#0075FF',
+                backgroundColor: '#0075FF',
+                color: '#FFFFFF',
+                width: '25vh',
+                height: '8vh',
+                borderRadius: '4px',
+                fontFamily: 'Ubuntu',
+                justifyContent: 'center',
+                textAlign: 'center',
               }}
             >
               Editer dossier
@@ -305,15 +299,19 @@ export const DossierMedicalDetail = () => {
           </div>
         </Card>
 
-
-        <Button  id="cancel-save" data-cy="entityCreateCancelButton" onClick={()=>window.history.back() }  replace color="info"
+        <Button
+          id="cancel-save"
+          data-cy="entityCreateCancelButton"
+          onClick={() => window.history.back()}
+          replace
+          color="info"
           style={{
-            marginLeft:"7%",
-            width:"66vw",
-            borderRadius:"25px",
-            color:"white",
-            backgroundColor:"#EC4747",
-            borderColor:"#EC4747",
+            marginLeft: '7%',
+            width: '66vw',
+            borderRadius: '25px',
+            color: 'white',
+            backgroundColor: '#EC4747',
+            borderColor: '#EC4747',
           }}
         >
           <span className="d-none d-md-inline">Retour</span>
