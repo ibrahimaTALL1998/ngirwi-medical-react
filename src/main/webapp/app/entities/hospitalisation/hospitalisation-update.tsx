@@ -611,29 +611,52 @@ export const HospitalisationUpdate = () => {
                       width: '21.33vw',
                     }}
                   />
-                  <ValidatedField
-                    disabled={idEdit === 'voir' || isNew ? true : false}
-                    label="Classe de gravité(I/II/III)"
-                    id="hospitalisation-gravity"
-                    name="gravityClass"
-                    data-cy="gravityClass"
-                    type="select"
-                    onChange={a => handleChange(i, a)}
-                    validate={{
-                      required: { value: true, message: 'Ce champ est obligatoire.' },
-                    }}
-                    style={{
-                      borderRadius: '25px',
-                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
-                      borderColor: '#CBDCF7',
-                      color: idEdit === 'voir' ? '#F6FAFF' : 'black',
-                      width: '21.33vw',
-                    }}
-                  >
-                    <option value={'I'}>I</option>
-                    <option value={'II'}>II</option>
-                    <option value={'III'}>III</option>
-                  </ValidatedField>
+                  {isNew ? (
+                    <ValidatedField
+                      disabled={idEdit === 'voir' || isNew ? true : false}
+                      label="Classe de gravité(I/II/III)"
+                      id="hospitalisation-gravity"
+                      name="gravityClass"
+                      data-cy="gravityClass"
+                      type="select"
+                      onChange={a => handleChange(i, a)}
+                      validate={{
+                        required: { value: true, message: 'Ce champ est obligatoire.' },
+                      }}
+                      style={{
+                        borderRadius: '25px',
+                        backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                        borderColor: '#CBDCF7',
+                        color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+                        width: '21.33vw',
+                      }}
+                    >
+                      <option value={'I'}>I</option>
+                      <option value={'II'}>II</option>
+                      <option value={'III'}>III</option>
+                    </ValidatedField>
+                  ) : (
+                    <ValidatedField
+                      disabled={idEdit === 'voir' || isNew ? true : false}
+                      label="Classe de gravité(I/II/III)"
+                      id="hospitalisation-gravity"
+                      name="gravityClass"
+                      data-cy="gravityClass"
+                      type="text"
+                      value={newSheets[0]?.gravityClass}
+                      onChange={a => handleChange(i, a)}
+                      validate={{
+                        required: { value: true, message: 'Ce champ est obligatoire.' },
+                      }}
+                      style={{
+                        borderRadius: '25px',
+                        backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                        borderColor: '#CBDCF7',
+                        color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+                        width: '21.33vw',
+                      }}
+                    ></ValidatedField>
+                  )}
 
                   <ValidatedField
                     disabled={idEdit === 'voir' || isNew ? true : false}
@@ -696,30 +719,53 @@ export const HospitalisationUpdate = () => {
                     }}
                   />
 
-                  <ValidatedField
-                    disabled={idEdit === 'voir' ? true : false}
-                    label="Evolution en fonction du traitement"
-                    id="hospitalisation-evolution"
-                    name="healthEvolution"
-                    data-cy="healthEvolution"
-                    type="select"
-                    onChange={a => handleChange(i, a)}
-                    validate={{
-                      required: { value: true, message: 'Ce champ est obligatoire.' },
-                    }}
-                    style={{
-                      borderRadius: '25px',
-                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
-                      borderColor: '#CBDCF7',
-                      color: idEdit === 'voir' ? '#F6FAFF' : 'black',
-                      width: '21.34vw',
-                    }}
-                  >
-                    <option value={'Stationnaire'}>Stationnaire</option>
-                    <option value={'Favorable'}>Favorable</option>
-                    <option value={'Détresse vitale'}>Détresse vitale</option>
-                    <option value={'Décès'}>Décès</option>
-                  </ValidatedField>
+                  {isNew ? (
+                    <ValidatedField
+                      disabled={idEdit === 'voir' ? true : false}
+                      label="Evolution en fonction du traitement"
+                      id="hospitalisation-evolution"
+                      name="healthEvolution"
+                      data-cy="healthEvolution"
+                      type="select"
+                      onChange={a => handleChange(i, a)}
+                      validate={{
+                        required: { value: true, message: 'Ce champ est obligatoire.' },
+                      }}
+                      style={{
+                        borderRadius: '25px',
+                        backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                        borderColor: '#CBDCF7',
+                        color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+                        width: '21.34vw',
+                      }}
+                    >
+                      <option value={'Stationnaire'}>Stationnaire</option>
+                      <option value={'Favorable'}>Favorable</option>
+                      <option value={'Détresse vitale'}>Détresse vitale</option>
+                      <option value={'Décès'}>Décès</option>
+                    </ValidatedField>
+                  ) : (
+                    <ValidatedField
+                      disabled={idEdit === 'voir' ? true : false}
+                      label="Evolution en fonction du traitement"
+                      id="hospitalisation-evolution"
+                      name="healthEvolution"
+                      data-cy="healthEvolution"
+                      type="text"
+                      value={newSheets[0]?.healthEvolution}
+                      onChange={a => handleChange(i, a)}
+                      validate={{
+                        required: { value: true, message: 'Ce champ est obligatoire.' },
+                      }}
+                      style={{
+                        borderRadius: '25px',
+                        backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                        borderColor: '#CBDCF7',
+                        color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+                        width: '21.33vw',
+                      }}
+                    ></ValidatedField>
+                  )}
 
                   {/* <ValidatedField
                     disabled
