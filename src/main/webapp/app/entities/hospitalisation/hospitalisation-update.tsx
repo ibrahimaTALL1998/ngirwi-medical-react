@@ -488,7 +488,7 @@ export const HospitalisationUpdate = () => {
                   )}
 
                   <ValidatedField
-                    disabled={idEdit === 'voir' || isNew ? true : false}
+                    disabled={idEdit === 'voir' || !isNew ? true : false}
                     label="Température(en °C)"
                     id="hospitalisation-temperature"
                     name="temperature"
@@ -509,7 +509,7 @@ export const HospitalisationUpdate = () => {
                     }}
                   />
                   <ValidatedField
-                    disabled={idEdit === 'voir' || isNew ? true : false}
+                    disabled={idEdit === 'voir' || !isNew ? true : false}
                     label="Tension artérielle(max/mn)"
                     id="hospitalisation-ta"
                     name="ta"
@@ -530,7 +530,7 @@ export const HospitalisationUpdate = () => {
                     }}
                   />
                   <ValidatedField
-                    disabled={idEdit === 'voir' || isNew ? true : false}
+                    disabled={idEdit === 'voir' || !isNew ? true : false}
                     label="Fréquence cardiaque(battements/mn)"
                     id="hospitalisation-tension"
                     name="pulseRate"
@@ -551,7 +551,7 @@ export const HospitalisationUpdate = () => {
                     }}
                   />
                   <ValidatedField
-                    disabled={idEdit === 'voir' || isNew ? true : false}
+                    disabled={idEdit === 'voir' || !isNew ? true : false}
                     label="Fréquence respiratoire(cycles/mn)"
                     id="hospitalisation-respiration"
                     name="respiratoryFrequency"
@@ -572,7 +572,7 @@ export const HospitalisationUpdate = () => {
                     }}
                   />
                   <ValidatedField
-                    disabled={idEdit === 'voir' || isNew ? true : false}
+                    disabled={idEdit === 'voir' || !isNew ? true : false}
                     label="Temps de Recoloration(secondes)"
                     id="hospitalisation-recoloration"
                     name="recolorationTime"
@@ -593,7 +593,7 @@ export const HospitalisationUpdate = () => {
                     }}
                   />
                   <ValidatedField
-                    disabled={idEdit === 'voir' || isNew ? true : false}
+                    disabled={idEdit === 'voir' || !isNew ? true : false}
                     label="Glasgow(3 à 15)"
                     id="hospitalisation-glasgow"
                     name="glasgow"
@@ -613,7 +613,7 @@ export const HospitalisationUpdate = () => {
                   />
                   {isNew ? (
                     <ValidatedField
-                      disabled={idEdit === 'voir' || isNew ? true : false}
+                      disabled={idEdit === 'voir' || !isNew ? true : false}
                       label="Classe de gravité(I/II/III)"
                       id="hospitalisation-gravity"
                       name="gravityClass"
@@ -637,7 +637,7 @@ export const HospitalisationUpdate = () => {
                     </ValidatedField>
                   ) : (
                     <ValidatedField
-                      disabled={idEdit === 'voir' || isNew ? true : false}
+                      disabled={idEdit === 'voir' || !isNew ? true : false}
                       label="Classe de gravité(I/II/III)"
                       id="hospitalisation-gravity"
                       name="gravityClass"
@@ -659,7 +659,7 @@ export const HospitalisationUpdate = () => {
                   )}
 
                   <ValidatedField
-                    disabled={idEdit === 'voir' || isNew ? true : false}
+                    disabled={idEdit === 'voir' || !isNew ? true : false}
                     label="Diurése horaire(ml/Kg/mn)"
                     id="hospitalisation-diurese"
                     name="horaryDiuresis"
@@ -680,7 +680,7 @@ export const HospitalisationUpdate = () => {
                     }}
                   />
                   <ValidatedField
-                    disabled={idEdit === 'voir' || isNew ? true : false}
+                    disabled={idEdit === 'voir' || !isNew ? true : false}
                     label="Saturation en oxygène"
                     id="hospitalisation-spO2"
                     name="spo2"
@@ -699,7 +699,7 @@ export const HospitalisationUpdate = () => {
                     }}
                   />
                   <ValidatedField
-                    disabled={idEdit === 'voir' || isNew ? true : false}
+                    disabled={idEdit === 'voir' || !isNew ? true : false}
                     label="Traitement administré"
                     id="hospitalisation-treatment"
                     name="treatment"
@@ -872,72 +872,6 @@ export const HospitalisationUpdate = () => {
             ))
           }
         </div>
-      </div>
-      <div>
-        <Row className="justify-content-center">
-          <Col md="8">
-            <h2 id="ngirwiFrontEndApp.hospitalisation.home.createOrEditLabel" data-cy="HospitalisationCreateUpdateHeading">
-              Créer ou éditer un Hospitalisation
-            </h2>
-          </Col>
-        </Row>
-        <Row className="justify-content-center">
-          <Col md="8">
-            {loading ? (
-              <p>Loading...</p>
-            ) : (
-              <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
-                {!isNew ? (
-                  <ValidatedField name="id" required readOnly id="hospitalisation-id" label="ID" validate={{ required: true }} />
-                ) : null}
-                <ValidatedField
-                  label="Entry Date"
-                  id="hospitalisation-entryDate"
-                  name="entryDate"
-                  data-cy="entryDate"
-                  type="datetime-local"
-                  placeholder="YYYY-MM-DD HH:mm"
-                />
-                <ValidatedField
-                  label="Release Date"
-                  id="hospitalisation-releaseDate"
-                  name="releaseDate"
-                  data-cy="releaseDate"
-                  type="datetime-local"
-                  placeholder="YYYY-MM-DD HH:mm"
-                />
-                <ValidatedField label="Doctor Name" id="hospitalisation-doctorName" name="doctorName" data-cy="doctorName" type="text" />
-                <ValidatedField label="Status" id="hospitalisation-status" name="status" data-cy="status" type="select">
-                  {hospitalisationStatusValues.map(hospitalisationStatus => (
-                    <option value={hospitalisationStatus} key={hospitalisationStatus}>
-                      {hospitalisationStatus}
-                    </option>
-                  ))}
-                </ValidatedField>
-                {/* <ValidatedField id="hospitalisation-patient" name="patient" data-cy="patient" label="Patient" type="select">
-                  <option value="" key="0" />
-                  {patients
-                    ? patients.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
-                    : null}
-                </ValidatedField> */}
-                <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/hospitalisation" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
-                  &nbsp;
-                  <span className="d-none d-md-inline">Retour</span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp; Sauvegarder
-                </Button>
-              </ValidatedForm>
-            )}
-          </Col>
-        </Row>
       </div>
     </>
   );
