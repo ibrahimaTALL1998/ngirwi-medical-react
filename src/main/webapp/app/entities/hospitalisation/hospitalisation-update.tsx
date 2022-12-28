@@ -99,8 +99,10 @@ export const HospitalisationUpdate = () => {
     console.log(entity);
     if (isNew) {
       dispatch(createEntityBis(entity));
+      navigate(`/hospitalisation/${idPatient}`);
     } else {
       dispatch(updateEntity(entity));
+      navigate(`/hospitalisation/${idPatient}`);
     }
   };
 
