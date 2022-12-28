@@ -369,7 +369,7 @@ export const Hospitalisation = () => {
                         </td>
                       </tr>
                     ))
-                  : !loading && <div className="alert alert-warning">Aucun Hospitalisation trouvé</div>}
+                  : !loading && <div className="alert alert-warning">Aucune Hospitalisation trouvée</div>}
               </tbody>
             </Table>
           ) : (
