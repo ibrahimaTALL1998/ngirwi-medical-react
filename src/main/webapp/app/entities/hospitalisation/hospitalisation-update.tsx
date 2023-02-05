@@ -235,6 +235,705 @@ export const HospitalisationUpdate = () => {
     setFormValues(newFormValues);
   };
 
+  const newForm = (arr, i) => {
+    return (
+      <ValidatedForm
+        defaultValues={defaultValues()}
+        onSubmit={saveEntity}
+        style={{
+          width: '94%',
+          height: '80%',
+          marginLeft: '3%',
+          display: 'flex',
+          marginTop: '1%',
+          fontSize: '16px',
+          fontWeight: '900',
+          flexWrap: 'wrap',
+          backgroundImage: 'url(content/images/NgirwiLogo.png)',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+          backgroundPosition: '65% 90%',
+          gap: '3vw',
+          justifyContent: 'center',
+        }}
+      >
+        <ValidatedField
+          disabled
+          hidden={isNew && i === 0 ? false : true}
+          label="Date d'admission au service"
+          id="hospitalisation-dateTime"
+          name="entryDate"
+          data-cy="entryDate"
+          type="datetime-local"
+          placeholder="YYYY-MM-DD HH:mm"
+          style={{
+            borderRadius: '25px',
+            borderColor: '#CBDCF7',
+            backgroundColor: '#A9B7CD',
+            color: '#F6FAFF',
+            width: '70vw',
+          }}
+        />
+
+        <ValidatedField
+          disabled
+          label="Paramètres surveillés le"
+          id="hospitalisation-sheetDateTime"
+          name="sheetDateTime"
+          data-cy="sheetDateTime"
+          type="datetime-local"
+          placeholder="YYYY-MM-DD HH:mm"
+          style={{
+            borderRadius: '25px',
+            borderColor: '#CBDCF7',
+            backgroundColor: '#A9B7CD',
+            color: '#F6FAFF',
+            width: '33.5vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || i === 0 ? true : false}
+          label="Statut de l'hospitalisation"
+          id="hospitalisation-status"
+          name="status"
+          data-cy="status"
+          type="select"
+          // validate={{
+          //   required: { value: true, message: 'Ce champ est obligatoire.' },
+          // }}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' || i === 0 ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' || i === 0 ? '#F6FAFF' : 'black',
+            width: '33.5vw',
+          }}
+        >
+          {i === 0 ? <option value="STARTED">Débute</option> : null}
+          <option value="ONGOING">En cours</option>
+          <option value="DONE">Terminée</option>
+        </ValidatedField>
+
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Température(en °C)"
+          id="hospitalisation-temperature"
+          name="temperature"
+          data-cy="temperature"
+          type="number"
+          onChange={a => handleChange(i, a)}
+          validate={{
+            required: { value: true, message: 'Ce champ est obligatoire.' },
+            validate: v => isNumber(v) || 'Ce champ doit être un nombre.',
+          }}
+          // value={!isNew && newSheets[0]?.temperature}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '33.5vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Tension artérielle(max/mn)"
+          id="hospitalisation-ta"
+          name="ta"
+          data-cy="ta"
+          type="number"
+          onChange={a => handleChange(i, a)}
+          validate={{
+            required: { value: true, message: 'Ce champ est obligatoire.' },
+            validate: v => isNumber(v) || 'Ce champ doit être un nombre.',
+          }}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '33.5vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Fréquence cardiaque(battements/mn)"
+          id="hospitalisation-tension"
+          name="pulseRate"
+          data-cy="pulseRate"
+          type="number"
+          min={0}
+          onChange={a => handleChange(i, a)}
+          validate={{
+            required: { value: true, message: 'Ce champ est obligatoire.' },
+          }}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.33vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Fréquence respiratoire(cycles/mn)"
+          id="hospitalisation-respiration"
+          name="respiratoryFrequency"
+          data-cy="respiratoryFrequency"
+          type="number"
+          min={0}
+          onChange={a => handleChange(i, a)}
+          validate={{
+            required: { value: true, message: 'Ce champ est obligatoire.' },
+          }}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.33vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Temps de Recoloration(secondes)"
+          id="hospitalisation-recoloration"
+          name="recolorationTime"
+          data-cy="recolorationTime"
+          min={0}
+          type="number"
+          onChange={a => handleChange(i, a)}
+          validate={{
+            required: { value: true, message: 'Ce champ est obligatoire.' },
+          }}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.34vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Glasgow(3 à 15)"
+          id="hospitalisation-glasgow"
+          name="glasgow"
+          data-cy="glasgow"
+          type="number"
+          min={3}
+          max={15}
+          onChange={a => handleChange(i, a)}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.33vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Classe de gravité(I/II/III)"
+          id="hospitalisation-gravity"
+          name="gravityClass"
+          data-cy="gravityClass"
+          type="select"
+          onChange={a => handleChange(i, a)}
+          validate={{
+            required: { value: true, message: 'Ce champ est obligatoire.' },
+          }}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.33vw',
+          }}
+        >
+          <option value={'I'}>I</option>
+          <option value={'II'}>II</option>
+          <option value={'III'}>III</option>
+        </ValidatedField>
+
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Diurése horaire(ml/Kg/mn)"
+          id="hospitalisation-diurese"
+          name="horaryDiuresis"
+          data-cy="horaryDiuresis"
+          type="number"
+          min={0}
+          onChange={a => handleChange(i, a)}
+          validate={{
+            required: { value: true, message: 'Ce champ est obligatoire.' },
+          }}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.34vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Saturation en oxygène"
+          id="hospitalisation-spO2"
+          name="spo2"
+          data-cy="spo2"
+          onChange={a => handleChange(i, a)}
+          validate={{
+            required: { value: true, message: 'Ce champ est obligatoire.' },
+          }}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.33vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Traitement administré"
+          id="hospitalisation-treatment"
+          name="treatment"
+          data-cy="treatment"
+          type="textarea"
+          onChange={a => handleChange(i, a)}
+          validate={{
+            required: { value: true, message: 'Ce champ est obligatoire.' },
+          }}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.33vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' ? true : false}
+          label="Evolution en fonction du traitement"
+          id="hospitalisation-evolution"
+          name="healthEvolution"
+          data-cy="healthEvolution"
+          type="select"
+          onChange={a => handleChange(i, a)}
+          validate={{
+            required: { value: true, message: 'Ce champ est obligatoire.' },
+          }}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.34vw',
+          }}
+        >
+          <option value={'Stationnaire'}>Stationnaire</option>
+          <option value={'Favorable'}>Favorable</option>
+          <option value={'Détresse vitale'}>Détresse vitale</option>
+          <option value={'Décès'}>Décès</option>
+        </ValidatedField>
+
+        {arr.length - 1 === i ? (
+          <Button
+            hidden={idEdit === 'voir' ? true : false}
+            id="save-entity"
+            data-cy="entityCreateSaveButton"
+            type="submit"
+            disabled={!isNew && i < 1}
+            style={{
+              borderRadius: '25px',
+              color: 'white',
+              backgroundColor: '#56B5C5',
+              borderColor: '#56B5C5',
+              flex: '1 1 100%',
+            }}
+          >
+            Enregistrer
+          </Button>
+        ) : null}
+        {arr.length - 1 === i ? (
+          <Button
+            onClick={() => {
+              confirm('Êtes-vous sur de vouloir quitter?') === true ? window.history.back() : null;
+            }}
+            id="cancel-save"
+            data-cy="entityCreateCancelButton"
+            replace
+            color="info"
+            style={{
+              borderRadius: '25px',
+              color: 'white',
+              backgroundColor: '#EC4747',
+              borderColor: '#EC4747',
+              textAlign: 'center',
+              fontSize: idEdit === 'voir' ? '20px' : '',
+              marginBottom: '2vh',
+              flex: '1 1 100%',
+            }}
+          >
+            <span className="d-none d-md-inline">{idEdit === 'voir' ? 'Retour' : 'Annuler'}</span>
+          </Button>
+        ) : null}
+
+        {i ? (
+          <span
+            onClick={() => removeFormFields(i)}
+            style={{
+              backgroundColor: 'transparent',
+              cursor: 'pointer',
+              borderColor: 'transparent',
+              color: '#EC4747',
+              fontWeight: '900',
+              width: '0.1vw',
+              display: 'inline',
+            }}
+          >
+            {React.createElement(IoIosRemoveCircle, { size: '25' })}
+          </span>
+        ) : null}
+      </ValidatedForm>
+    );
+  };
+
+  const showFormValues = (arr, i) => {
+    return (
+      <ValidatedForm
+        defaultValues={defaultValues()}
+        onSubmit={saveEntity}
+        style={{
+          width: '94%',
+          height: '80%',
+          marginLeft: '3%',
+          display: 'flex',
+          marginTop: '1%',
+          fontSize: '16px',
+          fontWeight: '900',
+          flexWrap: 'wrap',
+          backgroundImage: 'url(content/images/NgirwiLogo.png)',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+          backgroundPosition: '65% 90%',
+          gap: '3vw',
+          justifyContent: 'center',
+        }}
+      >
+        <ValidatedField
+          disabled
+          hidden={isNew && i === 0 ? false : true}
+          label="Date d'admission au service"
+          id="hospitalisation-dateTime"
+          name="entryDate"
+          data-cy="entryDate"
+          type="datetime-local"
+          placeholder="YYYY-MM-DD HH:mm"
+          style={{
+            borderRadius: '25px',
+            borderColor: '#CBDCF7',
+            backgroundColor: '#A9B7CD',
+            color: '#F6FAFF',
+            width: '70vw',
+          }}
+        />
+
+        <ValidatedField
+          disabled
+          label="Paramètres surveillés le"
+          id="hospitalisation-sheetDateTime"
+          name="sheetDateTime"
+          data-cy="sheetDateTime"
+          type="text"
+          placeholder="YYYY-MM-DD HH:mm"
+          value={hospitalisationEntity?.sheetDateTime}
+          style={{
+            borderRadius: '25px',
+            borderColor: '#CBDCF7',
+            backgroundColor: '#A9B7CD',
+            color: '#F6FAFF',
+            width: '33.5vw',
+          }}
+        />
+        <ValidatedField
+          disabled
+          label="Statut de l'hospitalisation"
+          id="hospitalisation-status"
+          name="status"
+          data-cy="status"
+          type="text"
+          value={hospitalisationEntity?.status}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' || i === 0 ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' || i === 0 ? '#F6FAFF' : 'black',
+            width: '33.5vw',
+          }}
+        ></ValidatedField>
+
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Température(en °C)"
+          id="hospitalisation-temperature"
+          name="temperature"
+          data-cy="temperature"
+          type="text"
+          onChange={a => handleChange(i, a)}
+          value={!isNew && newSheets[0]?.temperature}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '33.5vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Tension artérielle(max/mn)"
+          id="hospitalisation-ta"
+          name="ta"
+          data-cy="ta"
+          type="text"
+          value={newSheets[0]?.ta}
+          onChange={a => handleChange(i, a)}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '33.5vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Fréquence cardiaque(battements/mn)"
+          id="hospitalisation-tension"
+          name="pulseRate"
+          data-cy="pulseRate"
+          type="text"
+          value={newSheets[0]?.pulseRate}
+          min={0}
+          onChange={a => handleChange(i, a)}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.33vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Fréquence respiratoire(cycles/mn)"
+          id="hospitalisation-respiration"
+          name="respiratoryFrequency"
+          data-cy="respiratoryFrequency"
+          type={'text'}
+          value={newSheets[0]?.respiratoryFrequency}
+          min={0}
+          onChange={a => handleChange(i, a)}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.33vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Temps de Recoloration(secondes)"
+          id="hospitalisation-recoloration"
+          name="recolorationTime"
+          data-cy="recolorationTime"
+          min={0}
+          type={'text'}
+          value={newSheets[0]?.recolorationTime}
+          onChange={a => handleChange(i, a)}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.34vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Glasgow(3 à 15)"
+          id="hospitalisation-glasgow"
+          name="glasgow"
+          data-cy="glasgow"
+          type={'text'}
+          value={newSheets[0]?.glasgow}
+          min={3}
+          max={15}
+          onChange={a => handleChange(i, a)}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.33vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Classe de gravité(I/II/III)"
+          id="hospitalisation-gravity"
+          name="gravityClass"
+          data-cy="gravityClass"
+          type="text"
+          value={newSheets[0]?.gravityClass}
+          onChange={a => handleChange(i, a)}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.33vw',
+          }}
+        ></ValidatedField>
+
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Diurése horaire(ml/Kg/mn)"
+          id="hospitalisation-diurese"
+          name="horaryDiuresis"
+          data-cy="horaryDiuresis"
+          type={'text'}
+          value={newSheets[0]?.horaryDiuresis}
+          min={0}
+          onChange={a => handleChange(i, a)}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.34vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Saturation en oxygène"
+          id="hospitalisation-spO2"
+          name="spo2"
+          data-cy="spo2"
+          value={newSheets[0]?.spo2}
+          onChange={a => handleChange(i, a)}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.33vw',
+          }}
+        />
+        <ValidatedField
+          disabled={idEdit === 'voir' || !isNew ? true : false}
+          label="Traitement administré"
+          id="hospitalisation-treatment"
+          name="treatment"
+          data-cy="treatment"
+          type="textarea"
+          value={newSheets[0]?.treatment}
+          onChange={a => handleChange(i, a)}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.33vw',
+          }}
+        />
+
+        <ValidatedField
+          disabled={idEdit === 'voir' ? true : false}
+          label="Evolution en fonction du traitement"
+          id="hospitalisation-evolution"
+          name="healthEvolution"
+          data-cy="healthEvolution"
+          type="text"
+          value={newSheets[0]?.healthEvolution}
+          onChange={a => handleChange(i, a)}
+          validate={{
+            required: { value: true, message: 'Ce champ est obligatoire.' },
+          }}
+          style={{
+            borderRadius: '25px',
+            backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+            borderColor: '#CBDCF7',
+            color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+            width: '21.33vw',
+          }}
+        ></ValidatedField>
+        {arr.length - 1 === i ? (
+          <Button
+            hidden={idEdit === 'voir' ? true : false}
+            id="save-entity"
+            data-cy="entityCreateSaveButton"
+            type="submit"
+            disabled={!isNew && i < 1}
+            style={{
+              borderRadius: '25px',
+              color: 'white',
+              backgroundColor: '#56B5C5',
+              borderColor: '#56B5C5',
+              flex: '1 1 100%',
+            }}
+          >
+            Enregistrer
+          </Button>
+        ) : null}
+        {arr.length - 1 === i ? (
+          <Button
+            onClick={() => {
+              confirm('Êtes-vous sur de vouloir quitter?') === true ? window.history.back() : null;
+            }}
+            id="cancel-save"
+            data-cy="entityCreateCancelButton"
+            replace
+            color="info"
+            style={{
+              borderRadius: '25px',
+              color: 'white',
+              backgroundColor: '#EC4747',
+              borderColor: '#EC4747',
+              textAlign: 'center',
+              fontSize: idEdit === 'voir' ? '20px' : '',
+              marginBottom: '2vh',
+              flex: '1 1 100%',
+            }}
+          >
+            <span className="d-none d-md-inline">{idEdit === 'voir' ? 'Retour' : 'Annuler'}</span>
+          </Button>
+        ) : null}
+
+        {i ? (
+          <span
+            onClick={() => removeFormFields(i)}
+            style={{
+              backgroundColor: 'transparent',
+              cursor: 'pointer',
+              borderColor: 'transparent',
+              color: '#EC4747',
+              fontWeight: '900',
+              width: '0.1vw',
+              display: 'inline',
+            }}
+          >
+            {React.createElement(IoIosRemoveCircle, { size: '25' })}
+          </span>
+        ) : null}
+      </ValidatedForm>
+    );
+  };
+
   return (
     <>
       <div
@@ -389,487 +1088,7 @@ export const HospitalisationUpdate = () => {
                   )}
                 </div>
 
-                <ValidatedForm
-                  defaultValues={defaultValues()}
-                  onSubmit={saveEntity}
-                  style={{
-                    width: '94%',
-                    height: '80%',
-                    marginLeft: '3%',
-                    display: 'flex',
-                    marginTop: '1%',
-                    fontSize: '16px',
-                    fontWeight: '900',
-                    flexWrap: 'wrap',
-                    backgroundImage: 'url(content/images/NgirwiLogo.png)',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundAttachment: 'fixed',
-                    backgroundPosition: '65% 90%',
-                    gap: '3vw',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <ValidatedField
-                    disabled
-                    hidden={isNew && i === 0 ? false : true}
-                    label="Date d'admission au service"
-                    id="hospitalisation-dateTime"
-                    name="entryDate"
-                    data-cy="entryDate"
-                    type="datetime-local"
-                    placeholder="YYYY-MM-DD HH:mm"
-                    style={{
-                      borderRadius: '25px',
-                      borderColor: '#CBDCF7',
-                      backgroundColor: '#A9B7CD',
-                      color: '#F6FAFF',
-                      width: '70vw',
-                    }}
-                  />
-
-                  <ValidatedField
-                    disabled
-                    label="Paramètres surveillés le"
-                    id="hospitalisation-sheetDateTime"
-                    name="sheetDateTime"
-                    data-cy="sheetDateTime"
-                    type={isNew ? 'datetime-local' : 'text'}
-                    placeholder="YYYY-MM-DD HH:mm"
-                    value={isNew ? displayDefaultDateTime() : hospitalisationEntity?.sheetDateTime}
-                    style={{
-                      borderRadius: '25px',
-                      borderColor: '#CBDCF7',
-                      backgroundColor: '#A9B7CD',
-                      color: '#F6FAFF',
-                      width: '33.5vw',
-                    }}
-                  />
-                  {isNew ? (
-                    <ValidatedField
-                      disabled={idEdit === 'voir' || i === 0 ? true : false}
-                      label="Statut de l'hospitalisation"
-                      id="hospitalisation-status"
-                      name="status"
-                      data-cy="status"
-                      type="select"
-                      // validate={{
-                      //   required: { value: true, message: 'Ce champ est obligatoire.' },
-                      // }}
-                      style={{
-                        borderRadius: '25px',
-                        backgroundColor: idEdit === 'voir' || i === 0 ? '#A9B7CD' : '#F7FAFF',
-                        borderColor: '#CBDCF7',
-                        color: idEdit === 'voir' || i === 0 ? '#F6FAFF' : 'black',
-                        width: '33.5vw',
-                      }}
-                    >
-                      {i === 0 ? <option value="STARTED">Débute</option> : null}
-                      <option value="ONGOING">En cours</option>
-                      <option value="DONE">Terminée</option>
-                    </ValidatedField>
-                  ) : (
-                    <ValidatedField
-                      disabled
-                      label="Statut de l'hospitalisation"
-                      id="hospitalisation-status"
-                      name="status"
-                      data-cy="status"
-                      type="text"
-                      value={hospitalisationEntity?.status}
-                      // validate={{
-                      //   required: { value: true, message: 'Ce champ est obligatoire.' },
-                      // }}
-                      style={{
-                        borderRadius: '25px',
-                        backgroundColor: idEdit === 'voir' || i === 0 ? '#A9B7CD' : '#F7FAFF',
-                        borderColor: '#CBDCF7',
-                        color: idEdit === 'voir' || i === 0 ? '#F6FAFF' : 'black',
-                        width: '33.5vw',
-                      }}
-                    ></ValidatedField>
-                  )}
-
-                  <ValidatedField
-                    disabled={idEdit === 'voir' || !isNew ? true : false}
-                    label="Température(en °C)"
-                    id="hospitalisation-temperature"
-                    name="temperature"
-                    data-cy="temperature"
-                    type={isNew ? 'number' : 'text'}
-                    onChange={a => handleChange(i, a)}
-                    validate={{
-                      required: { value: true, message: 'Ce champ est obligatoire.' },
-                      validate: v => isNumber(v) || 'Ce champ doit être un nombre.',
-                    }}
-                    value={isNew ? 0 : newSheets[0]?.temperature}
-                    style={{
-                      borderRadius: '25px',
-                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
-                      borderColor: '#CBDCF7',
-                      color: idEdit === 'voir' ? '#F6FAFF' : 'black',
-                      width: '33.5vw',
-                    }}
-                  />
-                  <ValidatedField
-                    disabled={idEdit === 'voir' || !isNew ? true : false}
-                    label="Tension artérielle(max/mn)"
-                    id="hospitalisation-ta"
-                    name="ta"
-                    data-cy="ta"
-                    type={isNew ? 'number' : 'text'}
-                    value={isNew ? 0 : newSheets[0]?.ta}
-                    onChange={a => handleChange(i, a)}
-                    validate={{
-                      required: { value: true, message: 'Ce champ est obligatoire.' },
-                      validate: v => isNumber(v) || 'Ce champ doit être un nombre.',
-                    }}
-                    style={{
-                      borderRadius: '25px',
-                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
-                      borderColor: '#CBDCF7',
-                      color: idEdit === 'voir' ? '#F6FAFF' : 'black',
-                      width: '33.5vw',
-                    }}
-                  />
-                  <ValidatedField
-                    disabled={idEdit === 'voir' || !isNew ? true : false}
-                    label="Fréquence cardiaque(battements/mn)"
-                    id="hospitalisation-tension"
-                    name="pulseRate"
-                    data-cy="pulseRate"
-                    type={isNew ? 'number' : 'text'}
-                    value={isNew ? 0 : newSheets[0]?.pulseRate}
-                    min={0}
-                    onChange={a => handleChange(i, a)}
-                    validate={{
-                      required: { value: true, message: 'Ce champ est obligatoire.' },
-                    }}
-                    style={{
-                      borderRadius: '25px',
-                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
-                      borderColor: '#CBDCF7',
-                      color: idEdit === 'voir' ? '#F6FAFF' : 'black',
-                      width: '21.33vw',
-                    }}
-                  />
-                  <ValidatedField
-                    disabled={idEdit === 'voir' || !isNew ? true : false}
-                    label="Fréquence respiratoire(cycles/mn)"
-                    id="hospitalisation-respiration"
-                    name="respiratoryFrequency"
-                    data-cy="respiratoryFrequency"
-                    type={isNew ? 'number' : 'text'}
-                    value={isNew ? 0 : newSheets[0]?.respiratoryFrequency}
-                    min={0}
-                    onChange={a => handleChange(i, a)}
-                    validate={{
-                      required: { value: true, message: 'Ce champ est obligatoire.' },
-                    }}
-                    style={{
-                      borderRadius: '25px',
-                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
-                      borderColor: '#CBDCF7',
-                      color: idEdit === 'voir' ? '#F6FAFF' : 'black',
-                      width: '21.33vw',
-                    }}
-                  />
-                  <ValidatedField
-                    disabled={idEdit === 'voir' || !isNew ? true : false}
-                    label="Temps de Recoloration(secondes)"
-                    id="hospitalisation-recoloration"
-                    name="recolorationTime"
-                    data-cy="recolorationTime"
-                    min={0}
-                    type={isNew ? 'number' : 'text'}
-                    value={isNew ? 0 : newSheets[0]?.recolorationTime}
-                    onChange={a => handleChange(i, a)}
-                    validate={{
-                      required: { value: true, message: 'Ce champ est obligatoire.' },
-                    }}
-                    style={{
-                      borderRadius: '25px',
-                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
-                      borderColor: '#CBDCF7',
-                      color: idEdit === 'voir' ? '#F6FAFF' : 'black',
-                      width: '21.34vw',
-                    }}
-                  />
-                  <ValidatedField
-                    disabled={idEdit === 'voir' || !isNew ? true : false}
-                    label="Glasgow(3 à 15)"
-                    id="hospitalisation-glasgow"
-                    name="glasgow"
-                    data-cy="glasgow"
-                    type={isNew ? 'number' : 'text'}
-                    value={isNew ? 0 : newSheets[0]?.glasgow}
-                    min={3}
-                    max={15}
-                    onChange={a => handleChange(i, a)}
-                    style={{
-                      borderRadius: '25px',
-                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
-                      borderColor: '#CBDCF7',
-                      color: idEdit === 'voir' ? '#F6FAFF' : 'black',
-                      width: '21.33vw',
-                    }}
-                  />
-                  {isNew ? (
-                    <ValidatedField
-                      disabled={idEdit === 'voir' || !isNew ? true : false}
-                      label="Classe de gravité(I/II/III)"
-                      id="hospitalisation-gravity"
-                      name="gravityClass"
-                      data-cy="gravityClass"
-                      type="select"
-                      onChange={a => handleChange(i, a)}
-                      validate={{
-                        required: { value: true, message: 'Ce champ est obligatoire.' },
-                      }}
-                      style={{
-                        borderRadius: '25px',
-                        backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
-                        borderColor: '#CBDCF7',
-                        color: idEdit === 'voir' ? '#F6FAFF' : 'black',
-                        width: '21.33vw',
-                      }}
-                    >
-                      <option value={'I'}>I</option>
-                      <option value={'II'}>II</option>
-                      <option value={'III'}>III</option>
-                    </ValidatedField>
-                  ) : (
-                    <ValidatedField
-                      disabled={idEdit === 'voir' || !isNew ? true : false}
-                      label="Classe de gravité(I/II/III)"
-                      id="hospitalisation-gravity"
-                      name="gravityClass"
-                      data-cy="gravityClass"
-                      type="text"
-                      value={newSheets[0]?.gravityClass}
-                      onChange={a => handleChange(i, a)}
-                      validate={{
-                        required: { value: true, message: 'Ce champ est obligatoire.' },
-                      }}
-                      style={{
-                        borderRadius: '25px',
-                        backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
-                        borderColor: '#CBDCF7',
-                        color: idEdit === 'voir' ? '#F6FAFF' : 'black',
-                        width: '21.33vw',
-                      }}
-                    ></ValidatedField>
-                  )}
-
-                  <ValidatedField
-                    disabled={idEdit === 'voir' || !isNew ? true : false}
-                    label="Diurése horaire(ml/Kg/mn)"
-                    id="hospitalisation-diurese"
-                    name="horaryDiuresis"
-                    data-cy="horaryDiuresis"
-                    type={isNew ? 'number' : 'text'}
-                    value={isNew ? 0 : newSheets[0]?.horaryDiuresis}
-                    min={0}
-                    onChange={a => handleChange(i, a)}
-                    validate={{
-                      required: { value: true, message: 'Ce champ est obligatoire.' },
-                    }}
-                    style={{
-                      borderRadius: '25px',
-                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
-                      borderColor: '#CBDCF7',
-                      color: idEdit === 'voir' ? '#F6FAFF' : 'black',
-                      width: '21.34vw',
-                    }}
-                  />
-                  <ValidatedField
-                    disabled={idEdit === 'voir' || !isNew ? true : false}
-                    label="Saturation en oxygène"
-                    id="hospitalisation-spO2"
-                    name="spo2"
-                    data-cy="spo2"
-                    value={isNew ? 0 : newSheets[0]?.spo2}
-                    onChange={a => handleChange(i, a)}
-                    validate={{
-                      required: { value: true, message: 'Ce champ est obligatoire.' },
-                    }}
-                    style={{
-                      borderRadius: '25px',
-                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
-                      borderColor: '#CBDCF7',
-                      color: idEdit === 'voir' ? '#F6FAFF' : 'black',
-                      width: '21.33vw',
-                    }}
-                  />
-                  <ValidatedField
-                    disabled={idEdit === 'voir' || !isNew ? true : false}
-                    label="Traitement administré"
-                    id="hospitalisation-treatment"
-                    name="treatment"
-                    data-cy="treatment"
-                    type="textarea"
-                    value={isNew ? 0 : newSheets[0]?.treatment}
-                    onChange={a => handleChange(i, a)}
-                    validate={{
-                      required: { value: true, message: 'Ce champ est obligatoire.' },
-                    }}
-                    style={{
-                      borderRadius: '25px',
-                      backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
-                      borderColor: '#CBDCF7',
-                      color: idEdit === 'voir' ? '#F6FAFF' : 'black',
-                      width: '21.33vw',
-                    }}
-                  />
-
-                  {isNew ? (
-                    <ValidatedField
-                      disabled={idEdit === 'voir' ? true : false}
-                      label="Evolution en fonction du traitement"
-                      id="hospitalisation-evolution"
-                      name="healthEvolution"
-                      data-cy="healthEvolution"
-                      type="select"
-                      onChange={a => handleChange(i, a)}
-                      validate={{
-                        required: { value: true, message: 'Ce champ est obligatoire.' },
-                      }}
-                      style={{
-                        borderRadius: '25px',
-                        backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
-                        borderColor: '#CBDCF7',
-                        color: idEdit === 'voir' ? '#F6FAFF' : 'black',
-                        width: '21.34vw',
-                      }}
-                    >
-                      <option value={'Stationnaire'}>Stationnaire</option>
-                      <option value={'Favorable'}>Favorable</option>
-                      <option value={'Détresse vitale'}>Détresse vitale</option>
-                      <option value={'Décès'}>Décès</option>
-                    </ValidatedField>
-                  ) : (
-                    <ValidatedField
-                      disabled={idEdit === 'voir' ? true : false}
-                      label="Evolution en fonction du traitement"
-                      id="hospitalisation-evolution"
-                      name="healthEvolution"
-                      data-cy="healthEvolution"
-                      type="text"
-                      value={newSheets[0]?.healthEvolution}
-                      onChange={a => handleChange(i, a)}
-                      validate={{
-                        required: { value: true, message: 'Ce champ est obligatoire.' },
-                      }}
-                      style={{
-                        borderRadius: '25px',
-                        backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
-                        borderColor: '#CBDCF7',
-                        color: idEdit === 'voir' ? '#F6FAFF' : 'black',
-                        width: '21.33vw',
-                      }}
-                    ></ValidatedField>
-                  )}
-
-                  {/* <ValidatedField
-                    disabled
-                    hidden
-                    label="Date"
-                    id="hospitalisation-date"
-                    name="date"
-                    data-cy="date"
-                    type="datetime"
-                    placeholder="YYYY-MM-DD HH:mm"
-                    style={{
-                      borderRadius: '25px',
-                      borderColor: '#CBDCF7',
-                      backgroundColor: '#A9B7CD',
-                      color: '#F6FAFF',
-                    }}
-                  /> */}
-                  {/* <ValidatedField
-                    disabled
-                    hidden
-                    label="Heure"
-                    id="hospitalisation-hours"
-                    name="hours"
-                    data-cy="hours"
-                    type="datetime"
-                    placeholder="YYYY-MM-DD HH:mm"
-                    style={{
-                      borderRadius: '25px',
-                      backgroundColor: '#A9B7CD',
-                      color: '#F6FAFF',
-                      borderColor: '#CBDCF7',
-                    }}
-                  >
-                    <span
-                      style={{
-                        color: '#F6FAFF',
-                        textAlign: 'end',
-                      }}
-                    >
-                      {React.createElement(FiLock, { size: '20' })}
-                    </span>
-                  </ValidatedField> */}
-
-                  {arr.length - 1 === i ? (
-                    <Button
-                      hidden={idEdit === 'voir' ? true : false}
-                      id="save-entity"
-                      data-cy="entityCreateSaveButton"
-                      type="submit"
-                      disabled={!isNew && i < 1}
-                      style={{
-                        borderRadius: '25px',
-                        color: 'white',
-                        backgroundColor: '#56B5C5',
-                        borderColor: '#56B5C5',
-                        flex: '1 1 100%',
-                      }}
-                    >
-                      Enregistrer
-                    </Button>
-                  ) : null}
-                  {arr.length - 1 === i ? (
-                    <Button
-                      onClick={() => {
-                        confirm('Êtes-vous sur de vouloir quitter?') === true ? window.history.back() : null;
-                      }}
-                      id="cancel-save"
-                      data-cy="entityCreateCancelButton"
-                      replace
-                      color="info"
-                      style={{
-                        borderRadius: '25px',
-                        color: 'white',
-                        backgroundColor: '#EC4747',
-                        borderColor: '#EC4747',
-                        textAlign: 'center',
-                        fontSize: idEdit === 'voir' ? '20px' : '',
-                        marginBottom: '2vh',
-                        flex: '1 1 100%',
-                      }}
-                    >
-                      <span className="d-none d-md-inline">{idEdit === 'voir' ? 'Retour' : 'Annuler'}</span>
-                    </Button>
-                  ) : null}
-
-                  {i ? (
-                    <span
-                      onClick={() => removeFormFields(i)}
-                      style={{
-                        backgroundColor: 'transparent',
-                        cursor: 'pointer',
-                        borderColor: 'transparent',
-                        color: '#EC4747',
-                        fontWeight: '900',
-                        width: '0.1vw',
-                        display: 'inline',
-                      }}
-                    >
-                      {React.createElement(IoIosRemoveCircle, { size: '25' })}
-                    </span>
-                  ) : null}
-                </ValidatedForm>
+                {isNew ? newForm(arr, i) : showFormValues(arr, i)}
               </Card>
             ))
           }

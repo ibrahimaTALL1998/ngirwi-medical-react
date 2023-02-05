@@ -318,36 +318,35 @@ export const Hospitalisation = () => {
                   backgroundPosition: '60% 165%',
                 }}
               >
-                {hospitalisationList && hospitalisationList.length > 0
-                  ? hospitalisationList.map((hospitalisation, i) => (
-                      <tr key={`entity-${i}`} data-cy="entityTable">
-                        <td>
-                          {hospitalisation.entryDate ? (
-                            <TextFormat type="date" value={hospitalisation.entryDate} format={APP_DATE_FORMAT} />
-                          ) : null}
-                        </td>
-                        <td>
-                          {hospitalisation.releaseDate ? (
-                            <TextFormat type="date" value={hospitalisation.releaseDate} format={APP_DATE_FORMAT} />
-                          ) : null}
-                        </td>
-                        {/* <td>{hospitalisation.doctorName}</td> */}
-                        <td>{hospitalisation.status}</td>
-                        {/* <td>
+                {hospitalisationList.map((hospitalisation, i) => (
+                  <tr key={`entity-${i}`} data-cy="entityTable">
+                    <td>
+                      {hospitalisation.entryDate ? (
+                        <TextFormat type="date" value={hospitalisation.entryDate} format={APP_DATE_FORMAT} />
+                      ) : null}
+                    </td>
+                    <td>
+                      {hospitalisation.releaseDate ? (
+                        <TextFormat type="date" value={hospitalisation.releaseDate} format={APP_DATE_FORMAT} />
+                      ) : null}
+                    </td>
+                    {/* <td>{hospitalisation.doctorName}</td> */}
+                    <td>{hospitalisation.status}</td>
+                    {/* <td>
                       {hospitalisation.patient ? <Link to={`/patient/${hospitalisation.patient.id}`}>{hospitalisation.patient.id}</Link> : ''}
                     </td> */}
-                        <td className="text-end">
-                          <div className="btn-group flex-btn-group-container">
-                            <Button
-                              tag={Link}
-                              to={`/hospitalisation/${hospitalisation.id}/${patientEntity.id}`}
-                              color="info"
-                              size="sm"
-                              data-cy="entityDetailsButton"
-                            >
-                              <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir</span>
-                            </Button>
-                            {/* <Button
+                    <td className="text-end">
+                      <div className="btn-group flex-btn-group-container">
+                        <Button
+                          tag={Link}
+                          to={`/hospitalisation/${hospitalisation.id}/${patientEntity.id}`}
+                          color="info"
+                          size="sm"
+                          data-cy="entityDetailsButton"
+                        >
+                          <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir</span>
+                        </Button>
+                        {/* <Button
                           tag={Link}
                           to={`/hospitalisation/${hospitalisation.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                           color="primary"
@@ -356,7 +355,7 @@ export const Hospitalisation = () => {
                         >
                           <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
                         </Button> */}
-                            {/* <Button
+                        {/* <Button
                           tag={Link}
                           to={`/hospitalisation/${hospitalisation.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                           color="danger"
@@ -365,15 +364,121 @@ export const Hospitalisation = () => {
                         >
                           <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Supprimer</span>
                         </Button> */}
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  : !loading && <div className="alert alert-warning">Aucune Hospitalisation trouvée</div>}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </Table>
           ) : (
-            !loading && <div className="alert alert-warning">Aucun Hospitalisation trouvé</div>
+            !loading && (
+              // <div className="alert alert-warning">Aucune Hospitalisation trouvée</div>
+
+              <Table responsive style={{ borderCollapse: 'separate', borderSpacing: '0 15px' }}>
+                <thead
+                  style={{
+                    position: 'sticky',
+                    top: '0',
+                  }}
+                >
+                  <tr>
+                    <th
+                      style={{
+                        position: 'sticky',
+                        top: '0',
+                        width: '4%',
+                        backgroundColor: 'white',
+                      }}
+                    ></th>
+                    <th
+                      style={{
+                        textAlign: 'center',
+                        fontSize: '14px',
+                        position: 'sticky',
+                        top: '0',
+                        width: '16%',
+                        backgroundColor: 'white',
+                      }}
+                      className="hand"
+                    >
+                      Date entrée <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
+                    </th>
+                    <th
+                      style={{
+                        textAlign: 'center',
+                        fontSize: '14px',
+                        position: 'sticky',
+                        top: '0',
+                        width: '16%',
+                        backgroundColor: 'white',
+                      }}
+                      className="hand"
+                    >
+                      Durée <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
+                    </th>
+                    <th
+                      style={{
+                        textAlign: 'center',
+                        fontSize: '14px',
+                        position: 'sticky',
+                        top: '0',
+                        width: '16%',
+                        backgroundColor: 'white',
+                      }}
+                      className="hand"
+                    >
+                      Statut <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
+                    </th>
+                    <th
+                      style={{
+                        textAlign: 'center',
+                        fontSize: '14px',
+                        position: 'sticky',
+                        top: '0',
+                        width: '16%',
+                        backgroundColor: 'white',
+                      }}
+                    >
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  style={{
+                    backgroundColor: '#F6FAFF',
+                    border: '1px solid #F6FAFF',
+                    borderRadius: '15px 15px 0px 15px',
+                    fontSize: '15px',
+                    textAlign: 'center',
+                    borderBottom: '50px solid white',
+                    backgroundImage: 'url(content/images/NgirwiLogo.png)',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundAttachment: 'fixed',
+                    backgroundPosition: '60% 165%',
+                  }}
+                >
+                  <tr>
+                    <td></td>
+                    <td>31/12/2022T12:02:00</td>
+                    <td>1 jour</td>
+                    <td>EN COURS</td>
+                    <td className="text-center">
+                      <div className="btn-group flex-btn-group-container">
+                        <Button
+                          tag={Link}
+                          to={`/hospitalisation/1051/${patientEntity.id}`}
+                          color="info"
+                          size="sm"
+                          data-cy="entityDetailsButton"
+                        >
+                          <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir</span>
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </Table>
+            )
           )}
         </Card>
       </div>
