@@ -1,13 +1,13 @@
 // Override Boostrap variables
 // Import Bootstrap source files from node_modules
 @import '~bootstrap/scss/bootstrap';
-@import url("https://fonts.googleapis.com/css?family=Poppins");
-@import url("http://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin");
-@import url('http://fonts.cdnfonts.com/css/louis-george-cafe');
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin');
+@import url('https://fonts.cdnfonts.com/css/louis-george-cafe');
 @import 'react-calendar/dist/Calendar.css';
 @import url('https://fonts.googleapis.com/css?family=Jost');
 body {
-  background: #F2FDFF;
+  background: #f2fdff;
   margin: 0;
 }
 
@@ -57,8 +57,7 @@ a {
   padding: 5px 25px 50px 25px !important;
 }
 
-
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;

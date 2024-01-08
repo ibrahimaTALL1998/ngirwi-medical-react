@@ -102,22 +102,22 @@ export const ConsultationUpdate = () => {
   const defaultValues = () =>
     isNew
       ? {
-        hours: dayjs().format('HH:mm:ss'),
-        date: dayjs().format('DD/MM/YYYY'),
-        dateTime: displayDefaultDate(),
-        author: account.login,
-        exams: JSON.stringify(exams),
-        patient: idPatient,
-      }
+          hours: dayjs().format('HH:mm:ss'),
+          date: dayjs().format('DD/MM/YYYY'),
+          dateTime: displayDefaultDate(),
+          author: account.login,
+          exams: JSON.stringify(exams),
+          patient: idPatient,
+        }
       : {
-        ...consultationEntity,
-        dateTime: convertDateTimeFromServer(consultationEntity.dateTime),
-        hours: convertDateTimeFromServerToHours(consultationEntity.dateTime),
-        date: convertDateTimeFromServerToDate(consultationEntity.dateTime),
-        patient: consultationEntity?.patient?.id,
-        author: account.login,
-        ...consultationEntity?.exams,
-      };
+          ...consultationEntity,
+          dateTime: convertDateTimeFromServer(consultationEntity.dateTime),
+          hours: convertDateTimeFromServerToHours(consultationEntity.dateTime),
+          date: convertDateTimeFromServerToDate(consultationEntity.dateTime),
+          patient: consultationEntity?.patient?.id,
+          author: account.login,
+          ...consultationEntity?.exams,
+        };
 
   const animatedComponents = makeAnimated();
 
@@ -167,7 +167,8 @@ export const ConsultationUpdate = () => {
               gap: isNew ? '2vw' : '4vw',
               paddingLeft: isNew ? '1vw' : '2vw',
               marginLeft: idPatient == undefined && isNew === true ? '25vw' : '',
-              marginTop: '10vh',paddingRight:"3vw"
+              marginTop: '10vh',
+              paddingRight: '3vw',
             }}
           >
             <Button onClick={() => window.history.back()} style={{ color: '#53BFD1', backgroundColor: '#11485C', borderColor: '#11485C' }}>
@@ -282,14 +283,14 @@ export const ConsultationUpdate = () => {
           >
             {patients
               ? patients.map(otherEntity =>
-                consultationEntity?.patient?.id === otherEntity.id || idPatient == otherEntity.id ? (
-                  <div>
-                    <span key={otherEntity.id}>{'Patient: ' + otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName}</span>{' '}
-                    <br />
-                    <span style={{ fontWeight: '400' }}>{'Matricule: #' + otherEntity.id}</span>
-                  </div>
-                ) : null
-              )
+                  consultationEntity?.patient?.id === otherEntity.id || idPatient == otherEntity.id ? (
+                    <div>
+                      <span key={otherEntity.id}>{'Patient: ' + otherEntity.lastName.toUpperCase() + ' ' + otherEntity.firstName}</span>{' '}
+                      <br />
+                      <span style={{ fontWeight: '400' }}>{'Matricule: #' + otherEntity.id}</span>
+                    </div>
+                  ) : null
+                )
               : null}
           </span>
 
@@ -455,7 +456,7 @@ export const ConsultationUpdate = () => {
               id="consultation-hypothesis"
               name="hypothesis"
               data-cy="hypothesis"
-              type="text"
+              type="textarea"
               validate={{
                 required: { value: true, message: 'Ce champ est obligatoire.' },
               }}
@@ -525,6 +526,111 @@ export const ConsultationUpdate = () => {
                 borderColor: '#CBDCF7',
               }}
             />
+            {/* Echo dopller */}
+            &nbsp;
+            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>Echo Doppler</span>
+            &nbsp;
+            <span
+              style={{
+                marginLeft: '80%',
+                color: '#141414',
+                fontSize: '19px',
+                alignItems: 'center',
+                justifyContent: 'center',
+                display: 'flex',
+              }}
+            >
+              Mode TM
+            </span>
+            <br />
+            <ValidatedField
+              name=""
+              size={1}
+              label="OG (mm)"
+              type="text"
+              style={{
+                width: '30%',
+                borderRadius: '25px',
+                backgroundColor: '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: 'black',
+              }}
+            />
+            <ValidatedField
+              name=""
+              label="VD (mm)"
+              type="text"
+              style={{
+                width: '30%',
+                borderRadius: '25px',
+                backgroundColor: '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: 'black',
+              }}
+            />
+            <ValidatedField
+              name=""
+              label="E-Septum (mm)"
+              type="text"
+              style={{
+                width: '30%',
+                borderRadius: '25px',
+                backgroundColor: '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: 'black',
+              }}
+            />
+            <ValidatedField
+              name=""
+              label="Ao (mm)"
+              type="text"
+              style={{
+                width: '30%',
+                borderRadius: '25px',
+                backgroundColor: '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: 'black',
+              }}
+            />
+            <ValidatedField
+              name=""
+              label="VG Diastole (mm)"
+              type="text"
+              style={{
+                width: '30%',
+                borderRadius: '25px',
+                backgroundColor: '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: 'black',
+              }}
+            />
+            &nbsp;
+            <span
+              style={{
+                marginLeft: '80%',
+                color: '#141414',
+                fontSize: '19px',
+                alignItems: 'center',
+                justifyContent: 'center',
+                display: 'flex',
+              }}
+            >
+              Mode 2D
+            </span>
+            &nbsp;
+            <span
+              style={{
+                marginLeft: '70%',
+                color: '#141414',
+                fontSize: '19px',
+                alignItems: 'center',
+                justifyContent: 'center',
+                display: 'flex',
+              }}
+            >
+              Mode DOPPLER
+            </span>
+            &nbsp;
             <Button
               hidden={idEdit === 'voir' ? true : false}
               id="save-entity"
@@ -544,7 +650,7 @@ export const ConsultationUpdate = () => {
             &nbsp;
             <Button
               onClick={() => {
-                confirm("Êtes-vous sur de vouloir quitter?") === true ? (window.history.back()) : (null)
+                confirm('Êtes-vous sur de vouloir quitter?') === true ? window.history.back() : null;
               }}
               id="cancel-save"
               data-cy="entityCreateCancelButton"
@@ -558,7 +664,7 @@ export const ConsultationUpdate = () => {
                 borderColor: '#EC4747',
                 textAlign: 'center',
                 fontSize: idEdit === 'voir' ? '20px' : '',
-                marginBottom: "2vh"
+                marginBottom: '2vh',
               }}
             >
               <span className="d-none d-md-inline">{idEdit === 'voir' ? 'Retour' : 'Annuler'}</span>
