@@ -52,6 +52,7 @@ module.exports = async options =>
         {
           context: ['/api', '/services', '/management', '/v3/api-docs', '/h2-console', '/auth'],
           target: `http${options.tls ? 's' : ''}://localhost:8080`,
+          // target: `http://13.60.46.226:8080`,
           secure: false,
           changeOrigin: options.tls,
         },
