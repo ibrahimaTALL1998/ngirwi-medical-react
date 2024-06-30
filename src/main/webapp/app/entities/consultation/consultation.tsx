@@ -398,11 +398,11 @@ export const Consultation = () => {
                           {patientList?.map((patient, b) =>
                             consultation?.patient?.id === patient?.id ? (
                               <>
-                                <td>
+                                {/* <td>
                                   <Button tag={Link} to={`/patient/${patient.id}`} color="link" size="sm">
                                     {patient.id}
                                   </Button>
-                                </td>
+                                </td> */}
                                 <td>{patient.lastName.toUpperCase()}</td>
                                 <td style={{ wordBreak: 'break-all', textTransform: 'capitalize' }}>{patient.firstName}</td>
                                 <td>

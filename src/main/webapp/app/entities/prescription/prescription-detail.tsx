@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
 import { TextFormat } from 'react-jhipster';
@@ -8,19 +8,33 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntity } from './prescription.reducer';
+import { IMedecine } from 'app/shared/model/medecine.model';
+import { getMedecineByPrescriptionId } from '../medecine/medecine.reducer';
 
 export const PrescriptionDetail = () => {
   const dispatch = useAppDispatch();
 
   const { id } = useParams<'id'>();
+  const [medecines, setMedecine] = useState<IMedecine[]>([]);
+
+  // useEffect(() => {
+  //   dispatch(getEntity(id));
+  // }, []);
 
   useEffect(() => {
     dispatch(getEntity(id));
-  }, []);
+    getMedecineByPrescriptionId(Number(id))
+      .then(data => {
+        setMedecine(data);
+      })
+      .catch(error => {
+        console.error('Error fetching medicine:', error);
+      });
+  }, [id]);
 
   const prescriptionEntity = useAppSelector(state => state.prescription.entity);
   return (
-    <Row style={{marginLeft:"16vw"}} >
+    <Row style={{ marginLeft: '16vw' }}>
       <Col md="8">
         <h2 data-cy="prescriptionDetailsHeading">Consultation</h2>
         <dl className="jh-entity-details">

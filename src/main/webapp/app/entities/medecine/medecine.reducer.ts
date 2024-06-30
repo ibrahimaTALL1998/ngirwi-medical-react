@@ -24,6 +24,11 @@ export const getEntities = createAsyncThunk('medecine/fetch_entity_list', async 
   return axios.get<IMedecine[]>(requestUrl);
 });
 
+export const getMedecineByPrescriptionId = async (id: number): Promise<IMedecine[]> => {
+  const response = await axios.get<IMedecine[]>(`${apiUrl}/prescription/${id}`);
+  return response.data;
+};
+
 export const getEntity = createAsyncThunk(
   'medecine/fetch_entity',
   async (id: string | number) => {
