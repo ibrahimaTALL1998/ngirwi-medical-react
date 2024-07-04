@@ -1,6 +1,6 @@
 import 'react-toastify/dist/ReactToastify.css';
 import './app.scss';
-import 'app/config/dayjs.ts';
+import 'app/config/dayjs';
 
 import SideBar from './shared/layout/sidebar/sidebar';
 
@@ -35,25 +35,24 @@ export const App = () => {
 
   return (
     <BrowserRouter basename={baseHref}>
-      <div className="app-container" >
+      <div className="app-container">
         <ToastContainer position={toast.POSITION.TOP_LEFT} className="toastify-container" toastClassName="toastify-toast" />
         <ErrorBoundary>
-       {account?.login?(
-        <SideBar
-        isAuthenticated={isAuthenticated}
-        isAdmin={isAdmin}
-        ribbonEnv={ribbonEnv}
-        isInProduction={isInProduction}
-        isOpenAPIEnabled={isOpenAPIEnabled}        
-    />
-       ):null}
-        
-        <AppRoutes />
-        </ErrorBoundary>
-       
+          {account?.login ? (
+            <SideBar
+              isAuthenticated={isAuthenticated}
+              isAdmin={isAdmin}
+              ribbonEnv={ribbonEnv}
+              isInProduction={isInProduction}
+              isOpenAPIEnabled={isOpenAPIEnabled}
+            />
+          ) : null}
 
-        <ErrorBoundary>
+          <AppRoutes />
         </ErrorBoundary>
+
+        {/* <ErrorBoundary> */}
+        {/* </ErrorBoundary> */}
       </div>
     </BrowserRouter>
   );

@@ -8,7 +8,7 @@ export interface IPrescriptionForm {
   author?: string | null;
   form?: IMedecineForm[] | null;
   consultation?: IConsultation | null;
-  medecines?: IMedecine[] | null;
+  // medecines?: IMedecine[] | null;
 }
 
 export const defaultValue: Readonly<IPrescriptionForm> = {};

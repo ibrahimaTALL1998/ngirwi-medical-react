@@ -117,7 +117,7 @@ export const PrescriptionUpdate = () => {
       ...prescriptionEntity,
       ...values,
       consultation: consultations.find(it => it.id.toString() === values.consultation.toString()),
-      form: medecines,
+      medecines: medecines,
     };
 
     if (isNew) {
@@ -132,7 +132,7 @@ export const PrescriptionUpdate = () => {
       ? {
           creationDate: displayDefaultDate(),
           consultation: idConsultation,
-          author: account.lastName + ' ' + account.firstName,
+          author: account.login,
         }
       : {
           ...prescriptionEntity,
@@ -143,7 +143,7 @@ export const PrescriptionUpdate = () => {
   let handleChange = (i, e) => {
     let newFormValues = [...medecines]; // Create a copy of the state array
     newFormValues[i][e.target.name] = e.target.value; // Update the specific field in the copied array
-    console.log(newFormValues);
+    // console.log(newFormValues);
     setMedecine(newFormValues); // Update the state with the modified array
   };
 
@@ -184,12 +184,10 @@ export const PrescriptionUpdate = () => {
   };
 
   p = infosPatient();
-  console.log(consul);
+  // console.log(consul);
   let showID = () => {
     console.log(p);
   };
-
-  console.log(prescriptionEntity);
 
   Font.register({
     family: 'Poppins',
@@ -214,7 +212,9 @@ export const PrescriptionUpdate = () => {
           }}
         >
           <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center' }}>
-            <Text style={{ fontSize: '18px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>Nom médecin</Text>
+            <Text style={{ fontSize: '18px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>
+              {account.lastName + ' ' + account.firstName}
+            </Text>
             <Text style={{ fontSize: '15px', marginBottom: '9px', fontWeight: 'medium' }}>Médecin général</Text>
             <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>Téléphone</Text>
           </View>
@@ -344,7 +344,7 @@ export const PrescriptionUpdate = () => {
                     textAlign: 'center',
                   }}
                 >
-                  {element.duration} Jours
+                  {element.duration} {element.duration === 1 ? 'Jour' : 'Jours'}
                 </Text>
                 <Text
                   style={{

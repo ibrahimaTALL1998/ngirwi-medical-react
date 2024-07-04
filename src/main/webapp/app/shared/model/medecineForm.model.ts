@@ -1,5 +1,5 @@
 export interface IMedecineForm {
-  medecine?: string | null;
+  name?: string | null;
   duration?: string | null;
   frequency?: string | null;
 }

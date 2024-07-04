@@ -369,6 +369,7 @@ export const PatientDetail = () => {
                 hidden={!hidehos}
                 onMouseOver={changeColor}
                 onMouseLeave={setColor}
+                disabled
                 href={`/hospitalisation/new/${patientEntity.id}`}
                 style={{
                   borderColor: '#0075FF',
@@ -387,6 +388,7 @@ export const PatientDetail = () => {
                 hidden={hidehos}
                 onMouseOver={changeColor}
                 onMouseLeave={setColor}
+                disabled
                 href={`/hospitalisation/${patientEntity.id}`}
                 style={{
                   borderColor: '#0075FF',
