@@ -3,9 +3,9 @@ import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/t
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
-import { IDossierMedical, defaultValue } from 'app/shared/model/dossier-medical.model';
+import { IHospital, defaultValue } from 'app/shared/model/hospital.model';
 
-const initialState: EntityState<IDossierMedical> = {
+const initialState: EntityState<IHospital> = {
   loading: false,
   errorMessage: null,
   entities: [],
@@ -15,37 +15,28 @@ const initialState: EntityState<IDossierMedical> = {
   updateSuccess: false,
 };
 
-const apiUrl = 'api/dossier-medicals';
+const apiUrl = 'api/hospitals';
 
 // Actions
 
-export const getEntities = createAsyncThunk('dossierMedical/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
+export const getEntities = createAsyncThunk('hospital/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&` : '?'}cacheBuster=${new Date().getTime()}`;
-  return axios.get<IDossierMedical[]>(requestUrl);
+  return axios.get<IHospital[]>(requestUrl);
 });
 
 export const getEntity = createAsyncThunk(
-  'dossierMedical/fetch_entity',
+  'hospital/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`;
-    return axios.get<IDossierMedical>(requestUrl);
-  },
-  { serializeError: serializeAxiosError }
-);
-
-export const getPatient = createAsyncThunk(
-  'dossierMedical/fetch_entity',
-  async (id: string | number) => {
-    const requestUrl = `${apiUrl}-patient/${id}`;
-    return axios.get<IDossierMedical>(requestUrl);
+    return axios.get<IHospital>(requestUrl);
   },
   { serializeError: serializeAxiosError }
 );
 
 export const createEntity = createAsyncThunk(
-  'dossierMedical/create_entity',
-  async (entity: IDossierMedical, thunkAPI) => {
-    const result = await axios.post<IDossierMedical>(apiUrl, cleanEntity(entity));
+  'hospital/create_entity',
+  async (entity: IHospital, thunkAPI) => {
+    const result = await axios.post<IHospital>(apiUrl, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -53,9 +44,9 @@ export const createEntity = createAsyncThunk(
 );
 
 export const updateEntity = createAsyncThunk(
-  'dossierMedical/update_entity',
-  async (entity: IDossierMedical, thunkAPI) => {
-    const result = await axios.put<IDossierMedical>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
+  'hospital/update_entity',
+  async (entity: IHospital, thunkAPI) => {
+    const result = await axios.put<IHospital>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -63,9 +54,9 @@ export const updateEntity = createAsyncThunk(
 );
 
 export const partialUpdateEntity = createAsyncThunk(
-  'dossierMedical/partial_update_entity',
-  async (entity: IDossierMedical, thunkAPI) => {
-    const result = await axios.patch<IDossierMedical>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
+  'hospital/partial_update_entity',
+  async (entity: IHospital, thunkAPI) => {
+    const result = await axios.patch<IHospital>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -73,10 +64,10 @@ export const partialUpdateEntity = createAsyncThunk(
 );
 
 export const deleteEntity = createAsyncThunk(
-  'dossierMedical/delete_entity',
+  'hospital/delete_entity',
   async (id: string | number, thunkAPI) => {
     const requestUrl = `${apiUrl}/${id}`;
-    const result = await axios.delete<IDossierMedical>(requestUrl);
+    const result = await axios.delete<IHospital>(requestUrl);
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -85,8 +76,8 @@ export const deleteEntity = createAsyncThunk(
 
 // slice
 
-export const DossierMedicalSlice = createEntitySlice({
-  name: 'dossierMedical',
+export const HospitalSlice = createEntitySlice({
+  name: 'hospital',
   initialState,
   extraReducers(builder) {
     builder
@@ -128,7 +119,7 @@ export const DossierMedicalSlice = createEntitySlice({
   },
 });
 
-export const { reset } = DossierMedicalSlice.actions;
+export const { reset } = HospitalSlice.actions;
 
 // Reducer
-export default DossierMedicalSlice.reducer;
+export default HospitalSlice.reducer;

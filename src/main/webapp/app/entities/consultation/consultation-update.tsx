@@ -209,7 +209,8 @@ export const ConsultationUpdate = () => {
               >
                 <span style={{ fontSize: '18px', fontWeight: '900' }}>Dossier médical</span>
                 <Link
-                  to={`/dossier-medical/${dossierMedicalEntity?.id}/edit/${'voir'}`}
+                  // to={`/dossier-medical/${dossierMedicalEntity?.id}/edit/${'voir'}`}
+                  to={`/dossier-medical/${dossierMedicalEntity?.id}/${idPatient}`}
                   style={{
                     fontSize: '13px',
                     color: '#F6FAFF',
