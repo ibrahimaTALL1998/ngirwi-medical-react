@@ -227,7 +227,8 @@ export const PrescriptionUpdate = () => {
           <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center' }}>
             <Text style={{ fontSize: '20px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>{hospital?.name}</Text>
             <Text style={{ fontSize: '15px', marginBottom: '9px', fontWeight: 'medium' }}>{hospital?.adress}</Text>
-            <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>Email Clinique</Text>
+            {/* <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>Email Clinique</Text> */}
+            <Text style={{ fontSize: '15px', fontWeight: 'thin' }}></Text>
           </View>
         </View>
         <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', marginTop: '15px' }}>

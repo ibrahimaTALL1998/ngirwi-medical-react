@@ -6,6 +6,10 @@ export interface IBill {
   id?: number;
   date?: string | null;
   author?: string | null;
+  insurance?: string | null;
+  desc?: string | null;
+  ipm?: string | null;
+  total?: number | null;
   patient?: IPatient | null;
   billElements?: IBillElement[] | null;
 }

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Button, Row, Col, FormText, Card } from 'reactstrap';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button, Card } from 'reactstrap';
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
   convertDateTimeFromServer,
@@ -12,30 +11,19 @@ import {
   displayDefaultDate,
   displayDefaultDateTime,
 } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { IPatient } from 'app/shared/model/patient.model';
 import { getEntities as getPatients } from 'app/entities/patient/patient.reducer';
-import { IBill } from 'app/shared/model/bill.model';
-import { getEntity, updateEntity, createEntity, reset } from './bill.reducer';
-import {
-  createEntity as createElement,
-  getEntity as getElement,
-  updateEntity as updateElement,
-} from '../bill-element/bill-element.reducer';
+import { getEntity as getHospital } from '../hospital/hospital.reducer';
+import { createEntity, getEntity, reset, updateEntity } from './bill.reducer';
+import { getElemntByBillId } from '../bill-element/bill-element.reducer';
 
 //pdf
-import { Page, Text, Image, View, Document, StyleSheet, PDFDownloadLink, Font, PDFViewer } from '@react-pdf/renderer';
-import { ReactPdfTable } from 'react-pdf-table';
+import { Page, Text, View, Document, PDFDownloadLink, Font } from '@react-pdf/renderer';
 import Header from 'app/shared/layout/header/header';
 import { IoIosAddCircleOutline, IoIosArrowBack, IoIosAddCircle, IoIosRemoveCircle } from 'react-icons/io';
-import { size } from 'lodash';
-import { AiFillCloseCircle, AiOutlineLock } from 'react-icons/ai';
 import { BiDownload } from 'react-icons/bi';
-import { BrandIcon } from 'app/shared/layout/header/header-components';
-import Autocomplete from '@mui/material/Autocomplete';
-import { TextField } from '@mui/material';
+import { IBillElement } from 'app/shared/model/bill-element.model';
 export const BillUpdate = () => {
   const dispatch = useAppDispatch();
   const assurance = [
@@ -116,12 +104,6 @@ export const BillUpdate = () => {
     { label: 'TRANSIT', id: '48' },
     { label: 'TRANSPORT AERIEN', id: '49' },
   ];
-  function changeColor(e) {
-    e.target.style.color = '#000000';
-  }
-  function setColor(e) {
-    e.target.style.color = '#B3C0D3';
-  }
   const navigate = useNavigate();
 
   const { id } = useParams<'id'>();
@@ -130,8 +112,8 @@ export const BillUpdate = () => {
   const isNew = id === undefined;
 
   const patients = useAppSelector(state => state.patient.entities);
+  const hospital = useAppSelector(state => state.hospital.entity);
   const billEntity = useAppSelector(state => state.bill.entity);
-  const loading = useAppSelector(state => state.bill.loading);
   const updating = useAppSelector(state => state.bill.updating);
   const updateSuccess = useAppSelector(state => state.bill.updateSuccess);
   const [blockIPM, setBlockIPM] = useState('');
@@ -139,6 +121,7 @@ export const BillUpdate = () => {
 
   const account = useAppSelector(state => state.authentication.account);
   const [patientId, setPatientId] = useState(patients);
+  const [billElements, setBillElements] = useState<IBillElement[]>([]);
 
   let getPatient = e => {
     setPatientId(e.target.value);
@@ -152,33 +135,6 @@ export const BillUpdate = () => {
     setBlockAssurance(e.target.value);
     return e.target.value;
   };
-  let resetBlock = () => {
-    setBlockAssurance('');
-    setBlockIPM('');
-  };
-  let p;
-  let n;
-  let prenomPatient = () => {
-    patients.map(otherEntity =>
-      otherEntity.id.toString() === patientId.toString()
-        ? (p = otherEntity.firstName
-            .split(' ')
-            .map(a => a.charAt(0).toUpperCase() + a.slice(1))
-            .join(' '))
-        : console.log(otherEntity.id)
-    );
-
-    return p;
-  };
-  let nomPatient = () => {
-    patients.map(otherEntity =>
-      otherEntity.id.toString() === patientId.toString() ? (n = otherEntity.lastName.toUpperCase()) : console.log(otherEntity.id)
-    );
-
-    return n;
-  };
-  p = prenomPatient();
-  n = nomPatient();
   const handleClose = () => {
     navigate('/bill' + location.search);
   };
@@ -190,8 +146,17 @@ export const BillUpdate = () => {
       dispatch(getEntity(id));
     }
 
+    getElemntByBillId(Number(id))
+      .then(data => {
+        setBillElements(data);
+      })
+      .catch(error => {
+        console.error('Error fetching elements:', error);
+      });
+
     dispatch(getPatients({}));
-  }, []);
+    dispatch(getHospital(account.hospitalId));
+  }, [isNew, id, dispatch, idPatient]);
 
   useEffect(() => {
     if (updateSuccess) {
@@ -199,18 +164,18 @@ export const BillUpdate = () => {
     }
   }, [updateSuccess]);
 
-  const patient = patients.filter(pat => {
-    return pat.id == idPatient;
-  });
-
   const saveEntity = values => {
     values.date = convertDateTimeToServer(values.date);
+    total = tab();
 
     const entity = {
       ...billEntity,
       ...values,
       patient: patients.find(it => it.id.toString() === values.patient.toString()),
+      billElements: billElements,
     };
+
+    console.log(entity);
 
     if (isNew) {
       dispatch(createEntity(entity));
@@ -236,78 +201,60 @@ export const BillUpdate = () => {
   const [formValues, setFormValues] = useState([{ service: '', amount: '', taux: '', quantity: '' }]);
 
   let handleChange = (i, e) => {
-    let newFormValues = [...formValues];
-    newFormValues[i][e.target.name] = e.target.value;
-    setFormValues(newFormValues);
+    let newFormValues = [...billElements]; // Create a copy of the state array
+    newFormValues[i][e.target.name] = e.target.value; // Update the specific field in the copied array
+    // console.log(newFormValues);
+    setBillElements(newFormValues); // Update the state with the modified array
   };
 
   let addFormFields = () => {
-    setFormValues([...formValues, { service: '', amount: '', taux: '', quantity: '' }]);
+    const newBillElement: IBillElement = {
+      id: undefined,
+      name: null,
+      price: null,
+      percentage: null,
+      quantity: null,
+      bill: null,
+    };
+    setBillElements([...billElements, newBillElement]);
   };
+
+  if (billElements.length === 0) {
+    addFormFields();
+  }
+
+  // let addFormFields = () => {
+  //   setFormValues([...formValues, { service: '', amount: '', taux: '', quantity: '' }]);
+  // };
 
   let removeFormFields = i => {
-    let newFormValues = [...formValues];
+    let newFormValues = [...billElements];
     newFormValues.splice(i, 1);
-    setFormValues(newFormValues);
+    setBillElements(newFormValues);
   };
 
-  const styles = StyleSheet.create({
-    page: {
-      flexDirection: 'row',
-      backgroundColor: '#E4E4E4',
-    },
-    title: {
-      fontSize: 24,
-      textAlign: 'center',
-      fontFamily: 'Times-Roman',
-      color: 'green',
-    },
-    section: {
-      margin: 10,
-      padding: 10,
-      flexGrow: 1,
-    },
-    text: {
-      margin: 12,
-      fontSize: 14,
-      textAlign: 'justify',
-      fontFamily: 'Times-Roman',
-    },
-    image: {
-      marginVertical: 10,
-      marginHorizontal: 200,
-      alignContent: 'center',
-      maxWidth: '30%',
-      maxHeight: '30%',
-    },
-    imageHeader: {
-      float: 'right',
-      maxWidth: '20%',
-      maxHeight: '20%',
-    },
-  });
   let nombre = 1;
   let tarif = 0;
   let total = 0;
   let remise = 0;
   let tab = () => {
-    let newElement = [...formValues];
+    let newElement = [...billElements];
 
     for (let i = 0; i < newElement.length; i++) {
-      if (newElement[i].taux !== '') {
-        remise = 1 - parseInt(newElement[i].taux, 10) / 100;
+      if (newElement[i].percentage !== null) {
+        remise = 1 - newElement[i].percentage / 100;
       } else {
         remise = 1;
       }
-      if (newElement[i].amount !== '') {
-        tarif = parseInt(newElement[i].amount, 10);
+      if (newElement[i].price !== null) {
+        tarif = newElement[i].price;
       } else {
         tarif = 0;
       }
-      if (newElement[i].quantity === '') {
+      if (newElement[i].quantity === null) {
         nombre = 1;
       } else {
-        nombre = parseInt(newElement[i].quantity, 10);
+        nombre = newElement[i].quantity;
       }
       total += Math.round(tarif * remise * nombre);
     }
@@ -344,10 +291,11 @@ export const BillUpdate = () => {
           }}
         >
           <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center' }}>
-            <Text style={{ fontSize: '10px', marginBottom: '9px', fontWeight: 'bold' }}>Nom clinique</Text>
-            <Text style={{ fontSize: '10px', marginBottom: '9px', fontWeight: 'medium' }}>Adresse</Text>
-            <Text style={{ fontSize: '10px', fontWeight: 'thin' }}>Email Clinique</Text>
-            <Text style={{ fontSize: '10px', fontWeight: 'thin' }}>Telephone Clinique</Text>
+            <Text style={{ fontSize: '10px', marginBottom: '9px', fontWeight: 'bold' }}>{hospital?.name}</Text>
+            <Text style={{ fontSize: '10px', marginBottom: '9px', fontWeight: 'medium' }}>{hospital?.adress}</Text>
+            {/* <Text style={{ fontSize: '10px', fontWeight: 'thin' }}>Email Clinique</Text> */}
+            <Text style={{ fontSize: '10px', fontWeight: 'thin' }}></Text>
+            <Text style={{ fontSize: '10px', fontWeight: 'thin' }}>{hospital?.phone}</Text>
           </View>
         </View>
         <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', marginTop: '10px' }}>
@@ -360,7 +308,7 @@ export const BillUpdate = () => {
 
         <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', marginTop: '15px', marginLeft: '5vw' }}>
           <Text style={{ fontSize: '12px', marginBottom: '7px' }}>
-            Nom : {billEntity.patient ? billEntity?.patient?.lastName.toUpperCase() : n}{' '}
+            Nom : {billEntity.patient ? billEntity?.patient?.lastName.toUpperCase() : null}{' '}
           </Text>
           <Text style={{ fontSize: '12px', marginBottom: '7px' }}>
             Prénom(s):{' '}
@@ -369,7 +317,7 @@ export const BillUpdate = () => {
                   .split(' ')
                   .map(a => a.charAt(0).toUpperCase() + a.slice(1))
                   .join(' ')
-              : p}{' '}
+              : null}{' '}
           </Text>
         </View>
         <View
@@ -460,8 +408,8 @@ export const BillUpdate = () => {
               Prix total
             </Text>
           </View>
-          {formValues.map((element, i) =>
-            element.service.length > 0 ? (
+          {billElements.map((element, i) =>
+            true ? (
               <View key={`entity-${i}`} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <Text
                   style={{
@@ -474,7 +422,7 @@ export const BillUpdate = () => {
                     textAlign: 'center',
                   }}
                 >
-                  {element.quantity === '' ? '1' : element.quantity}
+                  {element?.quantity === null ? 1 : element?.quantity}
                 </Text>
                 <Text
                   style={{
@@ -489,7 +437,7 @@ export const BillUpdate = () => {
                     textTransform: 'capitalize',
                   }}
                 >
-                  {element.service}
+                  {element.name}
                 </Text>
                 <Text
                   style={{
@@ -501,7 +449,7 @@ export const BillUpdate = () => {
                     textAlign: 'center',
                   }}
                 >
-                  {element.amount === '' ? '0' : element.amount} FCFA
+                  {element.price === null ? 0 : element.price} FCFA
                 </Text>
                 <Text
                   style={{
@@ -514,7 +462,7 @@ export const BillUpdate = () => {
                     textAlign: 'center',
                   }}
                 >
-                  {element.taux === '' ? '0' : element.taux} %
+                  {element.percentage === null ? 0 : element.percentage} %
                 </Text>
                 <Text
                   style={{
@@ -528,9 +476,11 @@ export const BillUpdate = () => {
                   }}
                 >
                   {Math.round(
-                    parseInt(element.amount === '' ? '0' : element.amount, 10) *
-                      (1 - parseInt(element.taux === '' ? '0' : element.taux, 10) / 100) *
-                      parseInt(element.quantity === '' ? '1' : element.quantity, 10)
+                    element.price === null
+                      ? 0
+                      : element.price * (1 - element.percentage === null ? 0 : element.percentage / 100) * element.quantity === null
+                      ? 1
+                      : element.quantity
                   )}{' '}
                   FCFA
                   {/* {Math.round(tarif*remise*nombre)} */}
@@ -754,13 +704,13 @@ export const BillUpdate = () => {
                 isNew && blockIPM === '' ? false : isNew && blockIPM !== '' ? true : idEdit !== 'voir' && blockIPM === '' ? false : true
               }
               id="bill-asurance"
-              name="asurance"
+              name="insurance"
               data-cy="asurance"
               label="Assurance"
               type="select"
               onChange={e => getAssurance(e)}
             >
-              {assurance.map((assur, i) => (
+              {assurance.map(assur => (
                 <option value={assur.label} key={assur.id}>
                   {assur.label}
                 </option>
@@ -794,7 +744,7 @@ export const BillUpdate = () => {
               }
               onChange={e => getIPM(e)}
             >
-              {ipm.map((a, i) => (
+              {ipm.map(a => (
                 <option value={a.label} key={a.id}>
                   {a.label}
                 </option>
@@ -811,7 +761,7 @@ export const BillUpdate = () => {
             >
               {React.createElement(AiFillCloseCircle, { size: "25" })}
             </Button> */}
-            {formValues.map((element, index, arr) => (
+            {billElements.map((element, index, arr) => (
               <div
                 style={{
                   flex: '1 1 100%',
@@ -851,8 +801,8 @@ export const BillUpdate = () => {
                   type="text"
                   label="Intervention"
                   placeholder="Intervention..."
-                  name="service"
-                  value={element.service || ''}
+                  name="name"
+                  value={element.name || ''}
                   onChange={e => handleChange(index, e)}
                   validate={{
                     required: { value: false, message: 'Ce champ est obligatoire.' },
@@ -870,8 +820,8 @@ export const BillUpdate = () => {
                   type="number"
                   label="Tarif unitaire(FCFA)"
                   placeholder="Tarif..."
-                  name="amount"
-                  value={element.amount || ''}
+                  name="price"
+                  value={element.price || ''}
                   onChange={e => handleChange(index, e)}
                   validate={{
                     required: { value: false, message: 'Ce champ est obligatoire.' },
@@ -889,14 +839,15 @@ export const BillUpdate = () => {
                   }}
                   label="Taux de remboursement(en %)"
                   type="number"
-                  name="taux"
+                  name="percentage"
                   placeholder="Taux..."
-                  value={element.taux || ''}
+                  value={element.percentage || ''}
                   onChange={e => handleChange(index, e)}
                 />
                 {arr.length - 1 === index ? (
                   <span
-                    onClick={() => addFormFields()}
+                    hidden={idEdit === 'voir' ? true : false}
+                    onClick={idEdit !== 'voir' ? () => addFormFields() : null}
                     style={{
                       backgroundColor: 'transparent',
                       borderColor: 'transparent',
@@ -915,7 +866,8 @@ export const BillUpdate = () => {
 
                 {index ? (
                   <span
-                    onClick={() => removeFormFields(index)}
+                    hidden={idEdit === 'voir' ? true : false}
+                    onClick={idEdit !== 'voir' ? () => removeFormFields(index) : null}
                     style={{
                       backgroundColor: 'transparent',
                       cursor: 'pointer',
@@ -950,7 +902,7 @@ export const BillUpdate = () => {
               data-cy="total"
               label="Montant Total(CFA)"
               placeholder="Montant..."
-              type="text"
+              type="number"
             />
             <ValidatedField
               style={
@@ -968,7 +920,6 @@ export const BillUpdate = () => {
               disabled={isNew || idEdit !== 'voir' ? false : idEdit === 'voir' ? false : true}
               id="bill-desc"
               name="desc"
-              data-cy="total"
               label="Description"
               placeholder="Description..."
               type="textarea"
@@ -1005,122 +956,6 @@ export const BillUpdate = () => {
         </Card>
       </div>
     </div>
-    // <div>
-    //   <Row className="justify-content-center">
-    //     <Col md="8">
-    //       <h2 id="ngirwiFrontEndApp.bill.home.createOrEditLabel" data-cy="BillCreateUpdateHeading">
-    //         Créer ou éditer une facture
-    //       </h2>
-    //     </Col>
-    //   </Row>
-    //   <Row className="justify-content-center">
-    //     <Col md="8">
-    //       {loading ? (
-    //         <p>Loading...</p>
-    //       ) : (
-    //         <Card>
-    //       <ValidatedForm
-    // style={{
-    //   width:"94%",
-    //   marginLeft:"3%",
-    //   height:"70%",
-    //   display:"grid",
-    //   columnGap:"25px",
-    //   marginTop:"1%",
-    //   gridTemplateColumns : "repeat(3, 5fr)",
-    //   fontSize:"12px",
-    //   fontWeight:"900"
-    // }}
-    // defaultValues={defaultValues()} onSubmit={saveEntity}>
-    //           {!isNew ? <ValidatedField hidden name="id" required readOnly id="bill-id" label="ID" validate={{ required: true }} /> : null}
-    //           <ValidatedField
-    //           style={{borderRadius:"25px",width:"25vw",backgroundColor:"#A9B7CD",color:"#F6FAFF",borderColor:"#CBDCF7"}}
-    //           disabled label="Date" id="bill-date" name="date" data-cy="date" type="datetime-local" placeholder="YYYY-MM-DD HH:mm" />
-    //           <ValidatedField hidden label="Author" id="bill-author" name="author" data-cy="author" type="text" />
-    //           <ValidatedField style={isNew?{borderRadius:"25px",width:"25vw",borderColor:"#CBDCF7"}:{borderRadius:"25px",width:"25vw",backgroundColor:"#A9B7CD",borderColor:"#CBDCF7",color:"#F6FAFF"}} disabled={isNew?false:true} id="bill-patient" name="patient" data-cy="patient" label="Patient" type="select">
-    //             <option value="" key="0" />
-    //             {patients
-    //               ? patients.map(otherEntity => (
-    //                 <option value={otherEntity.id} key={otherEntity.id}>
-    //                   {otherEntity.lastName+' '+otherEntity.firstName}
-    //                 </option>
-    //               ))
-    //               : null}
-    //           </ValidatedField>
-    //           {formValues.map((element, index) => (
-    //             <div key={index}>
-    //               <ValidatedField
-    //                 type="text"
-    //                 label='Désignation'
-    //                 name="service"
-    //                 value={element.service || ""}
-    //                 onChange={(e) => handleChange(index, e)}
-    //               />
-    //               <ValidatedField
-    //                 type="number"
-    //                 label='Quantité'
-    //                 name="description"
-    //                 value={element.description || ""}
-    //                 onChange={(e) => handleChange(index, e)}
-    //               />
-    //               <ValidatedField
-    //                 label='Prix (FCFA)'
-    //                 type="number"
-    //                 name="amount"
-    //                 value={element.amount || ""}
-    //                 onChange={(e) => handleChange(index, e)}
-    //                 validate={{
-    //                   required: { value: false, message: 'Ce champ est obligatoire.' },
-    //                   validate: v => isNumber(v) || 'Ce champ doit être un nombre.',
-    //                 }}
-    //               />
-    //               {index ? (
-    //                 <Button
-    //                   type="button"
-    //                   className="btn btn-danger"
-    //                   onClick={() => removeFormFields(index)}
-    //                 >
-    //                   Retirer
-    //                 </Button>
-    //               ) : null}
-    //             </div>
-    //           ))}
-    //           <Button id='envoyer' replace color="success" onClick={() => addFormFields()}
-    //             value="Envoyer">
-
-    //             <span className="d-none d-md-inline">Ajouter</span>
-    //           </Button>
-    //           &nbsp;
-    //           <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/bill" replace color="info">
-    //             <FontAwesomeIcon icon="arrow-left" />
-    //             &nbsp;
-    //             <span className="d-none d-md-inline"> &nbsp; Retour</span>
-    //           </Button>
-    //           &nbsp;
-    //           <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
-    //             <FontAwesomeIcon icon="save" />
-    //             &nbsp; Sauvegarder
-    //           </Button>
-    //         </ValidatedForm>
-    //         </Card>
-
-    //       )}
-    //       <br/>
-    // <PDFDownloadLink
-    //   document={doc}
-    //   fileName={`ordonnance_${account.login}_${JSON.stringify(displayDefaultDateTime)}`}
-    // >
-    //   {({ loading }) =>
-    //     loading ? (
-    //       <Button color='primary'>Préparer fichier...</Button>
-    //     ) : (
-    //       <Button color='success'>Télécharger</Button>
-    //     )
-    //   }
-    // </PDFDownloadLink>
-    //     </Col>
-    //   </Row>
-    // </div>
   );
 };
 

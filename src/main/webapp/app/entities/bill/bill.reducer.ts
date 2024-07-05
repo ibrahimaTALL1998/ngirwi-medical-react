@@ -4,6 +4,8 @@ import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/t
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
 import { IBill, defaultValue } from 'app/shared/model/bill.model';
+import { IBillElement } from 'app/shared/model/bill-element.model';
+// import { BillForm } from 'app/shared/model/billForm.model';
 
 const initialState: EntityState<IBill> = {
   loading: false,
@@ -42,6 +44,16 @@ export const createEntity = createAsyncThunk(
   },
   { serializeError: serializeAxiosError }
 );
+
+// export const createEntityBis = createAsyncThunk(
+//   'bill/create_entity',
+//   async (entity: BillForm, thunkAPI) => {
+//     const result = await axios.post<BillForm>(apiUrl + 'bis', cleanEntity(entity));
+//     thunkAPI.dispatch(getEntities({}));
+//     return result;
+//   },
+//   { serializeError: serializeAxiosError }
+// );
 
 export const updateEntity = createAsyncThunk(
   'bill/update_entity',

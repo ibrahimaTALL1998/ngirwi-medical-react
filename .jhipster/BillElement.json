@@ -1,6 +1,6 @@
 {
   "applications": "*",
-  "changelogDate": "20220910204318",
+  "changelogDate": "20220910204518",
   "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "bill_element",
@@ -12,6 +12,14 @@
     {
       "fieldName": "price",
       "fieldType": "Double"
+    },
+    {
+      "fieldName": "percentage",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "quantity",
+      "fieldType": "Integer"
     }
   ],
   "fluentMethods": true,
