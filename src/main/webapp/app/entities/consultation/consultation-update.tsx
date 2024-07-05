@@ -92,6 +92,7 @@ export const ConsultationUpdate = () => {
       patient: patients.find(it => it.id.toString() === values.patient.toString()),
     };
 
+    console.log(entity);
     if (isNew) {
       dispatch(createEntity(entity));
     } else {
@@ -581,7 +582,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="VG Diastole"
+              name="vGDiastole"
               label="VG Diastole (mm)"
               type="text"
               style={{
@@ -593,7 +594,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="VCI"
+              name="z"
               label="VCI (mm)"
               type="text"
               style={{
@@ -605,7 +606,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Ouverture Ao"
+              name="ouvertureAo"
               label="Ouverture Ao (mm)"
               type="text"
               style={{
@@ -617,7 +618,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="VG Systole"
+              name="vGSystole"
               label="VG Systole (mm)"
               type="text"
               style={{
@@ -629,7 +630,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="VP"
+              name="vp"
               label="VP (mm)"
               type="text"
               style={{
@@ -641,7 +642,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="OG/Ao"
+              name="oGAo"
               label="OG/Ao (mm)"
               type="text"
               style={{
@@ -653,7 +654,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="FR/Teicholtz"
+              name="fRTeicholtz"
               label="FR/Teicholtz (mm)"
               type="text"
               style={{
@@ -665,7 +666,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="E/VP"
+              name="eVp"
               label="E/VP (mm)"
               type="text"
               style={{
@@ -677,7 +678,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Septum VG"
+              name="septumVg"
               label="Septum VG (mm)"
               type="text"
               style={{
@@ -689,7 +690,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="FE Teicholz"
+              name="fETeicholz"
               label="FE Teicholz (mm)"
               type="text"
               style={{
@@ -701,7 +702,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="TAPSE"
+              name="tapse"
               label="TAPSE (mm)"
               type="text"
               style={{
@@ -713,7 +714,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="PAROI POST"
+              name="paroiPost"
               label="PAROI POST (mm)"
               type="text"
               style={{
@@ -729,7 +730,7 @@ export const ConsultationUpdate = () => {
             <br />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Surface OG"
+              name="surfaceOg"
               label="Surface OG (cm²)"
               type="text"
               style={{
@@ -741,7 +742,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Surface OD"
+              name="surfaceOd"
               label="Surface OD (cm²)"
               type="text"
               style={{
@@ -753,7 +754,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Mesure VD"
+              name="mesureVd"
               label="Mesure VD (mm)"
               type="text"
               style={{
@@ -765,7 +766,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="FE"
+              name="fe"
               label="FE (Simpson Monoplan) (%)"
               type="text"
               style={{
@@ -777,7 +778,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="FE"
+              name="feA2C"
               label="FE (A2C) (%)"
               type="text"
               style={{
@@ -789,7 +790,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="FE (Simpson Biplan)"
+              name="feBiplan"
               label="FE (Simpson Biplan) (%)"
               type="text"
               style={{
@@ -806,7 +807,7 @@ export const ConsultationUpdate = () => {
             <br />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="E"
+              name="e"
               label="E (m/s)"
               type="text"
               style={{
@@ -818,7 +819,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="A"
+              name="a"
               label="A (m/s)"
               type="text"
               style={{
@@ -830,7 +831,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="E/A"
+              name="eA"
               label="E/A"
               type="text"
               style={{
@@ -842,7 +843,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="TD"
+              name="td"
               label="TD (m/s)"
               type="text"
               style={{
@@ -854,7 +855,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="TRIV"
+              name="triv"
               label="TRIV (m/s)"
               type="text"
               style={{
@@ -866,7 +867,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Duree AM IM"
+              name="dureeAmIm"
               label="Duree AM IM"
               type="text"
               style={{
@@ -878,7 +879,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Surface regurgitée"
+              name="surfaceRegurgitee"
               label="Surface regurgitée (cm²)"
               type="text"
               style={{
@@ -890,7 +891,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="PBA"
+              name="pba"
               label="PBA"
               type="text"
               style={{
@@ -902,7 +903,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="QR"
+              name="qr"
               label="QR (m/s)"
               type="text"
               style={{
@@ -914,7 +915,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="VR"
+              name="vr"
               label="VR (ml/s)"
               type="text"
               style={{
@@ -926,7 +927,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="SOR"
+              name="sor"
               label="SOR (mm²)"
               type="text"
               style={{
@@ -938,7 +939,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="FR"
+              name="fr"
               label="FR (%)"
               type="text"
               style={{
@@ -952,7 +953,7 @@ export const ConsultationUpdate = () => {
             <br />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="VMAX Ao"
+              name="vmaxAp"
               label="VMAX Ao (mm)"
               type="text"
               style={{
@@ -964,7 +965,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="ITV (cm)"
+              name="itv"
               label="ITV (cm)"
               type="text"
               style={{
@@ -976,7 +977,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Grad Max"
+              name="gradMax"
               label="Grad Max (mmHg)"
               type="text"
               style={{
@@ -988,7 +989,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Grad Moy (mmHg)"
+              name="gradMoy"
               label="Grad Moy (mmHg)"
               type="text"
               style={{
@@ -1000,7 +1001,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="DC"
+              name="dc"
               label="DC"
               type="text"
               style={{
@@ -1012,7 +1013,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="IAO extension du jet"
+              name="iAoextension"
               label="IAO extension du jet"
               type="text"
               style={{
@@ -1024,7 +1025,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Vena Contracta"
+              name="venaContracta"
               label="Vena Contracta (mm)"
               type="text"
               style={{
@@ -1036,7 +1037,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="PHT"
+              name="pht"
               label="PHT (%)"
               type="text"
               style={{
@@ -1050,7 +1051,7 @@ export const ConsultationUpdate = () => {
             <br />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="IT Extension du jet"
+              name="iTExtension"
               label="IT Extension du jet"
               type="text"
               style={{
@@ -1062,7 +1063,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Grad Max"
+              name="gradMaxB"
               label="Grad Max (mmHg)"
               type="text"
               style={{
@@ -1074,7 +1075,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="PAPS"
+              name="paps"
               label="PAPS (mmHg)"
               type="text"
               style={{
@@ -1088,7 +1089,7 @@ export const ConsultationUpdate = () => {
             <br />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="IP"
+              name="ip"
               label="IP"
               type="text"
               style={{
@@ -1100,7 +1101,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="VMax"
+              name="vmax"
               label="VMax (m/s)"
               type="text"
               style={{
@@ -1112,7 +1113,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Grad Max"
+              name="gradMaxC"
               label="Grad Max (mmHg)"
               type="text"
               style={{
@@ -1124,7 +1125,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Grad Moy"
+              name="gradMoyB"
               label="Grad Moy (mmHg)"
               type="text"
               style={{
@@ -1138,7 +1139,7 @@ export const ConsultationUpdate = () => {
             <br />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="S (m/s)"
+              name="s"
               label="S (m/s)"
               type="text"
               style={{
@@ -1150,7 +1151,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="D"
+              name="d"
               label="D (m/s)"
               type="text"
               style={{
@@ -1162,7 +1163,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="S/D"
+              name="sD"
               label="S/D"
               type="text"
               style={{
@@ -1174,7 +1175,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="A"
+              name="aA"
               label="A (ms)"
               type="text"
               style={{
@@ -1186,7 +1187,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Duree AP"
+              name="dureeAp"
               label="Duree AP"
               type="text"
               style={{
@@ -1200,7 +1201,7 @@ export const ConsultationUpdate = () => {
             <br />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Ea"
+              name="eAA"
               label="Ea (m/s)"
               type="text"
               style={{
@@ -1212,7 +1213,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Aa (ms)"
+              name="aAA"
               label="Aa (ms)"
               type="text"
               style={{
@@ -1224,7 +1225,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="Ea/Aa"
+              name="eAAa"
               label="Ea/Aa"
               type="text"
               style={{
@@ -1236,7 +1237,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              name="E/Ea"
+              name="eEa"
               label="E/Ea"
               type="text"
               style={{

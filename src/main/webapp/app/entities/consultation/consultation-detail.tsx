@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Button, Row, Col, Card } from 'reactstrap';
+import { Button, Row, Col } from 'reactstrap';
 import { TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -8,7 +8,6 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntity } from './consultation.reducer';
-import { FiLogOut } from 'react-icons/fi';
 
 export const ConsultationDetail = () => {
   const dispatch = useAppDispatch();
@@ -21,345 +20,300 @@ export const ConsultationDetail = () => {
 
   const consultationEntity = useAppSelector(state => state.consultation.entity);
   return (
-
-    <div
-    style={{
-      paddingLeft:"16vw",
-      paddingTop:"1%",
-      fontFamily:"Mulish",
-      fontWeight:"900",
-      display:"flex",
-      flexDirection:"column"
-    }}
-  >
-    <div style={{display:"flex", flexDirection:"row",gap:"70vw"}}>
-      <span>Gestion Consultation</span>  
-      <div>
-        <Link to="/logout" style={{color:"silver", fontWeight:"900"}}>
-          <div>{React.createElement(FiLogOut)} </div>
-        </Link>
-      </div>
-    </div> 
-    <div
-      style={{
-        display:"flex",
-        flexDirection:"column",
-        gap:"5vh",
-        marginTop:"9.5vh"
-      }}        
-    >
-      <Card
-        style={{
-          height:"8.28vh",
-          width:"33.38vw",
-          borderRadius:"20px",
-          backgroundColor:"#11485C",
-          marginLeft:"25%",
-          textAlign:"center",
-          color:"white",
-          boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
-          }}
-      >
-        <span style={{marginTop:"2.5%"}}>Details Consultation</span>  
-      </Card>
-
-
-      <Card
-        style={{
-          marginLeft:"4%",
-          height:"55vh",
-          width:"70vw",
-          marginRight:"5%",
-          boxShadow:"0px 10px 50px rgba(138, 161, 203, 0.23)",
-          borderRadius:"15px",
-          display:"flex",
-          flexDirection:"row",
-          alignItems:"flex-start",
-          justifyContent:"center",
-          paddingTop:"5%"
-        }}
-      >
-        <Card
-          style={{
-            height:"55%",
-            width:"22%",
-            backgroundColor:"#72C9D8",
-            borderRadius:"15px",
-            borderColor:"#72C9D8",
-            borderTopRightRadius:"0px",
-            borderBottomRightRadius:"0px"
-          }}
-        >
-          <div 
-            style={{
-              display:"flex",
-              flexDirection:"column",
-              alignItems:"center",
-              justifyContent:"center",
-              paddingTop:"30%"
-            }}
-          >
-            <span>Faite le:</span>
-            <span 
-              style={{
-                color:"#006CEB",
-                fontFamily:"Mulish",
-                fontSize:"15px"
-              }}
-            >
-               {consultationEntity.dateTime ? <TextFormat value={consultationEntity.dateTime} type="date" format={APP_DATE_FORMAT} /> : null}
-            </span>
-          </div>
-        </Card>
-
-
-        <Card
-          style={{
-            height:"90%",
-            width:"40%",
-            borderRadius:"15px",
-            borderTopLeftRadius:"0px",
-            marginRight:"8%",
-            backgroundColor:"#F6FAFF",
-            borderColor:"#F6FAFF",
-            display:"flex",
-            flexDirection:"column",
-            justifyContent:"center",
-            alignItems:"center",
-            fontSize:"15px",
-            fontWeight:"bold",
-            fontFamily:"Mulish"
-          }}
-        >
-            <div>
-              <span
-                style={{
-                  color:"#A9B7CD"
-                }}
-              >Temperature: </span>
-              <span>
-              {consultationEntity.temperature}  
-              </span>
-            </div>
-            <div>
-              <span
-                style={{
-                  color:"#A9B7CD"
-                }}
-              >Poids: </span>
-              <span>
-              {consultationEntity.weight}  
-              </span>
-            </div>
-            <div>
-              <span
-                style={{
-                  color:"#A9B7CD"
-                }}
-              >Tension: </span>
-              <span>
-                {consultationEntity.tension}
-              </span>
-            </div>
-            <div>
-              <span
-                style={{
-                  color:"#A9B7CD"
-                }}
-              >Glycemie: </span>
-              <span>
-              {consultationEntity.glycemie}  
-              </span>
-            </div>
-            <div>
-              <span
-                style={{
-                  color:"#A9B7CD"
-                }}
-              >Commentaire: </span>
-              <span>
-              {consultationEntity.comment}  
-              </span>
-            </div>
-            <div>
-              <span
-                style={{
-                  color:"#A9B7CD"
-                }}
-              >Hypotèse Diagnostique: </span>
-              <span>
-              {consultationEntity.hypothesis}  
-              </span>
-            </div>
-            <div>
-              <span
-                style={{
-                  color:"#A9B7CD"
-                }}
-              >Examens: </span>
-              <span>
-              {consultationEntity.exams} 
-              </span>
-            </div>
-            <div>
-              <span
-                style={{
-                  color:"#A9B7CD"
-                }}
-              >Traitement: </span>
-              <span>
-              {consultationEntity.treatment}  
-              </span>
-            </div>
-            <div>
-              <span
-                style={{
-                  color:"#A9B7CD"
-                }}
-              >Auteur: </span>
-              <span>
-              {consultationEntity.author}  
-              </span>
-            </div>
-            <div>
-              <span
-                style={{
-                  color:"#A9B7CD"
-                }}
-              >Patient: </span>
-              <span>
-               {consultationEntity.patient ? <Link to={`/patient/${consultationEntity.patient.id}`}>{consultationEntity.patient.lastName+' '+consultationEntity.patient.firstName}</Link> : '' } 
-              </span>
-            </div>
-   
-        </Card>
-
-
-        <div
-          style={{
-            display:"flex",
-            flexDirection:"column",
-            gap:"5vh",
-            marginTop:"3vh"
-          }}
-        >
-      
-          <Button
-            href={`/prescription/new/${consultationEntity.id}`}
-            style={{
-              borderColor:"#0075FF",
-              backgroundColor:"#0075FF",
-              color:"#FFFFFF",
-              width:"25vh",
-              height:"8vh",
-              borderRadius:"4px",
-              fontFamily:"Ubuntu",
-            }}
-          >
-            Ordonnance
-          </Button>
-          <Button
-            tag={Link}
-            to={`/consultation/${consultationEntity.id}/edit`}
-            style={{
-              borderColor:"#0075FF",
-              backgroundColor:"#0075FF",
-              color:"#FFFFFF",
-              width:"25vh",
-              height:"8vh",
-              borderRadius:"4px",
-              fontFamily:"Ubuntu",
-            }}
-          >
-            Modifier consultation
-          </Button>
-        </div>
-      </Card>
-
-
-      <Button  id="cancel-save" data-cy="entityCreateCancelButton" onClick={() => window.history.back()}  replace color="info"
-        style={{
-          marginLeft:"7%",
-          width:"66vw",
-          borderRadius:"25px",
-          color:"white",
-          backgroundColor:"#EC4747",
-          borderColor:"#EC4747",
-        }}
-      >
-        <span className="d-none d-md-inline">Retour</span>
-      </Button>
-    </div>
-  </div>
-
-
-
-    // <Row>
-    //   <Col md="8">
-    //     <h2 data-cy="consultationDetailsHeading">Consultation</h2>
-    //     <dl className="jh-entity-details">
-    //       <dt>
-    //         <span id="id">ID</span>
-    //       </dt>
-    //       <dd>{consultationEntity.id}</dd>
-    //       <dt>
-    //         <span id="dateTime">Date et heure</span>
-    //       </dt>
-    //       <dd>
-    //         {consultationEntity.dateTime ? <TextFormat value={consultationEntity.dateTime} type="date" format={APP_DATE_FORMAT} /> : null}
-    //       </dd>
-    //       <dt>
-    //         <span id="temperature">Temperature</span>
-    //       </dt>
-    //       <dd>{consultationEntity.temperature}</dd>
-    //       <dt>
-    //         <span id="weight">Poids</span>
-    //       </dt>
-    //       <dd>{consultationEntity.weight}</dd>
-    //       <dt>
-    //         <span id="tension">Tension</span>
-    //       </dt>
-    //       <dd>{consultationEntity.tension}</dd>
-    //       <dt>
-    //         <span id="glycemie">Glycemie</span>
-    //       </dt>
-    //       <dd>{consultationEntity.glycemie}</dd>
-    //       <dt>
-    //         <span id="comment">Commentaire</span>
-    //       </dt>
-    //       <dd>{consultationEntity.comment}</dd>
-    //       <dt>
-    //         <span id="hypothesis">Hypothèse diagnostique</span>
-    //       </dt>
-    //       <dd>{consultationEntity.hypothesis}</dd>
-    //       <dt>
-    //         <span id="exams">Examens</span>
-    //       </dt>
-    //       <dd>{consultationEntity.exams}</dd>
-    //       <dt>
-    //         <span id="treatment">Traitement</span>
-    //       </dt>
-    //       <dd>{consultationEntity.treatment}</dd>
-    //       <dt>
-    //         <span id="author">Autheur</span>
-    //       </dt>
-    //       <dd>{consultationEntity.author}</dd>
-    //       <dt>Patient</dt>
-    //       <dd>{consultationEntity.patient ? <Link to={`/patient/${consultationEntity.patient.id}`}>{consultationEntity.patient.lastName}</Link> : ''}</dd>
-    //     </dl>
-    //     <Button tag={Link} to="/consultation" replace color="info" data-cy="entityDetailsBackButton">
-    //       <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Retour</span>
-    //     </Button>
-    //     &nbsp;
-    //     <Button tag={Link} to={`/consultation/${consultationEntity.id}/edit`} replace color="primary">
-    //       <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
-    //     </Button>
-    //     &nbsp;
-    //     <Button tag={Link} to={`/prescription/new/${consultationEntity.id}`} replace color="success">
-    //       <FontAwesomeIcon icon="book" /> <span className="d-none d-md-inline">Ordonnance</span>
-    //     </Button>
-    //   </Col>
-    // </Row>
+    <Row>
+      <Col md="8">
+        <h2 data-cy="consultationDetailsHeading">Consultation</h2>
+        <dl className="jh-entity-details">
+          <dt>
+            <span id="id">ID</span>
+          </dt>
+          <dd>{consultationEntity.id}</dd>
+          <dt>
+            <span id="dateTime">Date Time</span>
+          </dt>
+          <dd>
+            {consultationEntity.dateTime ? <TextFormat value={consultationEntity.dateTime} type="date" format={APP_DATE_FORMAT} /> : null}
+          </dd>
+          <dt>
+            <span id="temperature">Temperature</span>
+          </dt>
+          <dd>{consultationEntity.temperature}</dd>
+          <dt>
+            <span id="weight">Weight</span>
+          </dt>
+          <dd>{consultationEntity.weight}</dd>
+          <dt>
+            <span id="tension">Tension</span>
+          </dt>
+          <dd>{consultationEntity.tension}</dd>
+          <dt>
+            <span id="glycemie">Glycemie</span>
+          </dt>
+          <dd>{consultationEntity.glycemie}</dd>
+          <dt>
+            <span id="comment">Comment</span>
+          </dt>
+          <dd>{consultationEntity.comment}</dd>
+          <dt>
+            <span id="hypothesis">Hypothesis</span>
+          </dt>
+          <dd>{consultationEntity.hypothesis}</dd>
+          <dt>
+            <span id="exams">Exams</span>
+          </dt>
+          <dd>{consultationEntity.exams}</dd>
+          <dt>
+            <span id="treatment">Treatment</span>
+          </dt>
+          <dd>{consultationEntity.treatment}</dd>
+          <dt>
+            <span id="author">Author</span>
+          </dt>
+          <dd>{consultationEntity.author}</dd>
+          <dt>
+            <span id="og">Og</span>
+          </dt>
+          <dd>{consultationEntity.og}</dd>
+          <dt>
+            <span id="vd">Vd</span>
+          </dt>
+          <dd>{consultationEntity.vd}</dd>
+          <dt>
+            <span id="eseptum">Eseptum</span>
+          </dt>
+          <dd>{consultationEntity.eseptum}</dd>
+          <dt>
+            <span id="ao">Ao</span>
+          </dt>
+          <dd>{consultationEntity.ao}</dd>
+          <dt>
+            <span id="vGDiastole">V G Diastole</span>
+          </dt>
+          <dd>{consultationEntity.vGDiastole}</dd>
+          <dt>
+            <span id="ouvertureAo">Ouverture Ao</span>
+          </dt>
+          <dd>{consultationEntity.ouvertureAo}</dd>
+          <dt>
+            <span id="vGSystole">V G Systole</span>
+          </dt>
+          <dd>{consultationEntity.vGSystole}</dd>
+          <dt>
+            <span id="vp">Vp</span>
+          </dt>
+          <dd>{consultationEntity.vp}</dd>
+          <dt>
+            <span id="oGAo">O G Ao</span>
+          </dt>
+          <dd>{consultationEntity.oGAo}</dd>
+          <dt>
+            <span id="fRTeicholtz">F R Teicholtz</span>
+          </dt>
+          <dd>{consultationEntity.fRTeicholtz}</dd>
+          <dt>
+            <span id="eVp">E Vp</span>
+          </dt>
+          <dd>{consultationEntity.eVp}</dd>
+          <dt>
+            <span id="septumVg">Septum Vg</span>
+          </dt>
+          <dd>{consultationEntity.septumVg}</dd>
+          <dt>
+            <span id="fETeicholz">F E Teicholz</span>
+          </dt>
+          <dd>{consultationEntity.fETeicholz}</dd>
+          <dt>
+            <span id="tapse">Tapse</span>
+          </dt>
+          <dd>{consultationEntity.tapse}</dd>
+          <dt>
+            <span id="paroiPost">Paroi Post</span>
+          </dt>
+          <dd>{consultationEntity.paroiPost}</dd>
+          <dt>
+            <span id="surfaceOg">Surface Og</span>
+          </dt>
+          <dd>{consultationEntity.surfaceOg}</dd>
+          <dt>
+            <span id="surfaceOd">Surface Od</span>
+          </dt>
+          <dd>{consultationEntity.surfaceOd}</dd>
+          <dt>
+            <span id="mesureVd">Mesure Vd</span>
+          </dt>
+          <dd>{consultationEntity.mesureVd}</dd>
+          <dt>
+            <span id="fe">Fe</span>
+          </dt>
+          <dd>{consultationEntity.fe}</dd>
+          <dt>
+            <span id="feA2C">Fe A 2 C</span>
+          </dt>
+          <dd>{consultationEntity.feA2C}</dd>
+          <dt>
+            <span id="feBiplan">Fe Biplan</span>
+          </dt>
+          <dd>{consultationEntity.feBiplan}</dd>
+          <dt>
+            <span id="e">E</span>
+          </dt>
+          <dd>{consultationEntity.e}</dd>
+          <dt>
+            <span id="a">A</span>
+          </dt>
+          <dd>{consultationEntity.a}</dd>
+          <dt>
+            <span id="eA">E A</span>
+          </dt>
+          <dd>{consultationEntity.eA}</dd>
+          <dt>
+            <span id="td">Td</span>
+          </dt>
+          <dd>{consultationEntity.td}</dd>
+          <dt>
+            <span id="triv">Triv</span>
+          </dt>
+          <dd>{consultationEntity.triv}</dd>
+          <dt>
+            <span id="dureeAmIm">Duree Am Im</span>
+          </dt>
+          <dd>{consultationEntity.dureeAmIm}</dd>
+          <dt>
+            <span id="surfaceRegurgitee">Surface Regurgitee</span>
+          </dt>
+          <dd>{consultationEntity.surfaceRegurgitee}</dd>
+          <dt>
+            <span id="pba">Pba</span>
+          </dt>
+          <dd>{consultationEntity.pba}</dd>
+          <dt>
+            <span id="qr">Qr</span>
+          </dt>
+          <dd>{consultationEntity.qr}</dd>
+          <dt>
+            <span id="vr">Vr</span>
+          </dt>
+          <dd>{consultationEntity.vr}</dd>
+          <dt>
+            <span id="sor">Sor</span>
+          </dt>
+          <dd>{consultationEntity.sor}</dd>
+          <dt>
+            <span id="fr">Fr</span>
+          </dt>
+          <dd>{consultationEntity.fr}</dd>
+          <dt>
+            <span id="vmaxAp">Vmax Ap</span>
+          </dt>
+          <dd>{consultationEntity.vmaxAp}</dd>
+          <dt>
+            <span id="itv">Itv</span>
+          </dt>
+          <dd>{consultationEntity.itv}</dd>
+          <dt>
+            <span id="gradMax">Grad Max</span>
+          </dt>
+          <dd>{consultationEntity.gradMax}</dd>
+          <dt>
+            <span id="gradMoy">Grad Moy</span>
+          </dt>
+          <dd>{consultationEntity.gradMoy}</dd>
+          <dt>
+            <span id="dc">Dc</span>
+          </dt>
+          <dd>{consultationEntity.dc}</dd>
+          <dt>
+            <span id="iAoextension">I Aoextension</span>
+          </dt>
+          <dd>{consultationEntity.iAoextension}</dd>
+          <dt>
+            <span id="venaContracta">Vena Contracta</span>
+          </dt>
+          <dd>{consultationEntity.venaContracta}</dd>
+          <dt>
+            <span id="pht">Pht</span>
+          </dt>
+          <dd>{consultationEntity.pht}</dd>
+          <dt>
+            <span id="iTExtension">I T Extension</span>
+          </dt>
+          <dd>{consultationEntity.iTExtension}</dd>
+          <dt>
+            <span id="gradMaxB">Grad Max B</span>
+          </dt>
+          <dd>{consultationEntity.gradMaxB}</dd>
+          <dt>
+            <span id="paps">Paps</span>
+          </dt>
+          <dd>{consultationEntity.paps}</dd>
+          <dt>
+            <span id="ip">Ip</span>
+          </dt>
+          <dd>{consultationEntity.ip}</dd>
+          <dt>
+            <span id="vmax">Vmax</span>
+          </dt>
+          <dd>{consultationEntity.vmax}</dd>
+          <dt>
+            <span id="gradMaxC">Grad Max C</span>
+          </dt>
+          <dd>{consultationEntity.gradMaxC}</dd>
+          <dt>
+            <span id="gradMoyB">Grad Moy B</span>
+          </dt>
+          <dd>{consultationEntity.gradMoyB}</dd>
+          <dt>
+            <span id="s">S</span>
+          </dt>
+          <dd>{consultationEntity.s}</dd>
+          <dt>
+            <span id="d">D</span>
+          </dt>
+          <dd>{consultationEntity.d}</dd>
+          <dt>
+            <span id="sD">S D</span>
+          </dt>
+          <dd>{consultationEntity.sD}</dd>
+          <dt>
+            <span id="aA">A A</span>
+          </dt>
+          <dd>{consultationEntity.aA}</dd>
+          <dt>
+            <span id="dureeAp">Duree Ap</span>
+          </dt>
+          <dd>{consultationEntity.dureeAp}</dd>
+          <dt>
+            <span id="eAA">E AA</span>
+          </dt>
+          <dd>{consultationEntity.eAA}</dd>
+          <dt>
+            <span id="aAA">A AA</span>
+          </dt>
+          <dd>{consultationEntity.aAA}</dd>
+          <dt>
+            <span id="eAAa">E A Aa</span>
+          </dt>
+          <dd>{consultationEntity.eAAa}</dd>
+          <dt>
+            <span id="eEa">E Ea</span>
+          </dt>
+          <dd>{consultationEntity.eEa}</dd>
+          <dt>
+            <span id="z">Z</span>
+          </dt>
+          <dd>{consultationEntity.z}</dd>
+          <dt>Patient</dt>
+          <dd>{consultationEntity.patient ? consultationEntity.patient.lastName : ''}</dd>
+        </dl>
+        <Button tag={Link} to="/consultation" replace color="info" data-cy="entityDetailsBackButton">
+          <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Retour</span>
+        </Button>
+        &nbsp;
+        <Button tag={Link} to={`/consultation/${consultationEntity.id}/edit`} replace color="primary">
+          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
+        </Button>
+      </Col>
+    </Row>
   );
 };
 

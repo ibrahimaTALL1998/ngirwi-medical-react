@@ -21,9 +21,9 @@
     "entities": [
       "Patient",
       "DossierMedical",
-      "Consultation",
       "Prescription",
       "Medecine",
+      "Consultation",
       "Bill",
       "BillElement",
       "Hospitalisation",
