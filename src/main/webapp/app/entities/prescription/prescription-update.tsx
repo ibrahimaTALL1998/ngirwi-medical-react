@@ -17,6 +17,7 @@ import { getEntity, updateEntity, reset, createEntityBis } from './prescription.
 import { getEntities as getPatients } from '../patient/patient.reducer';
 import { getMedecineByPrescriptionId } from '../medecine/medecine.reducer';
 import { IMedecine } from 'app/shared/model/medecine.model';
+import { getEntity as getHospital } from '../hospital/hospital.reducer';
 //pdf
 import { Page, Text, Image, View, Document, PDFDownloadLink, Font } from '@react-pdf/renderer';
 import Header from 'app/shared/layout/header/header';
@@ -35,6 +36,7 @@ export const PrescriptionUpdate = () => {
 
   const consultations = useAppSelector(state => state.consultation.entities);
   const prescriptionEntity = useAppSelector(state => state.prescription.entity);
+  const hospital = useAppSelector(state => state.hospital.entity);
   const patientList = useAppSelector(state => state.patient.entities);
   const loading = useAppSelector(state => state.prescription.loading);
   const updating = useAppSelector(state => state.prescription.updating);
@@ -90,6 +92,7 @@ export const PrescriptionUpdate = () => {
         });
     }
 
+    dispatch(getHospital(account.hospitalId));
     dispatch(getPatients({}));
     dispatch(getConsultations({}));
   }, [isNew, id, dispatch, idConsultation]); // Specify dependencies here
@@ -216,14 +219,14 @@ export const PrescriptionUpdate = () => {
               {account.lastName + ' ' + account.firstName}
             </Text>
             <Text style={{ fontSize: '15px', marginBottom: '9px', fontWeight: 'medium' }}>Médecin général</Text>
-            <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>Téléphone</Text>
+            <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>{hospital?.phone}</Text>
           </View>
           <View>
             <Image style={{ width: '60px', height: '60px' }} src="content/images/logo-medecin-240x300.png" />
           </View>
           <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center' }}>
-            <Text style={{ fontSize: '20px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>Nom clinique</Text>
-            <Text style={{ fontSize: '15px', marginBottom: '9px', fontWeight: 'medium' }}>Adresse</Text>
+            <Text style={{ fontSize: '20px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>{hospital?.name}</Text>
+            <Text style={{ fontSize: '15px', marginBottom: '9px', fontWeight: 'medium' }}>{hospital?.adress}</Text>
             <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>Email Clinique</Text>
           </View>
         </View>
