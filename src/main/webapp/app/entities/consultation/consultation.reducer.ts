@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
-import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
+import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError, IQueryParamsWithId } from 'app/shared/reducers/reducer.utils';
 import { IConsultation, defaultValue } from 'app/shared/model/consultation.model';
 
 const initialState: EntityState<IConsultation> = {
@@ -21,6 +21,11 @@ const apiUrl = 'api/consultations';
 
 export const getEntities = createAsyncThunk('consultation/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&` : '?'}cacheBuster=${new Date().getTime()}`;
+  return axios.get<IConsultation[]>(requestUrl);
+});
+
+export const getEntitiesBis = createAsyncThunk('consultation/fetch_entity_list', async ({ id, page, size, sort }: IQueryParamsWithId) => {
+  const requestUrl = `${apiUrl}bis/${id}${sort ? `?page=${page}&size=${size}&sort=${sort}&` : '?'}cacheBuster=${new Date().getTime()}`;
   return axios.get<IConsultation[]>(requestUrl);
 });
 

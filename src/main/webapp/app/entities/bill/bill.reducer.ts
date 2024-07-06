@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
-import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
+import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError, IQueryParamsWithId } from 'app/shared/reducers/reducer.utils';
 import { IBill, defaultValue } from 'app/shared/model/bill.model';
 import { IBillElement } from 'app/shared/model/bill-element.model';
 // import { BillForm } from 'app/shared/model/billForm.model';
@@ -23,6 +23,11 @@ const apiUrl = 'api/bills';
 
 export const getEntities = createAsyncThunk('bill/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&` : '?'}cacheBuster=${new Date().getTime()}`;
+  return axios.get<IBill[]>(requestUrl);
+});
+
+export const getEntitiesBis = createAsyncThunk('bill/fetch_entity_list', async ({ id, page, size, sort }: IQueryParamsWithId) => {
+  const requestUrl = `${apiUrl}bis/${id}${sort ? `?page=${page}&size=${size}&sort=${sort}&` : '?'}cacheBuster=${new Date().getTime()}`;
   return axios.get<IBill[]>(requestUrl);
 });
 

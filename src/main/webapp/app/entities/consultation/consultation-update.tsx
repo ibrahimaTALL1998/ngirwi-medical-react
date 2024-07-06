@@ -16,7 +16,7 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { IPatient } from 'app/shared/model/patient.model';
-import { getEntities as getPatients } from 'app/entities/patient/patient.reducer';
+import { getEntitiesBis as getPatients } from 'app/entities/patient/patient.reducer';
 import { IPrescription } from 'app/shared/model/prescription.model';
 import { getEntities as getPrescriptions } from 'app/entities/prescription/prescription.reducer';
 import { IConsultation } from 'app/shared/model/consultation.model';
@@ -73,7 +73,7 @@ export const ConsultationUpdate = () => {
       dispatch(getDossierPatient(idPatient ? idPatient : consultationEntity?.patient?.id));
     }
 
-    dispatch(getPatients({}));
+    dispatch(getPatients({ id: account.hospitalId !== null && account.hospitalId !== undefined ? account.hospitalId : 0 }));
     dispatch(getPrescriptions({}));
   }, []);
 

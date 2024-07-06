@@ -10,7 +10,7 @@ import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-u
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { IPrescription } from 'app/shared/model/prescription.model';
-import { getEntities } from './prescription.reducer';
+import { getEntitiesBis as getEntities } from './prescription.reducer';
 import Header from 'app/shared/layout/header/header';
 import { RiUserAddLine } from 'react-icons/ri';
 
@@ -28,6 +28,7 @@ export const Prescription = () => {
     overridePaginationStateWithQueryParams(getSortState(location, ITEMS_PER_PAGE, 'id'), location.search)
   );
 
+  const account = useAppSelector(state => state.authentication.account);
   const prescriptionList = useAppSelector(state => state.prescription.entities);
   const loading = useAppSelector(state => state.prescription.loading);
   const totalItems = useAppSelector(state => state.prescription.totalItems);
@@ -35,6 +36,7 @@ export const Prescription = () => {
   const getAllEntities = () => {
     dispatch(
       getEntities({
+        id: account.hospitalId !== null && account.hospitalId !== undefined ? account.hospitalId : 0,
         page: paginationState.activePage - 1,
         size: paginationState.itemsPerPage,
         sort: `${paginationState.sort},${paginationState.order}`,

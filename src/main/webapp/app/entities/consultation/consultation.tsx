@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Card, Table } from 'reactstrap';
-import { Translate, TextFormat, getSortState, JhiPagination, JhiItemCount, ValidatedField } from 'react-jhipster';
+import { TextFormat, getSortState, ValidatedField } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants';
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { IConsultation } from 'app/shared/model/consultation.model';
-import { getEntities } from './consultation.reducer';
+import { getEntitiesBis as getEntities } from './consultation.reducer';
 import { getEntities as getPatients } from '../patient/patient.reducer';
-import { FiLogOut } from 'react-icons/fi';
 import { RiUserAddLine } from 'react-icons/ri';
 import { BiTrash } from 'react-icons/bi';
-import { AiOutlineSearch } from 'react-icons/ai';
 import Header from 'app/shared/layout/header/header';
 import { convertDateTimeFromServerToHours } from 'app/shared/util/date-utils';
 
@@ -32,13 +28,15 @@ export const Consultation = () => {
   );
 
   const consultationList = useAppSelector(state => state.consultation.entities);
-  const patients = useAppSelector(state => state.patient.entities);
+  // const patients = useAppSelector(state => state.patient.entities);
   const loading = useAppSelector(state => state.consultation.loading);
   const totalItems = useAppSelector(state => state.consultation.totalItems);
+  const account = useAppSelector(state => state.authentication.account);
 
   const getAllEntities = () => {
     dispatch(
       getEntities({
+        id: account.hospitalId !== null && account.hospitalId !== undefined ? account.hospitalId : 0,
         page: paginationState.activePage - 1,
         size: paginationState.itemsPerPage,
         sort: `${paginationState.sort},${paginationState.order}`,

@@ -10,7 +10,7 @@ import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-u
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { IBill } from 'app/shared/model/bill.model';
-import { getEntities } from './bill.reducer';
+import { getEntitiesBis as getEntities } from './bill.reducer';
 import { BiTrash } from 'react-icons/bi';
 import { RiUserAddLine } from 'react-icons/ri';
 import Header from 'app/shared/layout/header/header';
@@ -32,10 +32,12 @@ export const Bill = () => {
   const billList = useAppSelector(state => state.bill.entities);
   const loading = useAppSelector(state => state.bill.loading);
   const totalItems = useAppSelector(state => state.bill.totalItems);
+  const account = useAppSelector(state => state.authentication.account);
 
   const getAllEntities = () => {
     dispatch(
       getEntities({
+        id: account.hospitalId !== null && account.hospitalId !== undefined ? account.hospitalId : 0,
         page: paginationState.activePage - 1,
         size: paginationState.itemsPerPage,
         sort: `${paginationState.sort},${paginationState.order}`,
@@ -159,12 +161,12 @@ export const Bill = () => {
               borderRadius: '50%',
               backgroundColor: '#CBDCF7',
               fontSize: '18px',
-              paddingTop: "25%",
-              justifyContent: "center",
-              cursor: "pointer"
+              paddingTop: '25%',
+              justifyContent: 'center',
+              cursor: 'pointer',
             }}
           >
-            <span onClick={() => handleSyncList()} style={{ display: 'block', width: "90%", wordBreak: "break-word" }}>
+            <span onClick={() => handleSyncList()} style={{ display: 'block', width: '90%', wordBreak: 'break-word' }}>
               <FontAwesomeIcon icon="sync" spin={loading} /> Actualiser la liste
             </span>
           </div>
@@ -196,11 +198,11 @@ export const Bill = () => {
               borderRadius: '50%',
               backgroundColor: '#CBDCF7',
               fontSize: '18px',
-              paddingTop: "20%",
-              justifyContent: "center"
+              paddingTop: '20%',
+              justifyContent: 'center',
             }}
           >
-            <span style={{ display: 'block', width: "90%", wordBreak: "break-word" }}>
+            <span style={{ display: 'block', width: '90%', wordBreak: 'break-word' }}>
               {React.createElement(RiUserAddLine, { size: '24' })} Enregistrer nouvelle facture
             </span>
           </Link>
@@ -258,211 +260,231 @@ export const Bill = () => {
               {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
             </div>
           </div>
-              {billList && billList.length>0?(<Table responsive style={{ borderCollapse: 'separate', borderSpacing: '0 15px' }}>
-            <thead
-              style={{
-                position: 'sticky',
-                top: '0',
-              }}
-            >
-              <tr>
-                <th
-                  style={{
-                    textAlign: 'center',
-                    fontSize: '14px',
-                    position: 'sticky',
-                    top: '0',
-                    width: '10%',
-                    backgroundColor: 'white',
-                  }}
-                  className="hand"
-                  onClick={sort('id')}
-                >
-                  ID <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
-                </th>
-                <th
-                  style={{
-                    textAlign: 'center',
-                    fontSize: '14px',
-                    position: 'sticky',
-                    top: '0',
-                    width: '10%',
-                    backgroundColor: 'white',
-                  }}
-                  className="hand"
-                  onClick={sort('date')}
-                >
-                  Date <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
-                </th>
-                <th
-                  style={{
-                    textAlign: 'center',
-                    fontSize: '14px',
-                    position: 'sticky',
-                    top: '0',
-                    width: '25%',
-                    backgroundColor: 'white',
-                  }}
-                  className="hand"
-                  onClick={sort('author')}
-                >
-                  Auteur <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
-                </th>
-                <th
-                  style={{
-                    textAlign: 'center',
-                    fontSize: '14px',
-                    position: 'sticky',
-                    top: '0',
-                    width: '25%',
-                    backgroundColor: 'white',
-                  }}
-                  className="hand"
-                  onClick={sort('patient')}
-                >
-                  Patient <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
-                </th>
-                <th
-                  style={{
-                    textAlign: 'center',
-                    fontSize: '14px',
-                    position: 'sticky',
-                    top: '0',
-                    width: '30%',
-                    backgroundColor: 'white',
-                  }}
-                >
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody
-              style={{
-                backgroundColor: '#F6FAFF',
-                border: '1px solid #F6FAFF',
-                borderRadius: '15px 15px 0px 15px',
-                fontSize: '15px',
-                textAlign: 'center',
-                borderBottom: '50px solid white',
-                backgroundImage: 'url(content/images/NgirwiLogo.png)',
-                backgroundRepeat: 'no-repeat',
-                backgroundAttachment: 'fixed',
-                backgroundPosition: '50% 165%',
-              }}
-            >
-              {filter === null
-                ? billList.map((bill, i) => (
-                  <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
-                    <td>
-                      <Button tag={Link} to={`/bill/${bill.id}`} color="link" style={{ color: '#91A8CD', textDecoration: 'none' }}>
-                        {bill.id}
-                      </Button>
-                    </td>
-                    <td>{bill.date ? <TextFormat type="date" value={bill.date} format={APP_DATE_FORMAT} /> : null}</td>
-                    <td style={{ wordBreak: 'break-all' }}>{bill.author}</td>
-                    <td style={{ wordBreak: 'break-all' }}>
-                      {bill.patient ? <span>{bill.patient.lastName.toUpperCase() + ' ' +
-                        bill.patient.firstName.split(' ').map(a => a.charAt(0)+a.slice(1)).join(' ')
-                      }
-                      </span> 
-                      : ''}
-                    </td>
-                    <td className="text-end">
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          gap: '1px',
-                          fontSize: '9px',
-                        }}
-                      >
-                        <Button
-                          tag={Link}
-                          to={`/bill/${bill.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                          color="primary"
-                          size="sm"
-                          data-cy="entityEditButton"
-                        >
-                          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
-                        </Button>
-                        <Button
-                          tag={Link}
-                          to={`/bill/${bill.id}/edit/voir?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                          color="dark"
-                          size="sm"
-                          data-cy="entityDetailsButton"
-                        >
-                          <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir Facture</span>
-                        </Button>
-                        <Button
-                          tag={Link}
-                          to={`/bill/${bill.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                          color="danger"
-                          size="sm"
-                          data-cy="entityDeleteButton"
-                        >
-                          <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Supprimer</span>
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-                : filter.map((bill, i) => (
-                  <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
-                    <td>
-                      <Button tag={Link} to={`/bill/${bill.id}`} color="link" style={{ color: '#91A8CD', textDecoration: 'none' }}>
-                        {bill.id}
-                      </Button>
-                    </td>
-                    <td>{bill.date ? <TextFormat type="date" value={bill.date} format={APP_DATE_FORMAT} /> : null}</td>
-                    <td style={{ wordBreak: 'break-all' }}>{bill.author}</td>
-                    <td style={{ wordBreak: 'break-all' }}>
-                      {bill.patient ? <span>{bill.patient.lastName.toUpperCase() + ' ' +
-                        bill.patient.firstName.split(' ').map(a => a.charAt(0).toUpperCase()+a.slice(1)).join(' ') }                      </span> : ''}
-                    </td>
-                    <td className="text-end">
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          gap: '1px',
-                          fontSize: '9px',
-                        }}
-                      >
-                        <Button
-                          tag={Link}
-                          to={`/bill/${bill.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                          color="primary"
-                          size="sm"
-                          data-cy="entityEditButton"
-                        >
-                          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
-                        </Button>
-                        <Button
-                          tag={Link}
-                          to={`/bill/${bill.id}/edit/voir?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                          color="dark"
-                          size="sm"
-                          data-cy="entityDetailsButton"
-                        >
-                          <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir Facture</span>
-                        </Button>
-                        <Button
-                          tag={Link}
-                          to={`/bill/${bill.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                          color="danger"
-                          size="sm"
-                          data-cy="entityDeleteButton"
-                        >
-                          <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Supprimer</span>
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </Table>):(!loading && <div className="alert alert-warning">Aucune facture enregistrée</div>)}
-          
+          {billList && billList.length > 0 ? (
+            <Table responsive style={{ borderCollapse: 'separate', borderSpacing: '0 15px' }}>
+              <thead
+                style={{
+                  position: 'sticky',
+                  top: '0',
+                }}
+              >
+                <tr>
+                  <th
+                    style={{
+                      textAlign: 'center',
+                      fontSize: '14px',
+                      position: 'sticky',
+                      top: '0',
+                      width: '10%',
+                      backgroundColor: 'white',
+                    }}
+                    className="hand"
+                    onClick={sort('id')}
+                  >
+                    ID <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
+                  </th>
+                  <th
+                    style={{
+                      textAlign: 'center',
+                      fontSize: '14px',
+                      position: 'sticky',
+                      top: '0',
+                      width: '10%',
+                      backgroundColor: 'white',
+                    }}
+                    className="hand"
+                    onClick={sort('date')}
+                  >
+                    Date <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
+                  </th>
+                  <th
+                    style={{
+                      textAlign: 'center',
+                      fontSize: '14px',
+                      position: 'sticky',
+                      top: '0',
+                      width: '25%',
+                      backgroundColor: 'white',
+                    }}
+                    className="hand"
+                    onClick={sort('author')}
+                  >
+                    Auteur <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
+                  </th>
+                  <th
+                    style={{
+                      textAlign: 'center',
+                      fontSize: '14px',
+                      position: 'sticky',
+                      top: '0',
+                      width: '25%',
+                      backgroundColor: 'white',
+                    }}
+                    className="hand"
+                    onClick={sort('patient')}
+                  >
+                    Patient <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
+                  </th>
+                  <th
+                    style={{
+                      textAlign: 'center',
+                      fontSize: '14px',
+                      position: 'sticky',
+                      top: '0',
+                      width: '30%',
+                      backgroundColor: 'white',
+                    }}
+                  >
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                style={{
+                  backgroundColor: '#F6FAFF',
+                  border: '1px solid #F6FAFF',
+                  borderRadius: '15px 15px 0px 15px',
+                  fontSize: '15px',
+                  textAlign: 'center',
+                  borderBottom: '50px solid white',
+                  backgroundImage: 'url(content/images/NgirwiLogo.png)',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundAttachment: 'fixed',
+                  backgroundPosition: '50% 165%',
+                }}
+              >
+                {filter === null
+                  ? billList.map((bill, i) => (
+                      <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
+                        <td>
+                          <Button tag={Link} to={`/bill/${bill.id}`} color="link" style={{ color: '#91A8CD', textDecoration: 'none' }}>
+                            {bill.id}
+                          </Button>
+                        </td>
+                        <td>{bill.date ? <TextFormat type="date" value={bill.date} format={APP_DATE_FORMAT} /> : null}</td>
+                        <td style={{ wordBreak: 'break-all' }}>{bill.author}</td>
+                        <td style={{ wordBreak: 'break-all' }}>
+                          {bill.patient ? (
+                            <span>
+                              {bill.patient.lastName.toUpperCase() +
+                                ' ' +
+                                bill.patient.firstName
+                                  .split(' ')
+                                  .map(a => a.charAt(0) + a.slice(1))
+                                  .join(' ')}
+                            </span>
+                          ) : (
+                            ''
+                          )}
+                        </td>
+                        <td className="text-end">
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              gap: '1px',
+                              fontSize: '9px',
+                            }}
+                          >
+                            <Button
+                              tag={Link}
+                              to={`/bill/${bill.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                              color="primary"
+                              size="sm"
+                              data-cy="entityEditButton"
+                            >
+                              <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
+                            </Button>
+                            <Button
+                              tag={Link}
+                              to={`/bill/${bill.id}/edit/voir?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                              color="dark"
+                              size="sm"
+                              data-cy="entityDetailsButton"
+                            >
+                              <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir Facture</span>
+                            </Button>
+                            <Button
+                              tag={Link}
+                              to={`/bill/${bill.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                              color="danger"
+                              size="sm"
+                              data-cy="entityDeleteButton"
+                            >
+                              <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Supprimer</span>
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  : filter.map((bill, i) => (
+                      <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
+                        <td>
+                          <Button tag={Link} to={`/bill/${bill.id}`} color="link" style={{ color: '#91A8CD', textDecoration: 'none' }}>
+                            {bill.id}
+                          </Button>
+                        </td>
+                        <td>{bill.date ? <TextFormat type="date" value={bill.date} format={APP_DATE_FORMAT} /> : null}</td>
+                        <td style={{ wordBreak: 'break-all' }}>{bill.author}</td>
+                        <td style={{ wordBreak: 'break-all' }}>
+                          {bill.patient ? (
+                            <span>
+                              {bill.patient.lastName.toUpperCase() +
+                                ' ' +
+                                bill.patient.firstName
+                                  .split(' ')
+                                  .map(a => a.charAt(0).toUpperCase() + a.slice(1))
+                                  .join(' ')}{' '}
+                            </span>
+                          ) : (
+                            ''
+                          )}
+                        </td>
+                        <td className="text-end">
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              gap: '1px',
+                              fontSize: '9px',
+                            }}
+                          >
+                            <Button
+                              tag={Link}
+                              to={`/bill/${bill.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                              color="primary"
+                              size="sm"
+                              data-cy="entityEditButton"
+                            >
+                              <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
+                            </Button>
+                            <Button
+                              tag={Link}
+                              to={`/bill/${bill.id}/edit/voir?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                              color="dark"
+                              size="sm"
+                              data-cy="entityDetailsButton"
+                            >
+                              <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir Facture</span>
+                            </Button>
+                            <Button
+                              tag={Link}
+                              to={`/bill/${bill.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                              color="danger"
+                              size="sm"
+                              data-cy="entityDeleteButton"
+                            >
+                              <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Supprimer</span>
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+              </tbody>
+            </Table>
+          ) : (
+            !loading && <div className="alert alert-warning">Aucune facture enregistrée</div>
+          )}
         </Card>
       </div>
 

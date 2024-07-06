@@ -13,7 +13,7 @@ import {
 } from 'app/shared/util/date-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { getEntities as getPatients } from 'app/entities/patient/patient.reducer';
+import { getEntitiesBis as getPatients } from 'app/entities/patient/patient.reducer';
 import { getEntity as getHospital } from '../hospital/hospital.reducer';
 import { createEntity, getEntity, reset, updateEntity } from './bill.reducer';
 import { getElemntByBillId } from '../bill-element/bill-element.reducer';
@@ -154,7 +154,7 @@ export const BillUpdate = () => {
         console.error('Error fetching elements:', error);
       });
 
-    dispatch(getPatients({}));
+    dispatch(getPatients({ id: account.hospitalId !== null && account.hospitalId !== undefined ? account.hospitalId : 0 }));
     dispatch(getHospital(account.hospitalId));
   }, [isNew, id, dispatch, idPatient]);
 
