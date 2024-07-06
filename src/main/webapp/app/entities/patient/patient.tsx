@@ -5,14 +5,15 @@ import { TextFormat, getSortState, ValidatedField } from 'react-jhipster';
 import { RiUserAddLine } from 'react-icons/ri';
 import { BiTrash } from 'react-icons/bi';
 
-import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { APP_LOCAL_DATE_FORMAT, AUTHORITIES } from 'app/config/constants';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants';
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { getEntities } from './patient.reducer';
+import { getEntitiesBis } from './patient.reducer';
 import Header from 'app/shared/layout/header/header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
 
 export const Patient = () => {
   const dispatch = useAppDispatch();
@@ -24,11 +25,13 @@ export const Patient = () => {
     overridePaginationStateWithQueryParams(getSortState(location, ITEMS_PER_PAGE, 'id'), location.search)
   );
 
+  const account = useAppSelector(state => state.authentication.account);
   const patientList = useAppSelector(state => state.patient.entities);
   const loading = useAppSelector(state => state.patient.loading);
-  const hospital = useAppSelector(state => state.hospital.entity);
-  const [modal, setModal] = useState(false);
-  const toggleModal = () => setModal(!modal);
+  const isDoctor = useAppSelector(state => hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.DOCTOR]));
+  // const hospital = useAppSelector(state => state.hospital.entity);
+  // const [modal, setModal] = useState(false);
+  // const toggleModal = () => setModal(!modal);
 
   // filter
   const [search, setSearch] = useState('');
@@ -36,7 +39,8 @@ export const Patient = () => {
 
   const getAllEntities = () => {
     dispatch(
-      getEntities({
+      getEntitiesBis({
+        id: account.hospitalId !== null && account.hospitalId !== undefined ? account.hospitalId : 0,
         page: paginationState.activePage - 1,
         size: paginationState.itemsPerPage,
         sort: `${paginationState.sort},${paginationState.order}`,
@@ -114,10 +118,10 @@ export const Patient = () => {
 
   const [query, setQuery] = useState('');
 
-  const generatePdf = () => {
-    // Generate PDF content
-    setModal(true); // Open modal after generating PDF
-  };
+  // const generatePdf = () => {
+  //   // Generate PDF content
+  //   setModal(true); // Open modal after generating PDF
+  // };
 
   return (
     <>
@@ -186,7 +190,7 @@ export const Patient = () => {
               <span style={{ marginTop: '1.5%' }}>Liste des patients enregistrés</span>
             </Card>
             <Link
-              to="/consultation/new/"
+              to={isDoctor ? '/consultation/new/' : ''}
               style={{
                 display: 'flex',
                 textDecoration: 'none',

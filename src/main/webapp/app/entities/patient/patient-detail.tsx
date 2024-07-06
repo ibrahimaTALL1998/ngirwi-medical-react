@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Button, Card, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Button, Card } from 'reactstrap';
 import { TextFormat } from 'react-jhipster';
 import { translateGender, translateMaritalStatus, translateBloodType } from 'app/shared/util/translation-utils';
 
-import { APP_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_FORMAT, AUTHORITIES } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntity as getHospital } from '../hospital/hospital.reducer';
@@ -13,11 +13,10 @@ import { getPatient, reset as resetDossier } from '../dossier-medical/dossier-me
 import { getPatient as getHospitalisationPatient, reset as resetHospitalisation } from '../hospitalisation/hospitalisation.reducer';
 import Header from 'app/shared/layout/header/header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Page, Text, Image, View, Document, PDFDownloadLink, Font } from '@react-pdf/renderer';
+import { Page, Text, Image, View, Document, Font } from '@react-pdf/renderer';
 import { convertDateTimeFromServerToDate, displayDefaultDateTime, convertDateTimeFromServerToHours } from 'app/shared/util/date-utils';
-import hospital from '../hospital';
-import patient from '.';
 import CertificateModal from './certificate-modal';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
 
 export const PatientDetail = () => {
   const dispatch = useAppDispatch();
@@ -27,6 +26,7 @@ export const PatientDetail = () => {
   const [hidehos, setHidehos] = useState(true);
   const [modal, setModal] = useState(false);
   const [days, setDays] = useState(1);
+  const isDoctor = useAppSelector(state => hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.DOCTOR]));
 
   let showhos = () => {
     if (hidehos === true) {
@@ -71,26 +71,6 @@ export const PatientDetail = () => {
   const toggleModal = () => {
     setModal(!modal);
   };
-
-  // const generatePdf = () => {
-  //   const fileName = `certificat_${patientEntity?.lastName}_${patientEntity?.firstName}_${JSON.stringify(
-  //     convertDateTimeFromServerToDate(displayDefaultDateTime()) +
-  //     'H:' +
-  //     convertDateTimeFromServerToHours(displayDefaultDateTime())
-  //   )}`;
-
-  //   return (
-  //     <PDFDownloadLink
-  //       style={{ backgroundColor: 'transparent', textDecoration: 'none' }}
-  //       document={doc}
-  //       fileName={fileName}
-  //     >
-  //       {({ blob, url, loading, error }) =>
-  //         loading ? 'Chargement du document...' : 'Télécharger maintenant !'
-  //       }
-  //     </PDFDownloadLink>
-  //   );
-  // };
 
   const verifDossierExist = () => {
     let dossierExist = false;
@@ -498,58 +478,11 @@ export const PatientDetail = () => {
 
               <CertificateModal isOpen={modal} toggle={toggleModal} patient={patientEntity} hospital={hospitalEntity} account={account} />
 
-              {/* <Button
-                onMouseOver={changeColor}
-                onMouseLeave={setColor}
-                onClick={toggleModal}
-                style={{
-                  borderColor: '#0075FF',
-                  backgroundColor: '#0075FF',
-                  color: '#FFFFFF',
-                  width: '25vh',
-                  height: '9vh',
-                  borderRadius: '4px',
-                  fontFamily: 'Ubuntu',
-                  padding: '10%',
-                }}
-              >
-                Certificat
-              </Button>
-
-              <Modal isOpen={modal} toggle={toggleModal}>
-                <ModalHeader toggle={toggleModal}>Generer Certificat Medical</ModalHeader>
-                <ModalBody>
-                  <label htmlFor="daysInput">Nombre de jour:</label>
-                  <input
-                    type="number"
-                    id="daysInput"
-                    value={days}
-                    onChange={(e) => setDays(parseInt(e.target.value))}
-                    className="form-control"
-                  />
-                </ModalBody>
-                <ModalFooter>
-                  <Button color="primary" onClick={generatePdf}>
-                    Generer Certificat
-                  </Button>
-                  <Button color="secondary" onClick={toggleModal}>
-                    Annuler
-                  </Button>
-                </ModalFooter>
-              </Modal> */}
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '5vh',
-                marginTop: '3vh',
-              }}
-            >
               <Button
                 onMouseOver={changeColor}
                 onMouseLeave={setColor}
                 tag={Link}
+                disabled={!isDoctor}
                 // to={
                 //   Object.keys(dossierMedicalEntity).length > 0
                 //     ? `/dossier-medical/${dossierMedicalEntity?.id}/edit/${'voir'}`
@@ -573,10 +506,20 @@ export const PatientDetail = () => {
               >
                 Dossier médical
               </Button>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '5vh',
+                marginTop: '3vh',
+              }}
+            >
               <Button
                 onMouseOver={changeColor}
                 onMouseLeave={setColor}
                 hidden={!hide}
+                disabled={!isDoctor}
                 href={`/consultation/new/${patientEntity.id}/`}
                 style={{
                   borderColor: '#0075FF',
@@ -597,6 +540,7 @@ export const PatientDetail = () => {
                 onMouseOver={changeColor}
                 onMouseLeave={setColor}
                 hidden={hide}
+                disabled={!isDoctor}
                 tag={Link}
                 to={`/consultation/list/${patientEntity.id}?page=1&sort=id,asc`}
                 style={{
@@ -617,7 +561,7 @@ export const PatientDetail = () => {
                 hidden={!hidehos}
                 onMouseOver={changeColor}
                 onMouseLeave={setColor}
-                disabled
+                disabled={!isDoctor}
                 href={`/hospitalisation/new/${patientEntity.id}`}
                 style={{
                   borderColor: '#0075FF',
@@ -636,7 +580,7 @@ export const PatientDetail = () => {
                 hidden={hidehos}
                 onMouseOver={changeColor}
                 onMouseLeave={setColor}
-                disabled
+                disabled={!isDoctor}
                 href={`/hospitalisation/${patientEntity.id}`}
                 style={{
                   borderColor: '#0075FF',
@@ -659,18 +603,18 @@ export const PatientDetail = () => {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                gap: '10vh',
-                marginTop: '15vh',
+                // gap: '10vh',
+                // marginTop: '15vh',
               }}
             >
               <FontAwesomeIcon
                 onClick={() => show()}
-                style={{ marginLeft: '15px', color: '#0075FF', height: '5vh', cursor: 'pointer', marginTop: '2.5vh' }}
+                style={{ marginLeft: '15px', color: '#0075FF', height: '5vh', cursor: 'pointer' }}
                 icon="sort"
               />
               <FontAwesomeIcon
                 onClick={() => showhos()}
-                style={{ marginLeft: '15px', color: '#0075FF', height: '5vh', cursor: 'pointer' }}
+                style={{ marginLeft: '15px', color: '#0075FF', height: '5vh', cursor: 'pointer', marginTop: '10vh' }}
                 icon="sort"
               />
             </div>
