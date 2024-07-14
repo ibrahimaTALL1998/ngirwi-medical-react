@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntities as getConsultations } from 'app/entities/consultation/consultation.reducer';
 import { getEntity, updateEntity, reset, createEntityBis } from './prescription.reducer';
-import { getEntities as getPatients } from '../patient/patient.reducer';
+import { getEntitiesBis as getPatients } from '../patient/patient.reducer';
 import { getMedecineByPrescriptionId } from '../medecine/medecine.reducer';
 import { IMedecine } from 'app/shared/model/medecine.model';
 import { getEntity as getHospital } from '../hospital/hospital.reducer';
@@ -93,7 +93,7 @@ export const PrescriptionUpdate = () => {
     }
 
     dispatch(getHospital(account.hospitalId));
-    dispatch(getPatients({}));
+    dispatch(getPatients({ id: account.hospitalId !== null && account.hospitalId !== undefined ? account.hospitalId : 0 }));
     dispatch(getConsultations({}));
   }, [isNew, id, dispatch, idConsultation]); // Specify dependencies here
 

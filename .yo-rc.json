@@ -27,6 +27,7 @@
       "Bill",
       "BillElement",
       "Hospitalisation",
+      "SurveillanceSheet",
       "Hospital"
     ],
     "entitySuffix": "",

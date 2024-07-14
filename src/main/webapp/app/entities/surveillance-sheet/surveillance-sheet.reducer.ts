@@ -3,9 +3,9 @@ import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/t
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
-import { IHospitalisation, defaultValue } from 'app/shared/model/hospitalisation.model';
+import { ISurveillanceSheet, defaultValue } from 'app/shared/model/surveillance-sheet.model';
 
-const initialState: EntityState<IHospitalisation> = {
+const initialState: EntityState<ISurveillanceSheet> = {
   loading: false,
   errorMessage: null,
   entities: [],
@@ -15,37 +15,28 @@ const initialState: EntityState<IHospitalisation> = {
   updateSuccess: false,
 };
 
-const apiUrl = 'api/hospitalisations';
+const apiUrl = 'api/surveillance-sheets';
 
 // Actions
 
-export const getEntities = createAsyncThunk('hospitalisation/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
+export const getEntities = createAsyncThunk('surveillanceSheet/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&` : '?'}cacheBuster=${new Date().getTime()}`;
-  return axios.get<IHospitalisation[]>(requestUrl);
+  return axios.get<ISurveillanceSheet[]>(requestUrl);
 });
 
 export const getEntity = createAsyncThunk(
-  'hospitalisation/fetch_entity',
+  'surveillanceSheet/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`;
-    return axios.get<IHospitalisation>(requestUrl);
-  },
-  { serializeError: serializeAxiosError }
-);
-
-export const getPatient = createAsyncThunk(
-  'hospitalisation/fetch_entity',
-  async (id: string | number) => {
-    const requestUrl = `${apiUrl}-patient/${id}`;
-    return axios.get<IHospitalisation>(requestUrl);
+    return axios.get<ISurveillanceSheet>(requestUrl);
   },
   { serializeError: serializeAxiosError }
 );
 
 export const createEntity = createAsyncThunk(
-  'hospitalisation/create_entity',
-  async (entity: IHospitalisation, thunkAPI) => {
-    const result = await axios.post<IHospitalisation>(apiUrl, cleanEntity(entity));
+  'surveillanceSheet/create_entity',
+  async (entity: ISurveillanceSheet, thunkAPI) => {
+    const result = await axios.post<ISurveillanceSheet>(apiUrl, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -53,9 +44,9 @@ export const createEntity = createAsyncThunk(
 );
 
 export const updateEntity = createAsyncThunk(
-  'hospitalisation/update_entity',
-  async (entity: IHospitalisation, thunkAPI) => {
-    const result = await axios.put<IHospitalisation>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
+  'surveillanceSheet/update_entity',
+  async (entity: ISurveillanceSheet, thunkAPI) => {
+    const result = await axios.put<ISurveillanceSheet>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -63,9 +54,9 @@ export const updateEntity = createAsyncThunk(
 );
 
 export const partialUpdateEntity = createAsyncThunk(
-  'hospitalisation/partial_update_entity',
-  async (entity: IHospitalisation, thunkAPI) => {
-    const result = await axios.patch<IHospitalisation>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
+  'surveillanceSheet/partial_update_entity',
+  async (entity: ISurveillanceSheet, thunkAPI) => {
+    const result = await axios.patch<ISurveillanceSheet>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -73,10 +64,10 @@ export const partialUpdateEntity = createAsyncThunk(
 );
 
 export const deleteEntity = createAsyncThunk(
-  'hospitalisation/delete_entity',
+  'surveillanceSheet/delete_entity',
   async (id: string | number, thunkAPI) => {
     const requestUrl = `${apiUrl}/${id}`;
-    const result = await axios.delete<IHospitalisation>(requestUrl);
+    const result = await axios.delete<ISurveillanceSheet>(requestUrl);
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -85,8 +76,8 @@ export const deleteEntity = createAsyncThunk(
 
 // slice
 
-export const HospitalisationSlice = createEntitySlice({
-  name: 'hospitalisation',
+export const SurveillanceSheetSlice = createEntitySlice({
+  name: 'surveillanceSheet',
   initialState,
   extraReducers(builder) {
     builder
@@ -128,7 +119,7 @@ export const HospitalisationSlice = createEntitySlice({
   },
 });
 
-export const { reset } = HospitalisationSlice.actions;
+export const { reset } = SurveillanceSheetSlice.actions;
 
 // Reducer
-export default HospitalisationSlice.reducer;
+export default SurveillanceSheetSlice.reducer;

@@ -9,7 +9,7 @@ import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-u
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntitiesBis as getEntities } from './consultation.reducer';
-import { getEntities as getPatients } from '../patient/patient.reducer';
+import { getEntitiesBis as getPatients } from '../patient/patient.reducer';
 import { RiUserAddLine } from 'react-icons/ri';
 import { BiTrash } from 'react-icons/bi';
 import Header from 'app/shared/layout/header/header';
@@ -44,6 +44,7 @@ export const Consultation = () => {
     );
     dispatch(
       getPatients({
+        id: account.hospitalId !== null && account.hospitalId !== undefined ? account.hospitalId : 0,
         page: paginationState.activePage - 1,
         size: paginationState.itemsPerPage,
         sort: `${paginationState.sort},${paginationState.order}`,

@@ -72,13 +72,13 @@ export const PatientUpdate = () => {
           author: account.login,
         }
       : {
-          gender: 'MALE',
-          bloodType: 'A_PLUS',
-          maritialStatus: 'MARRIED',
+          // gender: 'MALE',
+          // bloodType: 'A_PLUS',
+          // maritialStatus: 'MARRIED',
           ...patientEntity,
           // dateCreated: convertDateTimeFromServer(patientEntity.dateCreated),
           dateUpdated: displayDefaultDate(),
-          author: account.login,
+          // author: account.login,
         };
 
   return (
