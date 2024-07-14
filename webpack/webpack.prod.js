@@ -106,4 +106,9 @@ module.exports = async () =>
         exclude: [/swagger-ui/],
       }),
     ],
+    performance: {
+      hints: 'warning',
+      maxAssetSize: 512000,
+      maxEntrypointSize: 512000,
+    },
   });

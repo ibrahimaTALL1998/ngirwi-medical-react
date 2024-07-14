@@ -20,7 +20,7 @@ export const BillElementDetail = () => {
 
   const billElementEntity = useAppSelector(state => state.billElement.entity);
   return (
-    <Row style={{marginLeft:"16vw"}}>
+    <Row>
       <Col md="8">
         <h2 data-cy="billElementDetailsHeading">Bill Element</h2>
         <dl className="jh-entity-details">
@@ -36,6 +36,14 @@ export const BillElementDetail = () => {
             <span id="price">Price</span>
           </dt>
           <dd>{billElementEntity.price}</dd>
+          <dt>
+            <span id="percentage">Percentage</span>
+          </dt>
+          <dd>{billElementEntity.percentage}</dd>
+          <dt>
+            <span id="quantity">Quantity</span>
+          </dt>
+          <dd>{billElementEntity.quantity}</dd>
           <dt>Bill</dt>
           <dd>{billElementEntity.bill ? billElementEntity.bill.id : ''}</dd>
         </dl>

@@ -16,7 +16,7 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { IPatient } from 'app/shared/model/patient.model';
-import { getEntities as getPatients } from 'app/entities/patient/patient.reducer';
+import { getEntitiesBis as getPatients } from 'app/entities/patient/patient.reducer';
 import { IPrescription } from 'app/shared/model/prescription.model';
 import { getEntities as getPrescriptions } from 'app/entities/prescription/prescription.reducer';
 import { IConsultation } from 'app/shared/model/consultation.model';
@@ -73,7 +73,7 @@ export const ConsultationUpdate = () => {
       dispatch(getDossierPatient(idPatient ? idPatient : consultationEntity?.patient?.id));
     }
 
-    dispatch(getPatients({}));
+    dispatch(getPatients({ id: account.hospitalId !== null && account.hospitalId !== undefined ? account.hospitalId : 0 }));
     dispatch(getPrescriptions({}));
   }, []);
 
@@ -92,6 +92,7 @@ export const ConsultationUpdate = () => {
       patient: patients.find(it => it.id.toString() === values.patient.toString()),
     };
 
+    console.log(entity);
     if (isNew) {
       dispatch(createEntity(entity));
     } else {
@@ -209,7 +210,8 @@ export const ConsultationUpdate = () => {
               >
                 <span style={{ fontSize: '18px', fontWeight: '900' }}>Dossier médical</span>
                 <Link
-                  to={`/dossier-medical/${dossierMedicalEntity?.id}/edit/${'voir'}`}
+                  // to={`/dossier-medical/${dossierMedicalEntity?.id}/edit/${'voir'}`}
+                  to={`/dossier-medical/${dossierMedicalEntity?.id}/${idPatient}`}
                   style={{
                     fontSize: '13px',
                     color: '#F6FAFF',
@@ -526,111 +528,725 @@ export const ConsultationUpdate = () => {
                 borderColor: '#CBDCF7',
               }}
             />
-            {/* Echo dopller */}
-            &nbsp;
+            {idEdit === 'voir' ? <br /> : null}
+            {/* Echo Doppler header */}
             <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>Echo Doppler</span>
-            &nbsp;
-            <span
-              style={{
-                marginLeft: '80%',
-                color: '#141414',
-                fontSize: '19px',
-                alignItems: 'center',
-                justifyContent: 'center',
-                display: 'flex',
-              }}
-            >
-              Mode TM
-            </span>
             <br />
             <ValidatedField
-              name=""
-              size={1}
+              disabled={idEdit === 'voir' ? true : false}
+              name="og"
               label="OG (mm)"
               type="text"
               style={{
-                width: '30%',
                 borderRadius: '25px',
-                backgroundColor: '#F7FAFF',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
                 borderColor: '#CBDCF7',
-                color: 'black',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
               }}
             />
             <ValidatedField
-              name=""
+              disabled={idEdit === 'voir' ? true : false}
+              name="vd"
               label="VD (mm)"
               type="text"
               style={{
-                width: '30%',
                 borderRadius: '25px',
-                backgroundColor: '#F7FAFF',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
                 borderColor: '#CBDCF7',
-                color: 'black',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
               }}
             />
             <ValidatedField
-              name=""
-              label="E-Septum (mm)"
+              disabled={idEdit === 'voir' ? true : false}
+              name="eseptum"
+              label="E-septum (mm)"
               type="text"
               style={{
-                width: '30%',
                 borderRadius: '25px',
-                backgroundColor: '#F7FAFF',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
                 borderColor: '#CBDCF7',
-                color: 'black',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
               }}
             />
             <ValidatedField
-              name=""
+              disabled={idEdit === 'voir' ? true : false}
+              name="ao"
               label="Ao (mm)"
               type="text"
               style={{
-                width: '30%',
                 borderRadius: '25px',
-                backgroundColor: '#F7FAFF',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
                 borderColor: '#CBDCF7',
-                color: 'black',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
               }}
             />
             <ValidatedField
-              name=""
+              disabled={idEdit === 'voir' ? true : false}
+              name="vGDiastole"
               label="VG Diastole (mm)"
               type="text"
               style={{
-                width: '30%',
                 borderRadius: '25px',
-                backgroundColor: '#F7FAFF',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
                 borderColor: '#CBDCF7',
-                color: 'black',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
               }}
             />
-            &nbsp;
-            <span
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="z"
+              label="VCI (mm)"
+              type="text"
               style={{
-                marginLeft: '80%',
-                color: '#141414',
-                fontSize: '19px',
-                alignItems: 'center',
-                justifyContent: 'center',
-                display: 'flex',
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
               }}
-            >
-              Mode 2D
-            </span>
-            &nbsp;
-            <span
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="ouvertureAo"
+              label="Ouverture Ao (mm)"
+              type="text"
               style={{
-                marginLeft: '70%',
-                color: '#141414',
-                fontSize: '19px',
-                alignItems: 'center',
-                justifyContent: 'center',
-                display: 'flex',
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
               }}
-            >
-              Mode DOPPLER
-            </span>
-            &nbsp;
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="vGSystole"
+              label="VG Systole (mm)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="vp"
+              label="VP (mm)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="oGAo"
+              label="OG/Ao (mm)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="fRTeicholtz"
+              label="FR/Teicholtz (mm)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="eVp"
+              label="E/VP (mm)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="septumVg"
+              label="Septum VG (mm)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="fETeicholz"
+              label="FE Teicholz (mm)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="tapse"
+              label="TAPSE (mm)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="paroiPost"
+              label="PAROI POST (mm)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            {/* &nbsp; */}
+            {/* MODE 2D header */}
+            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>MODE 2D</span>
+            <br />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="surfaceOg"
+              label="Surface OG (cm²)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="surfaceOd"
+              label="Surface OD (cm²)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="mesureVd"
+              label="Mesure VD (mm)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="fe"
+              label="FE (Simpson Monoplan) (%)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="feA2C"
+              label="FE (A2C) (%)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="feBiplan"
+              label="FE (Simpson Biplan) (%)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            {/* MODE DOPPLER header */}
+            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>MODE DOPPLER</span>
+            <br />
+            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>VALVE MITRALE</span>
+            <br />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="e"
+              label="E (m/s)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="a"
+              label="A (m/s)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="eA"
+              label="E/A"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="td"
+              label="TD (m/s)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="triv"
+              label="TRIV (m/s)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="dureeAmIm"
+              label="Duree AM IM"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="surfaceRegurgitee"
+              label="Surface regurgitée (cm²)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="pba"
+              label="PBA"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="qr"
+              label="QR (m/s)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="vr"
+              label="VR (ml/s)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="sor"
+              label="SOR (mm²)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="fr"
+              label="FR (%)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>VALVE AORTIQUE</span>
+            <br />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="vmaxAp"
+              label="VMAX Ao (mm)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="itv"
+              label="ITV (cm)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="gradMax"
+              label="Grad Max (mmHg)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="gradMoy"
+              label="Grad Moy (mmHg)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="dc"
+              label="DC"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="iAoextension"
+              label="IAO extension du jet"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="venaContracta"
+              label="Vena Contracta (mm)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="pht"
+              label="PHT (%)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>VALVE TRICUSPIDE</span>
+            <br />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="iTExtension"
+              label="IT Extension du jet"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="gradMaxB"
+              label="Grad Max (mmHg)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="paps"
+              label="PAPS (mmHg)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>VALVE PULMONAIRE</span>
+            <br />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="ip"
+              label="IP"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="vmax"
+              label="VMax (m/s)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="gradMaxC"
+              label="Grad Max (mmHg)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="gradMoyB"
+              label="Grad Moy (mmHg)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>VEINES PULMONAIRES</span>
+            <br />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="s"
+              label="S (m/s)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="d"
+              label="D (m/s)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="sD"
+              label="S/D"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="aA"
+              label="A (ms)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="dureeAp"
+              label="Duree AP"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>DOPPLER TISSULAIRE</span>
+            <br />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="eAA"
+              label="Ea (m/s)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="aAA"
+              label="Aa (ms)"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="eAAa"
+              label="Ea/Aa"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
+            <ValidatedField
+              disabled={idEdit === 'voir' ? true : false}
+              name="eEa"
+              label="E/Ea"
+              type="text"
+              style={{
+                borderRadius: '25px',
+                backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
+                borderColor: '#CBDCF7',
+                color: idEdit === 'voir' ? '#F6FAFF' : 'black',
+              }}
+            />
             <Button
               hidden={idEdit === 'voir' ? true : false}
               id="save-entity"

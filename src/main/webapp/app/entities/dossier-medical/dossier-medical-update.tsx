@@ -9,7 +9,7 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { IPatient } from 'app/shared/model/patient.model';
-import { getEntities as getPatients } from 'app/entities/patient/patient.reducer';
+import { getEntitiesBis as getPatients } from 'app/entities/patient/patient.reducer';
 import { IDossierMedical } from 'app/shared/model/dossier-medical.model';
 import { getEntity, updateEntity, createEntity, reset } from './dossier-medical.reducer';
 import Header from 'app/shared/layout/header/header';
@@ -45,7 +45,7 @@ export const DossierMedicalUpdate = () => {
       dispatch(getEntity(id));
     }
 
-    dispatch(getPatients({}));
+    dispatch(getPatients({ id: account.hospitalId !== null && account.hospitalId !== undefined ? account.hospitalId : 0 }));
   }, []);
 
   useEffect(() => {

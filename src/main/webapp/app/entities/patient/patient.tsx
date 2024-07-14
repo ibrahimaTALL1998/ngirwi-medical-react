@@ -1,26 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Button, Card, Label, Table } from 'reactstrap';
-import { Translate, TextFormat, getSortState, JhiPagination, JhiItemCount, ValidatedField } from 'react-jhipster';
+import { Button, Card, Modal, ModalBody, ModalFooter, ModalHeader, Table } from 'reactstrap';
+import { TextFormat, getSortState, ValidatedField } from 'react-jhipster';
 import { RiUserAddLine } from 'react-icons/ri';
 import { BiTrash } from 'react-icons/bi';
 
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { APP_LOCAL_DATE_FORMAT, AUTHORITIES } from 'app/config/constants';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants';
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { translateBloodType, translateGender, translateMaritalStatus } from 'app/shared/util/translation-utils';
-
-import { FiLogOut } from 'react-icons/fi';
-
-import { Scrollbars } from 'react-custom-scrollbars';
-
-import { IPatient } from 'app/shared/model/patient.model';
-import { getEntities } from './patient.reducer';
-import { AiOutlineSearch } from 'react-icons/ai';
+import { getEntitiesBis } from './patient.reducer';
 import Header from 'app/shared/layout/header/header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
 
 export const Patient = () => {
   const dispatch = useAppDispatch();
@@ -32,9 +25,13 @@ export const Patient = () => {
     overridePaginationStateWithQueryParams(getSortState(location, ITEMS_PER_PAGE, 'id'), location.search)
   );
 
+  const account = useAppSelector(state => state.authentication.account);
   const patientList = useAppSelector(state => state.patient.entities);
   const loading = useAppSelector(state => state.patient.loading);
-  const totalItems = useAppSelector(state => state.patient.totalItems);
+  const isDoctor = useAppSelector(state => hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.DOCTOR]));
+  // const hospital = useAppSelector(state => state.hospital.entity);
+  // const [modal, setModal] = useState(false);
+  // const toggleModal = () => setModal(!modal);
 
   // filter
   const [search, setSearch] = useState('');
@@ -42,7 +39,8 @@ export const Patient = () => {
 
   const getAllEntities = () => {
     dispatch(
-      getEntities({
+      getEntitiesBis({
+        id: account.hospitalId !== null && account.hospitalId !== undefined ? account.hospitalId : 0,
         page: paginationState.activePage - 1,
         size: paginationState.itemsPerPage,
         sort: `${paginationState.sort},${paginationState.order}`,
@@ -85,16 +83,6 @@ export const Patient = () => {
     });
   };
 
-  const handlePagination = currentPage =>
-    setPaginationState({
-      ...paginationState,
-      activePage: currentPage,
-    });
-
-  const handleSyncList = () => {
-    sortEntities();
-  };
-
   // filtering table
   const handleSearch = event => {
     setSearch(event.target.value);
@@ -129,6 +117,12 @@ export const Patient = () => {
   }
 
   const [query, setQuery] = useState('');
+
+  // const generatePdf = () => {
+  //   // Generate PDF content
+  //   setModal(true); // Open modal after generating PDF
+  // };
+
   return (
     <>
       <div
@@ -173,11 +167,11 @@ export const Patient = () => {
                 borderRadius: '50%',
                 backgroundColor: '#CBDCF7',
                 fontSize: '18px',
-                paddingTop: "20%",
-                justifyContent: "center"
+                paddingTop: '20%',
+                justifyContent: 'center',
               }}
             >
-              <span style={{ display: 'block', width: "90%", wordBreak: "break-word" }}>
+              <span style={{ display: 'block', width: '90%', wordBreak: 'break-word' }}>
                 {React.createElement(RiUserAddLine, { size: '24' })} Enregistrer nouveau patient
               </span>
             </Link>
@@ -190,13 +184,13 @@ export const Patient = () => {
                 textAlign: 'center',
                 color: 'white',
                 marginBottom: '4vw',
-                boxShadow: '0px 10px 50px rgba(138, 161, 203, 0.23)'
+                boxShadow: '0px 10px 50px rgba(138, 161, 203, 0.23)',
               }}
             >
               <span style={{ marginTop: '1.5%' }}>Liste des patients enregistrés</span>
             </Card>
             <Link
-              to="/consultation/new/"
+              to={isDoctor ? '/consultation/new/' : ''}
               style={{
                 display: 'flex',
                 textDecoration: 'none',
@@ -207,11 +201,11 @@ export const Patient = () => {
                 borderRadius: '50%',
                 backgroundColor: '#CBDCF7',
                 fontSize: '18px',
-                paddingTop: "20%",
-                justifyContent: "center"
+                paddingTop: '20%',
+                justifyContent: 'center',
               }}
             >
-              <span style={{ display: 'block', width: "90%", wordBreak: "break-word" }}>
+              <span style={{ display: 'block', width: '90%', wordBreak: 'break-word' }}>
                 {React.createElement(RiUserAddLine, { size: '24' })} Enregistrer nouvelle consultation
               </span>
             </Link>
@@ -270,453 +264,234 @@ export const Patient = () => {
                 {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
               </div>
             </div>
-                {patientList && patientList.length>0?(<Table responsive style={{ borderCollapse: 'separate', borderSpacing: '0 15px' }}>
-              <thead
-                style={{
-                  position: 'sticky',
-                  top: '0',
-                }}
-              >
-                <tr>
-                  <th
-                    style={{
-                      position: 'sticky',
-                      top: '0',
-                      width: '4%',
-                      backgroundColor: 'white',
-                    }}
-                  ></th>
-                  <th
-                    style={{
-                      textAlign: 'center',
-                      fontSize: '14px',
-                      position: 'sticky',
-                      top: '0',
-                      width: '16%',
-                      backgroundColor: 'white',
-                    }}
-                    className="hand"
-                    onClick={sort('id')}
-                  >
-                    ID <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
-                  </th>
-                  <th
-                    style={{
-                      textAlign: 'center',
-                      fontSize: '14px',
-                      position: 'sticky',
-                      top: '0',
-                      width: '16%',
-                      backgroundColor: 'white',
-                    }}
-                    className="hand"
-                    onClick={sort('firstName')}
-                  >
-                    Prénom <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
-                  </th>
-                  <th
-                    style={{
-                      textAlign: 'center',
-                      fontSize: '14px',
-                      position: 'sticky',
-                      top: '0',
-                      width: '16%',
-                      backgroundColor: 'white',
-                    }}
-                    className="hand"
-                    onClick={sort('lastName')}
-                  >
-                    Nom <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
-                  </th>
-                  <th
-                    style={{
-                      textAlign: 'center',
-                      fontSize: '14px',
-                      position: 'sticky',
-                      top: '0',
-                      width: '16%',
-                      backgroundColor: 'white',
-                    }}
-                    className="hand"
-                    onClick={sort('birthday')}
-                  >
-                    Date de naissance <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
-                  </th>
-                  <th
-                    style={{
-                      textAlign: 'center',
-                      fontSize: '14px',
-                      position: 'sticky',
-                      top: '0',
-                      width: '16%',
-                      backgroundColor: 'white',
-                    }}
-                    className="hand"
-                    onClick={sort('cni')}
-                  >
-                    Cni <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
-                  </th>
+            {patientList && patientList.length > 0 ? (
+              <Table responsive style={{ borderCollapse: 'separate', borderSpacing: '0 15px' }}>
+                <thead
+                  style={{
+                    position: 'sticky',
+                    top: '0',
+                  }}
+                >
+                  <tr>
+                    <th
+                      style={{
+                        position: 'sticky',
+                        top: '0',
+                        width: '4%',
+                        backgroundColor: 'white',
+                      }}
+                    ></th>
+                    <th
+                      style={{
+                        textAlign: 'center',
+                        fontSize: '14px',
+                        position: 'sticky',
+                        top: '0',
+                        width: '16%',
+                        backgroundColor: 'white',
+                      }}
+                      className="hand"
+                      onClick={sort('id')}
+                    >
+                      ID <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
+                    </th>
+                    <th
+                      style={{
+                        textAlign: 'center',
+                        fontSize: '14px',
+                        position: 'sticky',
+                        top: '0',
+                        width: '16%',
+                        backgroundColor: 'white',
+                      }}
+                      className="hand"
+                      onClick={sort('firstName')}
+                    >
+                      Prénom <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
+                    </th>
+                    <th
+                      style={{
+                        textAlign: 'center',
+                        fontSize: '14px',
+                        position: 'sticky',
+                        top: '0',
+                        width: '16%',
+                        backgroundColor: 'white',
+                      }}
+                      className="hand"
+                      onClick={sort('lastName')}
+                    >
+                      Nom <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
+                    </th>
+                    <th
+                      style={{
+                        textAlign: 'center',
+                        fontSize: '14px',
+                        position: 'sticky',
+                        top: '0',
+                        width: '16%',
+                        backgroundColor: 'white',
+                      }}
+                      className="hand"
+                      onClick={sort('birthday')}
+                    >
+                      Date de naissance <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
+                    </th>
+                    <th
+                      style={{
+                        textAlign: 'center',
+                        fontSize: '14px',
+                        position: 'sticky',
+                        top: '0',
+                        width: '16%',
+                        backgroundColor: 'white',
+                      }}
+                      className="hand"
+                      onClick={sort('cni')}
+                    >
+                      Cni <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
+                    </th>
 
-                  <th
-                    style={{
-                      textAlign: 'center',
-                      fontSize: '14px',
-                      position: 'sticky',
-                      top: '0',
-                      width: '16%',
-                      backgroundColor: 'white',
-                    }}
-                  >
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody
-                style={{
-                  backgroundColor: '#F6FAFF',
-                  border: '1px solid #F6FAFF',
-                  borderRadius: '15px 15px 0px 15px',
-                  fontSize: '15px',
-                  textAlign: 'center',
-                  borderBottom: '50px solid white',
-                  backgroundImage: 'url(content/images/NgirwiLogo.png)',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundAttachment: 'fixed',
-                  backgroundPosition: '60% 165%',
-                }}
-              >
-                {filter === null
-                  ? patientList.map((patient, i) => (
-                    <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
-                      <td>
-                        <Button
-                          tag={Link}
-                          to={`/patient/${patient.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                          data-cy="entityDeleteButton"
-                          style={{ color: 'red', backgroundColor: '#F6FAFF', borderColor: '#F6FAFF' }}
-                        >
-                          {React.createElement(BiTrash, { size: '15' })}
-                        </Button>
-                      </td>
+                    <th
+                      style={{
+                        textAlign: 'center',
+                        fontSize: '14px',
+                        position: 'sticky',
+                        top: '0',
+                        width: '16%',
+                        backgroundColor: 'white',
+                      }}
+                    >
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  style={{
+                    backgroundColor: '#F6FAFF',
+                    border: '1px solid #F6FAFF',
+                    borderRadius: '15px 15px 0px 15px',
+                    fontSize: '15px',
+                    textAlign: 'center',
+                    borderBottom: '50px solid white',
+                    backgroundImage: 'url(content/images/NgirwiLogo.png)',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundAttachment: 'fixed',
+                    backgroundPosition: '60% 165%',
+                  }}
+                >
+                  {filter === null
+                    ? patientList.map((patient, i) => (
+                        <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
+                          <td>
+                            <Button
+                              tag={Link}
+                              to={`/patient/${patient.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                              data-cy="entityDeleteButton"
+                              style={{ color: 'red', backgroundColor: '#F6FAFF', borderColor: '#F6FAFF' }}
+                            >
+                              {React.createElement(BiTrash, { size: '15' })}
+                            </Button>
+                          </td>
 
-                      <td>
-                        <Button
-                          tag={Link}
-                          to={`/patient/${patient.id}`}
-                          color="link"
-                          style={{ color: '#91A8CD', textDecoration: 'none' }}
-                        >
-                          {patient.id}
-                        </Button>
-                      </td>
-                      <td style={{ wordBreak: 'break-all',textTransform:"capitalize" }}>{patient.firstName}</td>
-                      <td>{patient.lastName.toUpperCase()}</td>
-                      <td>
-                        {patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}
-                      </td>
-                      <td>{patient.cni}</td>
-                      <td className="text-end">
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '1px',
-                            fontSize: '9px',
-                          }}
-                        >
-                          <Button
-                            tag={Link}
-                            to={`/patient/${patient.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                            color="primary"
-                            size="sm"
-                            data-cy="entityEditButton"
-                          >
-                            <FontAwesomeIcon icon="pencil" /> <span className="d-none d-md-inline">Mettre à jour</span>
-                          </Button>
-                          <Button tag={Link} to={`/patient/${patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
-                            <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir détails</span>
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                  : filter.map((patient, i) => (
-                    <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
-                      <td>
-                        <Button
-                          tag={Link}
-                          to={`/patient/${patient.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                          data-cy="entityDeleteButton"
-                          style={{ color: 'red', backgroundColor: '#F6FAFF', borderColor: '#F6FAFF' }}
-                        >
-                          {React.createElement(BiTrash, { size: '15' })}
-                        </Button>
-                      </td>
-                      <td>
-                        <Button tag={Link} to={`/patient/${patient.id}`} color="link" size="sm">
-                          {patient.id}
-                        </Button>
-                      </td>
-                      <td style={{ wordBreak: 'break-all',textTransform:"capitalize" }}>{patient.firstName}</td>
-                      <td>{patient.lastName.toUpperCase()}</td>
-                      <td>
-                        {patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}
-                      </td>
+                          <td>
+                            <Button
+                              tag={Link}
+                              to={`/patient/${patient.id}`}
+                              color="link"
+                              style={{ color: '#91A8CD', textDecoration: 'none' }}
+                            >
+                              {patient.id}
+                            </Button>
+                          </td>
+                          <td style={{ wordBreak: 'break-all', textTransform: 'capitalize' }}>{patient.firstName}</td>
+                          <td>{patient.lastName.toUpperCase()}</td>
+                          <td>
+                            {patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}
+                          </td>
+                          <td>{patient.cni}</td>
+                          <td className="text-end">
+                            <div
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '1px',
+                                fontSize: '9px',
+                              }}
+                            >
+                              <Button
+                                tag={Link}
+                                to={`/patient/${patient.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                                color="primary"
+                                size="sm"
+                                data-cy="entityEditButton"
+                              >
+                                <FontAwesomeIcon icon="pencil" /> <span className="d-none d-md-inline">Mettre à jour</span>
+                              </Button>
+                              <Button tag={Link} to={`/patient/${patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
+                                <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir détails</span>
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    : filter.map((patient, i) => (
+                        <tr style={{ border: '1px solid #E9F1FF', borderRadius: '15px' }} key={`entity-${i}`} data-cy="entityTable">
+                          <td>
+                            <Button
+                              tag={Link}
+                              to={`/patient/${patient.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                              data-cy="entityDeleteButton"
+                              style={{ color: 'red', backgroundColor: '#F6FAFF', borderColor: '#F6FAFF' }}
+                            >
+                              {React.createElement(BiTrash, { size: '15' })}
+                            </Button>
+                          </td>
+                          <td>
+                            <Button tag={Link} to={`/patient/${patient.id}`} color="link" size="sm">
+                              {patient.id}
+                            </Button>
+                          </td>
+                          <td style={{ wordBreak: 'break-all', textTransform: 'capitalize' }}>{patient.firstName}</td>
+                          <td>{patient.lastName.toUpperCase()}</td>
+                          <td>
+                            {patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}
+                          </td>
 
-                      <td>{patient.cni}</td>
-                      <td className="text-end">
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '1px',
-                            fontSize: '9px',
-                          }}
-                        >
-                          <Button
-                            tag={Link}
-                            to={`/patient/${patient.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                            color="primary"
-                            size="sm"
-                            data-cy="entityEditButton"
-                          >
-                            <FontAwesomeIcon icon="pencil" /> <span className="d-none d-md-inline">Mettre à jour</span>
-                          </Button>
-                          <Button tag={Link} to={`/patient/${patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
-                            <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir détails</span>
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </Table>):(!loading && <div className="alert alert-warning">Aucun patient enregistré</div>)}
-            
+                          <td>{patient.cni}</td>
+                          <td className="text-end">
+                            <div
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '1px',
+                                fontSize: '9px',
+                              }}
+                            >
+                              <Button
+                                tag={Link}
+                                to={`/patient/${patient.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                                color="primary"
+                                size="sm"
+                                data-cy="entityEditButton"
+                              >
+                                <FontAwesomeIcon icon="pencil" /> <span className="d-none d-md-inline">Mettre à jour</span>
+                              </Button>
+                              <Button tag={Link} to={`/patient/${patient.id}`} color="dark" size="sm" data-cy="entityDetailsButton">
+                                <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir détails</span>
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                </tbody>
+              </Table>
+            ) : (
+              !loading && <div className="alert alert-warning">Aucun patient enregistré</div>
+            )}
           </Card>
         </div>
       </div>
-
-      {/* <div>
-     <div>
-       <h2 id="patient-heading" data-cy="PatientHeading">
-         Patients
-         <div className="d-flex justify-content-end">
-           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
-             <FontAwesomeIcon icon="sync" spin={loading} /> Actualiser la liste
-           </Button>
-           <Link to="/patient/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
-             <FontAwesomeIcon icon="plus" />
-             &nbsp; Créer un nouveau Patient
-           </Link>
-         </div>
-       </h2>
-       <div className="d-flex justify-content-center">
-         <ValidatedField label="Critère de recherche:" id="criteria" name="criteria" type="select" onChange={(e) => setCriteria(e.target.value)}>
-           <select name="criteria" >
-           <option value="lastName">
-             Nom
-           </option>
-           <option value="firstName">
-             Prénom
-           </option>
-           <option value="birthday">
-             Date de naissance
-           </option>
-           <option value="phone">
-             Numéro de téléphone
-           </option>
-           <option value="cni">
-             Numéro de carte d'identité
-           </option>
-           <option value="maritialStatus">
-             Status matrimonial
-           </option>
-           { </select>
-     
-    
-       </ValidatedField>
-         &nbsp;&nbsp;&nbsp;
-          <Label>Barre de recherche:</Label> 
-         <ValidatedField label="Barre de recherche:" id="search" name="search" type="text" onChange={handleSearch} />
-          <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} /> 
-
-       </div>
-
-       <div className="table-responsive">
-         {patientList && patientList.length > 0 ? ( }
-           <Table responsive>
-             <thead>
-               <tr>
-                 <th className="hand" onClick={sort('id')}>
-                   ID <FontAwesomeIcon icon="sort" />
-                 </th>
-                 <th className="hand" onClick={sort('firstName')}>
-                   Prénom <FontAwesomeIcon icon="sort" />
-                 </th>
-                 <th className="hand" onClick={sort('lastName')}>
-                   Nom <FontAwesomeIcon icon="sort" />
-                 </th>
-                 <th className="hand" onClick={sort('birthday')}>
-                   Date de naissance <FontAwesomeIcon icon="sort" />
-                 </th>
-                 <th className="hand" onClick={sort('birthplace')}>
-                   Lieu de naissance <FontAwesomeIcon icon="sort" />
-                 </th>
-                 <th className="hand" onClick={sort('gender')}>
-                   Genre <FontAwesomeIcon icon="sort" />
-                 </th>
-                 <th className="hand" onClick={sort('adress')}>
-                   Adresse <FontAwesomeIcon icon="sort" />
-                 </th>
-                 <th className="hand" onClick={sort('phone')}>
-                   Téléphone <FontAwesomeIcon icon="sort" />
-                 </th>
-                 <th className="hand" onClick={sort('cni')}>
-                   Cni <FontAwesomeIcon icon="sort" />
-                 </th>
-                 <th className="hand" onClick={sort('job')}>
-                   Profession <FontAwesomeIcon icon="sort" />
-                 </th>
-                 <th className="hand" onClick={sort('bloodType')}>
-                   Groupe Sanguin <FontAwesomeIcon icon="sort" />
-                 </th>
-                 <th className="hand" onClick={sort('maritialStatus')}>
-                   Status Matrimonial <FontAwesomeIcon icon="sort" />
-                 </th>
-                 <th className="hand" onClick={sort('dateCreated')}>
-                   Date de création <FontAwesomeIcon icon="sort" />
-                 </th>
-                 <th className="hand" onClick={sort('dateUpdated')}>
-                   Date de mise à jour <FontAwesomeIcon icon="sort" />
-                 </th>
-                 <th className="hand" onClick={sort('author')}>
-                   Autheur <FontAwesomeIcon icon="sort" />
-                 </th>
-                 <th />
-               </tr>
-             </thead>
-             <tbody>
-               {filter === null ? patientList.map((patient, i) => (
-                 <tr key={`entity-${i}`} data-cy="entityTable">
-                   <td>
-                     <Button tag={Link} to={`/patient/${patient.id}`} color="link" size="sm">
-                       {patient.id}
-                     </Button>
-                   </td>
-                   <td>{patient.firstName}</td>
-                   <td>{patient.lastName}</td>
-                   <td>{patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}</td>
-                   <td>{patient.birthplace}</td>
-                   <td>{patient.gender}</td>
-                   <td>{patient.adress}</td>
-                   <td>{patient.phone}</td>
-                   <td>{patient.cni}</td>
-                   <td>{patient.job}</td>
-                   <td>{patient.bloodType}</td>
-                   <td>{patient.maritialStatus}</td>
-                   <td>{patient.dateCreated ? <TextFormat type="date" value={patient.dateCreated} format={APP_DATE_FORMAT} /> : null}</td>
-                   <td>{patient.dateUpdated ? <TextFormat type="date" value={patient.dateUpdated} format={APP_DATE_FORMAT} /> : null}</td>
-                   <td>{patient.author}</td>
-                   <td className="text-end">
-                     <div className="btn-group flex-btn-group-container">
-                       <Button tag={Link} to={`/patient/${patient.id}`} color="info" size="sm" data-cy="entityDetailsButton">
-                         <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir</span>
-                       </Button>
-                       <Button
-                         tag={Link}
-                         to={`/patient/${patient.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                         color="primary"
-                         size="sm"
-                         data-cy="entityEditButton"
-                       >
-                         <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
-                       </Button>
-                       <Button
-                         tag={Link}
-                         to={`/patient/${patient.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                         color="danger"
-                         size="sm"
-                         data-cy="entityDeleteButton"
-                       >
-                         <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Supprimer</span>
-                       </Button>
-                     </div>
-                   </td>
-                 </tr>
-               )) : filter.map((patient, i) => (
-                 <tr key={`entity-${i}`} data-cy="entityTable">
-                   <td>
-                     <Button tag={Link} to={`/patient/${patient.id}`} color="link" size="sm">
-                       {patient.id}
-                     </Button>
-                   </td>
-                   <td>{patient.firstName}</td>
-                   <td>{patient.lastName}</td>
-                   <td>{patient.birthday ? <TextFormat type="date" value={patient.birthday} format={APP_LOCAL_DATE_FORMAT} /> : null}</td>
-                   <td>{patient.birthplace}</td>
-                   
-                   <td>{translateGender(patient.gender)}</td> 
-                   <td>{patient.adress}</td>
-                   <td>{patient.phone}</td>
-                   <td>{patient.cni}</td>
-                   <td>{patient.job}</td>
-                   <td>{patient.bloodType}</td>
-                   <td>{translateMaritalStatus(patient.maritialStatus)}</td>
-                   <td>{patient.dateCreated ? <TextFormat type="date" value={patient.dateCreated} format={APP_DATE_FORMAT} /> : null}</td>
-                   <td>{patient.dateUpdated ? <TextFormat type="date" value={patient.dateUpdated} format={APP_DATE_FORMAT} /> : null}</td>
-                   <td>{patient.author}</td>
-                   <td className="text-end">
-                     <div className="btn-group flex-btn-group-container">
-                       <Button tag={Link} to={`/patient/${patient.id}`} color="info" size="sm" data-cy="entityDetailsButton">
-                         <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir</span>
-                       </Button>
-                       <Button
-                         tag={Link}
-                         to={`/patient/${patient.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                         color="primary"
-                         size="sm"
-                         data-cy="entityEditButton"
-                       >
-                         <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
-                       </Button>
-                       <Button
-                         tag={Link}
-                         to={`/patient/${patient.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                         color="danger"
-                         size="sm"
-                         data-cy="entityDeleteButton"
-                       >
-                         <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Supprimer</span>
-                       </Button>
-                     </div>
-                   </td>
-                 </tr>
-               ))}
-             </tbody>
-           </Table>
-         ) : (
-           !loading && <div className="alert alert-warning">Aucun Patient trouvé</div>
-         )}
-       </div>
-       {totalItems ? (
-         <div className={patientList && patientList.length > 0 ? '' : 'd-none'}>
-           <div className="justify-content-center d-flex">
-             <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} />
-           </div>
-           <div className="justify-content-center d-flex">
-             <JhiPagination
-               activePage={paginationState.activePage}
-               onSelect={handlePagination}
-               maxButtons={5}
-               itemsPerPage={paginationState.itemsPerPage}
-               totalItems={totalItems}
-             />
-           </div>
-         </div>
-       ) : (
-         ''
-       )}
-     </div> */}
     </>
   );
 };

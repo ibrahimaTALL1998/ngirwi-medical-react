@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
-import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
+import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError, IQueryParamsWithId } from 'app/shared/reducers/reducer.utils';
 import { IPatient, defaultValue } from 'app/shared/model/patient.model';
 
 const initialState: EntityState<IPatient> = {
@@ -21,6 +21,11 @@ const apiUrl = 'api/patients';
 
 export const getEntities = createAsyncThunk('patient/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&` : '?'}cacheBuster=${new Date().getTime()}`;
+  return axios.get<IPatient[]>(requestUrl);
+});
+
+export const getEntitiesBis = createAsyncThunk('patient/fetch_entity_list', async ({ id, page, size, sort }: IQueryParamsWithId) => {
+  const requestUrl = `${apiUrl}bis/${id}${sort ? `?page=${page}&size=${size}&sort=${sort}&` : '?'}cacheBuster=${new Date().getTime()}`;
   return axios.get<IPatient[]>(requestUrl);
 });
 

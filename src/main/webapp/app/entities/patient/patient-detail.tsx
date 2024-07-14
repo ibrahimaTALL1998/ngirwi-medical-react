@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Button, Row, Col, Card } from 'reactstrap';
+import { Button, Card } from 'reactstrap';
 import { TextFormat } from 'react-jhipster';
 import { translateGender, translateMaritalStatus, translateBloodType } from 'app/shared/util/translation-utils';
 
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_FORMAT, AUTHORITIES } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
+import { getEntity as getHospital } from '../hospital/hospital.reducer';
 import { getEntity } from './patient.reducer';
 import { getPatient, reset as resetDossier } from '../dossier-medical/dossier-medical.reducer';
 import { getPatient as getHospitalisationPatient, reset as resetHospitalisation } from '../hospitalisation/hospitalisation.reducer';
 import Header from 'app/shared/layout/header/header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Page, Text, Image, View, Document, Font } from '@react-pdf/renderer';
+import { convertDateTimeFromServerToDate, displayDefaultDateTime, convertDateTimeFromServerToHours } from 'app/shared/util/date-utils';
+import CertificateModal from './certificate-modal';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
 
 export const PatientDetail = () => {
   const dispatch = useAppDispatch();
@@ -19,6 +24,10 @@ export const PatientDetail = () => {
   const { id } = useParams<'id'>();
   const [hide, setHide] = useState(true);
   const [hidehos, setHidehos] = useState(true);
+  const [modal, setModal] = useState(false);
+  const [days, setDays] = useState(1);
+  const isDoctor = useAppSelector(state => hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.DOCTOR]));
+
   let showhos = () => {
     if (hidehos === true) {
       setHidehos(false);
@@ -50,13 +59,18 @@ export const PatientDetail = () => {
     dispatch(getEntity(id));
     dispatch(getPatient(id));
     dispatch(getHospitalisationPatient(id));
+    dispatch(getHospital(account.hospitalId));
   }, []);
 
   const patientEntity = useAppSelector(state => state.patient.entity);
+  const hospitalEntity = useAppSelector(state => state.hospital.entity);
   const dossierMedicalEntity = useAppSelector(state => state.dossierMedical.entity);
   const hospitalisationEntity = useAppSelector(state => state.hospitalisation?.entity);
+  const account = useAppSelector(state => state.authentication.account);
 
-  console.log(hospitalisationEntity);
+  const toggleModal = () => {
+    setModal(!modal);
+  };
 
   const verifDossierExist = () => {
     let dossierExist = false;
@@ -74,6 +88,151 @@ export const PatientDetail = () => {
     return hospitalisationExist;
   };
 
+  Font.register({
+    family: 'Poppins',
+    fonts: [
+      { src: 'https://fonts.cdnfonts.com/s/16009/Poppins-Bold.woff', fontWeight: 'bold' },
+      { src: 'https://fonts.cdnfonts.com/s/16009/Poppins-Medium.woff', fontWeight: 'medium' },
+      { src: 'https://fonts.cdnfonts.com/s/16009/Poppins-Medium.woff', fontWeight: 'thin' },
+    ],
+  });
+
+  const doc = (
+    <Document>
+      <Page style={{ display: 'flex', flexDirection: 'column', fontFamily: 'Poppins' }}>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            borderBottom: '1px solid green',
+            paddingBottom: '10px',
+            marginTop: '20px',
+          }}
+        >
+          <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center' }}>
+            <Text style={{ fontSize: '18px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>
+              {account.lastName + ' ' + account.firstName}
+            </Text>
+            <Text style={{ fontSize: '15px', marginBottom: '9px', fontWeight: 'medium' }}>Médecin général</Text>
+            <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>{hospitalEntity?.phone}</Text>
+          </View>
+          <View>
+            <Image style={{ width: '60px', height: '60px' }} src="content/images/logo-medecin-240x300.png" />
+          </View>
+          <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center' }}>
+            <Text style={{ fontSize: '20px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>{hospitalEntity?.name}</Text>
+            <Text style={{ fontSize: '15px', marginBottom: '9px', fontWeight: 'medium' }}>{hospitalEntity?.adress}</Text>
+            {/* <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>Email Clinique</Text> */}
+            <Text style={{ fontSize: '15px', fontWeight: 'thin' }}></Text>
+          </View>
+        </View>
+        <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', marginTop: '15px' }}>
+          <Text style={{ fontSize: '35px', fontWeight: 'extrabold', marginBottom: '9px' }}>Certificat Médical</Text>
+
+          <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: '10px' }}>
+              <Text style={{ fontSize: '18px', marginBottom: '9px' }}>Fait à: Dakar Le:</Text>
+              <Text style={{ fontSize: '18px', marginBottom: '7px' }}>Nom & Prénom(s):</Text>
+            </View>
+            <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+              <Text style={{ fontSize: '18px', marginBottom: '9px' }}>
+                {convertDateTimeFromServerToDate(displayDefaultDateTime()) +
+                  ' à ' +
+                  convertDateTimeFromServerToHours(displayDefaultDateTime())}
+              </Text>
+              <Text>
+                {patientEntity?.lastName?.toUpperCase()}{' '}
+                {patientEntity?.firstName
+                  ? patientEntity.firstName
+                      .split(' ')
+                      .map(a => a.charAt(0).toUpperCase() + a.slice(1))
+                      .join(' ')
+                  : ''}
+              </Text>
+            </View>
+          </View>
+        </View>
+        <Image
+          src="content/images/logo-medecin-240x300.png"
+          style={{ position: 'absolute', top: '335', left: '15vw', zIndex: '1', width: '70vw', height: '40vh', opacity: 0.1 }}
+        />
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            marginTop: '15px',
+            border: '3px solid silver',
+            marginLeft: '10vw',
+            marginRight: '5vw',
+            width: '80vw',
+            zIndex: '0',
+          }}
+        >
+          <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <Text
+              style={{
+                width: '40vw',
+                borderRight: '3px solid silver',
+                textTransform: 'uppercase',
+                fontSize: '15px',
+                paddingTop: '3px',
+                paddingBottom: '5px',
+                textAlign: 'center',
+              }}
+            >
+              Je, soussigné Dr `{account.firstName + ' ' + account.lastName}`, certifie avoir reçu en consultation Mme/Mlle/Mr `
+              {patientEntity.lastName + ' ' + patientEntity.firstName}` né le `{patientEntity.birthday}` et atteste de son état de santé
+              nécessite un repos médical de `{days}`. Ce présent certificat lui à été délivré pour servir et valoir ce que de droit.
+            </Text>
+            {/* <Text
+              style={{
+                width: '20vw',
+                textTransform: 'uppercase',
+                fontSize: '15px',
+                paddingTop: '3px',
+                paddingBottom: '5px',
+                textAlign: 'center',
+              }}
+            >
+              Durée
+            </Text>
+            <Text
+              style={{
+                width: '20vw',
+                borderLeft: '3px solid silver',
+                textTransform: 'uppercase',
+                fontSize: '15px',
+                paddingTop: '3px',
+                paddingBottom: '5px',
+                textAlign: 'center',
+              }}
+            >
+              Fréquence
+            </Text> */}
+          </View>
+        </View>
+        <View
+          style={{
+            borderTop: '2px solid green',
+            position: 'absolute',
+            top: '93vh',
+            width: '100vw',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            marginBottom: '10px',
+            paddingTop: '6px',
+          }}
+        >
+          <Text style={{ fontSize: '14px' }}>Propulsé par l&apos;entreprise NGIRWI S.A.R.L</Text>
+          <Text style={{ fontSize: '12px' }}>www.ngirwisarl.com</Text>
+        </View>
+      </Page>
+    </Document>
+  );
   return (
     <div
       style={{
@@ -298,10 +457,32 @@ export const PatientDetail = () => {
                 marginTop: '3vh',
               }}
             >
+              {/* Display patient details here */}
+              <Button
+                style={{
+                  borderColor: '#0075FF',
+                  backgroundColor: '#0075FF',
+                  color: '#FFFFFF',
+                  width: '25vh',
+                  height: '9vh',
+                  borderRadius: '4px',
+                  fontFamily: 'Ubuntu',
+                  textAlign: 'center',
+                  justifyContent: 'center',
+                  wordBreak: 'break-word',
+                }}
+                onClick={toggleModal}
+              >
+                Certificat
+              </Button>
+
+              <CertificateModal isOpen={modal} toggle={toggleModal} patient={patientEntity} hospital={hospitalEntity} account={account} />
+
               <Button
                 onMouseOver={changeColor}
                 onMouseLeave={setColor}
                 tag={Link}
+                disabled={!isDoctor}
                 // to={
                 //   Object.keys(dossierMedicalEntity).length > 0
                 //     ? `/dossier-medical/${dossierMedicalEntity?.id}/edit/${'voir'}`
@@ -325,10 +506,20 @@ export const PatientDetail = () => {
               >
                 Dossier médical
               </Button>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '5vh',
+                marginTop: '3vh',
+              }}
+            >
               <Button
                 onMouseOver={changeColor}
                 onMouseLeave={setColor}
                 hidden={!hide}
+                disabled={!isDoctor}
                 href={`/consultation/new/${patientEntity.id}/`}
                 style={{
                   borderColor: '#0075FF',
@@ -349,6 +540,7 @@ export const PatientDetail = () => {
                 onMouseOver={changeColor}
                 onMouseLeave={setColor}
                 hidden={hide}
+                disabled={!isDoctor}
                 tag={Link}
                 to={`/consultation/list/${patientEntity.id}?page=1&sort=id,asc`}
                 style={{
@@ -369,6 +561,7 @@ export const PatientDetail = () => {
                 hidden={!hidehos}
                 onMouseOver={changeColor}
                 onMouseLeave={setColor}
+                disabled={!isDoctor}
                 href={`/hospitalisation/new/${patientEntity.id}`}
                 style={{
                   borderColor: '#0075FF',
@@ -387,6 +580,7 @@ export const PatientDetail = () => {
                 hidden={hidehos}
                 onMouseOver={changeColor}
                 onMouseLeave={setColor}
+                disabled={!isDoctor}
                 href={`/hospitalisation/${patientEntity.id}`}
                 style={{
                   borderColor: '#0075FF',
@@ -409,18 +603,18 @@ export const PatientDetail = () => {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                gap: '10vh',
-                marginTop: '15vh',
+                // gap: '10vh',
+                // marginTop: '15vh',
               }}
             >
               <FontAwesomeIcon
                 onClick={() => show()}
-                style={{ marginLeft: '15px', color: '#0075FF', height: '5vh', cursor: 'pointer', marginTop: '2.5vh' }}
+                style={{ marginLeft: '15px', color: '#0075FF', height: '5vh', cursor: 'pointer' }}
                 icon="sort"
               />
               <FontAwesomeIcon
                 onClick={() => showhos()}
-                style={{ marginLeft: '15px', color: '#0075FF', height: '5vh', cursor: 'pointer' }}
+                style={{ marginLeft: '15px', color: '#0075FF', height: '5vh', cursor: 'pointer', marginTop: '10vh' }}
                 icon="sort"
               />
             </div>
@@ -446,98 +640,6 @@ export const PatientDetail = () => {
         </Button>
       </div>
     </div>
-    // <Row style={{marginLeft:"16vw"}}>
-    //   <Col md="8">
-    //     <h2 data-cy="patientDetailsHeading">Patient</h2>
-    //     <dl className="jh-entity-details">
-    //       <dt>
-    //         <span id="id">ID</span>
-    //       </dt>
-    //       <dd>{patientEntity.id}</dd>
-    //       <dt>
-    //         <span id="firstName">Prénom</span>
-    //       </dt>
-    //       <dd>{patientEntity.firstName}</dd>
-    //       <dt>
-    //         <span id="lastName">Nom</span>
-    //       </dt>
-    //       <dd>{patientEntity.lastName}</dd>
-    //       <dt>
-    //         <span id="birthday">Date de naissance</span>
-    //       </dt>
-    //       <dd>
-    //         {patientEntity.birthday ? <TextFormat value={patientEntity.birthday} type="date" format={APP_LOCAL_DATE_FORMAT} /> : null}
-    //       </dd>
-    //       <dt>
-    //         <span id="birthplace">Lieu de naissance</span>
-    //       </dt>
-    //       <dd>{patientEntity.birthplace}</dd>
-    //       <dt>
-    //         <span id="gender">Genre</span>
-    //       </dt>
-    //       <dd>{patientEntity.gender}</dd>
-    //       <dt>
-    //         <span id="adress">Adresse</span>
-    //       </dt>
-    //       <dd>{patientEntity.adress}</dd>
-    //       <dt>
-    //         <span id="phone">Téléphone</span>
-    //       </dt>
-    //       <dd>{patientEntity.phone}</dd>
-    //       <dt>
-    //         <span id="cni">Cni</span>
-    //       </dt>
-    //       <dd>{patientEntity.cni}</dd>
-    //       <dt>
-    //         <span id="job">Profession</span>
-    //       </dt>
-    //       <dd>{patientEntity.job}</dd>
-    //       <dt>
-    //         <span id="bloodType">Groupe Sanguin</span>
-    //       </dt>
-    //       <dd>{patientEntity.bloodType}</dd>
-    //       <dt>
-    //         <span id="maritialStatus">Status Matrimonial</span>
-    //       </dt>
-    //       <dd>{patientEntity.maritialStatus}</dd>
-    //       <dt>
-    //         <span id="dateCreated">Date de création</span>
-    //       </dt>
-    //       <dd>
-    //         {patientEntity.dateCreated ? <TextFormat value={patientEntity.dateCreated} type="date" format={APP_DATE_FORMAT} /> : null}
-    //       </dd>
-    //       <dt>
-    //         <span id="dateUpdated">Date de mise à jour</span>
-    //       </dt>
-    //       <dd>
-    //         {patientEntity.dateUpdated ? <TextFormat value={patientEntity.dateUpdated} type="date" format={APP_DATE_FORMAT} /> : null}
-    //       </dd>
-    //       <dt>
-    //         <span id="author">Autheur</span>
-    //       </dt>
-    //       <dd>{patientEntity.author}</dd>
-    //     </dl>
-    //     <Button tag={Link} to="/patient" replace color="info" data-cy="entityDetailsBackButton">
-    //       <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Retour</span>
-    //     </Button>
-    //     &nbsp;
-    //     <Button tag={Link} to={`/patient/${patientEntity.id}/edit`} replace color="primary">
-    //       <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
-    //     </Button>
-    //     &nbsp;
-    //     <Button tag={Link} to={`/dossier-medical/${patientEntity.id}/`} replace color="success">
-    //       <FontAwesomeIcon icon="book" /> <span className="d-none d-md-inline">Dossier Médical</span>
-    //     </Button>
-    //     &nbsp;
-    //     <Button tag={Link} to={`/consultation/new/${patientEntity.id}/`} replace color="warning">
-    //       <FontAwesomeIcon icon="person" /> <span className="d-none d-md-inline">Consulter</span>
-    //     </Button>
-    //     &nbsp;
-    //     <Button tag={Link} to={`/bill/new/${patientEntity.id}/`} replace color="info">
-    //       <FontAwesomeIcon icon="money-bill" /> <span className="d-none d-md-inline">facture</span>
-    //     </Button>
-    //   </Col>
-    // </Row>
   );
 };
 

@@ -87,6 +87,8 @@ export const BillElementUpdate = () => {
               {!isNew ? <ValidatedField name="id" required readOnly id="bill-element-id" label="ID" validate={{ required: true }} /> : null}
               <ValidatedField label="Name" id="bill-element-name" name="name" data-cy="name" type="text" />
               <ValidatedField label="Price" id="bill-element-price" name="price" data-cy="price" type="text" />
+              <ValidatedField label="Percentage" id="bill-element-percentage" name="percentage" data-cy="percentage" type="text" />
+              <ValidatedField label="Quantity" id="bill-element-quantity" name="quantity" data-cy="quantity" type="text" />
               <ValidatedField id="bill-element-bill" name="bill" data-cy="bill" label="Bill" type="select">
                 <option value="" key="0" />
                 {bills

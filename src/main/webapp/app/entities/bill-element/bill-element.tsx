@@ -109,6 +109,12 @@ export const BillElement = () => {
                 <th className="hand" onClick={sort('price')}>
                   Price <FontAwesomeIcon icon="sort" />
                 </th>
+                <th className="hand" onClick={sort('percentage')}>
+                  Percentage <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('quantity')}>
+                  Quantity <FontAwesomeIcon icon="sort" />
+                </th>
                 <th>
                   Bill <FontAwesomeIcon icon="sort" />
                 </th>
@@ -125,6 +131,8 @@ export const BillElement = () => {
                   </td>
                   <td>{billElement.name}</td>
                   <td>{billElement.price}</td>
+                  <td>{billElement.percentage}</td>
+                  <td>{billElement.quantity}</td>
                   <td>{billElement.bill ? <Link to={`/bill/${billElement.bill.id}`}>{billElement.bill.id}</Link> : ''}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">

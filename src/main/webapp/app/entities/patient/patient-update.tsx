@@ -1,21 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Button, Row, Col, FormText, Card } from 'reactstrap';
-import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button, Card } from 'reactstrap';
+import { ValidatedField, ValidatedForm } from 'react-jhipster';
 
-import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDate, displayDefaultDateTime } from 'app/shared/util/date-utils';
+import { convertDateTimeToServer, displayDefaultDate } from 'app/shared/util/date-utils';
 import { translateGender, translateMaritalStatus, translateBloodType } from 'app/shared/util/translation-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { IPatient } from 'app/shared/model/patient.model';
 import { GENDER } from 'app/shared/model/enumerations/gender.model';
 import { BLOODTYPE } from 'app/shared/model/enumerations/bloodtype.model';
 import { MARITALSTATUS } from 'app/shared/model/enumerations/maritalstatus.model';
 import { getEntity, updateEntity, createEntity, reset } from './patient.reducer';
-import { FiLogOut } from 'react-icons/fi';
-import { is } from 'immer/dist/internal';
 import { IoIosArrowBack } from 'react-icons/io';
 import Header from 'app/shared/layout/header/header';
 
@@ -28,7 +23,6 @@ export const PatientUpdate = () => {
   const isNew = id === undefined;
 
   const account = useAppSelector(state => state.authentication.account);
-
   const patientEntity = useAppSelector(state => state.patient.entity);
   const updating = useAppSelector(state => state.patient.updating);
   const updateSuccess = useAppSelector(state => state.patient.updateSuccess);
@@ -46,7 +40,6 @@ export const PatientUpdate = () => {
     } else {
       dispatch(getEntity(id));
     }
-
   }, []);
 
   useEffect(() => {
@@ -74,18 +67,18 @@ export const PatientUpdate = () => {
   const defaultValues = () =>
     isNew
       ? {
-          dateCreated:  displayDefaultDate(),
+          dateCreated: displayDefaultDate(),
           dateUpdated: displayDefaultDate(),
           author: account.login,
         }
       : {
-          gender: 'MALE',
-          bloodType: 'A_PLUS',
-          maritialStatus: 'MARRIED',
+          // gender: 'MALE',
+          // bloodType: 'A_PLUS',
+          // maritialStatus: 'MARRIED',
           ...patientEntity,
           // dateCreated: convertDateTimeFromServer(patientEntity.dateCreated),
           dateUpdated: displayDefaultDate(),
-          author: account.login,
+          // author: account.login,
         };
 
   return (
@@ -145,11 +138,14 @@ export const PatientUpdate = () => {
             minHeight: '70vh',
             marginRight: '5%',
             boxShadow: '0px 10px 50px rgba(138, 161, 203, 0.23)',
-            borderRadius: '15px',marginBottom:"2vh"
+            borderRadius: '15px',
+            marginBottom: '2vh',
           }}
         >
           {isNew ? (
-            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', fontFamily: 'jost', marginLeft: '3%' }}>Remplir informations patient</span>
+            <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', fontFamily: 'jost', marginLeft: '3%' }}>
+              Remplir informations patient
+            </span>
           ) : (
             <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', fontFamily: 'jost', marginLeft: '3%' }}>
               Modifications informations patient
@@ -163,7 +159,7 @@ export const PatientUpdate = () => {
               marginLeft: '3%',
               minHeight: '80vh',
               display: 'flex',
-              flexWrap:"wrap",
+              flexWrap: 'wrap',
               columnGap: '25px',
               marginTop: '1%',
               fontSize: '12px',
@@ -186,7 +182,8 @@ export const PatientUpdate = () => {
                 style={{
                   borderRadius: '25px',
                   backgroundColor: '#F7FAFF',
-                  borderColor: '#CBDCF7',width:"22vw"
+                  borderColor: '#CBDCF7',
+                  width: '22vw',
                 }}
               />
             ) : null}
@@ -203,7 +200,8 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',width:"22vw"
+                borderColor: '#CBDCF7',
+                width: '22vw',
               }}
             />
             <ValidatedField
@@ -219,7 +217,8 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',width:"22vw"
+                borderColor: '#CBDCF7',
+                width: '22vw',
               }}
             />
             <ValidatedField
@@ -234,7 +233,8 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',width:"22vw"
+                borderColor: '#CBDCF7',
+                width: '22vw',
               }}
             />
             <ValidatedField
@@ -247,7 +247,8 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',width:"22vw"
+                borderColor: '#CBDCF7',
+                width: '22vw',
               }}
             />
             <ValidatedField
@@ -259,7 +260,8 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',width:"22vw"
+                borderColor: '#CBDCF7',
+                width: '22vw',
               }}
             >
               {gENDERValues.map(gENDER => (
@@ -281,7 +283,8 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',width:"22vw"
+                borderColor: '#CBDCF7',
+                width: '22vw',
               }}
             />
             <ValidatedField
@@ -297,7 +300,8 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',width:"22vw"
+                borderColor: '#CBDCF7',
+                width: '22vw',
               }}
             />
             <ValidatedField
@@ -313,7 +317,8 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',width:"22vw"
+                borderColor: '#CBDCF7',
+                width: '22vw',
               }}
             />
             <ValidatedField
@@ -326,7 +331,8 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',width:"22vw"
+                borderColor: '#CBDCF7',
+                width: '22vw',
               }}
             />
             <ValidatedField
@@ -338,7 +344,8 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',width:"22vw"
+                borderColor: '#CBDCF7',
+                width: '22vw',
               }}
             >
               {bLOODTYPEValues.map(bLOODTYPE => (
@@ -356,7 +363,8 @@ export const PatientUpdate = () => {
               style={{
                 borderRadius: '25px',
                 backgroundColor: '#F7FAFF',
-                borderColor: '#CBDCF7',width:"22vw"
+                borderColor: '#CBDCF7',
+                width: '22vw',
               }}
             >
               {mARITALSTATUSValues.map(mARITALSTATUS => (
@@ -375,7 +383,7 @@ export const PatientUpdate = () => {
               placeholder="YYYY-MM-DD HH:mm"
             />
             <ValidatedField
-             hidden
+              hidden
               label="Date Updated"
               id="patient-dateUpdated"
               name="dateUpdated"
@@ -393,16 +401,15 @@ export const PatientUpdate = () => {
                 borderRadius: '25px',
                 color: 'white',
                 backgroundColor: '#56B5C5',
-                borderColor: '#56B5C5',flex:"1 1 100%"
+                borderColor: '#56B5C5',
+                flex: '1 1 100%',
               }}
             >
-               Enregistrer
+              Enregistrer
             </Button>
             &nbsp;
             <Button
-              onClick={() =>
-                confirm("Êtes-vous sur de vouloir quitter?") === true ? (window.history.back()) : (null)
-                }
+              onClick={() => (confirm('Êtes-vous sur de vouloir quitter?') === true ? window.history.back() : null)}
               id="cancel-save"
               data-cy="entityCreateCancelButton"
               color="info"
@@ -410,7 +417,9 @@ export const PatientUpdate = () => {
                 borderRadius: '25px',
                 color: 'white',
                 backgroundColor: '#EC4747',
-                borderColor: '#EC4747',marginBottom:"2vh",flex:"1 1 100%"
+                borderColor: '#EC4747',
+                marginBottom: '2vh',
+                flex: '1 1 100%',
               }}
             >
               <span className="d-none d-md-inline">Annuler</span>

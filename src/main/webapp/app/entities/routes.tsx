@@ -11,6 +11,8 @@ import Medecine from './medecine';
 import Bill from './bill';
 import BillElement from './bill-element';
 import Hospitalisation from './hospitalisation';
+import Hospital from './hospital';
+import SurveillanceSheet from './surveillance-sheet';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 export default () => {
@@ -28,6 +30,8 @@ export default () => {
         <Route path="bill-element/*" element={<BillElement />} />
 
         {/* custom routes */}
+        <Route path="hospital/*" element={<Hospital />} />
+        <Route path="surveillance-sheet/*" element={<SurveillanceSheet />} />
         {/* jhipster-needle-add-route-path - JHipster will add routes here */}
       </ErrorBoundaryRoutes>
     </div>

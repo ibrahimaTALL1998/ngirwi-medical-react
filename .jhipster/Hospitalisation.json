@@ -1,5 +1,6 @@
 {
-  "changelogDate": "20221225165612",
+  "changelogDate": "20221208153441",
+  "dto": "no",
   "fields": [
     {
       "fieldName": "entryDate",
@@ -19,6 +20,7 @@
       "fieldValues": "STARTED,ONGOING,DONE"
     }
   ],
+  "jpaMetamodelFiltering": false,
   "name": "Hospitalisation",
   "pagination": "pagination",
   "readOnly": false,
@@ -28,6 +30,13 @@
       "otherEntityName": "patient",
       "relationshipName": "patient",
       "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "surveillanceSheet",
+      "otherEntityRelationshipName": "hospitalisation",
+      "relationshipName": "surveillanceSheet",
+      "relationshipType": "one-to-many"
     }
-  ]
+  ],
+  "service": "serviceClass"
 }

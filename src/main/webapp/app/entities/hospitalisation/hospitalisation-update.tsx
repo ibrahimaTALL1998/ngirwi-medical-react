@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntity as getPatient } from 'app/entities/patient/patient.reducer';
 import { HospitalisationStatus } from 'app/shared/model/enumerations/hospitalisation-status.model';
-import { getEntity, updateEntity, createEntity, reset, createEntityBis } from './hospitalisation.reducer';
+import { getEntity, updateEntity, createEntity, reset } from './hospitalisation.reducer';
 import Header from 'app/shared/layout/header/header';
 import { IoIosArrowBack, IoIosRemoveCircle } from 'react-icons/io';
 import { MdOutlineArrowCircleUp, MdOutlineArrowCircleDown } from 'react-icons/md';
@@ -98,7 +98,7 @@ export const HospitalisationUpdate = () => {
 
     console.log(entity);
     if (isNew) {
-      dispatch(createEntityBis(entity));
+      dispatch(createEntity(entity));
       navigate(`/hospitalisation/${idPatient}`);
     } else {
       dispatch(updateEntity(entity));

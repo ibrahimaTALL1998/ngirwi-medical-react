@@ -15,7 +15,7 @@ const initialState: EntityState<IDossierMedical> = {
   updateSuccess: false,
 };
 
-const apiUrl = '/api/dossier-medicals';
+const apiUrl = 'api/dossier-medicals';
 
 // Actions
 

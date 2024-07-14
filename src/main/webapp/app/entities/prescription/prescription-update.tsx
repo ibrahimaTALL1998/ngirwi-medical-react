@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Button, Row, Col, FormText, Card } from 'reactstrap';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button, Card } from 'reactstrap';
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  convertDateTimeFromServer,
   convertDateTimeFromServerToDate,
   convertDateTimeFromServerToHours,
   convertDateTimeFromServerToMinute,
@@ -12,17 +10,16 @@ import {
   displayDefaultDate,
   displayDefaultDateTime,
 } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { IConsultation } from 'app/shared/model/consultation.model';
 import { getEntities as getConsultations } from 'app/entities/consultation/consultation.reducer';
-import { IPrescription } from 'app/shared/model/prescription.model';
-import { getEntity, updateEntity, createEntity, reset, createEntityBis } from './prescription.reducer';
-import { getEntities as getPatients } from '../patient/patient.reducer';
+import { getEntity, updateEntity, reset, createEntityBis } from './prescription.reducer';
+import { getEntitiesBis as getPatients } from '../patient/patient.reducer';
+import { getMedecineByPrescriptionId } from '../medecine/medecine.reducer';
+import { IMedecine } from 'app/shared/model/medecine.model';
+import { getEntity as getHospital } from '../hospital/hospital.reducer';
 //pdf
-import { Page, Text, Image, View, Document, StyleSheet, PDFDownloadLink, Font } from '@react-pdf/renderer';
-import { AccountMenu } from 'app/shared/layout/menus';
+import { Page, Text, Image, View, Document, PDFDownloadLink, Font } from '@react-pdf/renderer';
 import Header from 'app/shared/layout/header/header';
 import { IoIosAddCircle, IoIosAddCircleOutline, IoIosArrowBack, IoIosRemoveCircle } from 'react-icons/io';
 import { BiDownload } from 'react-icons/bi';
@@ -39,6 +36,7 @@ export const PrescriptionUpdate = () => {
 
   const consultations = useAppSelector(state => state.consultation.entities);
   const prescriptionEntity = useAppSelector(state => state.prescription.entity);
+  const hospital = useAppSelector(state => state.hospital.entity);
   const patientList = useAppSelector(state => state.patient.entities);
   const loading = useAppSelector(state => state.prescription.loading);
   const updating = useAppSelector(state => state.prescription.updating);
@@ -46,6 +44,16 @@ export const PrescriptionUpdate = () => {
 
   const account = useAppSelector(state => state.authentication.account);
   const [consul, setConsul] = useState(idConsultation);
+  const [medecines, setMedecine] = useState<IMedecine[]>([]);
+  //info ordonance
+  // const [formValues, setFormValues] = useState([{ medecine: '', duration: '', frequency: '' }]);
+
+  // if (medecines !== null && medecines !== null ) {
+  //   let arrayB = [];
+  //   medecines.forEach(medecine => {
+  //     medecines.map
+  //   });
+  // }
 
   const handleConsulChange = e => {
     setConsul(e.target.value);
@@ -57,15 +65,43 @@ export const PrescriptionUpdate = () => {
   function rtn() {
     window.history.back();
   }
+  // useEffect(() => {
+  //   if (isNew) {
+  //     dispatch(reset());
+  //   } else {
+  //     dispatch(getEntity(id));
+  //     getMedecineByPrescriptionId(Number(id)).then(data => { setMedecine(data); }).catch(error => {
+  //       console.error('Error fetching cars:', error);
+  //     }
+  //   }
+  //   dispatch(getPatients({}));
+  //   dispatch(getConsultations({}));
+  // }, []);
+
   useEffect(() => {
     if (isNew) {
       dispatch(reset());
     } else {
       dispatch(getEntity(id));
+      getMedecineByPrescriptionId(Number(id))
+        .then(data => {
+          setMedecine(data);
+        })
+        .catch(error => {
+          console.error('Error fetching medicine:', error);
+        });
     }
-    dispatch(getPatients({}));
+
+    dispatch(getHospital(account.hospitalId));
+    dispatch(getPatients({ id: account.hospitalId !== null && account.hospitalId !== undefined ? account.hospitalId : 0 }));
     dispatch(getConsultations({}));
-  }, []);
+  }, [isNew, id, dispatch, idConsultation]); // Specify dependencies here
+
+  useEffect(() => {
+    if (prescriptionEntity?.consultation?.id) {
+      setConsul(prescriptionEntity.consultation.id.toString());
+    }
+  }, [prescriptionEntity]);
 
   const consultation = consultations.filter(consult => {
     return consult.id == idConsultation;
@@ -84,10 +120,8 @@ export const PrescriptionUpdate = () => {
       ...prescriptionEntity,
       ...values,
       consultation: consultations.find(it => it.id.toString() === values.consultation.toString()),
-      form: formValues,
+      medecines: medecines,
     };
-
-    console.log(entity);
 
     if (isNew) {
       dispatch(createEntityBis(entity));
@@ -101,7 +135,7 @@ export const PrescriptionUpdate = () => {
       ? {
           creationDate: displayDefaultDate(),
           consultation: idConsultation,
-          author: account.lastName + ' ' + account.firstName,
+          author: account.login,
         }
       : {
           ...prescriptionEntity,
@@ -109,42 +143,51 @@ export const PrescriptionUpdate = () => {
           consultation: prescriptionEntity?.consultation?.id,
         };
 
-  //info ordonance
-  const [formValues, setFormValues] = useState([{ medecine: '', duration: '', frequency: '' }]);
-
   let handleChange = (i, e) => {
-    let newFormValues = [...formValues];
-    newFormValues[i][e.target.name] = e.target.value;
-    setFormValues(newFormValues);
+    let newFormValues = [...medecines]; // Create a copy of the state array
+    newFormValues[i][e.target.name] = e.target.value; // Update the specific field in the copied array
+    // console.log(newFormValues);
+    setMedecine(newFormValues); // Update the state with the modified array
   };
 
   let addFormFields = () => {
-    setFormValues([...formValues, { medecine: '', duration: '', frequency: '' }]);
+    const newMedecine: IMedecine = {
+      id: undefined, // Assuming id is auto-generated or managed elsewhere
+      name: null,
+      duration: null,
+      frequency: null,
+      ordonance: null,
+    };
+    setMedecine([...medecines, newMedecine]);
   };
 
+  if (medecines.length === 0) {
+    addFormFields();
+  }
+
   let removeFormFields = i => {
-    let newFormValues = [...formValues];
+    let newFormValues = [...medecines];
     newFormValues.splice(i, 1);
-    setFormValues(newFormValues);
+    setMedecine(newFormValues);
   };
   let p;
   let infosPatient = () => {
-    consultations.map(otherEntity =>
-      otherEntity?.id.toString() === consul
-        ? (p =
-            otherEntity?.patient?.lastName?.toUpperCase() +
-            ' ' +
-            otherEntity?.patient?.firstName
-              ?.split(' ')
-              .map(a => a.charAt(0).toUpperCase() + a.slice(1))
-              .join(' '))
-        : //console.log(otherEntity.id)
-          null
-    );
-
-    return p;
+    const selectedConsultation = consultations.find(consult => consult.id.toString() === consul);
+    if (selectedConsultation) {
+      return (
+        selectedConsultation.patient?.lastName?.toUpperCase() +
+        ' ' +
+        selectedConsultation.patient?.firstName
+          ?.split(' ')
+          .map(a => a.charAt(0).toUpperCase() + a.slice(1))
+          .join(' ')
+      );
+    }
+    return '';
   };
+
   p = infosPatient();
+  // console.log(consul);
   let showID = () => {
     console.log(p);
   };
@@ -172,17 +215,20 @@ export const PrescriptionUpdate = () => {
           }}
         >
           <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center' }}>
-            <Text style={{ fontSize: '18px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>Nom médecin</Text>
+            <Text style={{ fontSize: '18px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>
+              {account.lastName + ' ' + account.firstName}
+            </Text>
             <Text style={{ fontSize: '15px', marginBottom: '9px', fontWeight: 'medium' }}>Médecin général</Text>
-            <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>Téléphone</Text>
+            <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>{hospital?.phone}</Text>
           </View>
           <View>
             <Image style={{ width: '60px', height: '60px' }} src="content/images/logo-medecin-240x300.png" />
           </View>
           <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center' }}>
-            <Text style={{ fontSize: '20px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>Nom clinique</Text>
-            <Text style={{ fontSize: '15px', marginBottom: '9px', fontWeight: 'medium' }}>Adresse</Text>
-            <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>Email Clinique</Text>
+            <Text style={{ fontSize: '20px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>{hospital?.name}</Text>
+            <Text style={{ fontSize: '15px', marginBottom: '9px', fontWeight: 'medium' }}>{hospital?.adress}</Text>
+            {/* <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>Email Clinique</Text> */}
+            <Text style={{ fontSize: '15px', fontWeight: 'thin' }}></Text>
           </View>
         </View>
         <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', marginTop: '15px' }}>
@@ -199,15 +245,17 @@ export const PrescriptionUpdate = () => {
                   ' à ' +
                   convertDateTimeFromServerToHours(displayDefaultDateTime())}
               </Text>
-              <Text style={{ fontSize: '18px', marginBottom: '7px' }}>
-                {prescriptionEntity.consultation
-                  ? prescriptionEntity?.consultation?.patient?.lastName.toUpperCase() +
-                    ' ' +
-                    prescriptionEntity?.consultation?.patient.firstName
-                      .split(' ')
-                      .map(a => a.charAt(0).toUpperCase() + a.slice(1))
-                      .join(' ')
-                  : p}{' '}
+              <Text>
+                {prescriptionEntity.consultation?.patient
+                  ? `${prescriptionEntity.consultation.patient.lastName.toUpperCase()} ${
+                      prescriptionEntity.consultation.patient.firstName
+                        ? prescriptionEntity.consultation.patient.firstName
+                            .split(' ')
+                            .map(a => a.charAt(0).toUpperCase() + a.slice(1))
+                            .join(' ')
+                        : ''
+                    }`
+                  : infosPatient()}
               </Text>
             </View>
           </View>
@@ -272,8 +320,8 @@ export const PrescriptionUpdate = () => {
               Fréquence
             </Text>
           </View>
-          {formValues.map((element, i) =>
-            element.medecine.length > 0 ? (
+          {medecines.map((element, i) =>
+            true ? (
               <View key={`entity-${i}`} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <Text
                   style={{
@@ -287,7 +335,7 @@ export const PrescriptionUpdate = () => {
                     textAlign: 'center',
                   }}
                 >
-                  {element.medecine}
+                  {element.name}
                 </Text>
                 <Text
                   style={{
@@ -300,7 +348,7 @@ export const PrescriptionUpdate = () => {
                     textAlign: 'center',
                   }}
                 >
-                  {element.duration} Jours
+                  {element.duration} {element.duration === 1 ? 'Jour' : 'Jours'}
                 </Text>
                 <Text
                   style={{
@@ -517,7 +565,8 @@ export const PrescriptionUpdate = () => {
                 ))
                 : null}
             </ValidatedField> */}
-            {formValues.map((element, index, arr) => (
+
+            {medecines.map((element, index, arr) => (
               <div
                 style={{
                   display: 'flex',
@@ -540,8 +589,8 @@ export const PrescriptionUpdate = () => {
                   disabled={idEdit === 'voir' ? true : false}
                   type="text"
                   label="Médicament"
-                  name="medecine"
-                  value={element.medecine || ''}
+                  name="name"
+                  value={element.name || ''}
                   onChange={e => handleChange(index, e)}
                 />
                 <ValidatedField
@@ -642,113 +691,6 @@ export const PrescriptionUpdate = () => {
         </Card>
       </div>
     </div>
-    // <div>
-    //   <Row className="justify-content-center">
-    //     <Col md="8">
-    //       <h2 id="ngirwiFrontEndApp.prescription.home.createOrEditLabel" data-cy="PrescriptionCreateUpdateHeading">
-    //         Créer ou éditer une ordonnance
-    //       </h2>
-    //     </Col>
-    //   </Row>
-    //   <Row className="justify-content-center">
-    //     <Col md="8">
-    //       {loading ? (
-    //         <p>Loading...</p>
-    //       ) : (
-    //         <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
-    //           {!isNew ? <ValidatedField name="id" required readOnly id="prescription-id" label="ID" validate={{ required: true }} /> : null}
-    // <ValidatedField
-    //   disabled
-    //   label="Date de création"
-    //   id="prescription-creationDate"
-    //   name="creationDate"
-    //   data-cy="creationDate"
-    //   type="datetime-local"
-    //   placeholder="YYYY-MM-DD HH:mm"
-    // />
-    //           <ValidatedField hidden label="Author" id="prescription-author" name="author" data-cy="author" type="text" />
-    // <ValidatedField id="prescription-consultation" name="consultation" data-cy="medecine" label="Consultation" type="select">
-    //   <option value="" key="0" />
-    //   {consultations
-    //     ? consultations.map(otherEntity => (
-    //       <option value={otherEntity.id} key={otherEntity.id}>
-    //       Faite le  {otherEntity.dateTime} à { otherEntity.patient.lastName.toUpperCase()} {otherEntity.patient.firstName}
-    //       </option>
-    //     ))
-    //     : null}
-    // </ValidatedField>
-    //           {formValues.map((element, index) => (
-    //             <div key={index}>
-    //               <ValidatedField
-    //                 type="text"
-    //                 label='Médicament'
-    //                 name="medecine"
-    //                 value={element.medecine || ""}
-    //                 onChange={(e) => handleChange(index, e)}
-    //                 required
-    //               />
-    //               <ValidatedField
-    //                 type="number"
-    //                 label='Durée(en jours)'
-    //                 name="duration"
-    //                 value={element.duration || ""}
-    //                 onChange={(e) => handleChange(index, e)}
-    //                 required
-    //               />
-    //               <ValidatedField
-    //                 label='Fréquence(par jour)'
-    //                 type="number"
-    //                 name="frequency"
-    //                 value={element.frequency || ""}
-    //                 onChange={(e) => handleChange(index, e)}
-    //                 required
-    //               />
-    //               {index ? (
-    //                 <Button
-    //                   type="button"
-    //                   className="btn btn-danger"
-    //                   onClick={() => removeFormFields(index)}
-    //                 >
-    //                   Retirer
-    //                 </Button>
-    //               ) : null}
-    //             </div>
-    //           ))}
-    //           <Button id='envoyer' replace color="success" onClick={() => addFormFields()}
-    //             value="Envoyer">
-    //             {/* <FontAwesomeIcon icon="arrow-left" /> */}
-    //             &nbsp;
-    //             <span className="d-none d-md-inline">Ajouter</span>
-    //           </Button>
-    //           &nbsp;
-    //           <Button  id="cancel-save" data-cy="entityCreateCancelButton" onClick={() => window.history.back()} replace color="info">
-    //             <FontAwesomeIcon icon="arrow-left" />
-
-    //             <span className="d-none d-md-inline">Retour</span>
-    //           </Button>
-    //           &nbsp;
-    //           <Button className="d-none d-md-inline" color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
-    //             <FontAwesomeIcon icon="save" />
-    //             &nbsp; Sauvegarder
-    //           </Button>
-    //         </ValidatedForm>
-    //       )}
-    //       <br />
-    //       <PDFDownloadLink
-    //         document={doc}
-    //         fileName={`ordonnance_${account.login}_${JSON.stringify(displayDefaultDateTime)}`}
-    //       >
-    //         {({ loading }) =>
-    //           loading ? (
-    //             <Button color='primary'>Préparer fichier...</Button>
-    //           ) : (
-    //             <Button color='success'>Télécharger</Button>
-    //           )
-    //         }
-    //       </PDFDownloadLink>
-    //     </Col>
-    //   </Row>
-    // </div>
   );
 };
 

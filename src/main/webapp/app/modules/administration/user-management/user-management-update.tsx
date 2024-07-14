@@ -6,14 +6,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { getUser, getRoles, updateUser, createUser, reset } from './user-management.reducer';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
+import { getEntities } from 'app/entities/hospital/hospital.reducer';
 
 export const UserManagementUpdate = () => {
   const dispatch = useAppDispatch();
-
   const navigate = useNavigate();
-
   const { login } = useParams<'login'>();
   const isNew = login === undefined;
+
+  const hospitals = useAppSelector(state => state.hospital.entities);
+  const user = useAppSelector(state => state.userManagement.user);
+  const loading = useAppSelector(state => state.userManagement.loading);
+  const updating = useAppSelector(state => state.userManagement.updating);
+  const authorities = useAppSelector(state => state.userManagement.authorities);
 
   useEffect(() => {
     if (isNew) {
@@ -22,6 +27,7 @@ export const UserManagementUpdate = () => {
       dispatch(getUser(login));
     }
     dispatch(getRoles());
+    dispatch(getEntities({}));
     return () => {
       dispatch(reset());
     };
@@ -41,13 +47,9 @@ export const UserManagementUpdate = () => {
   };
 
   const isInvalid = false;
-  const user = useAppSelector(state => state.userManagement.user);
-  const loading = useAppSelector(state => state.userManagement.loading);
-  const updating = useAppSelector(state => state.userManagement.updating);
-  const authorities = useAppSelector(state => state.userManagement.authorities);
 
   return (
-    <div style={{marginLeft:"16vw"}}>
+    <div style={{ marginLeft: '16vw' }}>
       <Row className="justify-content-center">
         <Col md="8">
           <h1>Créer ou éditer un utilisateur</h1>
@@ -58,7 +60,7 @@ export const UserManagementUpdate = () => {
           {loading ? (
             <p>Loading...</p>
           ) : (
-            <ValidatedForm onSubmit={saveUser} defaultValues={user}>
+            <ValidatedForm onSubmit={saveUser} defaultValues={{ ...user, hospitalId: user?.hospitalId ?? '' }}>
               {user.id ? <ValidatedField type="text" name="id" required readOnly label="ID" validate={{ required: true }} /> : null}
               <ValidatedField
                 type="text"
@@ -132,6 +134,14 @@ export const UserManagementUpdate = () => {
                 {authorities.map(role => (
                   <option value={role} key={role}>
                     {role}
+                  </option>
+                ))}
+              </ValidatedField>
+              <ValidatedField type="select" name="hospitalId" label="Hospital">
+                <option value="">Sélectionner un Hopital</option>
+                {hospitals.map(hospital => (
+                  <option value={hospital.id} key={hospital.id}>
+                    {hospital.name}
                   </option>
                 ))}
               </ValidatedField>

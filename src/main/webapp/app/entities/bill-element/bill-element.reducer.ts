@@ -24,6 +24,11 @@ export const getEntities = createAsyncThunk('billElement/fetch_entity_list', asy
   return axios.get<IBillElement[]>(requestUrl);
 });
 
+export const getElemntByBillId = async (id: number): Promise<IBillElement[]> => {
+  const response = await axios.get<IBillElement[]>(`${apiUrl}/bill/${id}`);
+  return response.data;
+};
+
 export const getEntity = createAsyncThunk(
   'billElement/fetch_entity',
   async (id: string | number) => {

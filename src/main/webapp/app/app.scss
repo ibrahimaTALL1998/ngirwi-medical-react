@@ -1,14 +1,20 @@
-// Override Boostrap variables
-// Import Bootstrap source files from node_modules
 @import '~bootstrap/scss/bootstrap';
-@import url('https://fonts.googleapis.com/css?family=Poppins');
+@import 'react-calendar/dist/Calendar.css';
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin');
 @import url('https://fonts.cdnfonts.com/css/louis-george-cafe');
-@import 'react-calendar/dist/Calendar.css';
 @import url('https://fonts.googleapis.com/css?family=Jost');
+
+// TailwindCSS
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Body Styles
 body {
   background: #f2fdff;
   margin: 0;
+  @apply font-poppins bg-gray-400;
 }
 
 a {
@@ -19,6 +25,7 @@ a {
 * {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+
   &:after,
   &::before {
     -moz-box-sizing: border-box;
@@ -28,17 +35,21 @@ a {
 
 .app-container {
   box-sizing: border-box;
+
   .view-container {
     width: 100%;
     height: calc(100% - 40px);
     overflow-y: auto;
     overflow-x: hidden;
     padding: 1rem;
+
     .card {
       padding: 1rem;
     }
+
     .view-routes {
       height: 100%;
+
       > div {
         height: 100%;
       }
@@ -57,19 +68,7 @@ a {
   padding: 5px 25px 50px 25px !important;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap');
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-  @apply font-poppins bg-gray-400;
-}
-/* ==========================================================================
-Browser Upgrade Prompt
-========================================================================== */
-
+// Browser Upgrade Prompt
 .browserupgrade {
   margin: 0.2em 0;
   background: #ccc;
@@ -77,35 +76,28 @@ Browser Upgrade Prompt
   padding: 0.2em 0;
 }
 
-/* ==========================================================================
-Custom button styles
-========================================================================== */
-
+// Custom Button Styles
 .icon-button > .btn {
   background-color: transparent;
   border-color: transparent;
   padding: 0.5rem;
   line-height: 1rem;
+
   &:hover {
     background-color: transparent;
     border-color: transparent;
   }
+
   &:focus {
     -webkit-box-shadow: none;
     box-shadow: none;
   }
 }
 
-/* ==========================================================================
-Generic styles
-========================================================================== */
-
-/* Temporary workaround for availity-reactstrap-validation */
+// Generic Styles
 .invalid-feedback {
   display: inline;
 }
-
-/* other generic styles */
 
 .title {
   font-size: 1.25em;
@@ -141,11 +133,10 @@ Generic styles
   white-space: pre-wrap;
 }
 
-/* padding helpers */
-
+// Padding Helpers
 @mixin pad($size, $side) {
-  @if $size== '' {
-    @if $side== '' {
+  @if $size == '' {
+    @if $side == '' {
       .pad {
         padding: 10px !important;
       }
@@ -155,7 +146,7 @@ Generic styles
       }
     }
   } @else {
-    @if $side== '' {
+    @if $side == '' {
       .pad-#{$size} {
         padding: #{$size}px !important;
       }
@@ -214,7 +205,7 @@ Generic styles
 @include pad('100', 'left');
 
 @mixin no-padding($side) {
-  @if $side== 'all' {
+  @if $side == 'all' {
     .no-padding {
       padding: 0 !important;
     }
@@ -231,13 +222,13 @@ Generic styles
 @include no-padding('bottom');
 @include no-padding('all');
 
-/* end of padding helpers */
-
+// Margin Helpers
 .no-margin {
   margin: 0px;
 }
+
 @mixin voffset($size) {
-  @if $size== '' {
+  @if $size == '' {
     .voffset {
       margin-top: 2px !important;
     }
@@ -264,10 +255,7 @@ Generic styles
   opacity: 1;
 }
 
-/* ==========================================================================
-make sure browsers use the pointer cursor for anchors, even with no href
-========================================================================== */
-
+// Cursor Styles
 a:hover {
   cursor: pointer;
 }
@@ -289,10 +277,7 @@ a.anchor-btn:hover {
   text-decoration: none;
 }
 
-/* ==========================================================================
-Metrics and Health styles
-========================================================================== */
-
+// Metrics and Health Styles
 #threadDump .popover,
 #healthCheck .popover {
   top: inherit;
@@ -316,11 +301,89 @@ Metrics and Health styles
   min-width: 400px;
 }
 
-/* bootstrap 3 input-group 100% width
-http://stackoverflow.com/questions/23436430/bootstrap-3-input-group-100-width */
-
+// Bootstrap Input Group
 .width-min {
   width: 1% !important;
 }
 
-/* jhipster-needle-scss-add-main JHipster will add new css style */
+// JHipster styles (placeholder)
+// jhipster-needle-scss-add-main JHipster will add new css style
+
+// Responsive Design for iOS Devices
+@media only screen and (max-width: 600px) {
+  .app-container {
+    padding: 0.5rem;
+
+    .view-container {
+      padding: 0.5rem;
+
+      .card {
+        padding: 0.5rem;
+      }
+    }
+  }
+
+  .fullscreen {
+    top: 50px;
+    height: calc(100vh - 60px) !important;
+    padding: 5px 10px 25px 10px !important;
+  }
+
+  .title {
+    font-size: 1em;
+    margin: 1px 5px 1px 5px;
+  }
+
+  .description {
+    font-size: 0.8em;
+    margin: 1px 5px 1px 5px;
+  }
+
+  .icon-button > .btn {
+    padding: 0.25rem;
+    line-height: 0.75rem;
+  }
+
+  .readonly {
+    font-size: 0.9em;
+  }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+  .app-container {
+    padding: 1rem;
+
+    .view-container {
+      padding: 1rem;
+
+      .card {
+        padding: 1rem;
+      }
+    }
+  }
+
+  .fullscreen {
+    top: 75px;
+    height: calc(100vh - 85px) !important;
+    padding: 5px 15px 40px 15px !important;
+  }
+
+  .title {
+    font-size: 1.1em;
+    margin: 1px 8px 1px 8px;
+  }
+
+  .description {
+    font-size: 0.85em;
+    margin: 1px 8px 1px 8px;
+  }
+
+  .icon-button > .btn {
+    padding: 0.35rem;
+    line-height: 0.85rem;
+  }
+
+  .readonly {
+    font-size: 0.95em;
+  }
+}

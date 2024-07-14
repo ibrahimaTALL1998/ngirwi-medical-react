@@ -8,6 +8,7 @@ import { APP_DATE_FORMAT } from 'app/config/constants';
 
 import { getUser } from './user-management.reducer';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
+import { getEntity } from 'app/entities/hospital/hospital.reducer';
 
 export const UserManagementDetail = () => {
   const dispatch = useAppDispatch();
@@ -15,13 +16,25 @@ export const UserManagementDetail = () => {
   const { login } = useParams<'login'>();
 
   useEffect(() => {
-    dispatch(getUser(login));
+    dispatch(getUser(login))
+      .then(response => {
+        // Handle the response or dispatch another action here
+        // const userData = response.payload;
+        dispatch(getEntity(user.hospitalId));
+      })
+      .catch(error => {
+        // Handle any errors here
+        console.error('Error fetching user:', error);
+      });
   }, []);
 
   const user = useAppSelector(state => state.userManagement.user);
+  const hospital = useAppSelector(state => state.hospital.entity);
+
+  console.log(hospital);
 
   return (
-    <div style={{marginLeft:"16vw"}}>
+    <div style={{ marginLeft: '16vw' }}>
       <h2>
         Utilisateur [<strong>{user.login}</strong>]
       </h2>
@@ -50,6 +63,8 @@ export const UserManagementDetail = () => {
               <TextFormat value={user.lastModifiedDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
             ) : null}
           </dd>
+          <dt>Hopital</dt>
+          <dd>{hospital?.name}</dd>
           <dt>Droits</dt>
           <dd>
             <ul className="list-unstyled">
