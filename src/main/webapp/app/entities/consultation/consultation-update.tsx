@@ -387,7 +387,7 @@ export const ConsultationUpdate = () => {
             </ValidatedField>
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              label="Temperature"
+              label="Temperature(°C)"
               id="consultation-temperature"
               name="temperature"
               data-cy="temperature"
@@ -405,7 +405,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              label="Poids"
+              label="Poids(KG)"
               id="consultation-weight"
               name="weight"
               data-cy="weight"
@@ -423,7 +423,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              label="Tension"
+              label="Tension(mmHg)"
               id="consultation-tension"
               name="tension"
               data-cy="tension"
@@ -440,7 +440,7 @@ export const ConsultationUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              label="Glycemie"
+              label="Glycemie(g/L)"
               id="consultation-glycemie"
               name="glycemie"
               data-cy="glycemie"
@@ -530,6 +530,7 @@ export const ConsultationUpdate = () => {
             />
             {idEdit === 'voir' ? <br /> : null}
             {/* Echo Doppler header */}
+            <br />
             <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>Echo Doppler</span>
             <br />
             <ValidatedField
@@ -1085,6 +1086,7 @@ export const ConsultationUpdate = () => {
                 color: idEdit === 'voir' ? '#F6FAFF' : 'black',
               }}
             />
+            <br />
             <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>VALVE PULMONAIRE</span>
             <br />
             <ValidatedField
@@ -1197,6 +1199,7 @@ export const ConsultationUpdate = () => {
                 color: idEdit === 'voir' ? '#F6FAFF' : 'black',
               }}
             />
+            <br />
             <span style={{ marginTop: '1%', color: '#141414', fontSize: '19px', marginLeft: '3%' }}>DOPPLER TISSULAIRE</span>
             <br />
             <ValidatedField

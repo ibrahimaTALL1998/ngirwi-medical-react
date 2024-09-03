@@ -24,6 +24,7 @@ export interface ISideBarProps {
 const SideBar = (props: ISideBarProps) => {
   const account = useAppSelector(state => state.authentication.account);
   const isDoctor = useAppSelector(state => hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.DOCTOR]));
+  const isAdmin = useAppSelector(state => hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN]));
 
   const renderDevRibbon = () =>
     props.isInProduction === false ? (
@@ -170,6 +171,7 @@ const SideBar = (props: ISideBarProps) => {
               </h6>
             </Link>
             <Link
+              hidden={!isDoctor}
               to="/prescription?page=1&sort=id,asc"
               style={{
                 paddingLeft: '1.5vw',
@@ -224,6 +226,7 @@ const SideBar = (props: ISideBarProps) => {
               </h6>
             </Link>
             <Link
+              hidden={!isAdmin}
               to="/admin/user-management/"
               style={{
                 paddingLeft: '1.5vw',
@@ -304,7 +307,7 @@ const SideBar = (props: ISideBarProps) => {
                 color: 'silver',
               }}
             >
-              Copyright @2022
+              Copyright @2024
             </span>
           </div>
         </div>

@@ -476,12 +476,10 @@ export const BillUpdate = () => {
                   }}
                 >
                   {Math.round(
-                    element.price === null
-                      ? 0
-                      : element.price * (1 - element.percentage === null ? 0 : element.percentage / 100) * element.quantity === null
-                      ? 1
-                      : element.quantity
-                  )}{' '}
+                    (element.price === null ? 0 : element.price) *
+                      (1 - (element.percentage === null ? 0 : element.percentage / 100)) *
+                      (element.quantity === null ? 1 : element.quantity)
+                  )}
                   FCFA
                   {/* {Math.round(tarif*remise*nombre)} */}
                 </Text>

@@ -190,7 +190,7 @@ export const Patient = () => {
               <span style={{ marginTop: '1.5%' }}>Liste des patients enregistrés</span>
             </Card>
             <Link
-              to={isDoctor ? '/consultation/new/' : ''}
+              to={isDoctor ? '/consultation/new/' : '#'}
               style={{
                 display: 'flex',
                 textDecoration: 'none',

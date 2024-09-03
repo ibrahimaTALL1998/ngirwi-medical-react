@@ -1,7 +1,7 @@
-import { GENDER } from "../model/enumerations/gender.model";
-import { MARITALSTATUS } from "../model/enumerations/maritalstatus.model";
+import { GENDER } from '../model/enumerations/gender.model';
+import { MARITALSTATUS } from '../model/enumerations/maritalstatus.model';
 
-export const translateGender = (GENDER) => {
+export const translateGender = GENDER => {
   switch (GENDER) {
     case 'MALE':
       return 'HOMME';
@@ -10,13 +10,12 @@ export const translateGender = (GENDER) => {
       return 'FEMME';
       break;
   }
-}
+};
 
-
-export const translateMaritalStatus = (status) => {
+export const translateMaritalStatus = status => {
   switch (status) {
     case MARITALSTATUS.MARRIED:
-      return 'MARRIE';
+      return 'MARIÉ (E)';
 
     case MARITALSTATUS.DIVORCED:
       return 'DIVORCE';
@@ -27,9 +26,9 @@ export const translateMaritalStatus = (status) => {
     case MARITALSTATUS.SINGLE:
       return 'CELIBATAIRE';
   }
-}
+};
 
-export const translateBloodType = (type) => {
+export const translateBloodType = type => {
   switch (type) {
     case 'A_PLUS':
       return 'A+';
@@ -48,5 +47,4 @@ export const translateBloodType = (type) => {
     case 'AB_MOINS':
       return 'AB-';
   }
-}
-
+};

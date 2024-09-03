@@ -48,6 +48,7 @@ module.exports = async options =>
         directory: './target/classes/static/',
       },
       port: 9060,
+      allowedHosts: ['all'],
       proxy: [
         {
           context: ['/api', '/services', '/management', '/v3/api-docs', '/h2-console', '/auth'],
