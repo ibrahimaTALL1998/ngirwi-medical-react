@@ -274,7 +274,7 @@ export const DossierMedicalUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              label="Antécédants personnels"
+              label="Antécédents personnels"
               id="dossier-medical-antecedantsPersonnels"
               name="antecedantsPersonnels"
               data-cy="antecedantsPersonnels"
@@ -294,7 +294,7 @@ export const DossierMedicalUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              label="Antécédants chirurgicaux"
+              label="Antécédents chirurgicaux"
               id="dossier-medical-antecedantsChirurgicaux"
               name="antecedantsChirurgicaux"
               data-cy="antecedantsChirurgicaux"
@@ -314,7 +314,7 @@ export const DossierMedicalUpdate = () => {
             />
             <ValidatedField
               disabled={idEdit === 'voir' ? true : false}
-              label="Antécédants familiaux"
+              label="Antécédents familiaux"
               id="dossier-medical-antecedantsFamiliaux"
               name="antecedantsFamiliaux"
               data-cy="antecedantsFamiliaux"

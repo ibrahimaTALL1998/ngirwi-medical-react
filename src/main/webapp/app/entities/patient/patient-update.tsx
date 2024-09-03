@@ -56,7 +56,6 @@ export const PatientUpdate = () => {
       ...patientEntity,
       ...values,
     };
-
     if (isNew) {
       dispatch(createEntity(entity));
     } else {
@@ -305,14 +304,14 @@ export const PatientUpdate = () => {
               }}
             />
             <ValidatedField
-              label="Pièce d'identité"
+              label="Pièce d'identité(verso)"
               id="patient-cni"
               name="cni"
               data-cy="cni"
               type="text"
-              validate={{
-                required: { value: true, message: 'Ce champ est obligatoire.' },
-              }}
+              // validate={{
+              //   required: { value: true, message: 'Ce champ est obligatoire.' },
+              // }}
               placeholder="Numéro carte d'identité patient"
               style={{
                 borderRadius: '25px',

@@ -203,6 +203,7 @@ export const PrescriptionUpdate = () => {
   const doc = (
     <Document>
       <Page style={{ display: 'flex', flexDirection: 'column', fontFamily: 'Poppins' }}>
+        {/* Header Section */}
         <View
           style={{
             display: 'flex',
@@ -214,7 +215,7 @@ export const PrescriptionUpdate = () => {
             marginTop: '20px',
           }}
         >
-          <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center' }}>
+          <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ fontSize: '18px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>
               {account.lastName + ' ' + account.firstName}
             </Text>
@@ -224,21 +225,25 @@ export const PrescriptionUpdate = () => {
           <View>
             <Image style={{ width: '60px', height: '60px' }} src="content/images/logo-medecin-240x300.png" />
           </View>
-          <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center' }}>
+          <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ fontSize: '20px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>{hospital?.name}</Text>
             <Text style={{ fontSize: '15px', marginBottom: '9px', fontWeight: 'medium' }}>{hospital?.adress}</Text>
-            {/* <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>Email Clinique</Text> */}
             <Text style={{ fontSize: '15px', fontWeight: 'thin' }}></Text>
           </View>
         </View>
-        <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', marginTop: '15px' }}>
+
+        {/* Title and Patient Information Section */}
+        <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '15px' }}>
           <Text style={{ fontSize: '35px', fontWeight: 'extrabold', marginBottom: '9px' }}>Ordonnance Médicale</Text>
 
-          <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-            <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: '10px' }}>
-              <Text style={{ fontSize: '18px', marginBottom: '9px' }}>Fait à: Dakar Le:</Text>
-              <Text style={{ fontSize: '18px', marginBottom: '7px' }}>Nom & Prénom(s):</Text>
+          {/* Information Rows */}
+          <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center' }}>
+            {/* Labels */}
+            <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: '10px', minWidth: '150px' }}>
+              <Text style={{ fontSize: '18px', marginBottom: '9px' }}>Fait à Dakar Le:</Text>
+              <Text style={{ fontSize: '18px', marginBottom: '9px' }}>Nom & Prénom(s):</Text>
             </View>
+            {/* Values */}
             <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
               <Text style={{ fontSize: '18px', marginBottom: '9px' }}>
                 {convertDateTimeFromServerToDate(displayDefaultDateTime()) +
@@ -260,10 +265,14 @@ export const PrescriptionUpdate = () => {
             </View>
           </View>
         </View>
+
+        {/* Watermark Image */}
         <Image
           src="content/images/logo-medecin-240x300.png"
-          style={{ position: 'absolute', top: '335', left: '15vw', zIndex: '1', width: '70vw', height: '40vh', opacity: 0.1 }}
+          style={{ position: 'absolute', top: '335px', left: '15vw', zIndex: '1', width: '70vw', height: '40vh', opacity: 0.1 }}
         />
+
+        {/* Medications Table */}
         <View
           style={{
             display: 'flex',
@@ -320,54 +329,54 @@ export const PrescriptionUpdate = () => {
               Fréquence
             </Text>
           </View>
-          {medecines.map((element, i) =>
-            true ? (
-              <View key={`entity-${i}`} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                <Text
-                  style={{
-                    width: '40vw',
-                    minHeight: '4vh',
-                    borderRight: '3px solid silver',
-                    borderTop: '3px solid silver',
-                    fontSize: '15px',
-                    paddingTop: '5px',
-                    paddingBottom: '3px',
-                    textAlign: 'center',
-                  }}
-                >
-                  {element.name}
-                </Text>
-                <Text
-                  style={{
-                    width: '20vw',
-                    minHeight: '4vh',
-                    borderTop: '3px solid silver',
-                    fontSize: '15px',
-                    paddingTop: '5px',
-                    paddingBottom: '3px',
-                    textAlign: 'center',
-                  }}
-                >
-                  {element.duration} {element.duration === 1 ? 'Jour' : 'Jours'}
-                </Text>
-                <Text
-                  style={{
-                    width: '20vw',
-                    minHeight: '4vh',
-                    borderTop: '3px solid silver',
-                    borderLeft: '3px solid silver',
-                    fontSize: '15px',
-                    paddingTop: '5px',
-                    paddingBottom: '3px',
-                    textAlign: 'center',
-                  }}
-                >
-                  {element.frequency} /J
-                </Text>
-              </View>
-            ) : null
-          )}
+          {medecines.map((element, i) => (
+            <View key={`entity-${i}`} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <Text
+                style={{
+                  width: '40vw',
+                  minHeight: '4vh',
+                  borderRight: '3px solid silver',
+                  borderTop: '3px solid silver',
+                  fontSize: '15px',
+                  paddingTop: '5px',
+                  paddingBottom: '3px',
+                  textAlign: 'center',
+                }}
+              >
+                {element.name}
+              </Text>
+              <Text
+                style={{
+                  width: '20vw',
+                  minHeight: '4vh',
+                  borderTop: '3px solid silver',
+                  fontSize: '15px',
+                  paddingTop: '5px',
+                  paddingBottom: '3px',
+                  textAlign: 'center',
+                }}
+              >
+                {element.duration !== null && element.duration !== undefined ? element.duration : ''} J
+              </Text>
+              <Text
+                style={{
+                  width: '20vw',
+                  minHeight: '4vh',
+                  borderTop: '3px solid silver',
+                  borderLeft: '3px solid silver',
+                  fontSize: '15px',
+                  paddingTop: '5px',
+                  paddingBottom: '3px',
+                  textAlign: 'center',
+                }}
+              >
+                {element.frequency} /J
+              </Text>
+            </View>
+          ))}
         </View>
+
+        {/* Footer */}
         <View
           style={{
             borderTop: '2px solid green',
@@ -386,6 +395,194 @@ export const PrescriptionUpdate = () => {
         </View>
       </Page>
     </Document>
+
+    // <Document>
+    //   <Page style={{ display: 'flex', flexDirection: 'column', fontFamily: 'Poppins' }}>
+    //     <View
+    //       style={{
+    //         display: 'flex',
+    //         flexDirection: 'row',
+    //         justifyContent: 'space-around',
+    //         alignItems: 'center',
+    //         borderBottom: '1px solid green',
+    //         paddingBottom: '10px',
+    //         marginTop: '20px',
+    //       }}
+    //     >
+    //       <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center' }}>
+    //         <Text style={{ fontSize: '18px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>
+    //           {account.lastName + ' ' + account.firstName}
+    //         </Text>
+    //         <Text style={{ fontSize: '15px', marginBottom: '9px', fontWeight: 'medium' }}>Médecin général</Text>
+    //         <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>{hospital?.phone}</Text>
+    //       </View>
+    //       <View>
+    //         <Image style={{ width: '60px', height: '60px' }} src="content/images/logo-medecin-240x300.png" />
+    //       </View>
+    //       <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center' }}>
+    //         <Text style={{ fontSize: '20px', color: 'green', marginBottom: '9px', fontWeight: 'bold' }}>{hospital?.name}</Text>
+    //         <Text style={{ fontSize: '15px', marginBottom: '9px', fontWeight: 'medium' }}>{hospital?.adress}</Text>
+    //         {/* <Text style={{ fontSize: '15px', fontWeight: 'thin' }}>Email Clinique</Text> */}
+    //         <Text style={{ fontSize: '15px', fontWeight: 'thin' }}></Text>
+    //       </View>
+    //     </View>
+    //     <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', marginTop: '15px' }}>
+    //       <Text style={{ fontSize: '35px', fontWeight: 'extrabold', marginBottom: '9px' }}>Ordonnance Médicale</Text>
+
+    //       <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+    //         <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: '10px' }}>
+    //           <Text style={{ fontSize: '18px', marginBottom: '9px' }}>Fait à Dakar Le:</Text>
+    //           <Text style={{ fontSize: '18px', marginBottom: '9px' }}>Nom & Prénom(s):</Text>
+    //         </View>
+    //         <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+    //           <Text style={{ fontSize: '18px', marginBottom: '9px' }}>
+    //             {convertDateTimeFromServerToDate(displayDefaultDateTime()) +
+    //               ' à ' +
+    //               convertDateTimeFromServerToHours(displayDefaultDateTime())}
+    //           </Text>
+    //           <Text>
+    //             {prescriptionEntity.consultation?.patient
+    //               ? `${prescriptionEntity.consultation.patient.lastName.toUpperCase()} ${
+    //                   prescriptionEntity.consultation.patient.lastname
+    //                     ? prescriptionEntity.consultation.patient.firstName
+    //                         .split(' ')
+    //                         .map(a => a.charAt(0).toUpperCase() + a.slice(1))
+    //                         .join(' ')
+    //                     : ''
+    //                 }`
+    //               : infosPatient()}
+    //           </Text>
+    //         </View>
+    //       </View>
+    //     </View>
+    //     <Image
+    //       src="content/images/logo-medecin-240x300.png"
+    //       style={{ position: 'absolute', top: '335', left: '15vw', zIndex: '1', width: '70vw', height: '40vh', opacity: 0.1 }}
+    //     />
+    //     <View
+    //       style={{
+    //         display: 'flex',
+    //         flexDirection: 'column',
+    //         alignItems: 'center',
+    //         marginTop: '15px',
+    //         border: '3px solid silver',
+    //         marginLeft: '10vw',
+    //         marginRight: '5vw',
+    //         width: '80vw',
+    //         zIndex: '0',
+    //       }}
+    //     >
+    //       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+    //         <Text
+    //           style={{
+    //             width: '40vw',
+    //             borderRight: '3px solid silver',
+    //             textTransform: 'uppercase',
+    //             fontSize: '15px',
+    //             color: 'green',
+    //             paddingTop: '3px',
+    //             paddingBottom: '5px',
+    //             textAlign: 'center',
+    //           }}
+    //         >
+    //           Médicament(s)
+    //         </Text>
+    //         <Text
+    //           style={{
+    //             width: '20vw',
+    //             textTransform: 'uppercase',
+    //             fontSize: '15px',
+    //             color: 'green',
+    //             paddingTop: '3px',
+    //             paddingBottom: '5px',
+    //             textAlign: 'center',
+    //           }}
+    //         >
+    //           Durée
+    //         </Text>
+    //         <Text
+    //           style={{
+    //             width: '20vw',
+    //             borderLeft: '3px solid silver',
+    //             textTransform: 'uppercase',
+    //             fontSize: '15px',
+    //             color: 'green',
+    //             paddingTop: '3px',
+    //             paddingBottom: '5px',
+    //             textAlign: 'center',
+    //           }}
+    //         >
+    //           Fréquence
+    //         </Text>
+    //       </View>
+    //       {medecines.map((element, i) =>
+    //         true ? (
+    //           <View key={`entity-${i}`} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+    //             <Text
+    //               style={{
+    //                 width: '40vw',
+    //                 minHeight: '4vh',
+    //                 borderRight: '3px solid silver',
+    //                 borderTop: '3px solid silver',
+    //                 fontSize: '15px',
+    //                 paddingTop: '5px',
+    //                 paddingBottom: '3px',
+    //                 textAlign: 'center',
+    //               }}
+    //             >
+    //               {element.name}
+    //             </Text>
+    //             <Text
+    //               style={{
+    //                 width: '20vw',
+    //                 minHeight: '4vh',
+    //                 borderTop: '3px solid silver',
+    //                 fontSize: '15px',
+    //                 paddingTop: '5px',
+    //                 paddingBottom: '3px',
+    //                 textAlign: 'center',
+    //               }}
+    //             >
+    //               {element.duration !== null && element.duration !== undefined ?
+    //                 element.duration
+    //               : ''} J
+    //             </Text>
+    //             <Text
+    //               style={{
+    //                 width: '20vw',
+    //                 minHeight: '4vh',
+    //                 borderTop: '3px solid silver',
+    //                 borderLeft: '3px solid silver',
+    //                 fontSize: '15px',
+    //                 paddingTop: '5px',
+    //                 paddingBottom: '3px',
+    //                 textAlign: 'center',
+    //               }}
+    //             >
+    //               {element.frequency} /J
+    //             </Text>
+    //           </View>
+    //         ) : null
+    //       )}
+    //     </View>
+    //     <View
+    //       style={{
+    //         borderTop: '2px solid green',
+    //         position: 'absolute',
+    //         top: '93vh',
+    //         width: '100vw',
+    //         display: 'flex',
+    //         flexDirection: 'column',
+    //         alignItems: 'center',
+    //         marginBottom: '10px',
+    //         paddingTop: '6px',
+    //       }}
+    //     >
+    //       <Text style={{ fontSize: '14px' }}>Propulsé par l&apos;entreprise NGIRWI S.A.R.L</Text>
+    //       <Text style={{ fontSize: '12px' }}>www.ngirwisarl.com</Text>
+    //     </View>
+    //   </Page>
+    // </Document>
   );
 
   return (

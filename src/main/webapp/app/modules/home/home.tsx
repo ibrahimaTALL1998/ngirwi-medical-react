@@ -19,15 +19,17 @@ import { FaUserMd } from 'react-icons/fa';
 import Calendar from 'react-calendar';
 import { TextFormat, ValidatedField } from 'react-jhipster';
 import { translateGender } from 'app/shared/util/translation-utils';
-import { APP_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_FORMAT, AUTHORITIES } from 'app/config/constants';
 import Header from 'app/shared/layout/header/header';
 import { BrandIcon } from 'app/shared/layout/header/header-components';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
 
 export const Home = () => {
   const account = useAppSelector(state => state.authentication.account);
   const [date, setDate] = useState(new Date());
   const patientList = useAppSelector(state => state.patient.entities);
   const dossierMedicalList = useAppSelector(state => state.dossierMedical.entities);
+  const isDoctor = useAppSelector(state => hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.DOCTOR]));
 
   const [query, setQuery] = useState('');
 
@@ -68,7 +70,9 @@ export const Home = () => {
                 boxShadow: '0px 0px 5px silver',
               }}
             >
-              <div>Bienvenue Docteur {account.login}</div>
+              <div>
+                Bienvenue <span hidden={!isDoctor}>Docteur</span> {account.login}
+              </div>
               <p style={{ fontSize: 'small', marginTop: '1.2%', opacity: '0.7', width: '25vw' }}>
                 Ngirwi Medical l’application pour la numérisation des dossiers médicaux, développée par la société NGIRWI S.A.R.L.
               </p>
@@ -167,7 +171,7 @@ export const Home = () => {
               }}
             >
               <Button
-                href="consultation?page=1&sort=id,asc"
+                href={isDoctor ? 'consultation?page=1&sort=id,asc' : '#'}
                 className="btn btn-lg"
                 style={{
                   backgroundColor: '#11485C',
@@ -183,7 +187,7 @@ export const Home = () => {
               </Button>
               <div>
                 <Link
-                  to="/consultation/new/"
+                  to={isDoctor ? '/consultation/new/' : '#'}
                   style={{
                     marginTop: '3.5%',
                     display: 'flex',
@@ -209,7 +213,7 @@ export const Home = () => {
                   </span>
                 </Link>
                 <Link
-                  to="/consultation?page=1&sort=id,asc"
+                  to={isDoctor ? '/consultation?page=1&sort=id,asc' : '#'}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -339,9 +343,10 @@ export const Home = () => {
                     fontSize: 'small',
                   }}
                 >
-                  Docteur {account.login}
+                  <span hidden={!isDoctor}>Docteur</span> {account.login}
                 </span>
                 <span
+                  hidden={!isDoctor}
                   style={{
                     fontSize: 'smaller',
                     opacity: '0.3',
