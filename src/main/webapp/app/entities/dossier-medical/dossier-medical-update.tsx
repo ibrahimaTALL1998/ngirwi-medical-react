@@ -15,6 +15,7 @@ import { getEntity, updateEntity, createEntity, reset } from './dossier-medical.
 import Header from 'app/shared/layout/header/header';
 import { IoIosArrowBack } from 'react-icons/io';
 import { FiLock } from 'react-icons/fi';
+import Patient from '../patient/patient';
 
 export const DossierMedicalUpdate = () => {
   const dispatch = useAppDispatch();
