@@ -148,7 +148,7 @@ export const BillUpdate = () => {
     if (isNew) {
       dispatch(reset());
     } else {
-      dispatch(getEntity(id));
+      dispatch(getEntity(Number(id)));
     }
 
     getElemntByBillId(Number(id))
@@ -171,7 +171,7 @@ export const BillUpdate = () => {
 
   const saveEntity = values => {
     values.date = convertDateTimeToServer(values.date);
-    total = tab();
+    // total = tab();
 
     const entity = {
       ...billEntity,
@@ -313,7 +313,7 @@ export const BillUpdate = () => {
 
         <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', marginTop: '15px', marginLeft: '5vw' }}>
           <Text style={{ fontSize: '12px', marginBottom: '7px' }}>
-            Nom : {selectedPatient ? selectedPatient?.lastName.toUpperCase() : null}{' '}
+            Nom : {selectedPatient ? selectedPatient.lastName?.toUpperCase() : billEntity?.patient?.lastName?.toUpperCase()}{' '}
           </Text>
           <Text style={{ fontSize: '12px', marginBottom: '7px' }}>
             Prénom(s):{' '}
@@ -322,7 +322,10 @@ export const BillUpdate = () => {
                   .split(' ')
                   .map(a => a.charAt(0).toUpperCase() + a.slice(1))
                   .join(' ')
-              : null}{' '}
+              : billEntity?.patient?.firstName
+                  .split(' ')
+                  .map(a => a.charAt(0).toUpperCase() + a.slice(1))
+                  .join(' ')}{' '}
           </Text>
         </View>
         <View
