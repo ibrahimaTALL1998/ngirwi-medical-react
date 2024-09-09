@@ -122,9 +122,14 @@ export const BillUpdate = () => {
   const account = useAppSelector(state => state.authentication.account);
   const [patientId, setPatientId] = useState(patients);
   const [billElements, setBillElements] = useState<IBillElement[]>([]);
+  // Inside your component
+  const [selectedPatient, setSelectedPatient] = useState(null);
 
   let getPatient = e => {
     setPatientId(e.target.value);
+    console.log('PatientId', e.target.value);
+    setSelectedPatient(patients.find(p => p.id === Number(e.target.value))); // Store selected patient in state
+    console.log(selectedPatient);
   };
 
   let getIPM = e => {
@@ -143,7 +148,7 @@ export const BillUpdate = () => {
     if (isNew) {
       dispatch(reset());
     } else {
-      dispatch(getEntity(id));
+      dispatch(getEntity(Number(id)));
     }
 
     getElemntByBillId(Number(id))
@@ -166,7 +171,7 @@ export const BillUpdate = () => {
 
   const saveEntity = values => {
     values.date = convertDateTimeToServer(values.date);
-    total = tab();
+    // total = tab();
 
     const entity = {
       ...billEntity,
@@ -308,16 +313,19 @@ export const BillUpdate = () => {
 
         <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', marginTop: '15px', marginLeft: '5vw' }}>
           <Text style={{ fontSize: '12px', marginBottom: '7px' }}>
-            Nom : {billEntity.patient ? billEntity?.patient?.lastName.toUpperCase() : null}{' '}
+            Nom : {selectedPatient ? selectedPatient.lastName?.toUpperCase() : billEntity?.patient?.lastName?.toUpperCase()}{' '}
           </Text>
           <Text style={{ fontSize: '12px', marginBottom: '7px' }}>
             Prénom(s):{' '}
-            {billEntity.patient
-              ? billEntity?.patient?.firstName
+            {selectedPatient
+              ? selectedPatient?.firstName
                   .split(' ')
                   .map(a => a.charAt(0).toUpperCase() + a.slice(1))
                   .join(' ')
-              : null}{' '}
+              : billEntity?.patient?.firstName
+                  .split(' ')
+                  .map(a => a.charAt(0).toUpperCase() + a.slice(1))
+                  .join(' ')}{' '}
           </Text>
         </View>
         <View
