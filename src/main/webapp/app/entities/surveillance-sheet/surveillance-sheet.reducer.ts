@@ -24,6 +24,11 @@ export const getEntities = createAsyncThunk('surveillanceSheet/fetch_entity_list
   return axios.get<ISurveillanceSheet[]>(requestUrl);
 });
 
+export const getElemntByHospitalisationId = async (id: number): Promise<ISurveillanceSheet[]> => {
+  const response = await axios.get<ISurveillanceSheet[]>(`${apiUrl}/hospitalisation/${id}`);
+  return response.data;
+};
+
 export const getEntity = createAsyncThunk(
   'surveillanceSheet/fetch_entity',
   async (id: string | number) => {

@@ -124,6 +124,7 @@ export const BillUpdate = () => {
   const [billElements, setBillElements] = useState<IBillElement[]>([]);
   // Inside your component
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const [description, setDescription] = useState('');
 
   let getPatient = e => {
     setPatientId(e.target.value);
@@ -498,6 +499,10 @@ export const BillUpdate = () => {
             <Text style={{ width: '60vw' }}>Montant total : </Text>
             <Text style={{ position: 'absolute', right: '0' }}>{total + 'FCFA'} </Text>
           </View>
+        </View>
+        {/* Description Section */}
+        <View style={{ marginLeft: '5vw', marginTop: '15px' }}>
+          <Text style={{ fontSize: '12px', marginBottom: '7px' }}>Description: {description}</Text>
         </View>
         <View
           style={{
@@ -929,6 +934,7 @@ export const BillUpdate = () => {
               label="Description"
               placeholder="Description..."
               type="textarea"
+              onChange={e => setDescription(e.target.value)}
             />
 
             <Button

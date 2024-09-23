@@ -26,6 +26,10 @@ export const Hospitalisation = () => {
     overridePaginationStateWithQueryParams(getSortState(location, ITEMS_PER_PAGE, 'id'), location.search)
   );
 
+  // filter
+  const [search, setSearch] = useState('');
+  const [criteria, setCriteria] = useState(' ');
+
   const patientEntity = useAppSelector(state => state.patient?.entity);
   const hospitalisationList = useAppSelector(state => state.hospitalisation?.entities);
   const loading = useAppSelector(state => state.hospitalisation?.loading);
@@ -77,6 +81,28 @@ export const Hospitalisation = () => {
     });
   };
 
+  const handleSearch = event => {
+    setSearch(event.target.value);
+  };
+
+  let filter = null;
+  if (search !== '') {
+    switch (criteria) {
+      case 'date':
+        filter = hospitalisationList.filter(hospitalisation => {
+          return hospitalisation.entryDate.includes(search);
+        });
+        break;
+      case 'statut':
+        filter = hospitalisationList.filter(hospitalisation => {
+          return hospitalisation.status.toLowerCase().includes(search.toLowerCase());
+        });
+        break;
+      default:
+        filter = null;
+    }
+  }
+
   const handlePagination = currentPage =>
     setPaginationState({
       ...paginationState,
@@ -86,6 +112,39 @@ export const Hospitalisation = () => {
   const handleSyncList = () => {
     sortEntities();
   };
+
+  function getDuration(dateString: string): string {
+    // Check if the date string is in the expected format
+    const dateParts = dateString.split('T');
+    console.log(dateParts);
+    if (dateParts.length !== 2) {
+      throw new Error('Invalid date format. Expected format: DD/MM/YY HH:mm');
+    }
+
+    const [year, month, day] = dateParts[0].split('-');
+    const [hour, minute] = dateParts[1].split(':');
+
+    if (!day || !month || !year || !hour || !minute) {
+      throw new Error('Invalid date format. Please check your input.');
+    }
+
+    // Create a Date object
+    const eventDate = new Date(Number(`${year}`), Number(month) - 1, Number(day), Number(hour), Number(minute));
+
+    console.log(eventDate);
+    // Get today's date
+    const today = new Date();
+
+    // Calculate the difference in milliseconds
+    const durationMs = today.getTime() - eventDate.getTime();
+
+    // Convert milliseconds to a more readable format (e.g., days, hours, minutes)
+    const durationMinutes = Math.floor(durationMs / (1000 * 60));
+    const durationHours = Math.floor(durationMinutes / 60);
+    const durationDays = Math.floor(durationHours / 24);
+
+    return `${durationDays} jours, ${durationHours % 24} heures, ${durationMinutes % 60} minutes`;
+  }
 
   return (
     <div
@@ -133,8 +192,8 @@ export const Hospitalisation = () => {
               cursor: 'pointer',
             }}
           >
-            <span style={{ display: 'block', width: '90%', wordBreak: 'break-word' }}>
-              <FontAwesomeIcon icon="sync" /> Actualiser la liste
+            <span onClick={() => handleSyncList()} style={{ display: 'block', width: '90%', wordBreak: 'break-word' }}>
+              <FontAwesomeIcon icon="sync" spin={loading} /> Actualiser la liste
             </span>
           </div>
           <Card
@@ -200,15 +259,27 @@ export const Hospitalisation = () => {
                 gap: '1vw',
               }}
             >
-              <ValidatedField style={{ borderRadius: '12px', width: '17vw' }} id="criteria" name="criteria" type="select">
+              <ValidatedField
+                style={{ borderRadius: '12px', width: '17vw' }}
+                id="criteria"
+                name="criteria"
+                type="select"
+                onChange={e => setCriteria(e.target.value)}
+              >
                 {/* <select name="criteria" > */}
                 <option value=" ">Critère de recherche</option>
-                <option value="lastName">Date</option>
-                <option value="firstName">Statut</option>
+                <option value="date">Date</option>
+                <option value="status">Statut</option>
                 {/* </select> */}
               </ValidatedField>
-              <ValidatedField style={{ borderRadius: '12px', width: '17vw' }} placeholder="Barre de recherche" id="search" name="search" />
-              {/* <input type="text" id="search" name="search" placeholder="Barre de recherche" onChange={handleSearch} />  */}
+              <ValidatedField
+                style={{ borderRadius: '12px', width: '17vw' }}
+                placeholder="Barre de recherche"
+                id="search"
+                name="search"
+                type={criteria === 'date' ? 'date' : 'text'}
+                onChange={handleSearch}
+              />
             </div>
           </div>
           <div style={{ marginLeft: '3%', fontSize: '15px' }}>
@@ -262,7 +333,7 @@ export const Hospitalisation = () => {
                     }}
                     className="hand"
                   >
-                    Date entrée <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
+                    Date entrée <FontAwesomeIcon style={{ marginLeft: '0px' }} icon="sort" />
                   </th>
                   <th
                     style={{
@@ -314,48 +385,51 @@ export const Hospitalisation = () => {
                   borderBottom: '50px solid white',
                   backgroundImage: 'url(content/images/NgirwiLogo.png)',
                   backgroundRepeat: 'no-repeat',
-                  backgroundAttachment: 'fixed',
+                  backgroundAttachment: 'absolute',
                   backgroundPosition: '60% 165%',
                 }}
               >
-                {hospitalisationList.map((hospitalisation, i) => (
-                  <tr key={`entity-${i}`} data-cy="entityTable">
-                    <td>
-                      {hospitalisation.entryDate ? (
-                        <TextFormat type="date" value={hospitalisation.entryDate} format={APP_DATE_FORMAT} />
-                      ) : null}
-                    </td>
-                    <td>
+                {filter === null
+                  ? hospitalisationList.map((hospitalisation, i) => (
+                      <tr key={`entity-${i}`} data-cy="entityTable">
+                        <td></td>
+                        <td>
+                          {hospitalisation.entryDate ? (
+                            <TextFormat type="date" value={hospitalisation.entryDate} format={APP_DATE_FORMAT} />
+                          ) : null}
+                        </td>
+                        {/* <td>
                       {hospitalisation.releaseDate ? (
                         <TextFormat type="date" value={hospitalisation.releaseDate} format={APP_DATE_FORMAT} />
                       ) : null}
-                    </td>
-                    {/* <td>{hospitalisation.doctorName}</td> */}
-                    <td>{hospitalisation.status}</td>
-                    {/* <td>
+                    </td> */}
+                        <td>{getDuration(hospitalisation.entryDate)}</td>
+                        {/* <td>{hospitalisation.doctorName}</td> */}
+                        <td>{hospitalisation.status}</td>
+                        {/* <td>
                       {hospitalisation.patient ? <Link to={`/patient/${hospitalisation.patient.id}`}>{hospitalisation.patient.id}</Link> : ''}
                     </td> */}
-                    <td className="text-end">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button
-                          tag={Link}
-                          to={`/hospitalisation/${hospitalisation.id}/${patientEntity.id}`}
-                          color="info"
-                          size="sm"
-                          data-cy="entityDetailsButton"
-                        >
-                          <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir</span>
-                        </Button>
-                        {/* <Button
-                          tag={Link}
-                          to={`/hospitalisation/${hospitalisation.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                          color="primary"
-                          size="sm"
-                          data-cy="entityEditButton"
-                        >
-                          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
-                        </Button> */}
-                        {/* <Button
+                        <td className="text-end">
+                          <div className="btn-group flex-btn-group-container">
+                            <Button
+                              tag={Link}
+                              to={`/hospitalisation/${hospitalisation.id}/${patientEntity.id}`}
+                              color="info"
+                              size="sm"
+                              data-cy="entityDetailsButton"
+                            >
+                              <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir</span>
+                            </Button>
+                            <Button
+                              tag={Link}
+                              to={`/hospitalisation/${hospitalisation.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                              color="primary"
+                              size="sm"
+                              data-cy="entityEditButton"
+                            >
+                              <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
+                            </Button>
+                            {/* <Button
                           tag={Link}
                           to={`/hospitalisation/${hospitalisation.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                           color="danger"
@@ -364,120 +438,172 @@ export const Hospitalisation = () => {
                         >
                           <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Supprimer</span>
                         </Button> */}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  : filter.map((hospitalisation, i) => (
+                      <tr key={`entity-${i}`} data-cy="entityTable">
+                        <td></td>
+                        <td>
+                          {hospitalisation.entryDate ? (
+                            <TextFormat type="date" value={hospitalisation.entryDate} format={APP_DATE_FORMAT} />
+                          ) : null}
+                        </td>
+                        {/* <td>
+                      {hospitalisation.releaseDate ? (
+                        <TextFormat type="date" value={hospitalisation.releaseDate} format={APP_DATE_FORMAT} />
+                      ) : null}
+                    </td> */}
+                        <td>{getDuration(hospitalisation.entryDate)}</td>
+                        {/* <td>{hospitalisation.doctorName}</td> */}
+                        <td>{hospitalisation.status}</td>
+                        {/* <td>
+                      {hospitalisation.patient ? <Link to={`/patient/${hospitalisation.patient.id}`}>{hospitalisation.patient.id}</Link> : ''}
+                    </td> */}
+                        <td className="text-end">
+                          <div className="btn-group flex-btn-group-container">
+                            <Button
+                              tag={Link}
+                              to={`/hospitalisation/${hospitalisation.id}/${patientEntity.id}`}
+                              color="info"
+                              size="sm"
+                              data-cy="entityDetailsButton"
+                            >
+                              <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir</span>
+                            </Button>
+                            <Button
+                              tag={Link}
+                              to={`/hospitalisation/${hospitalisation.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                              color="primary"
+                              size="sm"
+                              data-cy="entityEditButton"
+                            >
+                              <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Editer</span>
+                            </Button>
+                            {/* <Button
+                          tag={Link}
+                          to={`/hospitalisation/${hospitalisation.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                          color="danger"
+                          size="sm"
+                          data-cy="entityDeleteButton"
+                        >
+                          <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Supprimer</span>
+                        </Button> */}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
               </tbody>
             </Table>
           ) : (
             !loading && (
-              // <div className="alert alert-warning">Aucune Hospitalisation trouvée</div>
+              <div className="alert alert-warning">Aucune Hospitalisation trouvée</div>
 
-              <Table responsive style={{ borderCollapse: 'separate', borderSpacing: '0 15px' }}>
-                <thead
-                  style={{
-                    position: 'sticky',
-                    top: '0',
-                  }}
-                >
-                  <tr>
-                    <th
-                      style={{
-                        position: 'sticky',
-                        top: '0',
-                        width: '4%',
-                        backgroundColor: 'white',
-                      }}
-                    ></th>
-                    <th
-                      style={{
-                        textAlign: 'center',
-                        fontSize: '14px',
-                        position: 'sticky',
-                        top: '0',
-                        width: '16%',
-                        backgroundColor: 'white',
-                      }}
-                      className="hand"
-                    >
-                      Date entrée <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
-                    </th>
-                    <th
-                      style={{
-                        textAlign: 'center',
-                        fontSize: '14px',
-                        position: 'sticky',
-                        top: '0',
-                        width: '16%',
-                        backgroundColor: 'white',
-                      }}
-                      className="hand"
-                    >
-                      Durée <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
-                    </th>
-                    <th
-                      style={{
-                        textAlign: 'center',
-                        fontSize: '14px',
-                        position: 'sticky',
-                        top: '0',
-                        width: '16%',
-                        backgroundColor: 'white',
-                      }}
-                      className="hand"
-                    >
-                      Statut <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
-                    </th>
-                    <th
-                      style={{
-                        textAlign: 'center',
-                        fontSize: '14px',
-                        position: 'sticky',
-                        top: '0',
-                        width: '16%',
-                        backgroundColor: 'white',
-                      }}
-                    >
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody
-                  style={{
-                    backgroundColor: '#F6FAFF',
-                    border: '1px solid #F6FAFF',
-                    borderRadius: '15px 15px 0px 15px',
-                    fontSize: '15px',
-                    textAlign: 'center',
-                    borderBottom: '50px solid white',
-                    backgroundImage: 'url(content/images/NgirwiLogo.png)',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundAttachment: 'fixed',
-                    backgroundPosition: '60% 165%',
-                  }}
-                >
-                  <tr>
-                    <td></td>
-                    <td>31/12/2022T12:02:00</td>
-                    <td>1 jour</td>
-                    <td>EN COURS</td>
-                    <td className="text-center">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button
-                          tag={Link}
-                          to={`/hospitalisation/1051/${patientEntity.id}`}
-                          color="info"
-                          size="sm"
-                          data-cy="entityDetailsButton"
-                        >
-                          <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir</span>
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
+              // <Table responsive style={{ borderCollapse: 'separate', borderSpacing: '0 15px' }}>
+              //   <thead
+              //     style={{
+              //       position: 'sticky',
+              //       top: '0',
+              //     }}
+              //   >
+              //     <tr>
+              //       <th
+              //         style={{
+              //           position: 'sticky',
+              //           top: '0',
+              //           width: '4%',
+              //           backgroundColor: 'white',
+              //         }}
+              //       ></th>
+              //       <th
+              //         style={{
+              //           textAlign: 'center',
+              //           fontSize: '14px',
+              //           position: 'sticky',
+              //           top: '0',
+              //           width: '16%',
+              //           backgroundColor: 'white',
+              //         }}
+              //         className="hand"
+              //       >
+              //         Date entrée <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
+              //       </th>
+              //       <th
+              //         style={{
+              //           textAlign: 'center',
+              //           fontSize: '14px',
+              //           position: 'sticky',
+              //           top: '0',
+              //           width: '16%',
+              //           backgroundColor: 'white',
+              //         }}
+              //         className="hand"
+              //       >
+              //         Durée <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
+              //       </th>
+              //       <th
+              //         style={{
+              //           textAlign: 'center',
+              //           fontSize: '14px',
+              //           position: 'sticky',
+              //           top: '0',
+              //           width: '16%',
+              //           backgroundColor: 'white',
+              //         }}
+              //         className="hand"
+              //       >
+              //         Statut <FontAwesomeIcon style={{ marginLeft: '10px' }} icon="sort" />
+              //       </th>
+              //       <th
+              //         style={{
+              //           textAlign: 'center',
+              //           fontSize: '14px',
+              //           position: 'sticky',
+              //           top: '0',
+              //           width: '16%',
+              //           backgroundColor: 'white',
+              //         }}
+              //       >
+              //         Actions
+              //       </th>
+              //     </tr>
+              //   </thead>
+              //   <tbody
+              //     style={{
+              //       backgroundColor: '#F6FAFF',
+              //       border: '1px solid #F6FAFF',
+              //       borderRadius: '15px 15px 0px 15px',
+              //       fontSize: '15px',
+              //       textAlign: 'center',
+              //       borderBottom: '50px solid white',
+              //       backgroundImage: 'url(content/images/NgirwiLogo.png)',
+              //       backgroundRepeat: 'no-repeat',
+              //       backgroundAttachment: 'absolute',
+              //       backgroundPosition: '60% 165%',
+              //     }}
+              //   >
+              //     <tr>
+              //       <td></td>
+              //       <td>31/12/2022T12:02:00</td>
+              //       <td>1 jour</td>
+              //       <td>EN COURS</td>
+              //       <td className="text-center">
+              //         <div className="btn-group flex-btn-group-container">
+              //           <Button
+              //             tag={Link}
+              //             to={`/hospitalisation/1051/${patientEntity.id}`}
+              //             color="info"
+              //             size="sm"
+              //             data-cy="entityDetailsButton"
+              //           >
+              //             <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir</span>
+              //           </Button>
+              //         </div>
+              //       </td>
+              //     </tr>
+              //   </tbody>
+              // </Table>
             )
           )}
         </Card>
