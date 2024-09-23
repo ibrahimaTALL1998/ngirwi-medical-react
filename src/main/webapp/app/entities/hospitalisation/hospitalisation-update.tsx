@@ -16,6 +16,8 @@ import { MdOutlineArrowCircleUp, MdOutlineArrowCircleDown } from 'react-icons/md
 import { RiUserAddLine } from 'react-icons/ri';
 import axios from 'axios';
 import ConsultationRoutes from '../consultation';
+import { ISurveillanceSheet } from 'app/shared/model/surveillance-sheet.model';
+import { getElemntByHospitalisationId } from '../surveillance-sheet/surveillance-sheet.reducer';
 
 export const HospitalisationUpdate = () => {
   const dispatch = useAppDispatch();
@@ -36,6 +38,7 @@ export const HospitalisationUpdate = () => {
   const updateSuccess = useAppSelector(state => state.hospitalisation?.updateSuccess);
   const hospitalisationStatusValues = Object.keys(HospitalisationStatus);
   const account = useAppSelector(state => state.authentication.account);
+  const [surveillanceSheets, setSurveillanceSheets] = useState<ISurveillanceSheet[]>([]);
 
   //will modify
   const [sheets, setSheets] = useState([]);
@@ -68,6 +71,14 @@ export const HospitalisationUpdate = () => {
       dispatch(getEntity(id));
     }
 
+    getElemntByHospitalisationId(Number(id))
+      .then(data => {
+        setSurveillanceSheets(data);
+      })
+      .catch(error => {
+        console.error('Error fetching elements:', error);
+      });
+
     dispatch(getPatient(idPatient));
     axios.get('api/surveillance-sheets').then(res => setSheets(res.data));
   }, []);
@@ -94,6 +105,7 @@ export const HospitalisationUpdate = () => {
       ...values,
       // patient: patients?.find(it => it?.id?.toString() === values?.patient?.toString()),
       patient: patient,
+      surveillanceSheets: surveillanceSheets,
     };
 
     console.log(entity);
@@ -140,8 +152,6 @@ export const HospitalisationUpdate = () => {
     overflow: null,
     cursor: 'pointer',
   });
-
-  console.log(newSheets);
 
   let show = a => {
     if (ind !== a) {
@@ -224,16 +234,40 @@ export const HospitalisationUpdate = () => {
   };
 
   const removeFormFields = i => {
-    let newFormValues = [...formValues];
+    let newFormValues = [...surveillanceSheets];
     newFormValues.splice(i, 1);
-    setFormValues(newFormValues);
+    setSurveillanceSheets(newFormValues);
   };
 
   const handleChange = (i, e) => {
-    let newFormValues = [...formValues];
+    let newFormValues = [...surveillanceSheets];
     newFormValues[i][e.target.name] = e.target.value;
-    setFormValues(newFormValues);
+    setSurveillanceSheets(newFormValues);
   };
+
+  let addFormFieldsB = () => {
+    const newSurveillanceSheet: ISurveillanceSheet = {
+      id: undefined,
+      ta: null,
+      temperature: null,
+      pulseRate: null,
+      respiratoryFrequency: null,
+      recolorationTime: null,
+      glasgow: null,
+      gravityClass: null,
+      horaryDiuresis: null,
+      spo2: null,
+      treatment: null,
+      healthEvolution: null,
+      sheetDate: null,
+      hospitalisation: null,
+    };
+    setSurveillanceSheets([...surveillanceSheets, newSurveillanceSheet]);
+  };
+
+  if (surveillanceSheets.length === 0) {
+    addFormFieldsB();
+  }
 
   const newForm = (arr, i) => {
     return (
@@ -317,7 +351,7 @@ export const HospitalisationUpdate = () => {
         <ValidatedField
           disabled={idEdit === 'voir' || !isNew ? true : false}
           label="Température(en °C)"
-          id="hospitalisation-temperature"
+          id="temperature"
           name="temperature"
           data-cy="temperature"
           type="number"
@@ -338,14 +372,13 @@ export const HospitalisationUpdate = () => {
         <ValidatedField
           disabled={idEdit === 'voir' || !isNew ? true : false}
           label="Tension artérielle(max/mn)"
-          id="hospitalisation-ta"
+          id="ta"
           name="ta"
           data-cy="ta"
-          type="number"
+          type="text"
           onChange={a => handleChange(i, a)}
           validate={{
             required: { value: true, message: 'Ce champ est obligatoire.' },
-            validate: v => isNumber(v) || 'Ce champ doit être un nombre.',
           }}
           style={{
             borderRadius: '25px',
@@ -358,7 +391,7 @@ export const HospitalisationUpdate = () => {
         <ValidatedField
           disabled={idEdit === 'voir' || !isNew ? true : false}
           label="Fréquence cardiaque(battements/mn)"
-          id="hospitalisation-tension"
+          id="tension"
           name="pulseRate"
           data-cy="pulseRate"
           type="number"
@@ -378,7 +411,7 @@ export const HospitalisationUpdate = () => {
         <ValidatedField
           disabled={idEdit === 'voir' || !isNew ? true : false}
           label="Fréquence respiratoire(cycles/mn)"
-          id="hospitalisation-respiration"
+          id="respiration"
           name="respiratoryFrequency"
           data-cy="respiratoryFrequency"
           type="number"
@@ -398,7 +431,7 @@ export const HospitalisationUpdate = () => {
         <ValidatedField
           disabled={idEdit === 'voir' || !isNew ? true : false}
           label="Temps de Recoloration(secondes)"
-          id="hospitalisation-recoloration"
+          id="recoloration"
           name="recolorationTime"
           data-cy="recolorationTime"
           min={0}
@@ -418,7 +451,7 @@ export const HospitalisationUpdate = () => {
         <ValidatedField
           disabled={idEdit === 'voir' || !isNew ? true : false}
           label="Glasgow(3 à 15)"
-          id="hospitalisation-glasgow"
+          id="glasgow"
           name="glasgow"
           data-cy="glasgow"
           type="number"
@@ -436,7 +469,7 @@ export const HospitalisationUpdate = () => {
         <ValidatedField
           disabled={idEdit === 'voir' || !isNew ? true : false}
           label="Classe de gravité(I/II/III)"
-          id="hospitalisation-gravity"
+          id="gravity"
           name="gravityClass"
           data-cy="gravityClass"
           type="select"
@@ -460,7 +493,7 @@ export const HospitalisationUpdate = () => {
         <ValidatedField
           disabled={idEdit === 'voir' || !isNew ? true : false}
           label="Diurése horaire(ml/Kg/mn)"
-          id="hospitalisation-diurese"
+          id="diurese"
           name="horaryDiuresis"
           data-cy="horaryDiuresis"
           type="number"
@@ -480,7 +513,7 @@ export const HospitalisationUpdate = () => {
         <ValidatedField
           disabled={idEdit === 'voir' || !isNew ? true : false}
           label="Saturation en oxygène"
-          id="hospitalisation-spO2"
+          id="spO2"
           name="spo2"
           data-cy="spo2"
           onChange={a => handleChange(i, a)}
@@ -498,7 +531,7 @@ export const HospitalisationUpdate = () => {
         <ValidatedField
           disabled={idEdit === 'voir' || !isNew ? true : false}
           label="Traitement administré"
-          id="hospitalisation-treatment"
+          id="treatment"
           name="treatment"
           data-cy="treatment"
           type="textarea"
@@ -517,7 +550,7 @@ export const HospitalisationUpdate = () => {
         <ValidatedField
           disabled={idEdit === 'voir' ? true : false}
           label="Evolution en fonction du traitement"
-          id="hospitalisation-evolution"
+          id="evolution"
           name="healthEvolution"
           data-cy="healthEvolution"
           type="select"
@@ -627,7 +660,7 @@ export const HospitalisationUpdate = () => {
           disabled
           hidden={isNew && i === 0 ? false : true}
           label="Date d'admission au service"
-          id="hospitalisation-dateTime"
+          id="dateTime"
           name="entryDate"
           data-cy="entryDate"
           type="datetime-local"
@@ -644,7 +677,7 @@ export const HospitalisationUpdate = () => {
         <ValidatedField
           disabled
           label="Paramètres surveillés le"
-          id="hospitalisation-sheetDateTime"
+          id="sheetDateTime"
           name="sheetDateTime"
           data-cy="sheetDateTime"
           type="text"
@@ -661,7 +694,7 @@ export const HospitalisationUpdate = () => {
         <ValidatedField
           disabled
           label="Statut de l'hospitalisation"
-          id="hospitalisation-status"
+          id="status"
           name="status"
           data-cy="status"
           type="text"
@@ -678,7 +711,7 @@ export const HospitalisationUpdate = () => {
         <ValidatedField
           disabled={idEdit === 'voir' || !isNew ? true : false}
           label="Température(en °C)"
-          id="hospitalisation-temperature"
+          id="temperature"
           name="temperature"
           data-cy="temperature"
           type="text"
@@ -695,7 +728,7 @@ export const HospitalisationUpdate = () => {
         <ValidatedField
           disabled={idEdit === 'voir' || !isNew ? true : false}
           label="Tension artérielle(max/mn)"
-          id="hospitalisation-ta"
+          id="ta"
           name="ta"
           data-cy="ta"
           type="text"
@@ -994,7 +1027,7 @@ export const HospitalisationUpdate = () => {
             </Card>
           </div>
           <Button
-            onClick={() => addFormFields()}
+            onClick={() => addFormFieldsB()}
             style={{
               display: 'flex',
               textDecoration: 'none',
@@ -1020,7 +1053,7 @@ export const HospitalisationUpdate = () => {
 
           {
             // eslint-disable-next-line complexity
-            formValues.map((e, i, arr) => (
+            surveillanceSheets.map((e, i, arr) => (
               <Card
                 style={
                   ind === i
