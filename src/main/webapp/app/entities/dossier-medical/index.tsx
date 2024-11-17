@@ -10,7 +10,7 @@ import DossierMedicalDeleteDialog from './dossier-medical-delete-dialog';
 
 const DossierMedicalRoutes = () => (
   <ErrorBoundaryRoutes>
-    <Route index element={<DossierMedical />} />
+    {/* <Route index element={<DossierMedical />} /> */}
     <Route path="new" element={<DossierMedicalUpdate />} />
     <Route path="new/:idPatient" element={<DossierMedicalUpdate />} />
     <Route path=":id">

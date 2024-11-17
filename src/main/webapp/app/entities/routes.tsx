@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Navigate, Route } from 'react-router-dom';
 
 import ErrorBoundaryRoutes from 'app/shared/error/error-boundary-routes';
 
@@ -33,6 +33,7 @@ export default () => {
         <Route path="hospital/*" element={<Hospital />} />
         <Route path="surveillance-sheet/*" element={<SurveillanceSheet />} />
         {/* jhipster-needle-add-route-path - JHipster will add routes here */}
+        <Route path="*" element={<Navigate to="/" />} />
       </ErrorBoundaryRoutes>
     </div>
   );

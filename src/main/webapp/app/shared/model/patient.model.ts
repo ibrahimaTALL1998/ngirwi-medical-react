@@ -23,6 +23,7 @@ export interface IPatient {
   author?: string | null;
   dossierMedical?: IDossierMedical | null;
   consultations?: IConsultation[] | null;
+  hospitalId?: number;
 }
 
 export const defaultValue: Readonly<IPatient> = {};

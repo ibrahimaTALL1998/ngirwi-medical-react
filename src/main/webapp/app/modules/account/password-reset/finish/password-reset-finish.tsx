@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Button } from 'reactstrap';
 import { ValidatedField, ValidatedForm } from 'react-jhipster';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { handlePasswordResetFinish, reset } from '../password-reset.reducer';
@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 export const PasswordResetFinishPage = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
   const key = searchParams.get('key');
@@ -69,6 +70,7 @@ export const PasswordResetFinishPage = () => {
   useEffect(() => {
     if (successMessage) {
       toast.success(successMessage);
+      navigate('/');
     }
   }, [successMessage]);
 
