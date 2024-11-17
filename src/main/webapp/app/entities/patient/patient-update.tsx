@@ -13,6 +13,7 @@ import { MARITALSTATUS } from 'app/shared/model/enumerations/maritalstatus.model
 import { getEntity, updateEntity, createEntity, reset } from './patient.reducer';
 import { IoIosArrowBack } from 'react-icons/io';
 import Header from 'app/shared/layout/header/header';
+import Hospital from '../hospital/hospital';
 
 export const PatientUpdate = () => {
   const dispatch = useAppDispatch();
@@ -57,9 +58,9 @@ export const PatientUpdate = () => {
       ...values,
     };
     if (isNew) {
-      dispatch(createEntity(entity));
+      dispatch(createEntity({ entity, id: account.hospitalId }));
     } else {
-      dispatch(updateEntity(entity));
+      dispatch(updateEntity({ entity, id: account.hospitalId }));
     }
   };
 

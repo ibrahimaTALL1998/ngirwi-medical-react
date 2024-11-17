@@ -40,9 +40,9 @@ export const getEntity = createAsyncThunk(
 
 export const createEntity = createAsyncThunk(
   'patient/create_entity',
-  async (entity: IPatient, thunkAPI) => {
+  async ({ entity, id }: { entity: IPatient; id: number }, thunkAPI) => {
     const result = await axios.post<IPatient>(apiUrl, cleanEntity(entity));
-    thunkAPI.dispatch(getEntities({}));
+    thunkAPI.dispatch(getEntitiesBis({ id }));
     return result;
   },
   { serializeError: serializeAxiosError }
@@ -50,9 +50,9 @@ export const createEntity = createAsyncThunk(
 
 export const updateEntity = createAsyncThunk(
   'patient/update_entity',
-  async (entity: IPatient, thunkAPI) => {
+  async ({ entity, id }: { entity: IPatient; id: number }, thunkAPI) => {
     const result = await axios.put<IPatient>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
-    thunkAPI.dispatch(getEntities({}));
+    thunkAPI.dispatch(getEntitiesBis({ id }));
     return result;
   },
   { serializeError: serializeAxiosError }
