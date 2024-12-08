@@ -340,9 +340,9 @@ export const DossierMedicalUpdate = () => {
               name="gynecoObstretrique"
               data-cy="gynecoObstretrique"
               type="textarea"
-              validate={{
-                required: { value: true, message: 'Ce champ est obligatoire.' },
-              }}
+              // validate={{
+              //   required: { value: true, message: 'Ce champ est obligatoire.' },
+              // }}
               style={{
                 rowGap: '5vh',
                 marginBottom: '20px',
@@ -361,9 +361,9 @@ export const DossierMedicalUpdate = () => {
               name="syndromique"
               data-cy="syndromique"
               type="textarea"
-              validate={{
-                required: { value: true, message: 'Ce champ est obligatoire.' },
-              }}
+              // validate={{
+              //   required: { value: true, message: 'Ce champ est obligatoire.' },
+              // }}
               style={{
                 rowGap: '5vh',
                 marginBottom: '20px',

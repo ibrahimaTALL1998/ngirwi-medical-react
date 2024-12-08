@@ -125,7 +125,7 @@ export const ConsultationUpdate = () => {
           date: convertDateTimeFromServerToDate(consultationEntity.dateTime),
           patient: consultationEntity?.patient?.id,
           author: account.login,
-          exams: selectedExams,
+          exams: JSON.stringify(selectedExams),
         };
 
   const animatedComponents = makeAnimated();
@@ -554,8 +554,7 @@ export const ConsultationUpdate = () => {
                 name="exams"
                 data-cy="exams"
                 type="textarea"
-                value={consultationEntity.exams}
-                // validate={{
+                value={idEdit === 'voir' ? JSON.parse(consultationEntity.exams || '[]').join(', ') : ''} // validate={{
                 //   required: { value: true, message: 'Ce champ est obligatoire.' },
                 // }}
                 style={{
