@@ -661,7 +661,8 @@ export const PrescriptionUpdate = () => {
               <PDFDownloadLink
                 style={{ backgroundColor: 'transparent', textDecoration: 'none' }}
                 document={doc}
-                fileName={`ordonnance_${account.login}_${JSON.stringify(displayDefaultDateTime())}`}
+                // fileName={`ordonnance_${account.login}_${JSON.stringify(displayDefaultDateTime())}`}
+                fileName={`ordonnance_${JSON.stringify(displayDefaultDateTime())}`}
               >
                 {({ loading }) =>
                   loading ? (

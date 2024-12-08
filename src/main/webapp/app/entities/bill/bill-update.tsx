@@ -133,14 +133,36 @@ export const BillUpdate = () => {
     console.log(selectedPatient);
   };
 
-  let getIPM = e => {
-    setBlockIPM(e.target.value);
-    return e.target.value;
+  // const getIPM = e => {
+  //   setBlockIPM(e.target.value);
+  //   // return e.target.value;
+  // };
+
+  useEffect(() => {
+    if (!isNew && billEntity) {
+      // Check if the billEntity is fetched correctly before setting the value
+      console.log('Fetched Bill Entity:', billEntity);
+      setBlockAssurance(billEntity.insurance || ''); // Update the state after the data is fetched
+      setBlockIPM(billEntity.ipm || ''); // Update the state after the data is fetched
+    }
+  }, [billEntity, isNew]); // Only run when billEntity changes
+
+  useEffect(() => {
+    console.log('blockAssurance:', blockAssurance); // Log to track changes
+  }, [blockAssurance]);
+
+  const getAssurance = e => {
+    const value = e.target.value;
+    console.log('Selected Assurance:', value); // Log the selected value
+    setBlockAssurance(value); // Update state when selection changes
   };
-  let getAssurance = e => {
-    setBlockAssurance(e.target.value);
-    return e.target.value;
+
+  const getIPM = e => {
+    const value = e.target.value;
+    console.log('Selected IPM:', value); // Log the selected value
+    setBlockIPM(value); // Update state when selection changes
   };
+
   const handleClose = () => {
     navigate('/bill' + location.search);
   };
@@ -179,6 +201,8 @@ export const BillUpdate = () => {
       ...values,
       patient: patients.find(it => it.id.toString() === values.patient.toString()),
       billElements: billElements,
+      insurance: blockAssurance,
+      ipm: blockIPM,
     };
 
     console.log(entity);
@@ -241,9 +265,11 @@ export const BillUpdate = () => {
 
   let nombre = 1;
   let tarif = 0;
-  let total = 0;
+  const [total, setTotal] = useState(0);
   let remise = 0;
   let tab = () => {
+    let calculatedTotal = 0;
+
     let newElement = [...billElements];
 
     for (let i = 0; i < newElement.length; i++) {
@@ -262,12 +288,16 @@ export const BillUpdate = () => {
       } else {
         nombre = newElement[i].quantity;
       }
-      total += Math.round(tarif * remise * nombre);
+      calculatedTotal += Math.round(tarif * remise * nombre);
     }
-    return total;
+    return calculatedTotal;
   };
 
-  total = tab();
+  // total = tab();
+  // Recalculate total whenever billElements changes
+  useEffect(() => {
+    setTotal(tab());
+  }, [billElements]);
 
   Font.register({
     family: 'Poppins',
@@ -600,7 +630,12 @@ export const BillUpdate = () => {
               <PDFDownloadLink
                 style={{ backgroundColor: 'transparent', textDecoration: 'none' }}
                 document={doc}
-                fileName={`facture_${account.login}_${JSON.stringify(
+                // fileName={`facture_${account.login}_${JSON.stringify(
+                //   convertDateTimeFromServerToDate(displayDefaultDateTime()) +
+                //     'H:' +
+                //     convertDateTimeFromServerToHours(displayDefaultDateTime())
+                // )}`}
+                fileName={`facture_${JSON.stringify(
                   convertDateTimeFromServerToDate(displayDefaultDateTime()) +
                     'H:' +
                     convertDateTimeFromServerToHours(displayDefaultDateTime())
@@ -696,6 +731,7 @@ export const BillUpdate = () => {
                 : null}
             </ValidatedField>
             <ValidatedField
+              value={blockAssurance} // Bind the value to the state
               style={
                 isNew
                   ? {
@@ -719,7 +755,7 @@ export const BillUpdate = () => {
               data-cy="asurance"
               label="Assurance"
               type="select"
-              onChange={e => getAssurance(e)}
+              onChange={getAssurance} // Update state when selection changes
             >
               {assurance.map(assur => (
                 <option value={assur.label} key={assur.id}>
@@ -728,6 +764,7 @@ export const BillUpdate = () => {
               ))}
             </ValidatedField>
             <ValidatedField
+              value={blockIPM} // Bind the value to the state
               style={
                 isNew
                   ? { borderRadius: '25px', borderColor: '#CBDCF7', width: '20vw' }
@@ -753,7 +790,7 @@ export const BillUpdate = () => {
                   ? false
                   : true
               }
-              onChange={e => getIPM(e)}
+              onChange={getIPM}
             >
               {ipm.map(a => (
                 <option value={a.label} key={a.id}>
