@@ -114,8 +114,8 @@ export const ConsultationUpdate = () => {
           date: dayjs().format('DD/MM/YYYY'),
           dateTime: displayDefaultDate(),
           author: account.login,
-          // exams: selectedExams,
-          exams: JSON.stringify(selectedExams),
+          exams: selectedExams.join(','),
+          // exams: JSON.stringify(selectedExams),
           patient: idPatient,
         }
       : {
@@ -125,7 +125,7 @@ export const ConsultationUpdate = () => {
           date: convertDateTimeFromServerToDate(consultationEntity.dateTime),
           patient: consultationEntity?.patient?.id,
           author: account.login,
-          exams: JSON.stringify(selectedExams),
+          exams: selectedExams.join(','),
         };
 
   const animatedComponents = makeAnimated();
@@ -133,6 +133,13 @@ export const ConsultationUpdate = () => {
   const showDoppler = () => {
     setDoppler(!doppler);
   };
+
+  useEffect(() => {
+    if (consultationEntity.exams) {
+      // Split the string "TDM,ECG" into an array: ['TDM', 'ECG']
+      setSelectedExams(consultationEntity.exams.split(','));
+    }
+  }, [consultationEntity.exams]);
 
   return (
     <div
@@ -548,15 +555,13 @@ export const ConsultationUpdate = () => {
             {/* a revoir */}
             {idEdit === 'voir' ? (
               <ValidatedField
-                disabled={idEdit === 'voir' ? true : false}
+                disabled={idEdit === 'voir'}
                 label="exams"
                 id="exams"
                 name="exams"
                 data-cy="exams"
                 type="textarea"
-                value={idEdit === 'voir' ? JSON.parse(consultationEntity.exams || '[]').join(', ') : ''} // validate={{
-                //   required: { value: true, message: 'Ce champ est obligatoire.' },
-                // }}
+                value={consultationEntity.exams || ''} // Use the string value or fallback to an empty string
                 style={{
                   borderRadius: '25px',
                   backgroundColor: idEdit === 'voir' ? '#A9B7CD' : '#F7FAFF',
@@ -570,9 +575,9 @@ export const ConsultationUpdate = () => {
                 <Select
                   name="exams"
                   isMulti // Enable multi-select
-                  options={examsList} // The options for the select component
-                  value={examsList.filter(option => selectedExams.includes(option.value))} // Set selected values
-                  onChange={handleExamsChange} // Handle change
+                  options={examsList} // List of available options
+                  value={examsList.filter(option => selectedExams.includes(option.value))} // Preselect matching options
+                  onChange={handleExamsChange} // Handle selection changes
                   styles={{
                     control: base => ({
                       ...base,
