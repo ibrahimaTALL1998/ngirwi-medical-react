@@ -60,9 +60,9 @@ export const updateEntity = createAsyncThunk(
 
 export const partialUpdateEntity = createAsyncThunk(
   'patient/partial_update_entity',
-  async (entity: IPatient, thunkAPI) => {
+  async ({ entity, id }: { entity: IPatient; id: number }, thunkAPI) => {
     const result = await axios.patch<IPatient>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
-    thunkAPI.dispatch(getEntities({}));
+    thunkAPI.dispatch(getEntitiesBis({ id }));
     return result;
   },
   { serializeError: serializeAxiosError }
